@@ -8,6 +8,7 @@ var React = require('react'),
 var Login = require("../view/login/Login.jsx");
 
 var session = require("../store/session"),
+  moduleStore = require("../store/module"),
   appStore = require("../store/app"),
   sessionAction = require("./session");
 
@@ -36,6 +37,14 @@ $(document).ajaxError(function(event, jqXHR, settings, thrownError) {
 // 注册监听，当session与服务端同步完成时，启动应用
 session.once("sync", function() {
   var App = React.createFactory(require("../view/App.jsx"));
+// 加载模块，激活路由
+  moduleStore.fetch({
+    remove: false
+  }).done(function() {
+    Backbone.history.start({
+      pushState: false
+    });
+  });
 // 显示页面
   React.render(App({
     model: appStore
@@ -45,6 +54,48 @@ session.once("sync", function() {
 });
 
 var Action = Backbone.Router.extend({
+  routes: {
+    "": "loadHome",
+    "home": "loadHome",
+    ":notfound": "loadNotFoundContent"
+  },
+  _registerRoute: function(model) {
+    if (model.getChildren().length === 0 && model.has("path")) {
+      var path = model.get("path"),
+        ViewFrame = require("../view/container/ViewFrame.jsx");
+      this.route(path, path.replace(/\//g, ":"), function() {
+        require.ensure([], function(require) {
+          var moduleOptions = _.defaults(require("../module/" + path), {
+            container: ViewFrame,
+            module: model
+          });
+          // 加载模块信息
+          model.fetch();
+          // 激活菜单项
+          moduleStore.setActiveItem(model.id);
+          // 触发界面变更
+          appStore.setAttrubute(moduleOptions);
+        });
+      });
+    }
+  },
+  initialize: function() {
+    moduleStore.forEach(this._registerRoute.bind(this));
+    this.listenTo(moduleStore, "add", this._registerRoute);
+  },
+  loadHome: function() {
+    moduleStore.setActiveItem("home");
+    appStore.setAttrubute({
+      container: require("../view/container/Home.jsx")
+    });
+  },
+  loadNotFoundContent: function(route) {
+    console.error("page " + route + " not found!!");
+    appStore.setAttrubute({
+      container: require("../view/container/404.jsx")
+    });
+    moduleStore.setActiveItem(null);
+  },
   bootstrap: function() {
     if (session.isAnonymous()) {
       // 显示登录对话框，等待匿名用户完成登录

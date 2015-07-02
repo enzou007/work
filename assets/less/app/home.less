@@ -1,0 +1,259 @@
+/* 首页 */
+
+#home {
+
+  &.container-fluid {
+    margin-top: 6px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #home-content-area > .row > div {
+    margin-bottom: 20px;
+  }
+
+  .todo-box {
+    box-shadow: none;
+    border: 1px solid #E0E4E6;
+    border-bottom: 3px solid #E0E4E6;
+    margin: 0 15px;
+    padding: 15px 0;
+    overflow: hidden;
+  }
+
+  .todo-box dl {
+    padding: 0 0 5px 8px;
+    border-right: 1px dashed #ccc;
+    margin: 0;
+  }
+
+  .todo-box dl dd {
+    width: 48px;
+    height: 48px;
+    float: left;
+    margin: 5px 5px 0 0;
+    text-align: center;
+    border-radius: 100%;
+  }
+
+  .todo-box-green dd {
+    background-color: #9BC96B;
+  }
+
+  .todo-box-blue dd {
+    background-color: #4DBBD9;
+  }
+
+  .todo-box-yellow dd {
+    background-color: #EBA94B;
+  }
+
+  .todo-box-red dd {
+    background-color: #F76B51;
+  }
+
+  .todo-box dl dd a {
+    color: #fff;
+    font-size: 15px;
+    line-height: 50px;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .todo-box dl dt {
+    width: 220px;
+    float: left;
+  }
+
+  .todo-box dl dt a {
+    display: inline-table;
+    color: #666;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .widget-box {
+    border: 1px solid #E2E2E2;
+    min-height: 250px;
+
+    h2 {
+      border-bottom: 1px solid #e2e2e2;
+      line-height: 40px;
+      padding-left: 10px;
+      margin: 0;
+    }
+
+    h2 a {
+      color: #464646;
+      font-size: 14px;
+    }
+
+    ul {
+      line-height: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 15px 20px;
+    }
+
+    ul li span {
+      color: #ccc;
+      padding-right: 5px;
+    }
+
+    ul li a {
+      color: #464646;
+    }
+
+    .table {
+      margin-bottom: 0;
+
+      > tbody > tr > td {
+        padding: 6px;
+      }
+    }
+  }
+
+  .newsweekly-box {
+    padding: 10px 0 0 25px;
+
+    dl {
+      display: inline-block;
+      margin-bottom: 15px;
+      width: 50%;
+    }
+
+    dd {
+      width: 40%;
+      float: left;
+    }
+
+    dt {
+      width: 40%;
+      float: left;
+      font-weight: normal;
+      line-height: 20px;
+      padding-top: 5px;
+      margin-left: 10px;
+
+      b {
+        color: #2B7DBC;
+        display: block;
+      }
+
+      span {
+        color: #464646;
+        padding-top: 7px;
+        display: block;
+      }
+    }
+  }
+
+  .calendar {
+    .cal-header {
+      background-color: #f3f3f3;
+      padding: 8px 0;
+
+      > * {
+        margin: 0;
+      }
+    }
+
+    .cal-body {
+      padding: 10px 15px;
+
+      table {
+        width: 100%;
+        font-size: 16px;
+
+        th, td {
+          text-align: center;
+          line-height: 25px;
+        }
+
+        .now {
+          color: #fff;
+          background-color: #bf2121;
+          width: 55%;
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .widget-tab-box {
+
+    .nav-tabs {
+      border-color: #E2E2E2;
+      padding: 0;
+    }
+
+    .nav-tabs a {
+      font-size: 14px;
+      border-style: hidden;
+      background-color: #fff;
+      height: 45px;
+      line-height: 30px;
+      border-bottom: 1px solid #E2E2E2;
+    }
+
+    .nav-tabs li:first-child a {
+      border-left-style: hidden !important;
+    }
+
+    .nav-tabs li.active a {
+      border-style: solid;
+      border-top-color: #bf2121;
+      color: #bf2121;
+      height: 46px;
+      border-bottom: 0;
+    }
+
+    .tab-content {
+      padding: 10px 12px;
+      border-style: hidden;
+    }
+  }
+
+  .ranking-box {
+
+    .nav-tabs li.active a:hover {
+      cursor: pointer;
+    }
+
+    .high-light {
+      color: #bf2121;
+
+      b.radius-block {
+        background-color: #bf2121;
+      }
+    }
+
+    b.radius-block {
+      min-width: 18px;
+      border-radius: 25%;
+      display: inline-block;
+      text-align: center;
+      background-color: #393939;
+      color: #fff;
+    }
+  }
+
+  .freshman-box {
+    > div {
+      min-height: 200px;
+      padding: 10px 25px 0 25px;
+    }
+  }
+
+  .table > thead > tr {
+    background-image: none;
+  }
+}
+
+.sidebar + .main-content #home .todo-box dl dt {
+  width: 195px;
+}

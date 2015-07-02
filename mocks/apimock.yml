@@ -9,3 +9,48 @@
   response:
     type: js
     file: "response/session/login.js"
+- request:
+    url: /1/system/module
+  response:
+    status: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 200 : 401 %>"
+    file: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 'response/module/list.json' : 'response/empty.json' %>"
+- request:
+    url: /1/message/me
+  response:
+    file: response/message/me.json
+- request:
+    url: /1/xwgg/tzgg
+    query:
+      count: 6
+  response:
+    file: response/xwgg/tzgg.json
+- request:
+    url: /1/xwgg/rsrm
+    query:
+      count: 6
+  response:
+    file: response/xwgg/rsrm.json
+- request:
+    url: /1/xwgg/zktd
+    query:
+      count: 4
+  response:
+    file: response/xwgg/zktd.json
+- request:
+    url: /1/cx/ybcx
+    query:
+      count: 5
+  response:
+    file: response/cx/ybcx.json
+- request:
+    url: /1/cx/wbcx
+    query:
+      count: 5
+  response:
+    file: response/cx/wbcx.json
+- request:
+    url: /1/cx/pfcx
+    query:
+      count: 5
+  response:
+    file: response/cx/pfcx.json

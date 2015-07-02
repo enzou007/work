@@ -1,0 +1,35 @@
+/* 侧边栏 */
+#sidebar {
+
+    .sidebar-shortcuts-large > .btn {
+        margin-left: 4px;
+    }
+
+    &.menu-min .sidebar-shortcuts-large > .btn {
+        margin-left: 2px;
+    }
+
+    .nav-list > li .submenu {
+        display: block;
+    }
+
+    .nav-list .transition-enter {
+        max-height: 0;
+        transition: max-height 0.5s ease;
+        overflow: hidden;
+    }
+
+    .nav-list .transition-enter.transition-enter-active {
+        max-height: 1080px;
+    }
+
+    .nav-list .transition-leave {
+        max-height: 1080px;
+        transition: max-height 0.5s ease;
+    }
+
+    .nav-list .transition-leave.transition-leave-active {
+        max-height: 0;
+        overflow: hidden;
+    }
+}

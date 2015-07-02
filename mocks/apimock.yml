@@ -54,3 +54,7 @@
       count: 5
   response:
     file: response/cx/pfcx.json
+- request:
+    url: /1/system/module/5582272444ae2b5937e53911
+  response:
+    file: response/module/xwgg/xwsd.json

@@ -1,3 +1,6 @@
+@font-color-active: #2b7dbc;
+@background-hover: #eee;
+
 #data-frame {
 
   .page-header {
@@ -15,10 +18,11 @@
 
     .nav-tabs {
       position: static;
-      width: 120px;
+      width: 140px;
       background-color: #F9F9F9;
       border-right: 1px solid #c5d0dc;
       border-bottom: 0;
+      margin-bottom: 1px !important;
     }
 
     .nav-tabs li > a {
@@ -33,6 +37,7 @@
     .nav-tabs li.active > a {
       margin-right: -1px;
       border-style: solid;
+      color: @font-color-active;
     }
 
     .nav-tabs:before {
@@ -50,7 +55,7 @@
     }
 
     .tab-content {
-      margin-left: 120px;
+      margin-left: 140px;
       min-width: 160px;
       padding: 10px 0 0 0;
       border: 0;
@@ -68,7 +73,7 @@
       }
 
       ul li:hover {
-        background-color: #eee;
+        background-color: @background-hover;
       }
 
       ul li:first-child {
@@ -76,7 +81,35 @@
       }
 
       ul li.active {
-        color: #2b7dbc;
+        color: @font-color-active;
+      }
+
+      dl {
+        margin-left: 10px;
+        min-width: 280px;
+      }
+
+      dl dt {
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+
+      dl dt:first-child {
+        margin-top: 0;
+      }
+
+      dl dd {
+        cursor: pointer;
+        display: inline-block;
+        padding: 5px;
+      }
+
+      dl dd:hover {
+        background-color: @background-hover;
+      }
+
+      dl dd.active {
+        color: @font-color-active;
       }
     }
   }

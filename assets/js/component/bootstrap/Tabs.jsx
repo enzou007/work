@@ -18,12 +18,13 @@ var Tabs = React.createClass({
     return {
       fade: false,
       lazy: false,
-      triggerLink: false
+      triggerLink: false,
+      activated: 0
     };
   },
   getInitialState: function () {
     return {
-      activated: 0,
+      activated: this.props.activated,
       in: true
     }
   },
@@ -58,7 +59,7 @@ var Tabs = React.createClass({
             return (
               <li className={classNames({active: index === this.state.activated})} key={index}>
                 <a href={child.props.link || "#"} onClick={boundClick}>
-                  <i className={"ace-icon " + child.props.ico || ""}/>
+                  <i className={classNames("ace-icon",child.props.ico)}/>
                   {child.props.tab || "未命名"}
                 </a>
               </li>

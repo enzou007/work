@@ -1,6 +1,7 @@
 "use strict";
 
-var React = require("react");
+var React = require("react"),
+  classNames = require("classnames");
 
 var SearchMenu = require("./viewFrame/SearchMenu.jsx"),
   Toolbar = require("./viewFrame/Toolbar.jsx");
@@ -15,7 +16,7 @@ var ViewFrame = React.createClass({
     "module": React.PropTypes.instanceOf(ModuleCollection.model).isRequired
   },
   render: function() {
-    return <div className="page-content-area" id="data-frame">
+    return <div className={classNames("page-content-area", this.props.module.get("path").replace(/\//g,"-"))} id="data-frame">
         <div className="page-header">
           <div className="view-breadcrumb">
             <h1>

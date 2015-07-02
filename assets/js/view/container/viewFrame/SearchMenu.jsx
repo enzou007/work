@@ -2,7 +2,8 @@
 
 var React = require("react"),
   _ = require("underscore"),
-  $ = require("jquery");
+  $ = require("jquery"),
+  classNames = require("classnames");
 
 var Tabs = require("../../../component/bootstrap/Tabs.jsx"),
   CustomSearch = require("./CustomSearch.jsx");
@@ -80,7 +81,16 @@ var SearchMenu = React.createClass({
         } else {
           // 三级菜单
           return (
-            <div ico={item.ico} key={item.name} tab={item.name}></div>
+            <dl ico={item.ico} key={item.name} tab={item.name}>
+              {item.children.map(function (child) { return [
+                  <dt key={child.name}><i className={classNames("ace-icon", child.ico)}/>{child.name}</dt>,
+                  (child.children.map(function (node) {
+                    return (
+                      <dd key={node.name} className={node == currentItem ? "active" : null}>{node.name}</dd>
+                    );
+                  }))
+              ];})}
+            </dl>
           );
         }
       }

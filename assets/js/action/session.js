@@ -1,0 +1,28 @@
+"use strict";
+
+var Backbone = require("backbone"),
+  _ = require("underscore");
+
+var session = require("../store/session");
+
+var Action = function () {
+
+};
+
+_.extend(Action.prototype, Backbone.Events);
+
+Action.prototype.login = function (info) {
+  return session.save(info);
+};
+
+Action.prototype.logout = function () {
+  return session.destroy().done(function () {
+    location.href = "/";
+  });
+};
+
+Action.prototype.ping = function () {
+  return session.ping();
+};
+
+module.exports = new Action();

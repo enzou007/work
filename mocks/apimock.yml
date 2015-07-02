@@ -1,0 +1,11 @@
+- request:
+    url: /1/session/me
+  response:
+    status: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 200 : 401 %>"
+    file: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 'response/session/me.json' : 'response/empty.json' %>"
+- request:
+    url: /1/session
+    method: POST
+  response:
+    type: js
+    file: "response/session/login.js"

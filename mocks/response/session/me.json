@@ -1,0 +1,10 @@
+{
+  "token": "YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ",
+  "objectId": "5582272444ae2b5937e53930",
+  "id": "admin",
+  "name": "管理员",
+  "email": "admin@localhost.com",
+  "departments": ["5582272444ae2b5937e53950", "5582272444ae2b5937e53960"],
+  "authEntries": ["admin", "user", "super", "5582272444ae2b5937e53950", "5582272444ae2b5937e53960"],
+  "createAt": "2015-06-30T05:29:37.347Z"
+}

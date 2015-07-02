@@ -1,0 +1,70 @@
+{
+  "name": "OA-Shell",
+  "version": "0.0.1",
+  "authors": [
+    "Zongwei <zongwei007@gmail.com>"
+  ],
+  "description": "OA-Shell Project",
+  "moduleType": [
+    "node"
+  ],
+  "license": "ISC",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fontawesome": "~4.3.0",
+    "webfont-opensans": "~0.0.2",
+    "element-icon-identicon": "~1.0.0",
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4"
+  },
+  "overrides": {
+    "jquery": {
+      "ignore": true
+    },
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap.css.map",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.woff"
+      ],
+      "normalize": {
+        "css": [
+          "*.css",
+          "*.map"
+        ],
+        "fonts": [
+          "*-regular.*"
+        ]
+      }
+    },
+    "fontawesome": {
+      "normalize": {
+        "css": [
+          "*.css"
+        ],
+        "fonts": [
+          "!*.css"
+        ]
+      }
+    },
+    "webfont-opensans": {
+      "main": [
+        "fonts/*",
+        "css/*"
+      ],
+      "normalize": {
+        "fonts": "opensans-*"
+      }
+    }
+  }
+}

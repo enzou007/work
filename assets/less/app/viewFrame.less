@@ -1,7 +1,7 @@
 @font-color-active: #2b7dbc;
 @background-hover: #eee;
 
-#data-frame {
+#view-frame {
 
   .page-header {
     padding-bottom: 7px;
@@ -66,26 +66,26 @@
         margin-bottom: 0;
       }
 
-      ul li {
+      ul li.item {
         color: #585858;
         padding: 8px 0 8px 15px;
         cursor: pointer;
       }
 
-      ul li:hover {
+      ul li.item:hover {
         background-color: @background-hover;
       }
 
-      ul li:first-child {
+      ul li.item:first-child {
         margin-top: -8px;
       }
 
-      ul li.active {
+      ul li.item.active {
         color: @font-color-active;
       }
 
       dl {
-        margin-left: 10px;
+        margin-left: 15px;
         min-width: 280px;
       }
 
@@ -101,7 +101,7 @@
       dl dd {
         cursor: pointer;
         display: inline-block;
-        padding: 5px;
+        padding: 5px 7px 5px 1px;
       }
 
       dl dd:hover {
@@ -110,6 +110,23 @@
 
       dl dd.active {
         color: @font-color-active;
+      }
+    }
+
+    .custom-search-panel {
+      min-width: 500px;
+      overflow: hidden;
+      padding: 10px;
+      min-height: 300px;
+
+      .footer {
+        position: absolute;
+        text-align: right;
+        bottom: 0;
+      }
+
+      .btn {
+        margin-right: 5px;
       }
     }
   }

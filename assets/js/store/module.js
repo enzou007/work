@@ -4,7 +4,7 @@
 var Backbone = require("backbone"),
   _ = require("underscore");
 
-var Queries = require("./module/query");
+var Queries = require("./viewFrame/query");
 
 var Module = Backbone.Model.extend({
   _open: null,

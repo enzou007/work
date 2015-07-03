@@ -6,24 +6,29 @@ var React = require("react"),
 var SearchMenu = require("./viewFrame/SearchMenu.jsx"),
   Toolbar = require("./viewFrame/Toolbar.jsx");
 
-var ModuleCollection = require("../../store/module");
+var ModuleCollection = require("../../store/module"),
+  QueryCollection = require("../../store/viewFrame/query");
 
 require("bootstrap/js/dropdown");
 require("../../../less/app/viewFrame.less");
+require("backbone-react-component");
 
 var ViewFrame = React.createClass({
   propTypes: {
-    "module": React.PropTypes.instanceOf(ModuleCollection.model).isRequired
+    "model": React.PropTypes.instanceOf(ModuleCollection.model).isRequired,
+    "collection": React.PropTypes.instanceOf(QueryCollection).isRequired,
   },
+  mixins: [Backbone.React.Component.mixin],
   render: function() {
-    return <div className={classNames("page-content-area", this.props.module.get("path").replace(/\//g,"-"))} id="data-frame">
+    return (
+      <div id="view-frame" className={classNames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
         <div className="page-header">
           <div className="view-breadcrumb">
             <h1>
-              {this.props.module.get("name")}
+              {this.getModel().get("name")}
               <small>
                 <i className="ace-icon fa fa-angle-double-right"/>
-                <SearchMenu menu={this.props.menu} model={this.props.module}/>
+                <SearchMenu collection={this.getCollection()}/>
               </small>
             </h1>
           </div>
@@ -33,7 +38,8 @@ var ViewFrame = React.createClass({
         <div className="row">
           <div className="col-xs-12"></div>
         </div>
-      </div>;
+      </div>
+    );
   }
 });
 

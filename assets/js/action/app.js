@@ -37,7 +37,7 @@ $(document).ajaxError(function(event, jqXHR, settings, thrownError) {
 // 注册监听，当session与服务端同步完成时，启动应用
 session.once("sync", function() {
   var App = React.createFactory(require("../view/App.jsx"));
-// 加载模块，激活路由
+  // 加载模块，激活路由
   moduleStore.fetch({
     remove: false
   }).done(function() {
@@ -45,11 +45,11 @@ session.once("sync", function() {
       pushState: false
     });
   });
-// 显示页面
+  // 显示页面
   React.render(App({
     model: appStore
   }), document.getElementById("app"));
-// 登录成功后，超时登录框需要使用背景层做为遮罩
+  // 登录成功后，超时登录框需要使用背景层做为遮罩
   LoginModalBackdrop = true;
 });
 
@@ -61,20 +61,20 @@ var Action = Backbone.Router.extend({
   },
   _registerRoute: function(model) {
     if (model.getChildren().length === 0 && model.has("path")) {
-      var path = model.get("path"),
-        ViewFrame = require("../view/container/ViewFrame.jsx");
+      var path = model.get("path");
       this.route(path, path.replace(/\//g, ":"), function() {
         require.ensure([], function(require) {
-          var moduleOptions = _.defaults(require("../module/" + path), {
-            container: ViewFrame,
-            module: model
-          });
-          // 加载模块信息
-          model.fetch();
+          var Module = require("../module/" + path + ".js");
           // 激活菜单项
           moduleStore.setActiveItem(model.id);
+          // 激活视图框架
+          var moduleOption = new Module(model);
           // 触发界面变更
-          appStore.setAttrubute(moduleOptions);
+          appStore.setAttrubute(_.extend(moduleOption.getOption(), {
+            container: moduleOption.getContainer(),
+            model: model,
+            collection: moduleOption.getQueryCollection()
+          }));
         });
       });
     }

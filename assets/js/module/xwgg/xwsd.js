@@ -1,6 +1,8 @@
 "use strict";
 
-module.exports = {
+var Base = require("../base");
+
+module.exports = Base.extend({
   menu: [{
     name: "按状态检索",
     ico: "fa fa-reorder",
@@ -41,4 +43,4 @@ module.exports = {
       }]
     }]
   }]
-};
+});

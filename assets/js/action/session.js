@@ -5,24 +5,23 @@ var Backbone = require("backbone"),
 
 var session = require("../store/session");
 
-var Action = function () {
+var Action = function() {
 
 };
 
-_.extend(Action.prototype, Backbone.Events);
+_.extend(Action.prototype, Backbone.Events, {
+  login: function(info) {
+    return session.save(info);
+  },
+  logout: function() {
+    return session.destroy().done(function() {
+      location.href = "/";
+    });
+  },
+  ping: function() {
+    return session.ping();
+  }
+});
 
-Action.prototype.login = function (info) {
-  return session.save(info);
-};
-
-Action.prototype.logout = function () {
-  return session.destroy().done(function () {
-    location.href = "/";
-  });
-};
-
-Action.prototype.ping = function () {
-  return session.ping();
-};
 
 module.exports = new Action();

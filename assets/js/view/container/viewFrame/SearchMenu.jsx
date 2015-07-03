@@ -6,95 +6,81 @@ var React = require("react"),
   classNames = require("classnames");
 
 var Tabs = require("../../../component/bootstrap/Tabs.jsx"),
-  CustomSearch = require("./CustomSearch.jsx");
+  CustomSearch = require("./CustomSearch.jsx"),
+  Link = require("../../../component/Link.jsx");
 
-  var ModuleCollection = require("../../../store/module");
+var ModuleCollection = require("../../../store/module");
+
+var action = require("../../../action/viewFrame");
 
 require("backbone-react-component");
 
-function findDefaultItem(items, floor) {
-  var result = {};
-  for (var i = 0, item; item = items[i++];) {
-    if (_.isArray(item.children)) {
-      result = findDefaultItem(item.children, floor + 1);
-    } else if (item.isDefault) {
-      result.item = item;
-    }
-    if (result.item) {
-      break;
-    }
-  }
-  if (floor == 0) {
-    result.index = i - 1;
-  }
-  return result;
-}
-
 var SearchMenu = React.createClass({
   mixins: [Backbone.React.Component.mixin],
-  propTypes: {
-    menu: React.PropTypes.array.isRequired,
-    model: React.PropTypes.instanceOf(ModuleCollection.model).isRequired
-  },
-  componentWillMount: function() {
-    var info = findDefaultItem(this.props.menu, 0);
-    if (!info.item) {
-      console.warn("Can not find default item in module " + this.props.model.get("path"));
-      return;
-    }
-    this.setState({
-      currentItem: info.item,
-      currentIndex: info.index
-    });
-  },
   render: function() {
+    // 输出预定义查询项
+    var currentItem = action.getActivatedItem(),
+      currentIndex = _.findIndex(this.getCollection().where({parent: null}), function (item) {
+        return item.get("active");
+      });
     return (
       <div className="btn-group">
         <button className="btn btn-link dropdown-toggle btn-search-menu-toggle" data-toggle="dropdown">
-          {this.state.currentItem.name}
+          {currentItem.get("name")}
           <span className="ace-icon fa fa-angle-down icon-on-right"></span>
         </button>
         <div className="dropdown-menu btn-search-menu">
-          <Tabs activated={this.state.currentIndex} className="tabbable tabs-left">
+          <Tabs activated={currentIndex} className="tabbable tabs-left">
             { this.selectionBulider() }
           </Tabs>
         </div>
       </div>
     );
   },
+  itemBuilder: function (Tag, model) {
+    var children, handle;
+    if (model.has("condition")) {
+      children = <span className="item">{model.get("name")}</span>;
+      handle = function(event) {
+        action.toggleSearchItem(model);
+      };
+    } else if(model.has("href") || model.has("to")){
+      children = <Link {...model.toJson()}>{model.get("name")}</Link>;
+    } else{
+      children = model.get("name");
+    }
+
+    return (
+      <Tag className={classNames("item", model.get("active") ? "active" : null)} onClick={handle} key={model.cid}>
+        <i className={classNames("ace-icon", model.get("ico"))}/>{children}
+      </Tag>
+    );
+  },
   selectionBulider: function() {
-    // 输出预定义查询项
-    var currentItem = this.state.currentItem;
-    var elements = this.props.menu.map(function(item) {
-      if (_.isObject(item)) {
-        // 仅有二级节点，作为二级菜单
-        if (_.isArray(item.children) && !item.children.some(function(child) {
-          return child.children;
-        })) {
-          return (
-            <ul ico={item.ico} key={item.name} tab={item.name}>
-              { item.children.map(function (child) { return (
-              <li className={child == currentItem ? "active" : null} key={child.name}>{child.name}</li>
-              ); }) }
-            </ul>
-          );
-        } else {
-          // 三级菜单
-          return (
-            <dl ico={item.ico} key={item.name} tab={item.name}>
-              {item.children.map(function (child) { return [
-                  <dt key={child.name}><i className={classNames("ace-icon", child.ico)}/>{child.name}</dt>,
-                  (child.children.map(function (node) {
-                    return (
-                      <dd key={node.name} className={node == currentItem ? "active" : null}>{node.name}</dd>
-                    );
-                  }))
-              ];})}
-            </dl>
-          );
-        }
-      }
-    });
+    var elements = this.getCollection().where({
+      parent: null
+    }).map(function(item) {
+      return (
+        <ul ico={item.get("ico")} key={item.cid} tab={item.get("name")}>
+          { item.collection.where({parent: item.get("queryId")}).map(function (child) {
+            var nodes = child.collection.where({parent: child.get("queryId")});
+            // 二级菜单
+            if(nodes.length == 0){ return (
+              this.itemBuilder("li", child)
+            );} else { return (
+              //三级菜单
+              <li key={child.cid}>
+                <dl className="item">
+                  <dt><i className={classNames("ace-icon", child.get("ico"))}/>{child.get("name")}</dt>
+                  {nodes.map(function (node) { return (
+                    this.itemBuilder("dd",node)
+                  ); }.bind(this))}
+                </dl>
+              </li>
+          ); }}.bind(this)) }
+        </ul>
+      );
+    }.bind(this));
 
     elements.push(<CustomSearch ico="fa fa-search" key="自定义检索" tab="自定义检索"/>);
 

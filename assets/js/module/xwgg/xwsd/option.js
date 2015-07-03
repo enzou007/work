@@ -1,8 +1,8 @@
 "use strict";
 
-var Base = require("../base");
+var BaseOption = require("../../baseOption");
 
-module.exports = Base.extend({
+module.exports = BaseOption.extend({
   menu: [{
     name: "按状态检索",
     ico: "fa fa-reorder",

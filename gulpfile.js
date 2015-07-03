@@ -106,13 +106,13 @@ gulp.task("webpack:server", function() {
   })[0];
   jsxLoader.loader = "react-hot!" + jsxLoader.loader;
 
-  webpackConfiguration.plugins = webpackConfiguration.plugins.concat([
+  webpackConfiguration.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.SourceMapDevToolPlugin(
       "[file].map", null, ".[resource-path]", ".[resource-path]?[hash]"
     ),
     new webpack.NoErrorsPlugin()
-  ]);
+  );
 
   new WebpackDevServer(webpack(webpackConfiguration), {
     contentBase: "http://" + HOST + ":3005",

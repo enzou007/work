@@ -8,7 +8,7 @@ var viewFrameAction = require("../action/viewFrame");
 var QueryCollection = require("../store/viewFrame/query");
 
 var Base = function(model) {
-  this.model = model;
+  this.module = model;
 
   viewFrameAction.bind(model, this.getQueryCollection());
   this.initialize.apply(this, arguments);

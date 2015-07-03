@@ -63,18 +63,21 @@ var Action = Backbone.Router.extend({
     if (model.getChildren().length === 0 && model.has("path")) {
       var path = model.get("path");
       this.route(path, path.replace(/\//g, ":"), function() {
-        require.ensure(["../module/base"], function(require) {
-          var Module = require("../module/" + path + ".js");
-          // 激活菜单项
-          moduleStore.setActiveItem(model.id);
-          // 激活视图框架
-          var moduleOption = new Module(model);
-          // 触发界面变更
-          appStore.setAttrubute(_.extend(moduleOption.getOption(), {
-            container: moduleOption.getContainer(),
-            model: model,
-            collection: moduleOption.getQueryCollection()
-          }));
+        // 将与模块相关的代码进行分拆
+        require.ensure(["../module/baseOption"], function(require) {
+          // 与模块选项相关的代码，则使用bundle进行异步加载
+          require("../module/" + path + "/option")(function(Module) {
+            // 激活菜单项
+            moduleStore.setActiveItem(model.id);
+            // 激活视图框架
+            var moduleOption = new Module(model);
+            // 触发界面变更
+            appStore.setAttrubute(_.extend(moduleOption.getOption(), {
+              container: moduleOption.getContainer(),
+              model: model,
+              collection: moduleOption.getQueryCollection()
+            }));
+          })
         });
       });
     }

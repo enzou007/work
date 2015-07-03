@@ -33,11 +33,16 @@ module.exports = {
       exclude: /(node_modules|bower_components)/,
       loader: 'babel?stage=0'
     }, {
-      test: /[\/|\\]bootstrap[\/|\\]js/,
+      test: /module[\/\\].+[\/\\](Form\.jsx|option\.js)$/,
+      loader: 'bundle?lazy'
+    }, {
+      test: /[\/\\]bootstrap[\/\\]js/,
       loader: "exports?jQuery!imports?jQuery=jquery"
     }]
   },
   plugins: [
+    // 过滤moment多余的语言模块
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
     new webpack.optimize.CommonsChunkPlugin("commons.js"),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])

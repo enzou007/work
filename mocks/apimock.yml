@@ -13,7 +13,7 @@
     url: /1/system/module
   response:
     status: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 200 : 401 %>"
-    file: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 'response/module/list.json' : 'response/empty.json' %>"
+    file: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 'response/system/module/list.json' : 'response/empty.json' %>"
 - request:
     url: /1/message/me
   response:
@@ -57,4 +57,4 @@
 - request:
     url: /1/system/module/5582272444ae2b5937e53911
   response:
-    file: response/module/xwgg/xwsd.json
+    file: response/system/module/xwgg/xwsd.json

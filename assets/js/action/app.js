@@ -63,7 +63,7 @@ var Action = Backbone.Router.extend({
     if (model.getChildren().length === 0 && model.has("path")) {
       var path = model.get("path");
       this.route(path, path.replace(/\//g, ":"), function() {
-        require.ensure([], function(require) {
+        require.ensure(["../module/base"], function(require) {
           var Module = require("../module/" + path + ".js");
           // 激活菜单项
           moduleStore.setActiveItem(model.id);

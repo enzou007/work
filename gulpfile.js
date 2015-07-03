@@ -16,7 +16,7 @@ var less = require("gulp-less"),
     browsers: ["last 2 versions"]
   });
 gulp.task("less", function() {
-  return gulp.src(["assets/less/app.less", "assets/less/ace/ace.less"])
+  return gulp.src(["assets/less/main.less", "assets/less/ace/ace.less"])
     .pipe(changed("build/css", {
       extension: '.css'
     }))
@@ -61,7 +61,7 @@ gulp.task("html", ["bower", "less"], function() {
     });
   };
 
-  return gulp.src("assets/index.html")
+  return gulp.src("assets/*.html")
     .pipe(injectSource([
       "lib/bootstrap/**/*.css",
       "lib/fontawesome/**/*.css",
@@ -77,7 +77,7 @@ gulp.task("webpack", function(callback) {
   webpack(webpackConfiguration, function(err, stats) {
     if (err) throw new gutil.PluginError("webpack", err);
     gutil.log("[webpack]", stats.toString({
-      // output options
+      colors: true
     }));
     callback();
   });
@@ -94,10 +94,17 @@ args.some(function(val, index) {
 });
 gulp.task("webpack:server", function() {
 
-  webpackConfiguration.entry = [
-    "webpack-dev-server/client?http://" + HOST + ":3005",
-    "webpack/hot/only-dev-server"
-  ].concat(webpackConfiguration.entry);
+  for(var key in webpackConfiguration.entry){
+    webpackConfiguration.entry[key].push(
+      "webpack-dev-server/client?http://" + HOST + ":3005",
+      "webpack/hot/only-dev-server"
+    );
+  }
+
+  var jsxLoader = webpackConfiguration.module.loaders.filter(function (item) {
+    return item.test.test(".jsx");
+  })[0];
+  jsxLoader.loader = "react-hot!" + jsxLoader.loader;
 
   webpackConfiguration.plugins = webpackConfiguration.plugins.concat([
     new webpack.HotModuleReplacementPlugin(),
@@ -112,7 +119,7 @@ gulp.task("webpack:server", function() {
     hot: true,
     quiet: false,
     noInfo: false,
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
     publicPath: "/js/",
     headers: {
       "Access-Control-Allow-Origin": "*"

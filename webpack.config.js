@@ -1,10 +1,14 @@
 var webpack = require("webpack");
 
 module.exports = {
-  entry: ["./assets/js/index.js"],
+  entry: {
+    app: ["./assets/js/index.js"],
+    form: ["./assets/js/form.js"]
+  },
   output: {
     path: __dirname + "/build/js",
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
+    chunkFilename: "[id].chunk.js",
     publicPath: "/js/",
     pathinfo: true
   },
@@ -27,16 +31,18 @@ module.exports = {
     }, {
       test: /\.jsx?$/,
       exclude: /(node_modules|bower_components)/,
-      loader: 'react-hot!babel?stage=0'
+      loader: 'babel?stage=0'
     }, {
       test: /[\/|\\]bootstrap[\/|\\]js/,
       loader: "exports?jQuery!imports?jQuery=jquery"
     }]
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin("commons.js"),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
-    )
+    ),
+    new webpack.optimize.DedupePlugin()
   ],
   lessLoader: {
     lessPlugins: []

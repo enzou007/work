@@ -58,7 +58,7 @@ _.extend(Action.prototype, Backbone.Events, {
     this.activated = active;
     this.collection.setActiveItem(active);
   },
-  toggleSearchItem: function (item) {
+  toggleSearchItem: function(item) {
     this.setActiveItem(item);
   }
 });

@@ -12,7 +12,7 @@ require("backbone-react-component");
 
 var App = React.createClass({
   mixins: [Backbone.React.Component.mixin],
-  render: function () {
+  render: function() {
     var Container = this.state.model.container,
       options = _.omit(this.state.model, "container");
 

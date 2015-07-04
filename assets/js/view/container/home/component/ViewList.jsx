@@ -5,12 +5,12 @@ var React = require("react"),
   $ = require("jquery");
 
 var ViewList = React.createClass({
-  getDefaultProps: function () {
+  getDefaultProps: function() {
     return {
       param: {}
     };
   },
-  getInitialState: function () {
+  getInitialState: function() {
     return {
       data: []
     };
@@ -22,20 +22,20 @@ var ViewList = React.createClass({
     count: React.PropTypes.number.isRequired,
     formatter: React.PropTypes.func.isRequired
   },
-  componentDidMount: function () {
-    $.get(this.props.url, _.defaults(this.props.param, {"count": this.props.count}), null, "json")
-      .done(function (resp) {
-        if (this.isMounted()) {
-          this.setState({
-            data: resp
-          });
-        }
-      }.bind(this))
-      .fail(function (err) {
-        console.error(err);
-      });
+  componentDidMount: function() {
+    $.get(this.props.url, _.defaults(this.props.param, {
+      "count": this.props.count
+    }), null, "json").done(function(resp) {
+      if (this.isMounted()) {
+        this.setState({
+          data: resp
+        });
+      }
+    }.bind(this)).fail(function(err) {
+      console.error(err);
+    });
   },
-  render: function () {
+  render: function() {
     return (
       <ul className={this.props.className}>
         {this.state.data.map(this.props.formatter)}

@@ -28,7 +28,7 @@ _.extend(Base.prototype, {
   getOption: function() {
     return _.extend(_.pick(this, "page", "form", "Toolbar", "Model"));
   },
-  getQueryCollection: _.once(function () {
+  getQueryCollection: _.once(function() {
     return new QueryCollection(this.menu, {
       parse: true,
       module: this.module

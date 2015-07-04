@@ -12,10 +12,10 @@ var session = require("../store/session"),
   appStore = require("../store/app"),
   sessionAction = require("./session");
 
-//在首页初始化时，登录框不需要屏蔽层
+// 在首页初始化时，登录框不需要屏蔽层
 var LoginModalBackdrop = false;
 
-//注册事件，控制ajax请求头
+// 注册事件，控制ajax请求头
 $(document).ajaxSend(function(event, jqXHR, options) {
   var url = options.url;
   if (url.slice(0, 4) !== "http" || url.indexOf(location.protocol + "//" + location.host + "/") === 0) {
@@ -23,10 +23,10 @@ $(document).ajaxSend(function(event, jqXHR, options) {
   }
 });
 
-//注册事件，响应特定错误码
+// 注册事件，响应特定错误码
 $(document).ajaxError(function(event, jqXHR, settings, thrownError) {
   var url = settings.url;
-//当为401错误时，打开登录层
+  // 当为401错误时，打开登录层
   if (jqXHR.status === 401 && (url.slice(0, 4) !== "http" || url.indexOf(location.protocol + "//" + location.host + "/") === 0)) {
     Login.show({
       backdrop: LoginModalBackdrop

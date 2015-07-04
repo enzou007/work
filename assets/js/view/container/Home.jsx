@@ -11,7 +11,7 @@ var React = require("react"),
 require("../../../less/app/home.less");
 
 var HomePage = React.createClass({
-  render: function () {
+  render: function() {
     return (
       <div className="container-fluid" id="home">
         <div className="row">
@@ -31,7 +31,7 @@ var HomePage = React.createClass({
                         <li key={index}>
                           <span>{ "["+item[0].replace("2015-","")+"]" }</span><a href="#">{item[1]}</a>
                         </li>
-                      ); 
+                      );
                     }
                   }/>
                 </div>

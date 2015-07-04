@@ -13,38 +13,37 @@ var ViewTable = React.createClass({
     count: React.PropTypes.number.isRequired,
     formatter: React.PropTypes.func.isRequired
   },
-  getDefaultProps: function () {
+  getDefaultProps: function() {
     return {
       className: ["table"],
       param: {}
     };
   },
-  getInitialState: function () {
+  getInitialState: function() {
     return {
       data: []
     }
   },
-  componentDidMount: function () {
-    $.get(this.props.url, _.defaults(this.props.param, {"count": this.props.count}), null, "json")
-      .done(function (resp) {
-        if (this.isMounted()) {
-          this.setState({
-            data: resp
-          });
-        }
-      }.bind(this))
-      .fail(function (err) {
-        console.error(err);
-      });
+  componentDidMount: function() {
+    $.get(this.props.url, _.defaults(this.props.param, {
+      "count": this.props.count
+    }), null, "json").done(function(resp) {
+      if (this.isMounted()) {
+        this.setState({
+          data: resp
+        });
+      }
+    }.bind(this)).fail(function(err) {
+      console.error(err);
+    });
   },
-  render: function () {
+  render: function() {
     return (
       <table className={this.props.className}>
         <thead>
           <tr>
-            {this.props.head.map(function (item, index) {
-              return <th key={index}>{item}</th>;
-            })}
+            {this.props.head.map(function (item, index) { return
+            <th key={index}>{item}</th>; })}
           </tr>
         </thead>
         <tbody>

@@ -96,12 +96,14 @@ var Login = React.createClass({
               请输入您的信息
             </legend>
             <div className={classNames("form-group input-icon input-icon-right", {"has-error": validation.email})}>
-              <input className="form-control " name="email" onChange={this.handleChange} placeholder="请输入注册邮箱" type="email"/>
+              <input className="form-control " name="email" onChange={this.handleChange}
+                placeholder="请输入注册邮箱" type="email"/>
               <i className="ace-icon fa fa-user fa-fw"/>
               <span className="help-block">{validation.email}</span>
             </div>
             <div className={classNames("form-group input-icon input-icon-right", {"has-error": validation.password})}>
-              <input className="form-control " name="password" onChange={this.handleChange} placeholder="请输入登录密码" type="password"/>
+              <input className="form-control " name="password" onChange={this.handleChange}
+                placeholder="请输入登录密码" type="password"/>
               <i className="ace-icon fa fa-lock fa-fw"/>
               <span className="help-block">{validation.password}</span>
             </div>
@@ -115,7 +117,8 @@ var Login = React.createClass({
                 十天内免登录</span>
             </label>
           </div>
-          <Button bsStyle="primary" className="width-20 pull-right" loading={this.state.isRequesting} loadingText={<span><i className="ace-icon fa fa-spinner fa-spin"/>登录中...</span>} size="sm" type="submit">
+          <Button bsStyle="primary" className="width-20 pull-right" loading={this.state.isRequesting}
+            loadingText={<span><i className="ace-icon fa fa-spinner fa-spin"/>登录中...</span>} size="sm" type="submit">
             <i className="ace-icon fa fa-key"/>
             登录
           </Button>

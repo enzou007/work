@@ -16,12 +16,12 @@ require("backbone-react-component");
 var ViewFrame = React.createClass({
   propTypes: {
     "model": React.PropTypes.instanceOf(ModuleCollection.model).isRequired,
-    "collection": React.PropTypes.instanceOf(QueryCollection).isRequired,
+    "collection": React.PropTypes.instanceOf(QueryCollection).isRequired
   },
   mixins: [Backbone.React.Component.mixin],
   render: function() {
     return (
-      <div id="view-frame" className={classNames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
+      <div className={classNames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))} id="view-frame">
         <div className="page-header">
           <div className="view-breadcrumb">
             <h1>

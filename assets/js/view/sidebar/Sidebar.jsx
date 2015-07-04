@@ -16,24 +16,24 @@ var Sidebar = React.createClass({
     collection: React.PropTypes.oneOf([moduleType]).isRequired
   },
   mixins: [Backbone.React.Component.mixin],
-  getInitialState: function () {
+  getInitialState: function() {
     var isMin = session.get("mini-menu") === true;
     return {
       isMin: isMin
     };
   },
-  toggleMini: function () {
+  toggleMini: function() {
     this.setState({
       isMin: !this.state.isMin
-    }, function () {
+    }, function() {
       session.set("mini-menu", this.state.isMin);
     });
   },
-  render: function () {
+  render: function() {
 
     var Items = this.getCollection() ? (this.getCollection().where({
       parent: null
-    }).map(function (model) {
+    }).map(function(model) {
       return <Item isMin={this.state.isMin} key={model.id} model={model}/>;
     }.bind(this))) : null;
 

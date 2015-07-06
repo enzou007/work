@@ -69,7 +69,7 @@ var Action = Backbone.Router.extend({
           require("../module/" + path + "/option")(function (Module) {
             // 激活菜单项
             moduleStore.setActiveItem(model.id);
-            // 激活视图框架
+            // 构建模块基本信息，绑定视图框架
             var moduleOption = new Module(model);
             // 触发界面变更
             appStore.setAttrubute(_.defaults(moduleOption.getOption(), {

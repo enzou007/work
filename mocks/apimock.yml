@@ -58,3 +58,7 @@
     url: /1/system/module/5582272444ae2b5937e53911
   response:
     file: response/system/module/xwgg/xwsd.json
+- request:
+    url: /1/xwgg/xwsd
+  response:
+    file: response/xwgg/xwsd/view.json

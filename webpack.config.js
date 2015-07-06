@@ -23,6 +23,9 @@ module.exports = {
       test: /\.less$/,
       loader: "style!css!less?config=lessLoaderCustom"
     }, {
+      test: /\.css$/,
+      loader: "style!css"
+    }, {
       test: /\.(png|jpg)$/,
       loader: "url?limit=100000"
     }, {
@@ -37,7 +40,11 @@ module.exports = {
       loader: 'bundle?lazy'
     }, {
       test: /[\/\\]bootstrap[\/\\]js/,
-      loader: "exports?jQuery!imports?jQuery=jquery"
+      loader: "imports?jQuery=jquery!exports?jQuery"
+    }, {
+      // Backbone.Select 指定了Backbone版本上限，无法与当前使用的Backbone兼容，所以使用loader强制引入当前的Backbone
+      test: /backbone\.select/,
+      loader: "imports?Backbone=backbone,_=underscore!exports?Backbone.Select"
     }]
   },
   plugins: [

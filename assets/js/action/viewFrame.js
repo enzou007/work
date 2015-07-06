@@ -3,14 +3,18 @@
 var Backbone = require("backbone"),
   _ = require("underscore");
 
-var Action = function() {
+var QueryData = require("../store/viewFrame/queryData");
+
+var Action = function () {
   this.module = null;
-  this.collection = null;
+  this.Model = null;
+  this.queryCollection = null;
+  this.dataCollection = null;
   this.activated = null;
 };
 
 _.extend(Action.prototype, Backbone.Events, {
-  clean: function() {
+  clean: function () {
     if (this.module) {
       this.stopListening(this.module);
     }
@@ -19,19 +23,20 @@ _.extend(Action.prototype, Backbone.Events, {
     }
     return this;
   },
-  bind: function(moduleItem, queryCollection) {
+  bind: function (moduleOption) {
     this.clean();
-    this.module = moduleItem;
-    this.collection = queryCollection;
+    this.module = moduleOption.module;
+    this.Model = moduleOption.Model;
+    this.queryCollection = moduleOption.getQueryCollection();
     // 初始化当前项目
-    this.toggleSearchItem(this.collection.findWhere({
+    this.toggleSearchItem(this.queryCollection.findWhere({
       isDefault: true
     }));
     // 监听模块
-    this.listenTo(this.module, "sync", function() {
+    this.listenTo(this.module, "sync", function () {
       var queries = this.module.get("queries");
       if (queries && queries.length > 0) {
-        this.collection.add({
+        this.queryCollection.add({
           queryId: "query_custom",
           name: "常用检索",
           ico: "fa fa-reorder",
@@ -45,21 +50,34 @@ _.extend(Action.prototype, Backbone.Events, {
     this.module.fetch();
     return this;
   },
-  getQueryCollection: function() {
-    return this.collection;
+  getQueryCollection: function () {
+    return this.queryCollection;
   },
-  getActivatedItem: function() {
+  getActivatedItem: function () {
     return this.activated;
   },
-  setActiveItem: function(active) {
+  setActiveItem: function (active) {
     if (this.activated == active) {
       return;
     }
     this.activated = active;
-    this.collection.setActiveItem(active);
+    this.queryCollection.setActiveItem(active);
   },
-  toggleSearchItem: function(item) {
+  buildDataCollection: function (Model) {
+    return new QueryData(null, {
+      model: Model,
+      url: "/1/" + this.module.get("path")
+    });
+  },
+  getDataCollection: function () {
+    return this.dataCollection;
+  },
+  toggleSearchItem: function (item) {
     this.setActiveItem(item);
+    if (this.dataCollection == null) {
+      this.dataCollection = this.buildDataCollection(this.Model);
+    }
+    this.dataCollection.fetch();
   }
 });
 

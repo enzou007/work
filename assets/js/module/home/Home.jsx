@@ -1,12 +1,12 @@
 "use strict";
 
 var React = require("react"),
-  Todo = require("./home/Todo.jsx"),
-  ViewList = require("./home/component/ViewList.jsx"),
-  Newsweekly = require("./home/Newsweekly.jsx"),
-  Rankings = require("./home/Rankings.jsx"),
-  Calendar = require("./home/Calendar.jsx"),
-  Freshman = require("./home/Freshman.jsx");
+  Todo = require("./view/Todo.jsx"),
+  ViewList = require("./component/ViewList.jsx"),
+  Newsweekly = require("./view/Newsweekly.jsx"),
+  Rankings = require("./view/Rankings.jsx"),
+  Calendar = require("./view/Calendar.jsx"),
+  Freshman = require("./view/Freshman.jsx");
 
 require("../../../less/app/home.less");
 

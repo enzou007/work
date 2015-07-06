@@ -7,28 +7,28 @@ var viewFrameAction = require("../action/viewFrame");
 
 var QueryCollection = require("../store/viewFrame/query");
 
-var Base = function(model) {
-  this.module = model;
-
-  viewFrameAction.bind(model, this.getQueryCollection());
+var Base = function (model) {
   this.initialize.apply(this, arguments);
 };
 
 _.extend(Base.prototype, {
-  initialize: function() {},
+  initialize: function (model) {
+    this.module = model;
+    viewFrameAction.bind(model, this.getQueryCollection());
+  },
   page: "",
   form: "",
   menu: [],
   Container: require("../view/container/ViewFrame.jsx"),
   Toolbar: require("../view/container/viewFrame/Toolbar.jsx"),
   Model: null,
-  getContainer: function() {
+  getContainer: function () {
     return this.Container;
   },
-  getOption: function() {
-    return _.extend(_.pick(this, "page", "form", "Toolbar", "Model"));
+  getOption: function () {
+    return _.pick(this, "page", "form", "Toolbar", "Model");
   },
-  getQueryCollection: _.once(function() {
+  getQueryCollection: _.once(function () {
     return new QueryCollection(this.menu, {
       parse: true,
       module: this.module

@@ -2,7 +2,7 @@
 
 var React = require("react"),
   Tabs = require("../../../component/bootstrap/Tabs.jsx"),
-  ViewTable = require("./component/ViewTable.jsx");
+  ViewTable = require("../component/ViewTable.jsx");
 
 function rowFormatter(row, index) {
   return (

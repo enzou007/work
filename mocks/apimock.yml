@@ -61,4 +61,5 @@
 - request:
     url: /1/xwgg/xwsd
   response:
-    file: response/xwgg/xwsd/view.json
+    type: js
+    file: response/xwgg/xwsd/view.js

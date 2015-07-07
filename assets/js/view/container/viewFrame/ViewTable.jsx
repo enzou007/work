@@ -16,7 +16,10 @@ var ViewTable = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   propTypes: {
     width: React.PropTypes.number.isRequired,
-    height: React.PropTypes.number.isRequired
+    height: React.PropTypes.number.isRequired,
+    rowsCount: React.PropTypes.number.isRequired,
+    headerHeight: React.PropTypes.number,
+    rowHeight: React.PropTypes.number
   },
   getDefaultProps: function() {
     return {
@@ -25,20 +28,15 @@ var ViewTable = React.createClass({
     };
   },
   getInitialState: function() {
-    var tableWidth = this.props.width,
-      widthReg = /^(\d+)%$/;
     return {
-      column : _.reduce(this.props.column, function(memo, item) {
-        if (widthReg.test(item.width)) {
-          item.width = parseInt((tableWidth - 35) * (parseInt(widthReg.exec(item.width)[1]) / 100));
-        }
-        memo[item.dataKey] = _.defaults(item, {
-          isResizable: true
-        });
-        return memo;
-      }, {}),
+      column : this._parseColumnProp(this.props),
       isColumnResizing: false
     };
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      column: this._parseColumnProp(nextProps)
+    });
   },
   render: function() {
     var firstColumn = this.props.column[0],
@@ -46,8 +44,7 @@ var ViewTable = React.createClass({
     return (
       <Table {..._.omit(this.props, "column")} isColumnResizing={this.state.isColumnResizing}
         onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
-        rowGetter={this.props.rowGetter || this._rowGetter}
-        rowsCount={this.getCollection().length}>
+        rowGetter={this.props.rowGetter || this._rowGetter}>
         <Column key="选择" dataKey="__index" fixed={true} width={35} align="center" headerRenderer={function () {
           return <Checkbox className="select" checkboxClass={dataCollection.length !== dataCollection.selectedLength ? "ace-checkbox-2" : ""}
             checked={dataCollection.selectedLength > 0} onChange={this.selectAll}/>;
@@ -70,6 +67,21 @@ var ViewTable = React.createClass({
         }
       </Table>
     );
+  },
+  _parseColumnProp: function (props) {
+    var tableWidth = props.width,
+      widthReg = /^([\d.]+)%$/;
+
+    return _.reduce(props.column, function(memo, column) {
+      var item = _.extend({}, column);
+      if (widthReg.test(item.width)) {
+        item.width = parseInt((tableWidth - 35) * (parseFloat(widthReg.exec(item.width)[1]) / 100));
+      }
+      memo[item.dataKey] = _.defaults(item, {
+        isResizable: true
+      });
+      return memo;
+    }, {});
   },
   _onColumnResize: function (width, dataKey) {
     var columns = this.state.column;

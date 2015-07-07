@@ -77,7 +77,9 @@ _.extend(Action.prototype, Backbone.Events, {
     if (this.dataCollection == null) {
       this.dataCollection = this.buildDataCollection(this.Model);
     }
-    this.dataCollection.fetch();
+    this.dataCollection.fetch({
+      reset: true
+    });
   }
 });
 

@@ -14,7 +14,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      "backbone-validation": "backbone-validation/dist/backbone-validation-amd"
+      "backbone-validation": "backbone-validation/dist/backbone-validation-amd",
+      "backbone.select": "backbone.select/dist/amd/backbone.select"
     },
     modulesDirectories: ["node_modules", "bower_components"]
   },
@@ -36,20 +37,22 @@ module.exports = {
       exclude: /(node_modules|bower_components)/,
       loader: 'babel?stage=0'
     }, {
-      test: /module[\/\\].+[\/\\](Form\.jsx|option\.js)$/,
+      test: /module[\/\\].+[\/\\](\.jsx|option\.js)$/,
       loader: 'bundle?lazy'
     }, {
       test: /[\/\\]bootstrap[\/\\]js/,
       loader: "imports?jQuery=jquery!exports?jQuery"
-    }, {
-      // Backbone.Select 指定了Backbone版本上限，无法与当前使用的Backbone兼容，所以使用loader强制引入当前的Backbone
-      test: /backbone\.select/,
-      loader: "imports?Backbone=backbone,_=underscore!exports?Backbone.Select"
     }]
   },
   plugins: [
     // 过滤moment多余的语言模块
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
+    // 替换backbone.select的错误依赖
+    new webpack.NormalModuleReplacementPlugin(/backbone$/, function (result) {
+      if (/backbone\.select[\/\\]dist[\/\\]amd$/.test(result.context)) {
+        result.request = "../../../backbone/backbone.js";
+      }
+    }),
     new webpack.optimize.CommonsChunkPlugin("commons.js"),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])

@@ -52,7 +52,9 @@
     "cookies-js": "^1.2.1",
     "fixed-data-table": "^0.3.0",
     "moment": "^2.10.3",
+    "rctui": "^0.2.2",
     "react": "^0.13.3",
+    "react-router": "^0.13.3",
     "underscore": "^1.8.3"
   }
 }

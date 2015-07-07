@@ -1,5 +1,11 @@
 "use strict";
 
-var _ = require("underscore");
+var React = require("react");
 
-console.log("!!");
+
+require("../less/form.less");
+var modulePath = "./module/xwgg/xwsd/note.jsx"
+
+var FormApp = React.createFactory(require("./module/xwgg/xwsd/note.jsx"));
+
+React.render(FormApp(),document.getElementById("form"));

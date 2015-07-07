@@ -1,4 +1,4 @@
-var React = require("react");
+var React = require("react/lib/ReactWithAddons");
 
 var ReactUI = require("rctui");
 var FormTest = ReactUI.Form;
@@ -7,18 +7,18 @@ var FormSubmit = ReactUI.FormSubmit;
 var Input = ReactUI.Input;
 
 var Form = React.createClass({
-    render: function () {
-        return (
-            <FormTest layout="aligned" autoload={true} action="json/form.json">
-              <FormControl name="text" label="text" type="text" width={12} min={2} max={6} />
+  render: function () {
+    return (
+      <FormTest action="json/form.json" autoload={true} layout="aligned">
+        <FormControl label="text" max={6} min={2} name="text" type="text" width={12}/>
 
-              <FormSubmit>
-                <span>提交</span>
-                <span>处理中</span>
-              </FormSubmit>
-            </FormTest>
-        );
-    }
+        <FormSubmit>
+          <span>提交</span>
+          <span>处理中</span>
+        </FormSubmit>
+      </FormTest>
+    );
+  }
 });
 
 module.exports = Form;
@@ -42,7 +42,7 @@ var Form = React.createClass({
                         <div tab="基本信息" className="form-content">
                             <fieldset>
                                 <legend>Form表单</legend>
-                                
+
                                 <div className="form-group">
                                     <label className="control-label col-md-2 col-sm-2">文本文本文本</label>
                                     <div className="col-md-4 col-sm-10">
@@ -53,7 +53,7 @@ var Form = React.createClass({
                                         <input className="width-100" type="text"/>
                                     </div>
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label className="control-label col-md-2 col-sm-2">文本</label>
                                     <div className="col-md-4 col-sm-10">
@@ -62,7 +62,7 @@ var Form = React.createClass({
                                     <label className="control-label col-md-2 col-sm-2">日期</label>
                                     <div className="col-md-4 col-sm-10">
                                         <DatePicker />
-                                        
+
                                     </div>
                                 </div>
 
@@ -102,10 +102,10 @@ var Form = React.createClass({
                                         </select>
                                     </div>
                                 </div>
-                            </fieldset>                            
+                            </fieldset>
                         </div>
                         <div tab="附件" className="form-content">
-                        
+
                             附件
                         </div>
                     </Tabs>

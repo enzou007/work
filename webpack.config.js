@@ -15,7 +15,8 @@ module.exports = {
   resolve: {
     alias: {
       "backbone-validation": "backbone-validation/dist/backbone-validation-amd",
-      "backbone.select": "backbone.select/dist/amd/backbone.select"
+      "backbone.select": "backbone.select/dist/amd/backbone.select",
+      "rctui": "rctui/dist/ReactUI-with-css"
     },
     modulesDirectories: ["node_modules", "bower_components"]
   },

@@ -16,7 +16,7 @@ require("bootstrap/js/dropdown");
 require("../../../less/app/viewFrame.less");
 require("backbone-react-component");
 
-var PAGINATION_HEIGHT = 40, ROW_HEIGHT = 36;
+var PAGINATION_HEIGHT = 40, ROW_HEIGHT = 37;
 
 var ViewFrame = React.createClass({
   propTypes: {
@@ -36,8 +36,10 @@ var ViewFrame = React.createClass({
     var $frame = $(this.getDOMNode()),
       $row = $(this.refs.viewContainer.getDOMNode()),
       screenHeight = document.documentElement.clientHeight || screen.availHeight,
-      tableHeight = screenHeight - $row.offset().top - PAGINATION_HEIGHT,
-      perPage = parseInt(tableHeight / ROW_HEIGHT) - 1;
+      // 计算行数需要减去标题行
+      perPage = Math.floor((screenHeight - $row.offset().top - PAGINATION_HEIGHT - ROW_HEIGHT) / ROW_HEIGHT),
+      // 计算整体高度，所以需要加回标题行
+      tableHeight = (perPage + 1) * ROW_HEIGHT;
 
     this.setState({
       tableWidth: $frame.width(),

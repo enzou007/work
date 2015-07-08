@@ -26,6 +26,7 @@ var baseColumns = [{
 
 module.exports = BaseOption.extend({
   Model: require("./model"),
+  form: "xwgg/xwsd/notes.jsx",
   menu: [{
     name: "按状态检索",
     ico: "fa fa-reorder",

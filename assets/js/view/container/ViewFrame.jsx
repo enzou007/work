@@ -43,7 +43,7 @@ var ViewFrame = React.createClass({
 
     //强制更新perPage信息
     action.getDataCollection().setPerPage(perPage);
-    
+
     this.setState({
       tableWidth: $frame.width(),
       tableHeight: tableHeight
@@ -51,7 +51,9 @@ var ViewFrame = React.createClass({
   },
   render: function () {
     var Toolbar = this.props.Toolbar,
-      View = this.props.View;
+      View = this.props.View,
+      page = action.activated.get("page") || this.props.page,
+      form = action.activated.get("form") || this.props.form;
 
     return (
       <div id="view-frame" className={classNames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
@@ -71,7 +73,7 @@ var ViewFrame = React.createClass({
         <div className="row">
           <div className="col-xs-12" ref="viewContainer">
             <View collection={action.getDataCollection()} column={action.getActivatedItem().get("column")}
-              height={this.state.tableHeight} width={this.state.tableWidth} />
+              height={this.state.tableHeight} width={this.state.tableWidth} page={page} form={form}/>
             <PagingInfo collection={action.getDataCollection()}/>
           </div>
         </div>

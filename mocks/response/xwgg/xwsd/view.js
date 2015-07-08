@@ -11,7 +11,7 @@ module.exports = function (data) {
 
   var template = {};
   template["data|" + data.query.count] = [{
-    "@objectId|24": "",
+    "@objectId": "THIS_IS_A_OBJECTID",
     "Subject": "@title",
     "SourceCompName": "@sentence(2,3)",
     "NewSource": "@sentence(2,3)",

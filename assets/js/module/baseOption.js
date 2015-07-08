@@ -16,7 +16,7 @@ _.extend(Base.prototype, {
   initialize: function (model) {
     viewFrameAction.bind(this);
   },
-  page: "",
+  page: "form.html",
   form: "",
   menu: [],
   Container: require("../view/container/ViewFrame.jsx"),

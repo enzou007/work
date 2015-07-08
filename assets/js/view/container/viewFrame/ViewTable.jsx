@@ -17,6 +17,8 @@ var ViewTable = React.createClass({
   propTypes: {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
+    page: React.PropTypes.string.isRequired,
+    form: React.PropTypes.string.isRequired,
     headerHeight: React.PropTypes.number,
     rowHeight: React.PropTypes.number
   },
@@ -39,7 +41,9 @@ var ViewTable = React.createClass({
   },
   render: function() {
     var firstColumn = this.props.column[0],
-      dataCollection = this.getCollection();
+      dataCollection = this.getCollection(),
+      page = this.props.page,
+      form = this.props.form;
     return (
       <Table {..._.omit(this.props, "column")} isColumnResizing={this.state.isColumnResizing}
         onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
@@ -55,8 +59,10 @@ var ViewTable = React.createClass({
           _.map(this.state.column, function (column, key) {
             var isFirst = key === firstColumn.dataKey;
             var options = _.extend({
-              cellRenderer: isFirst ? (function (val) {
-                return <a href="#">{val}</a>;
+              cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
+                return (
+                  <a href={"/"+page+"?form="+form+"&objectId="+rowData["@objectId"]} target="_blank">{cellData}</a>
+                );
               }) : null,
               fixed: isFirst
             }, column);

@@ -22,7 +22,7 @@ _.extend(Base.prototype, {
   Container: require("../view/container/ViewFrame.jsx"),
   Toolbar: require("../view/container/viewFrame/Toolbar.jsx"),
   View: require("../view/container/viewFrame/ViewTable.jsx"),
-  Model: null,
+  Model: require("./baseModel"),
   getContainer: function () {
     return this.Container;
   },

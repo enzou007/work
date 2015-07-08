@@ -34,17 +34,21 @@ module.exports = {
       loader: "json"
     }, {
       test: /\.jsx$/,
+      exclude: /(node_modules|bower_components)/,
       loader: 'babel?stage=0'
     }, {
-      test: /\.js$/,
+      test: /\.(js|jsx)$/,
       include: /node_modules[\/\\]rctui/,
       loader: 'babel?stage=0'
     }, {
-      test: /module[\/\\].+[\/\\](\.jsx|option\.js)$/,
+      test: /module[\/\\](?!home[\/\\]).*\.jsx$/,
+      loader: 'bundle?lazy!babel?stage=0'
+    }, {
+      test: /module[\/\\].+[\/\\]option\.js$/,
       loader: 'bundle?lazy'
     }, {
       test: /[\/\\]bootstrap[\/\\]js/,
-      loader: "imports?jQuery=jquery!exports?jQuery"
+      loader: "exports?jQuery!imports?jQuery=jquery"
     }]
   },
   plugins: [
@@ -66,7 +70,7 @@ module.exports = {
         var componentName = infos.pop().replace(/[A-Z]/g, function (input, index) {
           return (index !== 0 ? "-" : "") + input.toLowerCase();
         });
-        result.request = infos.shift() + "/src/js/components/" + componentName + ".jsx";
+        result.request = infos.shift() + "/src/js/components/" + infos.join("/") + (infos.length > 0 ? "/" : "") + componentName + ".jsx";
       } else {
         result.request = infos.shift() + "/src/js/" + infos.join("/");
       }

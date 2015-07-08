@@ -1,9 +1,8 @@
 "use strict";
 
 var React = require("react"),
+  _ = require("underscore"),
   classNames = require("classnames");
-
-var Rcslider = require('rc-slider');
 
 var Pagination = React.createClass({
   propTypes: {
@@ -17,6 +16,19 @@ var Pagination = React.createClass({
       current: 1,
       size: 7
     };
+  },
+  componentDidUpdate: function (prevProps, prevState) {
+    var refs = this.refs,
+      current = this.props.current;
+      // 由于无法刷新defaultValue属性，需要使用js强制更新Orz
+    [
+      "left", "right"
+    ].forEach(function (key) {
+      var node = refs["jumper-" + key];
+      if (node) {
+        node.getDOMNode().value = current;
+      }
+    });
   },
   render: function () {
     var size = this.props.size,
@@ -53,7 +65,9 @@ var Pagination = React.createClass({
       ClickItem.push(this._pageItemBuilder(i));
     }
     if (right < total) {
-      ClickItem[ClickItem.length - 1] = this._pageJumperBuilder("right", total);
+      if (size < total) {
+        ClickItem[ClickItem.length - 1] = this._pageJumperBuilder("right", total);
+      }
       ClickItem.push(this._pageItemBuilder(total));
     }
 
@@ -69,14 +83,15 @@ var Pagination = React.createClass({
       </ul>
     );
   },
+  _pageJumperTrigger: _.debounce(function (value) {
+    this.props.onChange.call(this, value);
+  }, 300),
   _pageJumperBuilder: function (position, max) {
     return (
       <li className="dropup" key={"jumper"+position}>
         <a className="dropdown-toggle" data-toggle="dropdown" href="#more">...</a>
         <div className={"page-jumper dropdown-menu dropdown-menu-"+position}>
-          <input type="range" defaultValue={this.props.current} min={1} max={max} onChange={function (event) {
-            this.props.onChange.call(this, parseInt(event.target.value));
-          }.bind(this)}/>
+          <input max={max} min={1} onChange={function (event) { this._pageJumperTrigger(parseInt(event.target.value)); }.bind(this)} ref={"jumper-"+position} type="range"/>
         </div>
       </li>
     );

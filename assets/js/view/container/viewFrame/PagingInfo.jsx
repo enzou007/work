@@ -21,28 +21,24 @@ var PagingInfo = React.createClass({
     }
   },
   getInitialState: function () {
-    var perPage = this.props.collection.getPerPage(),
-      total = this.props.collection.getTotal();
+    var perPage = this.props.collection.getPerPage();
     return {
-      initPerPage: perPage,
-      pageNumber: Math.ceil(total / perPage)
+      initPerPage: perPage
     };
   },
   componentWillReceiveProps: function (nextProps) {
-    var perPage = nextProps.collection.getPerPage(),
-      total = nextProps.collection.getTotal();
+    var perPage = nextProps.collection.getPerPage();
     this.setState({
-      initPerPage: perPage,
-      pageNumber: Math.ceil(total / perPage)
+      initPerPage: perPage
     });
   },
-  changePage: _.debounce(function (page) {
-    if (page >= 1 && page <= this.state.pageNumber) {
+  changePage: function (page) {
+    if (page >= 1 && page <= this.getCollection().getPerPage()) {
       this.getCollection().setPage({
         page: page
       });
     }
-  }, 300),
+  },
   changePerPage: function (perPage) {
     this.getCollection().setPage({
       page: 1,
@@ -53,7 +49,7 @@ var PagingInfo = React.createClass({
     var current = this.props.collection.getPage(),
       perPage = this.props.collection.getPerPage(),
       total = this.props.collection.getTotal(),
-      pageNumber = this.state.pageNumber,
+      pageNumber = Math.ceil(total / perPage),
       first = ((current - 1) * perPage) + 1,
       last = Math.min(current * perPage, total);
 

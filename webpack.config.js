@@ -15,8 +15,7 @@ module.exports = {
   resolve: {
     alias: {
       "backbone-validation": "backbone-validation/dist/backbone-validation-amd",
-      "backbone.select": "backbone.select/dist/amd/backbone.select",
-      "rctui": "rctui/dist/ReactUI-with-css"
+      "backbone.select": "backbone.select/dist/amd/backbone.select"
     },
     modulesDirectories: ["node_modules", "bower_components"]
   },
@@ -34,8 +33,11 @@ module.exports = {
       test: /\.json$/,
       loader: "json"
     }, {
-      test: /\.jsx?$/,
-      exclude: /(node_modules|bower_components)/,
+      test: /\.jsx$/,
+      loader: 'babel?stage=0'
+    }, {
+      test: /\.js$/,
+      include: /node_modules[\/\\]rctui/,
       loader: 'babel?stage=0'
     }, {
       test: /module[\/\\].+[\/\\](\.jsx|option\.js)$/,
@@ -46,12 +48,27 @@ module.exports = {
     }]
   },
   plugins: [
+    // 默认引入React的插件
+    new webpack.NormalModuleReplacementPlugin(/^react$/, "react/lib/ReactWithAddons"),
     // 过滤moment多余的语言模块
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
     // 替换backbone.select的错误依赖
     new webpack.NormalModuleReplacementPlugin(/backbone$/, function (result) {
       if (/backbone\.select[\/\\]dist[\/\\]amd$/.test(result.context)) {
         result.request = "../../../backbone/backbone.js";
+      }
+    }),
+    // 处理React-UI的依赖，简化路径处理
+    new webpack.NormalModuleReplacementPlugin(/^rctui/, function (result) {
+      var request = result.request,
+        infos = request.split("/");
+      if (infos.length === 2) {
+        var componentName = infos.pop().replace(/[A-Z]/g, function (input, index) {
+          return (index !== 0 ? "-" : "") + input.toLowerCase();
+        });
+        result.request = infos.shift() + "/src/js/components/" + componentName + ".jsx";
+      } else {
+        result.request = infos.shift() + "/src/js/" + infos.join("/");
       }
     }),
     new webpack.optimize.CommonsChunkPlugin("commons.js"),

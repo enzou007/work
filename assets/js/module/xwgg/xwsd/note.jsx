@@ -1,27 +1,27 @@
-var React = require("react/lib/ReactWithAddons");
+var React = require("react");
 
-var ReactUI = require("rctui");
-var FormTest = ReactUI.Form;
-var FormControl = ReactUI.FormControl;
-var FormSubmit = ReactUI.FormSubmit;
-var Input = ReactUI.Input;
+var Form = require("rctui/Form");
+var FormControl = require("rctui/FormControl");
+var FormSubmit = require("rctui/FormSubmit");
 
-var Form = React.createClass({
+require("rctui/Input")
+
+var Demo = React.createClass({
   render: function () {
     return (
-      <FormTest action="json/form.json" autoload={true} layout="aligned">
+      <Form action="json/form.json" autoload={true} layout="aligned">
         <FormControl label="text" max={6} min={2} name="text" type="text" width={12}/>
 
         <FormSubmit>
           <span>提交</span>
           <span>处理中</span>
         </FormSubmit>
-      </FormTest>
+      </Form>
     );
   }
 });
 
-module.exports = Form;
+module.exports = Demo;
 
 /*
 

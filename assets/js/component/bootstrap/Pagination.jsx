@@ -1,74 +1,94 @@
 "use strict";
 
-var React = require("react");
+var React = require("react"),
+  classNames = require("classnames");
 
-var classNames = require("classnames");
+var Rcslider = require('rc-slider');
 
 var Pagination = React.createClass({
   propTypes: {
     current: React.PropTypes.number,
-    total: React.PropTypes.number,
+    total: React.PropTypes.number.isRequired,
     size: React.PropTypes.number,
-    onClick: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired
   },
-  getDefaultProps: function() {
+  getDefaultProps: function () {
     return {
+      current: 1,
       size: 7
     };
   },
   render: function () {
-    var SIZE = this.props.size;
-    if (this.props.total > 1) {
-      var startPage = 1,
-        half = parseInt(SIZE / 2),
-        curPage = this.props.current,
-        total = this.props.total;
+    var size = this.props.size,
+      curPage = this.props.current,
+      total = this.props.total,
+      left,
+      right;
 
-      var ClickItem = [];
-
-      if (curPage < half && (curPage + SIZE) > total && total > SIZE) {
-        startPage = total - SIZE + 1;
-      } else if (curPage + half >= total && total > SIZE) {
-        startPage = total - half - parseInt(half / 2);
-      } else if (curPage >= half && total > SIZE) {
-        startPage = curPage - parseInt(half / 2);
-      }
-
-      for (var n = 0; n < SIZE && n < total; n++) {
-        var pageNumber = n + startPage;
-        if (n === SIZE - 2 && total > SIZE && (total - curPage) > (2 + parseInt(half / 2))) {
-          ClickItem.push(<li key={n}>
-              <a href="javascript:void 0">...</a>
-            </li>);
-        } else if (n === SIZE - 1 && total > SIZE && curPage !== total) {
-          ClickItem.push(<li className={classNames({active: this.props.current === this.props.total})} key={n}>
-              <a href="javascript:void 0" onClick={this.props.onClick.bind(null, total)}>
-                {total}
-              </a>
-            </li>);
-        } else {
-          ClickItem.push(<li className={classNames({active: this.props.current === pageNumber})} key={n}>
-              <a href="javascript:void 0" onClick={this.props.onClick.bind(null, pageNumber)}>
-                {pageNumber}
-              </a>
-            </li>);
-        }
-      }
-
-      return (
-        <ul className="pagination">
-          <li className={classNames({disabled: this.props.current === 1})}>
-            <a href="javascript:void 0" onClick={this.props.onClick.bind(null, curPage-1)}>上一页</a>
-          </li>
-          {ClickItem}
-          <li className={classNames({disabled: this.props.current === this.props.total})}>
-            <a href="javascript:void 0" onClick={this.props.onClick.bind(null, curPage+1)}>下一页</a>
-          </li>
-        </ul>
-      );
-    } else {
-      return null;
+    left = curPage - Math.floor(size / 2) + 1;
+    if (left < 1) {
+      left = 1;
     }
+    right = left + size - 2;
+    if (right >= total) {
+      right = total;
+      left = right - size + 2;
+      if (left < 1) {
+        left = 1
+      }
+    } else {
+      right -= left > 1 ? 1 : 0
+    }
+
+    var ClickItem = [];
+    var i = left
+    if (left > 1) {
+      ClickItem.push(this._pageItemBuilder(1));
+      if (left > 2) {
+        ClickItem.push(this._pageJumperBuilder("left", total));
+        i++
+      }
+    }
+    for (; i < right + 1; i++) {
+      ClickItem.push(this._pageItemBuilder(i));
+    }
+    if (right < total) {
+      ClickItem[ClickItem.length - 1] = this._pageJumperBuilder("right", total);
+      ClickItem.push(this._pageItemBuilder(total));
+    }
+
+    return (
+      <ul className="pagination">
+        <li className={classNames({disabled: curPage <= 1})} key="prev" onClick={this.props.onChange.bind(null, curPage-1)}>
+          <a>上一页</a>
+        </li>
+        {ClickItem}
+        <li className={classNames({disabled: curPage >= total})} key="next" onClick={this.props.onChange.bind(null, curPage+1)}>
+          <a>下一页</a>
+        </li>
+      </ul>
+    );
+  },
+  _pageJumperBuilder: function (position, max) {
+    return (
+      <li className="dropup" key={"jumper"+position}>
+        <a className="dropdown-toggle" data-toggle="dropdown" href="#more">...</a>
+        <div className={"page-jumper dropdown-menu dropdown-menu-"+position}>
+          <input type="range" defaultValue={this.props.current} min={1} max={max} onChange={function (event) {
+            this.props.onChange.call(this, parseInt(event.target.value));
+          }.bind(this)}/>
+        </div>
+      </li>
+    );
+  },
+  _pageItemBuilder: function (pageNumber) {
+    return (
+      <li className={classNames({active: this.props.current === pageNumber})} key={pageNumber} onClick={this.props.onChange.bind(null, pageNumber)}>
+        <a>
+          {pageNumber}
+        </a>
+      </li>
+    );
   }
 });
 

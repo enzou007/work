@@ -5,7 +5,7 @@ module.exports = function (data) {
 
   if (data.query.total) {
     result.header = {
-      total: Mock.Random.integer(20, 100)
+      total: Mock.Random.integer(20, 500)
     };
   }
 

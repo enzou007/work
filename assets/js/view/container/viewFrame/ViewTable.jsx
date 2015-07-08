@@ -17,7 +17,6 @@ var ViewTable = React.createClass({
   propTypes: {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
-    rowsCount: React.PropTypes.number.isRequired,
     headerHeight: React.PropTypes.number,
     rowHeight: React.PropTypes.number
   },
@@ -44,6 +43,7 @@ var ViewTable = React.createClass({
     return (
       <Table {..._.omit(this.props, "column")} isColumnResizing={this.state.isColumnResizing}
         onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
+        rowsCount={dataCollection.getPerPage()}
         rowGetter={this.props.rowGetter || this._rowGetter}>
         <Column key="选择" dataKey="__index" fixed={true} width={35} align="center" headerRenderer={function () {
           return <Checkbox className="select" checkboxClass={dataCollection.length !== dataCollection.selectedLength ? "ace-checkbox-2" : ""}

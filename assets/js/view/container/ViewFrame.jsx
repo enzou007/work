@@ -43,23 +43,10 @@ var ViewFrame = React.createClass({
 
     this.setState({
       tableWidth: $frame.width(),
-      tableHeight: tableHeight,
-      tableRowsCount: perPage,
-      minHeight: screenHeight - $frame.offset().top
+      tableHeight: tableHeight
     });
 
     action.getDataCollection().setPage({
-      perPage: perPage
-    });
-  },
-  changePage : function( page) {
-    action.getDataCollection().setPage({
-      page: page
-    });
-  },
-  changePerPage : function( perPage) {
-    action.getDataCollection().setPage({
-      page: 1,
       perPage: perPage
     });
   },
@@ -85,9 +72,8 @@ var ViewFrame = React.createClass({
         <div className="row">
           <div className="col-xs-12" ref="viewContainer">
             <View collection={action.getDataCollection()} column={action.getActivatedItem().get("column")}
-              height={this.state.tableHeight} width={this.state.tableWidth} rowsCount={this.state.tableRowsCount}/>
-            <PagingInfo collection={action.getDataCollection()} onPageChange={this.changePage}
-                                        onPerPageChange={this.changePerPage}/>
+              height={this.state.tableHeight} width={this.state.tableWidth} />
+            <PagingInfo collection={action.getDataCollection()}/>
           </div>
         </div>
       </div>

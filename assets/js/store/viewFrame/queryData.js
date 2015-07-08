@@ -23,7 +23,7 @@ var QueryData = Backbone.Collection.extend({
   },
   fetch: function (options) {
     options.data = _.defaults(options.data || {}, this.options);
-    if (this._total <= 0 || options.reset === true) {
+    if (this._total <= 0 || options.total === true) {
       options.data = _.defaults(options.data, {
         total: true
       });
@@ -51,12 +51,13 @@ var QueryData = Backbone.Collection.extend({
     this.options.page = options.page || this.options.page;
     this.options.count = options.perPage || this.options.count;
 
-    if (this.length < options.perPage) {
+    if (this.length <= this.options.count || this.options.page !== 1) {
       return this.fetch({
-        reset: true
+        reset: true,
+        total: options.perPage ? true : false
       });
     } else {
-      this.reset(this.slice(0, options.perPage));
+      this.reset(this.slice(0, this.options.count));
     }
   },
   getPage: function () {

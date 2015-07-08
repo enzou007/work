@@ -1,53 +1,71 @@
 "use strict";
 
-var React = require("react");
-
-var classNames = require("classnames");
+var React = require("react"),
+  _ = require("underscore"),
+  classNames = require("classnames");
 
 var Pagination = require("../../../component/bootstrap/Pagination.jsx");
 
 var CollectionType = require("../../../store/viewFrame/queryData")
-
 require("backbone-react-component");
 
-var Paging = React.createClass({
+var PagingInfo = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   propTypes: {
     collection: React.PropTypes.instanceOf(CollectionType),
-    showInfo: React.PropTypes.bool,
-    onPageChange: React.PropTypes.func.isRequired,
-    onPerPageChange: React.PropTypes.func.isRequired
+    showInfo: React.PropTypes.bool
   },
   getDefaultProps: function () {
     return {
       showInfo: true
     }
   },
+  getInitialState: function () {
+    var perPage = this.props.collection.getPerPage(),
+      total = this.props.collection.getTotal();
+    return {
+      initPerPage: perPage,
+      pageNumber: Math.ceil(total / perPage)
+    };
+  },
+  componentWillReceiveProps: function (nextProps) {
+    var perPage = nextProps.collection.getPerPage(),
+      total = nextProps.collection.getTotal();
+    this.setState({
+      initPerPage: perPage,
+      pageNumber: Math.ceil(total / perPage)
+    });
+  },
+  changePage: _.debounce(function (page) {
+    if (page >= 1 && page <= this.state.pageNumber) {
+      this.getCollection().setPage({
+        page: page
+      });
+    }
+  }, 300),
+  changePerPage: function (perPage) {
+    this.getCollection().setPage({
+      page: 1,
+      perPage: perPage
+    });
+  },
   render: function () {
     var current = this.props.collection.getPage(),
       perPage = this.props.collection.getPerPage(),
       total = this.props.collection.getTotal(),
-      pageNumber = total / perPage,
+      pageNumber = this.state.pageNumber,
       first = ((current - 1) * perPage) + 1,
-      last = current * perPage;
-
-    if (total % perPage !== 0) {
-      pageNumber = parseInt(pageNumber) + 1;
-    }
-
-    if (last > total) {
-      last = total;
-    }
+      last = Math.min(current * perPage, total);
 
     var dropNumbers = [
-      perPage, 25, 50, 100
+      this.state.initPerPage, 25, 50, 100
     ].sort(function (a, b) {
       return a > b;
     });
 
     return (
       <div className="paging-info">
-        <Pagination current={current} onClick={this.props.onPageChange} total={pageNumber}/>
+        <Pagination current={current} onChange={this.changePage} total={pageNumber}/>
         <div className={classNames("paging-toggle", {hidden: total === 0})}>
           {total > 0 && this.props.showInfo ? (
           <span>显示第 {first} {first !== last ? (
@@ -63,7 +81,7 @@ var Paging = React.createClass({
             <ul className="dropdown-menu">
               { dropNumbers.map(function (number, index) { return (
               <li className={classNames({active: number === perPage})} key={index}>
-                <a href="javascript:void 0" onClick={this.props.onPerPageChange.bind(null, number)}>{number}</a>
+                <a href="javascript:void 0" onClick={this.changePerPage.bind(null, number)}>{number}</a>
               </li>
               ); }.bind(this)) }
             </ul>
@@ -81,4 +99,4 @@ var Paging = React.createClass({
   }
 });
 
-module.exports = Paging;
+module.exports = PagingInfo;

@@ -40,6 +40,10 @@ var QueryData = Backbone.Collection.extend({
   getPerPage: function () {
     return this.options.count || 0;
   },
+  setPerPage: function (perPage) {
+    this.options.count = perPage;
+    return this;
+  },
   setSort: function (name, state) {
     this.options.sort = name;
     this.options.order = SORT_TYPES[state];

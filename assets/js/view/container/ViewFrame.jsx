@@ -41,13 +41,12 @@ var ViewFrame = React.createClass({
       // 计算整体高度，所以需要加回标题行
       tableHeight = (perPage + 1) * ROW_HEIGHT;
 
+    //强制更新perPage信息
+    action.getDataCollection().setPerPage(perPage);
+    
     this.setState({
       tableWidth: $frame.width(),
       tableHeight: tableHeight
-    });
-
-    action.getDataCollection().setPage({
-      perPage: perPage
     });
   },
   render: function () {

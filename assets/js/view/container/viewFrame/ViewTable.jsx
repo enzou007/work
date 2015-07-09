@@ -12,6 +12,8 @@ var FixedDataTable = require("fixed-data-table"),
 require("backbone-react-component");
 require("fixed-data-table/dist/fixed-data-table.css");
 
+var SORT_ICONS = ["fa fa-sort", "fa fa-sort-asc", "fa fa-sort-desc"];
+
 var ViewTable = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   propTypes: {
@@ -42,6 +44,7 @@ var ViewTable = React.createClass({
   render: function() {
     var firstColumn = this.props.column[0],
       dataCollection = this.getCollection(),
+      sortHandle = this.toggleSort,
       page = this.props.page,
       form = this.props.form;
     return (
@@ -59,6 +62,16 @@ var ViewTable = React.createClass({
           _.map(this.state.column, function (column, key) {
             var isFirst = key === firstColumn.dataKey;
             var options = _.extend({
+              headerRenderer: function (label, dataKey) {
+                return (
+                  <div className="sort" onClick={sortHandle.bind(null, dataKey)}>
+                    {label}
+                    <span className={classNames("sort-icon", {"sorting": column.sorting > 0})}>
+                      <i className={SORT_ICONS[column.sorting]}/>
+                    </span>
+                  </div>
+                );
+              },
               cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
                 return (
                   <a href={"/"+page+"?form="+form+"&objectId="+rowData["@objectId"]} target="_blank">{cellData}</a>
@@ -78,12 +91,13 @@ var ViewTable = React.createClass({
     var tableWidth = props.width,
       widthReg = /^([\d.]+)%$/;
 
-    return _.reduce(props.column, function(memo, column) {
+    return _.reduce(props.column, function (memo, column) {
       var item = _.extend({}, column);
       if (widthReg.test(item.width)) {
         item.width = parseInt((tableWidth - 35) * (parseFloat(widthReg.exec(item.width)[1]) / 100));
       }
       memo[item.dataKey] = _.defaults(item, {
+        sorting: 0,
         isResizable: true
       });
       return memo;
@@ -108,7 +122,7 @@ var ViewTable = React.createClass({
     this.forceUpdate();
     event.stopPropagation();
   },
-  selectOne : function( index, event) {
+  selectOne: function (index, event) {
     var model = this.getCollection().at(index);
     if (event.target.checked) {
       model.select();
@@ -117,6 +131,19 @@ var ViewTable = React.createClass({
     }
     this.forceUpdate();
     event.stopPropagation();
+  },
+  toggleSort: function (dataKey) {
+    var current = _.find(this.state.column, function (item) {
+        return item.sorting > 0;
+      }),
+      column = this.state.column[dataKey];
+    if (current && current !== column) {
+      current.sorting = 0;
+    }
+    column.sorting = (column.sorting + 1) % 3;
+
+    this.getCollection().setSort(dataKey, column.sorting);
+    this.forceUpdate();
   }
 });
 

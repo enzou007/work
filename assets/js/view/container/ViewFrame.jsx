@@ -1,10 +1,12 @@
 "use strict";
 
 var React = require("react"),
+  _ = require("underscore"),
   classNames = require("classnames"),
   $ = require("jquery");
 
 var SearchMenu = require("./viewFrame/SearchMenu.jsx"),
+  Toolbar = require("./viewFrame/Toolbar.jsx"),
   PagingInfo = require("./viewFrame/PagingInfo.jsx");
 
 var ModuleCollection = require("../../store/module"),
@@ -50,10 +52,10 @@ var ViewFrame = React.createClass({
     });
   },
   render: function () {
-    var Toolbar = this.props.Toolbar,
-      View = this.props.View,
-      page = action.activated.get("page") || this.props.page,
-      form = action.activated.get("form") || this.props.form;
+    var View = this.props.View,
+      activatedItem = action.getActivatedItem(),
+      page = activatedItem.get("page") || this.props.page,
+      form = _.first(_.keys(activatedItem.get("form") || this.props.form));
 
     return (
       <div id="view-frame" className={classNames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
@@ -67,7 +69,7 @@ var ViewFrame = React.createClass({
               </small>
             </h1>
           </div>
-          <Toolbar/>
+          <Toolbar model={this.props.model} page={page} form={this.props.form} showViewButton={this.props.viewButton} customs={this.props.CustomButton}/>
         </div>
 
         <div className="row">

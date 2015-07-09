@@ -23,19 +23,11 @@ var QueryData = Backbone.Collection.extend({
   },
   fetch: function (options) {
     options.data = _.defaults(options.data || {}, this.options);
-    if (this._total <= 0 || options.total === true) {
-      options.data = _.defaults(options.data, {
-        total: true
-      });
-    }
+    options.data.total = options.total || null;
     return QueryData.__super__.fetch.call(this, options);
   },
   getTotal: function () {
     return this._total;
-  },
-  setTotal: function (total) {
-    this._total = total;
-    return this;
   },
   getPerPage: function () {
     return this.options.count || 0;

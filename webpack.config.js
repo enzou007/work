@@ -27,7 +27,7 @@ module.exports = {
       test: /\.css$/,
       loader: "style!css"
     }, {
-      test: /\.(png|jpg)$/,
+      test: /\.(png|jpg|gif)$/,
       loader: "url?limit=100000"
     }, {
       test: /\.json$/,
@@ -47,7 +47,8 @@ module.exports = {
       test: /module[\/\\].+[\/\\]option\.js$/,
       loader: 'bundle?lazy'
     }, {
-      test: /[\/\\]bootstrap[\/\\]js/,
+      test: /\.js$/,
+      include: /(bootstrap|gritter)/,
       loader: "exports?jQuery!imports?jQuery=jquery"
     }]
   },

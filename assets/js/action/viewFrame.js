@@ -72,14 +72,24 @@ _.extend(Action.prototype, Backbone.Events, {
   getDataCollection: function () {
     return this.dataCollection;
   },
+  refreshDataCollection: function () {
+    this.dataCollection.fetch({
+      total: true,
+      reset: true
+    });
+  },
+  deleteSelectedData: function () {
+    // TODO 实现删除
+    this.dataCollection.fetch({
+      reset: true
+    });
+  },
   toggleSearchItem: function (item) {
     this.setActiveItem(item);
     if (this.dataCollection == null) {
       this.dataCollection = this.buildDataCollection(this.Model);
     }
-    this.dataCollection.fetch({
-      reset: true
-    });
+    this.refreshDataCollection();
   }
 });
 

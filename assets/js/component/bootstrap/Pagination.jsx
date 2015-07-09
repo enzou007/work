@@ -30,6 +30,10 @@ var Pagination = React.createClass({
       }
     });
   },
+  trigger: function (page, event) {
+    this.props.onChange(page);
+    event.preventDefault();
+  },
   render: function () {
     var size = this.props.size,
       curPage = this.props.current,
@@ -46,14 +50,14 @@ var Pagination = React.createClass({
       right = total;
       left = right - size + 2;
       if (left < 1) {
-        left = 1
+        left = 1;
       }
     } else {
-      right -= left > 1 ? 1 : 0
+      right -= left > 1 ? 1 : 0;
     }
 
     var ClickItem = [];
-    var i = left
+    var i = left;
     if (left > 1) {
       ClickItem.push(this._pageItemBuilder(1));
       if (left > 2) {
@@ -73,33 +77,33 @@ var Pagination = React.createClass({
 
     return (
       <ul className="pagination">
-        <li className={classNames({disabled: curPage <= 1})} key="prev" onClick={this.props.onChange.bind(null, curPage-1)}>
-          <a>上一页</a>
+        <li className={classNames({disabled: curPage <= 1})} key="prev" onClick={this.trigger.bind(null, curPage-1)}>
+          <a href="javascript:prev">上一页</a>
         </li>
         {ClickItem}
-        <li className={classNames({disabled: curPage >= total})} key="next" onClick={this.props.onChange.bind(null, curPage+1)}>
-          <a>下一页</a>
+        <li className={classNames({disabled: curPage >= total})} key="next" onClick={this.trigger.bind(null, curPage+1)}>
+          <a href="javascript:next">下一页</a>
         </li>
       </ul>
     );
   },
-  _pageJumperTrigger: _.debounce(function (value) {
-    this.props.onChange.call(this, value);
+  _pageJumperTrigger: _.debounce(function (value, event) {
+    this.trigger.call(this, value, event);
   }, 300),
   _pageJumperBuilder: function (position, max) {
     return (
       <li className="dropup" key={"jumper"+position}>
-        <a className="dropdown-toggle" data-toggle="dropdown" href="#more">...</a>
+        <a className="dropdown-toggle" data-toggle="dropdown" href="javascript:more">...</a>
         <div className={"page-jumper dropdown-menu dropdown-menu-"+position}>
-          <input max={max} min={1} onChange={function (event) { this._pageJumperTrigger(parseInt(event.target.value)); }.bind(this)} ref={"jumper-"+position} type="range"/>
+          <input max={max} min={1} onChange={function (event) { this._pageJumperTrigger(parseInt(event.target.value), event); }.bind(this)} ref={"jumper-"+position} type="range"/>
         </div>
       </li>
     );
   },
   _pageItemBuilder: function (pageNumber) {
     return (
-      <li className={classNames({active: this.props.current === pageNumber})} key={pageNumber} onClick={this.props.onChange.bind(null, pageNumber)}>
-        <a>
+      <li className={classNames({active: this.props.current === pageNumber})} key={pageNumber} onClick={this.trigger.bind(null, pageNumber)}>
+        <a href={"javascript:"+pageNumber}>
           {pageNumber}
         </a>
       </li>

@@ -9,25 +9,26 @@ var QueryCollection = require("../store/viewFrame/query");
 
 var Base = function (model) {
   this.module = model || null;
-  this.initialize.apply(this, arguments);
+  this.initialize.call(this, model);
 };
 
 _.extend(Base.prototype, {
-  initialize: function (model) {
+  initialize: function () {
     viewFrameAction.bind(this);
   },
   page: "form.html",
-  form: "",
+  form: {},
   menu: [],
   Container: require("../view/container/ViewFrame.jsx"),
-  Toolbar: require("../view/container/viewFrame/Toolbar.jsx"),
   View: require("../view/container/viewFrame/ViewTable.jsx"),
   Model: require("./baseModel"),
+  viewButton: true,
+  CustomButton: [],
   getContainer: function () {
     return this.Container;
   },
   getOption: function () {
-    return _.pick(this, "page", "form", "Toolbar", "Model", "View");
+    return _.pick(this, "page", "form", "Model", "View", "viewButton", "CustomButton");
   },
   getQueryCollection: _.once(function () {
     return new QueryCollection(this.menu, {

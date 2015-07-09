@@ -22,7 +22,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.less$/,
-      loader: "style!css!less?config=lessLoaderCustom"
+      loader: "style!css!less"
     }, {
       test: /\.css$/,
       loader: "style!css"

@@ -20,8 +20,9 @@ var UserMenu = React.createClass({
   propTypes: {
     name: React.PropTypes.string
   },
-  logout: function() {
+  logout: function(event) {
     sessionAction.logout();
+    event.preventDefault();
   },
   render: function() {
     return (
@@ -48,7 +49,7 @@ var UserMenu = React.createClass({
           </li>
           <li className="divider"/>
           <li>
-            <a onClick={this.logout}>
+            <a href="javascript:logout" onClick={this.logout}>
               <i className="ace-icon fa fa-power-off"/>
               注销
             </a>

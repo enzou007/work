@@ -1,121 +1,99 @@
 "use strict";
 
-var React = require("react");
+var React = require("react"),
+    Tabs = require("../../../component/bootstrap/Tabs.jsx"),
+    Dropdown = require("../../../component/bootstrap/Dropdown.jsx"),
+    Fieldset = require("../../../component/form/Fieldset.jsx"),
+    //FlowFormBase = require("../../../component/form/FlowFormBase.jsx"),
+    Dept = require("../../../component/form/Dept.jsx");
+
+var Flow = require("../../../view/form/Flow.jsx");
 
 var Form = require("rctui/Form");
 var FormControl = require("rctui/FormControl");
 var FormSubmit = require("rctui/FormSubmit");
+var Input = require("rctui/Input");
+var Select = require("rctui/Select");
+var DateTime = require("rctui/Datetime");
 
-require("rctui/Input")
+//var DEMO = FlowFormBase.extend({
+var DEMO = React.createClass({
+  TestClick: function(e){
+  },
+  beferSubmit: function(){
+    return true;
+  },
+  getOperateBtn: function(){
+    var OperateBtn = [];
+    OperateBtn.push(
+      <Dropdown className="btn btn-inverse" value="按钮">
+        <ul onClick={this.TestClick}>
+          <li><a href="#">111111</a></li>
+          <li><a href="#">222222</a></li>
+          <li className="divider"></li>
+          <li><a href="#">333333</a></li>
+        </ul>
+      </Dropdown>
+    );
 
-var Demo = React.createClass({
+    OperateBtn.push(
+      <Dropdown className="btn btn-inverse" value="按钮">
+        <ul onClick={this.TestClick}>
+          <li><a href="#">111111</a></li>
+          <li><a href="#">222222</a></li>
+          <li className="divider"></li>
+          <li><a href="#">333333</a></li>
+        </ul>
+      </Dropdown>
+    )
+    return OperateBtn;
+  },
   render: function () {
-    return (
-      <Form action="json/form.json" autoload={true} layout="aligned">
-        <FormControl label="text" max={6} min={2} name="text" type="text" width={12}/>
 
-        <FormSubmit>
-          <span>提交</span>
-          <span>处理中</span>
-        </FormSubmit>
-      </Form>
+    return (
+      <Flow operateBtns={this.getOperateBtn()}>
+          <Tabs>
+            <div tab="基本信息" className="form-content">
+                <Fieldset title="Form表单">
+                  <FormControl type="text"  min={4} label="申 请 人" className="col-md-6"/>
+                  <FormControl type="date"   label="申请日期" className="col-md-6"/>
+                  <FormControl type="select" label="性别" className="col-md-6" mult={false} data={["男","女"]}/>
+                  <FormControl type="number"   label="年龄" className="col-md-6"/>
+                  <FormControl type="select" label="部门领导" className="col-md-6" src="/1/system/user/search" mult={true} filterAble={true}/>
+                  <FormControl type="select" label="所属部门" className="col-md-6" data={["1","2","3","4"]} mult={false} filterAble={true}/>
+                  <FormControl type="text"   label="部门" className="col-md-6">
+                    <Dept />
+                  </FormControl>
+                  <Dropdown className="btn btn-inverse" value="按钮">
+                    <ul onClick={this.TestClick}>
+                      <li><a href="#">111111</a></li>
+                      <li><a href="#">222222</a></li>
+                      <li className="divider"></li>
+                      <li><a href="#">333333</a></li>
+                    </ul>
+                  </Dropdown>
+
+                  <Dropdown className="btn btn-inverse" value="按钮" clickMenuClose={false}>
+                    <ul onClick={this.TestClick}>
+                      <li><a href="#">444</a></li>
+                      <li><a href="#">555</a></li>
+                      <li className="divider"></li>
+                      <li><a href="#">666</a></li>
+                    </ul>
+                  </Dropdown>
+
+
+                </Fieldset>
+            </div>
+
+            <div tab="基本信息" className="form-content">
+
+            </div>
+
+          </Tabs>
+      </Flow>
     );
   }
 });
 
-module.exports = Demo;
-
-/*
-
-var React = require("react"),
-    Tabs = require("../../../component/bootstrap/Tabs.jsx"),
-    DatePicker = require("../../../component/bootstrap/DatePicker.jsx"),
-    Dept = require("../../../component/form/dept.jsx"),
-    Psn = require("../../../component/form/psn.jsx");
-
-
-var Form = React.createClass({
-    render: function () {
-        return (
-            <div>
-                <div id="navbar" className="navbar navbar-default">navbar</div>
-                <form className="container form-horizontal" role="form">
-                    <Tabs triggerLink={true}>
-                        <div tab="基本信息" className="form-content">
-                            <fieldset>
-                                <legend>Form表单</legend>
-
-                                <div className="form-group">
-                                    <label className="control-label col-md-2 col-sm-2">文本文本文本</label>
-                                    <div className="col-md-4 col-sm-10">
-                                        <input className="width-100" type="text"/>
-                                    </div>
-                                    <label className="control-label col-md-2 col-sm-2">日期文本文本</label>
-                                    <div className="col-md-4 col-sm-10">
-                                        <input className="width-100" type="text"/>
-                                    </div>
-                                </div>
-
-                                <div className="form-group">
-                                    <label className="control-label col-md-2 col-sm-2">文本</label>
-                                    <div className="col-md-4 col-sm-10">
-                                        <input className="width-100" type="text"/>
-                                    </div>
-                                    <label className="control-label col-md-2 col-sm-2">日期</label>
-                                    <div className="col-md-4 col-sm-10">
-                                        <DatePicker />
-
-                                    </div>
-                                </div>
-
-                                <div className="form-group">
-                                    <label className="control-label col-md-2 col-sm-2">人员</label>
-                                    <div className="col-md-4 col-sm-10">
-                                        <Psn />
-                                    </div>
-                                    <label className="control-label col-md-2 col-sm-2">组织</label>
-                                    <div className="col-md-4 col-sm-10">
-                                        <Dept />
-                                    </div>
-                                </div>
-
-                                <div className="form-group">
-                                    <label className="control-label col-md-2 col-sm-2">其他</label>
-                                    <div className="col-md-10 col-sm-10">
-                                        <input className="width-100" type="text"/>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label className="control-label col-md-2 col-sm-2">其他</label>
-                                    <div className="col-md-10 col-sm-10">
-                                        <textarea className="width-100" rows="3"></textarea>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend>Form表单</legend>
-                                <div className="form-group">
-                                    <label for="disabledSelect"  className="col-sm-2 control-label">表名</label>
-                                    <div className="col-sm-10">
-                                        <select id="disabledSelect" className="form-control">
-                                            <option>禁止选择</option>
-                                            <option>禁止选择</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div tab="附件" className="form-content">
-
-                            附件
-                        </div>
-                    </Tabs>
-                </form>
-            </div>
-        );
-    }
-});
-
-module.exports = Form;
-*/
+module.exports = DEMO;

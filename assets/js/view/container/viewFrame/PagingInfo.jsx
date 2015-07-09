@@ -33,7 +33,8 @@ var PagingInfo = React.createClass({
     });
   },
   changePage: function (page) {
-    if (page >= 1 && page <= this.getCollection().getPerPage()) {
+    var pages = Math.ceil(this.getCollection().getTotal() / this.getCollection().getPerPage());
+    if (page >= 1 && page <= pages) {
       this.getCollection().setPage({
         page: page
       });

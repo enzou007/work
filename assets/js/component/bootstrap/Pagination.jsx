@@ -32,7 +32,9 @@ var Pagination = React.createClass({
   },
   trigger: function (page, event) {
     this.props.onChange(page);
-    event.preventDefault();
+    if(event){
+      event.preventDefault();
+    }
   },
   render: function () {
     var size = this.props.size,
@@ -87,15 +89,19 @@ var Pagination = React.createClass({
       </ul>
     );
   },
-  _pageJumperTrigger: _.debounce(function (value, event) {
-    this.trigger.call(this, value, event);
+  _pageJumperTrigger: _.debounce(function (value) {
+    this.trigger.call(this, value);
   }, 300),
   _pageJumperBuilder: function (position, max) {
+    var handle = function (event) {
+      this._pageJumperTrigger(parseInt(event.target.value), event);
+    }.bind(this);
+
     return (
       <li className="dropup" key={"jumper"+position}>
         <a className="dropdown-toggle" data-toggle="dropdown" href="javascript:more">...</a>
         <div className={"page-jumper dropdown-menu dropdown-menu-"+position}>
-          <input max={max} min={1} onChange={function (event) { this._pageJumperTrigger(parseInt(event.target.value), event); }.bind(this)} ref={"jumper-"+position} type="range"/>
+          <input max={max} min={1} onMouseUp={handle} onChange={handle} ref={"jumper-"+position} type="range"/>
         </div>
       </li>
     );

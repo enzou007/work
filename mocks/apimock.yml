@@ -63,3 +63,8 @@
   response:
     type: js
     file: response/xwgg/xwsd/view.js
+- request:
+    url: /1/system/user/search
+  response:
+    type: js
+    file: response/system/user/userSearch.js

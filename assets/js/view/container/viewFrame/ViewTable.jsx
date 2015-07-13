@@ -53,10 +53,10 @@ var ViewTable = React.createClass({
         rowsCount={dataCollection.getPerPage()}
         rowGetter={this.props.rowGetter || this._rowGetter}>
         <Column key="选择" dataKey="__index" fixed={true} width={35} align="center" headerRenderer={function () {
-          return <Checkbox className="select" checkboxClass={dataCollection.length !== dataCollection.selectedLength ? "ace-checkbox-2" : ""}
+          return <Checkbox checkboxClass={dataCollection.length !== dataCollection.selectedLength ? "ace-checkbox-2" : ""}
             checked={dataCollection.selectedLength > 0} onChange={this.selectAll}/>;
         }.bind(this)} cellRenderer={function (cellData, cellDataKey, rowData, rowIndex, columnData, width) {
-          return <Checkbox className="select" checked={dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
+          return <Checkbox checked={dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
         }.bind(this)}/>
         {
           _.map(this.state.column, function (column, key) {

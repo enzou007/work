@@ -82,7 +82,7 @@ var SearchMenu = React.createClass({
       );
     }.bind(this));
 
-    elements.push(<CustomSearch ico="fa fa-search" key="自定义检索" tab="自定义检索"/>);
+    elements.push(<CustomSearch ico="fa fa-search" key="自定义检索" tab="自定义检索" fields={this.props.fields}/>);
 
     return elements;
   }

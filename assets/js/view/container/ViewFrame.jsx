@@ -65,7 +65,7 @@ var ViewFrame = React.createClass({
               {this.getModel().get("name")}
               <small>
                 <i className="ace-icon fa fa-angle-double-right"/>
-                <SearchMenu collection={this.getCollection()}/>
+                <SearchMenu collection={this.getCollection()} fields={this.props.Model.fields}/>
               </small>
             </h1>
           </div>

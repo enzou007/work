@@ -7,6 +7,8 @@ var Model = Backbone.Model.extend({
   initialize: function () {
     Select.Me.applyTo(this);
   }
+}, {
+  fields: []
 });
 
 module.exports = Model;

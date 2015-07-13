@@ -89,9 +89,10 @@ var Action = Backbone.Router.extend({
   loadHome: function () {
     moduleStore.setActiveItem("home");
     // 加载首页模块
-    var HomeModule = require("../module/home/homeOption"),
-      moduleOption = new HomeModule();
-    appStore.setAttrubute(moduleOption.getOption());
+    require("../module/home/option")(function (HomeModule) {
+      var moduleOption = new HomeModule();
+      appStore.setAttrubute(moduleOption.getOption());
+    });
   },
   loadNotFoundContent: function (route) {
     console.error("page " + route + " not found!!");

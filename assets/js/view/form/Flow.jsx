@@ -2,7 +2,10 @@
 
 var React = require("react");
 
-var Navbar = require("../../component/form/Navbar.jsx");
+var Navbar = require("../../component/form/Navbar.jsx"),
+    TimeLine = require("./timeline/TimeLine.jsx"),
+    SubmitBtn = require("./operate/SubmitBtn.jsx");
+
 var Form = require("rctui/Form");
 
 require("../../../less/flow.less")
@@ -10,7 +13,7 @@ require("../../../less/flow.less")
 var Flow = React.createClass({
   getDefaultProps: function() {
     return {
-      formTitle: ""
+      formTitle: "入职申请单"
     };
   },
   flowOperate: function(){
@@ -20,7 +23,7 @@ var Flow = React.createClass({
     return (
       <div>
 
-        <Navbar title={this.props.formTitle} operate={this.flowOperate}>
+       <Navbar title={this.props.formTitle} operate={this.flowOperate}>
           {this.props.operateBtns}
           <button className="btn btn-inverse" data-trigger="zb">
             转办<i className="fa fa-user"></i>
@@ -34,10 +37,10 @@ var Flow = React.createClass({
             驳回<i className="fa fa-user"></i>
           </button>
 
-          <button className="btn btn-inverse" data-trigger="submit">
-            提交<i className="fa fa-user"></i>
-          </button>
+          <SubmitBtn />
         </Navbar>
+
+        <TimeLine />
 
         <Form layout="aligned" className="container form-horizontal">
           {this.props.children}

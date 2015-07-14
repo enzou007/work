@@ -8,9 +8,10 @@ var QueryData = require("../store/viewFrame/queryData");
 var Action = function () {
   this.module = null;
   this.Model = null;
-  this.queryCollection = null;
-  this.dataCollection = null;
-  this.activated = null;
+  this._queryCollection = null;
+  this._dataCollection = null;
+  this._defaultItem = null;
+  this._activated = null;
 };
 
 _.extend(Action.prototype, Backbone.Events, {
@@ -18,32 +19,23 @@ _.extend(Action.prototype, Backbone.Events, {
     if (this.module) {
       this.stopListening(this.module);
     }
-    if (this.collection) {
-      this.stopListening(this.collection);
-    }
     return this;
   },
   bind: function (moduleOption) {
     this.clean();
     this.module = moduleOption.module;
     this.Model = moduleOption.Model;
-    this.queryCollection = moduleOption.getQueryCollection();
-    // 初始化当前项目
-    this.toggleSearchItem(this.queryCollection.findWhere({
+    this._queryCollection = moduleOption.getQueryCollection();
+    this._defaultItem = this._queryCollection.findWhere({
       isDefault: true
-    }));
+    });
+    // 初始化当前项目
+    this.toggleSearchItem(this._defaultItem);
     // 监听模块
     this.listenTo(this.module, "sync", function () {
       var queries = this.module.get("queries");
       if (queries && queries.length > 0) {
-        this.queryCollection.add({
-          queryId: "query_custom",
-          name: "常用检索",
-          ico: "fa fa-reorder",
-          children: queries.toJson()
-        }, {
-          parse: true
-        });
+        this.addCustomQuery(queries.toJSON());
       }
     });
     // 加载模块信息
@@ -51,44 +43,58 @@ _.extend(Action.prototype, Backbone.Events, {
     return this;
   },
   getQueryCollection: function () {
-    return this.queryCollection;
+    return this._queryCollection;
+  },
+  getDefaultItem: function () {
+    return this._defaultItem;
   },
   getActivatedItem: function () {
-    return this.activated;
+    return this._activated;
   },
   setActiveItem: function (active) {
-    if (this.activated == active) {
-      return;
+    if (this._activated !== active) {
+      this._activated = active;
+      this._queryCollection.setActiveItem(active);
     }
-    this.activated = active;
-    this.queryCollection.setActiveItem(active);
+    return this;
   },
-  buildDataCollection: function (Model) {
+  buildDataCollection: function () {
     return new QueryData(null, {
-      model: Model,
+      model: this.Model,
       url: "/1/" + this.module.get("path")
     });
   },
+  addCustomQuery: function (items) {
+    this._queryCollection.add([{
+      queryId: "query_custom",
+      name: "常用检索",
+      ico: "fa fa-reorder",
+      children: items
+    }], {
+      parse: true
+    });
+  },
   getDataCollection: function () {
-    return this.dataCollection;
+    return this._dataCollection;
   },
   refreshDataCollection: function () {
-    this.dataCollection.fetch({
+    this._dataCollection.fetch({
       total: true,
       reset: true
     });
   },
   deleteSelectedData: function () {
     // TODO 实现删除
-    this.dataCollection.fetch({
+    this._dataCollection.fetch({
       reset: true
     });
   },
   toggleSearchItem: function (item) {
     this.setActiveItem(item);
-    if (this.dataCollection == null) {
-      this.dataCollection = this.buildDataCollection(this.Model);
+    if (this._dataCollection == null) {
+      this._dataCollection = this.buildDataCollection();
     }
+    this._dataCollection.setCondition(item.get("condition"));
     this.refreshDataCollection();
   }
 });

@@ -34,7 +34,6 @@ module.exports = BaseOption.extend({
     ico: "fa fa-reorder",
     children: [{
       name: "草稿",
-      column: baseColumns,
       condition: [
         ["flowNode", "eq", "Start"]
       ]
@@ -48,7 +47,6 @@ module.exports = BaseOption.extend({
       ]
     }, {
       name: "已完结",
-      column: baseColumns,
       condition: [
         ["flowNode", "eq", "End"]
       ]

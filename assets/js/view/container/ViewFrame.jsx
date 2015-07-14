@@ -54,6 +54,7 @@ var ViewFrame = React.createClass({
   render: function () {
     var View = this.props.View,
       activatedItem = action.getActivatedItem(),
+      columns = activatedItem.get("column") || action.getDefaultItem().get("column"),
       page = activatedItem.get("page") || this.props.page,
       form = _.first(_.keys(activatedItem.get("form") || this.props.form));
 
@@ -74,7 +75,7 @@ var ViewFrame = React.createClass({
 
         <div className="row">
           <div className="col-xs-12" ref="viewContainer">
-            <View collection={action.getDataCollection()} column={action.getActivatedItem().get("column")}
+            <View collection={action.getDataCollection()} column={columns}
               height={this.state.tableHeight} width={this.state.tableWidth} page={page} form={form}/>
             <PagingInfo collection={action.getDataCollection()}/>
           </div>

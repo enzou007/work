@@ -13,16 +13,23 @@ var Query = Backbone.Model.extend({
     isDefault: null,
     href: null,
     target: null,
-    column: [],
+    column: null,
     condition: []
   },
-  getParents: _.once(function() {
+  initialize: function () {
+    if(!this.has("queryId")){
+      this.set("queryId", _.uniqueId("query"), {silent: true});
+    }
+  },
+  getParents: _.once(function () {
     var item = this,
       items = [];
-    while (item = this.collection.findWhere({
-        queryId: item.get("parent")
-      })) {
-      items.unshift(item);
+    if (this.collection) {
+      while (item = this.collection.findWhere({
+          queryId: item.get("parent")
+        })) {
+        items.unshift(item);
+      }
     }
 
     return items.slice(0);
@@ -33,22 +40,22 @@ var Queries = Backbone.Collection.extend({
   model: Query,
   module: null,
   activated: null,
-  initialize: function(models, options) {
+  initialize: function (models, options) {
     this.module = options.module;
   },
-  url: function() {
+  url: function () {
     return "/1/module/" + this.module.id + "/query"
   },
-  parse: function(resp) {
+  parse: function (resp) {
     return this._childParser(resp, null);
   },
-  _childParser: function(list, parentId) {
+  _childParser: function (list, parentId) {
     var result = [];
 
     for (var i = 0, len = list.length; i < len; i++) {
       var item = item = list[i];
       if (item) {
-        item.queryId = _.uniqueId("query");
+        item.queryId = item.queryId || _.uniqueId("query");
         item.parent = parentId;
 
         result.push(item);
@@ -62,15 +69,17 @@ var Queries = Backbone.Collection.extend({
 
     return result;
   },
-  setActiveItem: function(active) {
+  setActiveItem: function (active) {
     if (this.activated) {
-      this.activated.set("active", false).getParents().forEach(function(item) {
+      this.activated.set("active", false).getParents().forEach(function (item) {
         item.set("active", false);
       });
     }
-    active.set("active", true).getParents().forEach(function(item) {
-      item.set("active", true);
-    });
+    if (active !== null) {
+      active.set("active", true).getParents().forEach(function (item) {
+        item.set("active", true);
+      });
+    }
     this.activated = active;
     this.trigger("reset", this);
     return this;

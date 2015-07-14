@@ -24,6 +24,10 @@ var QueryData = Backbone.Collection.extend({
   fetch: function (options) {
     options.data = _.defaults(options.data || {}, this.options);
     options.data.total = options.total || null;
+    var condition = this._condition;
+    options.beforeSend = function (xhr) {
+      xhr.setRequestHeader("Condition", JSON.stringify(condition));
+    }
     return QueryData.__super__.fetch.call(this, options);
   },
   getTotal: function () {
@@ -35,6 +39,9 @@ var QueryData = Backbone.Collection.extend({
   setPerPage: function (perPage) {
     this.options.count = perPage;
     return this;
+  },
+  setCondition: function (condition) {
+    this._condition = condition;
   },
   setSort: function (name, state) {
     this.options.sort = name;

@@ -11,7 +11,7 @@ var Flow = require("../../../view/form/Flow.jsx");
 
 var Form = require("rctui/Form");
 var FormControl = require("rctui/FormControl");
-var FormSubmit = require("rctui/FormSubmit");
+//var FormSubmit = require("rctui/FormSubmit");
 var Input = require("rctui/Input");
 var Select = require("rctui/Select");
 var DateTime = require("rctui/Datetime");
@@ -19,6 +19,7 @@ var DateTime = require("rctui/Datetime");
 //var DEMO = FlowFormBase.extend({
 var DEMO = React.createClass({
   TestClick: function(e){
+    console.log("11111111111111111111111111111111111111111111111")
   },
   beferSubmit: function(){
     return true;
@@ -37,7 +38,7 @@ var DEMO = React.createClass({
     );
 
     OperateBtn.push(
-      <Dropdown className="btn btn-inverse" value="按钮">
+      <Dropdown className="btn btn-inverse" value="按钮aaa" clickMenuClose={false}>
         <ul onClick={this.TestClick}>
           <li><a href="#">111111</a></li>
           <li><a href="#">222222</a></li>
@@ -51,37 +52,20 @@ var DEMO = React.createClass({
   render: function () {
 
     return (
-      <Flow operateBtns={this.getOperateBtn()}>
+      <Flow>
           <Tabs>
             <div tab="基本信息" className="form-content">
                 <Fieldset title="Form表单">
-                  <FormControl type="text"  min={4} label="申 请 人" className="col-md-6"/>
-                  <FormControl type="date"   label="申请日期" className="col-md-6"/>
-                  <FormControl type="select" label="性别" className="col-md-6" mult={false} data={["男","女"]}/>
-                  <FormControl type="number"   label="年龄" className="col-md-6"/>
-                  <FormControl type="select" label="部门领导" className="col-md-6" src="/1/system/user/search" mult={true} filterAble={true}/>
-                  <FormControl type="select" label="所属部门" className="col-md-6" data={["1","2","3","4"]} mult={false} filterAble={true}/>
-                  <FormControl type="text"   label="部门" className="col-md-6">
-                    <Dept />
-                  </FormControl>
-                  <Dropdown className="btn btn-inverse" value="按钮">
-                    <ul onClick={this.TestClick}>
-                      <li><a href="#">111111</a></li>
-                      <li><a href="#">222222</a></li>
-                      <li className="divider"></li>
-                      <li><a href="#">333333</a></li>
-                    </ul>
-                  </Dropdown>
+                  <FormControl type="text" name="StPsn" min={4} label="申 请 人" className="col-sm-6"/>
+                  <FormControl type="date" name="StDate"   label="申请日期" className="col-sm-6"/>
+                  <FormControl type="select" name="StSex"  label="性别" className="col-sm-6" mult={false} data={["男","女"]}/>
+                  <FormControl type="number" name="StAge"   label="年龄" className="col-sm-6"/>
+                  <FormControl type="select" name="StLeader" label="部门领导" className="col-sm-12" src="/1/system/user/search" mult={true} filterAble={true}/>
+                  <FormControl type="select" name="StDept" label="所属部门" className="col-sm-6" data={["1","2","3","4"]} mult={false} filterAble={true}/>
 
-                  <Dropdown className="btn btn-inverse" value="按钮" clickMenuClose={false}>
-                    <ul onClick={this.TestClick}>
-                      <li><a href="#">444</a></li>
-                      <li><a href="#">555</a></li>
-                      <li className="divider"></li>
-                      <li><a href="#">666</a></li>
-                    </ul>
-                  </Dropdown>
-
+                    <FormControl type="text"   name="StDept1" label="部门" className="col-sm-6">
+                      <Dept />
+                    </FormControl>
 
                 </Fieldset>
             </div>

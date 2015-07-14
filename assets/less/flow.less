@@ -1,16 +1,42 @@
 .flow .modal-dialog{
-  top:50%;
-  height:400px;
+
+  position: fixed;
+    top:50%;
+    left:50%;
+
+  //height:400px;
   margin-top:-200px;
+  margin-left:-300px;
   .modal-content{
-    height:100%;
+    //height:100%;
   }
 }
 
 .submitBox{
   height:100%;
+
+  .title{
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .flownodes{
+    padding: 0;
+    margin: 0;
+    border-right: 1px solid #cdcdcd;
+  }
+  .psns{
+    padding: 0;
+    margin: 0;
+  }
+
+  .flownodes font, .psns font{
+    width:100%;
+    font-weight: bold;
+    padding:0 8px;
+  }
   .content{
     height: 75%;
+    margin: 0 !important;
   }
   .row{
     margin: 10px;
@@ -18,10 +44,42 @@
   hr{
     margin: 0px;
   }
-  .pull-right{
+  .operate{
+    text-align: right;
     .btn{
       margin-left:1px;
       margin-right: 1px;
+    }
+  }
+  ul{
+    list-style: none;
+    li{
+      cursor: pointer;
+      height:25px;
+      line-height: 25px;
+      padding-left:10px;
+      margin-right: 20px;
+    }
+    .active{
+      background-color: #6FB3E0 ;
+      color: white;
+
+    }
+  }
+}
+
+
+.timeline{
+  position: absolute;
+  top:45px;
+  left: 10px;
+  .transparent{
+    padding: 5px;
+  }
+  .timeline-item{
+    line-height: 2em;
+    .transparent i{
+      margin-right: 5px;
     }
   }
 }

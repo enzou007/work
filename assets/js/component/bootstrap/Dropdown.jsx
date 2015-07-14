@@ -5,16 +5,12 @@ var React = require("react"),
     CSSTransitionGroup = require("../react/CSSTransitionGroup/CSSTransitionGroup.js");
 
 var Dropdown = React.createClass({
-    getInitialState: function () {
-        return {
-            show: false
-        };
-    },
     propTypes: {
         type: React.PropTypes.string,
         icon: React.PropTypes.string,
         clickMenuClose: React.PropTypes.bool,
         readOnly: React.PropTypes.bool,
+        dropup: React.PropTypes.bool,
         children: React.PropTypes.node.isRequired
     },
     getDefaultProps: function () {
@@ -22,28 +18,26 @@ var Dropdown = React.createClass({
             type: "button",  //input OR button
             icon: "fa fa-caret-down",
             clickMenuClose: true,
+            dropup: false,
             readOnly: false
         };
     },
 
     componentDidMount: function () {
         var flag = true;
+        var $node = $(this.getDOMNode());
         $(document).on("click.dropdown",function(e){
           if(flag){
-            this.setState({
-                show: false
-            });
+             $node.removeClass("open");
           }else{
             if(this.props.clickMenuClose){
-              this.setState({
-                  show: false
-              });
+              $node.removeClass("open");
             }
           }
           flag = true;
         }.bind(this));
 
-        $(this.getDOMNode()).find(".dropdown-menu").on("click.dropdown",  function(e) {
+        $node.find(".dropdown-menu").on("click.dropdown",  function(e) {
             flag = false;
         });
 
@@ -53,13 +47,20 @@ var Dropdown = React.createClass({
         $(document).on("click.dropdown", ".dropdown > button", function(e) {
             e.stopPropagation();
         });
+        $(document).on("click.dropdown", ".dropdown > input", function(e) {
+            e.stopPropagation();
+        });
     },
     toggleShow: function(e) {
         e.preventDefault();
         e.stopPropagation();
-        this.setState({
-            show: !this.state.show
-        });
+        var $node = $(this.getDOMNode());
+        if($node.hasClass("open")){
+          $node.removeClass("open");
+        }else{
+          $(".dropdown").removeClass("open");
+          $node.addClass("open");
+        }
     },
     componentWillUnmount: function(){
         $(document).off("click.dropdown");
@@ -70,7 +71,7 @@ var Dropdown = React.createClass({
 
         if(this.props.type === "button"){
           return (
-              <span className={"dropdown" + (this.state.show ? " open" : "")}>
+              <span className={"dropdown" + (this.props.dropup ? " dropup" : "")}>
                   <button className={this.props.className}  onClick={this.toggleShow} disabled={this.props.readOnly}>
                     {this.props.value + " "}
 										<i className={this.props.icon}></i>
@@ -80,8 +81,8 @@ var Dropdown = React.createClass({
           );
         }else{
           return (
-              <span className={"dropdown block input-icon input-icon-right" + (this.state.show ? " open" : "")}>
-                  <input className={this.props.className}  type="text" value={this.props.value} disabled={this.props.readOnly}/>
+              <span className={"dropdown block input-icon input-icon-right" + (this.props.dropup ? " dropup" : "")}>
+                  <input className={this.props.className}  type="text" value={this.props.value} disabled={this.props.readOnly}  onClick={this.toggleShow}/>
                   <i className={this.props.icon} onClick={this.toggleShow}></i>
                   {child}
               </span>

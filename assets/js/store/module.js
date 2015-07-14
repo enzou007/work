@@ -27,12 +27,12 @@ var Module = Backbone.Model.extend({
     columns: null,
     roles: null
   },
-  initialize: function() {
-    this.once("sync", function() {
+  initialize: function () {
+    this.once("sync", function () {
       this._loaded = true;
     });
   },
-  parse: function(resp) {
+  parse: function (resp) {
     if (resp.queries) {
       resp.queries = new Queries(resp.queries, {
         moduleId: this.id
@@ -40,11 +40,11 @@ var Module = Backbone.Model.extend({
     }
     return resp;
   },
-  toJSON: function() {
+  toJSON: function () {
     // queries和columns roles 另有接口负责持久化
     return _.omit(this.attributes, "queries", "columns", "roles");
   },
-  getChildren: function() {
+  getChildren: function () {
     var children = this._children;
     if (!children) {
       children = this.collection.where({
@@ -56,7 +56,7 @@ var Module = Backbone.Model.extend({
     }
     return children.slice(0);
   },
-  getParents: function() {
+  getParents: function () {
     var item = this,
       items = this._parents;
     if (!items) {
@@ -68,27 +68,25 @@ var Module = Backbone.Model.extend({
     }
     return items.slice(0);
   },
-  isActive: function() {
+  isActive: function () {
     return this._active;
   },
-  setActive: function(flag) {
-    var isChange = flag !== this._active;
-    this._active = flag;
-    if (isChange) {
+  setActive: function (flag) {
+    if (this._active !== flag) {
+      this._active = flag;
       this.trigger("change", this).trigger("change:active", this);
-    }
-    if (this.getChildren().length === 0) {
-      this.trigger("change", this).trigger("change:switch", this);
+      if (this.getChildren().length === 0) {
+        this.trigger("change", this).trigger("change:switch", this);
+      }
     }
     return this;
   },
-  isOpen: function() {
+  isOpen: function () {
     return !!this._open;
   },
-  setOpen: function(flag) {
-    var isChange = flag !== this._open;
-    this._open = flag;
-    if (isChange) {
+  setOpen: function (flag) {
+    if (this._open !== flag) {
+      this._open = flag;
       this.trigger("change", this).trigger("change:open", this);
     }
     return this;
@@ -100,7 +98,7 @@ var Modules = Backbone.Collection.extend({
   url: "1/system/module",
   _activeItems: [],
   _openItems: [],
-  setOpenItem: function(id, flag) {
+  setOpenItem: function (id, flag) {
     var item = this.get(id),
       lastOpen = _.last(this._openItems),
       parent = _.last(item.getParents());
@@ -123,14 +121,15 @@ var Modules = Backbone.Collection.extend({
         //折叠时，需要将其与子组一同折叠
         var index = this._openItems.indexOf(item);
         if (index !== -1) {
-          this._openItems.splice(index).reverse().forEach(function(item) {
+          // 子级优先折叠
+          this._openItems.splice(index).reverse().forEach(function (item) {
             item.setOpen(false);
           });
         }
       }
     }
   },
-  setActiveItem: function(id) {
+  setActiveItem: function (id) {
     var item = this.get(id),
       last = _.last(this._activeItems);
     if (item === last) {
@@ -159,7 +158,7 @@ var Modules = Backbone.Collection.extend({
       position++;
     }
     // 处理剩余项目
-    this._activeItems.splice(position).forEach(function(item, index) {
+    this._activeItems.splice(position).forEach(function (item, index) {
       if (index === 0) {
         this.setOpenItem(item.id, false);
       }

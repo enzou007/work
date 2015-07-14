@@ -35,7 +35,7 @@ var Item = React.createClass({
       childrenData = model.getChildren();
 
     var Children = null;
-    if (model.isOpen()) {
+    if (model.isOpen() || (this.props.isMin && !model.has("parent"))) {
       var Items = childrenData.map(function(model) {
         return <Item isMin={this.props.isMin} key={model.id} model={model}/>;
       }.bind(this));
@@ -56,7 +56,7 @@ var Item = React.createClass({
     return (
       <li aria-haspopup={this.props.isMin && childrenData.length > 0} className={classes} onClick={this.handleClick}>
         <Link href={model.get("href")} target={model.get("target")} title={model.get("name")} to={model.get("path")}>
-          <i aria-haspopup={this.props.isMin && !this.props.model.has("parent")}
+          <i aria-haspopup={this.props.isMin && !model.has("parent")}
             className={classNames("menu-icon", model.get("ico"))} onTouchEnd={this.handleMiniTouch}/>
           <span className="menu-text"> {model.get("name")}</span>
           {childrenData.length > 0 ? <b className="arrow fa fa-angle-down"/> : null}

@@ -14,8 +14,12 @@ module.exports = {
   },
   resolve: {
     alias: {
-      "backbone-validation": "backbone-validation/dist/backbone-validation-amd",
-      "backbone.select": "backbone.select/dist/amd/backbone.select"
+      "Component": __dirname + "/assets/js/component",
+      "View": __dirname + "/assets/js/view",
+      // 默认引入React的插件
+      "react$": "react/lib/ReactWithAddons",
+      "backbone-validation$": "backbone-validation/dist/backbone-validation-amd",
+      "backbone.select$": "backbone.select/dist/amd/backbone.select"
     },
     modulesDirectories: ["node_modules", "bower_components"]
   },
@@ -35,14 +39,14 @@ module.exports = {
     }, {
       test: /\.jsx$/,
       exclude: /(node_modules|bower_components)/,
-      loader: 'babel?stage=0'
+      loader: 'babel?stage=0&optional=runtime',
     }, {
       test: /\.(js|jsx)$/,
       include: /node_modules[\/\\]rctui/,
       loader: 'babel?stage=0'
     }, {
       test: /module[\/\\](?!home[\/\\]).*\.jsx$/,
-      loader: 'bundle?lazy!babel?stage=0'
+      loader: 'bundle?lazy!babel?stage=0&optional=runtime'
     }, {
       test: /module[\/\\].+[\/\\]option\.js$/,
       loader: 'bundle?lazy'
@@ -53,10 +57,14 @@ module.exports = {
     }]
   },
   plugins: [
-    // 默认引入React的插件
-    new webpack.NormalModuleReplacementPlugin(/^react$/, "react/lib/ReactWithAddons"),
     // 过滤moment多余的语言模块
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
+    // 在form.js中引入jsx时，过滤掉home相关代码
+    new webpack.ContextReplacementPlugin(/\.\/module/, function (result) {
+      if (result.regExp.toString().indexOf(".jsx") !== -1) {
+        result.regExp = /^\.\/(?!home).+\/.*\/.+\.jsx$/;
+      }
+    }),
     // 替换backbone.select的错误依赖
     new webpack.NormalModuleReplacementPlugin(/backbone$/, function (result) {
       if (/backbone\.select[\/\\]dist[\/\\]amd$/.test(result.context)) {
@@ -76,6 +84,8 @@ module.exports = {
         result.request = infos.shift() + "/src/js/" + infos.join("/");
       }
     }),
+    // 将form-control.jsx 替换成新的实现
+    new webpack.NormalModuleReplacementPlugin(/\.\/form-control\.jsx$/, "Component/form/FormControl.jsx"),
     new webpack.optimize.CommonsChunkPlugin("commons.js"),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])

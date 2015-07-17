@@ -18,18 +18,33 @@ var Toolbar = React.createClass({
     customs: React.PropTypes.arrayOf(React.PropTypes.element).isRequired
   },
   getInitialState: function () {
-    // TODO 从model中获取权限信息
     return {
       allowWrite: true,
       allowDelete: true
     }
   },
   render: function () {
+    var flows = this.props.model.get("flows"),
+      formPath = _.values(this.props.form)[0];
+
+    if (flows.length === 0) {
+      flows = _.map(this.props.form, function (form, name) {
+        return {
+          form: form,
+          name: name
+        };
+      });
+    } else {
+      flows.forEach(function (flow) {
+        flow.form = formPath;
+      });
+    }
+
     return (
       <div className="frame-toolbar btn-toolbar">
         {
           this.state.allowWrite ? (
-            <Create page={this.props.page} form={this.props.form}/>
+            <Create page={this.props.page} forms={flows}/>
           ) : null
         }
         {

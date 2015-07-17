@@ -55,8 +55,8 @@ var ViewFrame = React.createClass({
     var View = this.props.View,
       activatedItem = action.getActivatedItem(),
       columns = activatedItem.get("column") || action.getDefaultItem().get("column"),
-      page = activatedItem.get("page") || this.props.page,
-      form = _.first(_.keys(activatedItem.get("form") || this.props.form));
+      page = this.props.page,
+      formPath = _.values(this.props.form)[0];
 
     return (
       <div id="view-frame" className={classNames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
@@ -70,13 +70,14 @@ var ViewFrame = React.createClass({
               </small>
             </h1>
           </div>
-          <Toolbar model={this.props.model} page={page} form={this.props.form} showViewButton={this.props.viewButton} customs={this.props.CustomButton}/>
+          <Toolbar model={this.props.model} page={page} form={this.props.form}
+            showViewButton={this.props.viewButton} customs={this.props.CustomButton}/>
         </div>
 
         <div className="row">
           <div className="col-xs-12" ref="viewContainer">
             <View collection={action.getDataCollection()} column={columns}
-              height={this.state.tableHeight} width={this.state.tableWidth} page={page} form={form}/>
+              height={this.state.tableHeight} width={this.state.tableWidth} page={page} form={formPath}/>
             <PagingInfo collection={action.getDataCollection()}/>
           </div>
         </div>

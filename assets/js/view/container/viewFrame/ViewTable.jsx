@@ -46,7 +46,8 @@ var ViewTable = React.createClass({
       dataCollection = this.getCollection(),
       sortHandle = this.toggleSort,
       page = this.props.page,
-      form = this.props.form;
+      form = this.props.form,
+      path = _.result(this.getCollection(), "url");
     return (
       <Table {..._.omit(this.props, "column")} isColumnResizing={this.state.isColumnResizing}
         onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
@@ -74,7 +75,7 @@ var ViewTable = React.createClass({
               },
               cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
                 return (
-                  <a href={"/"+page+"?form="+form+"&objectId="+rowData["@objectId"]} target="_blank">{cellData}</a>
+                  <a href={"/"+page+"?form="+form+"&path="+path+"&objectId="+rowData["@objectId"]} target="_blank">{cellData}</a>
                 );
               }) : null,
               fixed: isFirst

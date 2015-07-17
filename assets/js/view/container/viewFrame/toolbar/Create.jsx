@@ -1,42 +1,39 @@
-"use strict";
+import React from "react"
+import _ from "underscore"
 
-var React = require("react"),
-  _ = require("underscore");
-
-var Create = React.createClass({
+let Create = React.createClass({
   propTypes: {
     page: React.PropTypes.string.isRequired,
-    form: React.PropTypes.object.isRequired
+    forms: React.PropTypes.array.isRequired
   },
-  render: function () {
-    var keys = _.keys(this.props.form);
+  render() {
+    let Group = [];
 
-    var Button;
-
-    if (keys.length > 1) {
-      Button = [
+    if (this.props.forms.length > 1) {
+      Group.push(
         <button className="btn btn-link dropdown-toggle" data-toggle="dropdown" title="新建">
           <i className="ace-icon fa fa-file-text-o"/>新建
         </button>,
         <ul className="dropdown-menu dropdown-default">
           {
-            _.map(this.props.form, function (formName, form) {
+            this.props.forms.map(function (form) {
               return (
                 <li>
-                  <a title={formName} href={"/" + this.props.page + "?form=" + form} target="_blank">
-                    <i className="ace-icon fa fa-file-text-o"/>{formName}
+                  <a href={`/${this.props.page}?form=${form.form}&flowId=${form.objectId}`} target="_blank"
+                    title={form.name}>
+                    <i className="ace-icon fa fa-file-text-o"/>{form.name}
                   </a>
                 </li>
               );
             }, this)
           }
         </ul>
-      ];
-    } else {
-      var form = keys[0],
-        formName = this.props.form[form];
-      Button = (
-        <a className="btn btn-link" title={formName} href={"/" + this.props.page + "?form=" + form} target="_blank">
+      );
+    } else if(this.props.forms.length > 0){
+      var form = this.props.forms[0];
+      Group.push(
+        <a className="btn btn-link" title={form.name}
+          href={`/${this.props.page}?form=${form.form}&flowId=${form.objectId}`} target="_blank">
           <i className="ace-icon fa fa-file-text-o"/>新建
         </a>
       );
@@ -44,10 +41,10 @@ var Create = React.createClass({
 
     return (
       <div className="btn-group">
-        {Button}
+        {Group}
       </div>
     );
   }
 });
 
-module.exports = Create;
+export default Create;

@@ -8,7 +8,9 @@ var Fieldset = React.createClass({
   render: function () {
     return (
       <fieldset className={this.props.className}>
+        { this.props.title ? (
         <legend>{this.props.title}</legend>
+        ): null }
         { this.props.children }
       </fieldset>
     );

@@ -90,11 +90,14 @@ const FormControl = React.createClass({
 
     let props = Object.assign({}, this.props, {
       ref: "control",
-      value: this.state.value,
-      onChange: this.handleChange,
-      onFocus: this.handleFocus.bind(this, true),
-      onBlur: this.handleFocus.bind(this, false)
+      value: this.state.value
     });
+
+    if (!this.props.readOnly) {
+      props.onChange = this.handleChange,
+      props.onFocus = this.handleFocus.bind(this, true),
+      props.onBlur = this.handleFocus.bind(this, false)
+    }
 
     if (props.layout === 'inline') {
       props.placeholder = props.placeholder || props.label

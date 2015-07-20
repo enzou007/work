@@ -18,7 +18,8 @@ module.exports = {
       "View": __dirname + "/assets/js/view",
       // 默认引入React的插件
       "react$": "react/lib/ReactWithAddons",
-      "jsplumb$": "/dist/js/jquery.jsPlumb-1.7.6.js",
+      // jsplumb的bower.main未能生效，强行覆盖
+      "jsplumb$": "jsplumb/dist/js/jquery.jsPlumb-1.7.6.js",
       "backbone-validation$": "backbone-validation/dist/backbone-validation-amd",
       "backbone.select$": "backbone.select/dist/amd/backbone.select"
     },

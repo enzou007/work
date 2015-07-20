@@ -37,9 +37,13 @@ module.exports = {
       test: /\.json$/,
       loader: "json"
     }, {
+      test: /\.js$/,
+      include: /assets[\/\\]js/,
+      loader: 'babel?stage=0&optional=runtime'
+    }, {
       test: /\.jsx$/,
       exclude: /(node_modules|bower_components)/,
-      loader: 'babel?stage=0&optional=runtime',
+      loader: 'babel?stage=0&optional=runtime'
     }, {
       test: /\.(js|jsx)$/,
       include: /node_modules[\/\\]rctui/,
@@ -49,7 +53,7 @@ module.exports = {
       loader: 'bundle?lazy!babel?stage=0&optional=runtime'
     }, {
       test: /module[\/\\].+[\/\\]option\.js$/,
-      loader: 'bundle?lazy'
+      loader: 'bundle?lazy!babel?stage=0&optional=runtime'
     }, {
       test: /\.js$/,
       include: /(bootstrap|gritter)/,

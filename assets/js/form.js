@@ -1,19 +1,20 @@
-"use strict";
+import React from "react";
+import $ from "jquery";
 
-var React = require("react");
+import "rctui/lang/zh-cn";
 
-require("rctui/lang/zh-cn");
-require("../less/form.less");
+import "../less/form.less";
 
+import formAction from "./action/form";
 
-var path = "xwgg/xwsd/note";
-var objectId = "sadfjkasfd";
-
-//TODO 获取Model
+formAction.bind(location.search.substring(1));
 
 require.ensure([], function (require) {
-  require("./module/" + path +".jsx")(function (ModuleForm) {
+  require("./module/" + formAction.getFormPath() + ".jsx")(function (ModuleForm) {
     var Form = React.createFactory(ModuleForm);
-    React.render(Form(), document.getElementById("form"));
+    React.render(Form({
+      flow: formAction.getFlow(),
+      store: formAction.getDocument()
+    }), document.getElementById("form"));
   });
 });

@@ -6,9 +6,9 @@ import Strings from 'rctui/utils/strings'
 import Objects from 'rctui/utils/objects'
 import Validatable from 'rctui/mixins/validatable';
 
-var controls = {};
+let controls = {};
 
-let FormControl = React.createClass({
+const FormControl = React.createClass({
   displayName: 'FormControl',
   propTypes: {
     children: React.PropTypes.any,
@@ -25,9 +25,12 @@ let FormControl = React.createClass({
     ]),
     name: React.PropTypes.string,
     onChange: React.PropTypes.func,
-    responsive: React.PropTypes.oneOf([
-      'sm', 'md', 'lg', 'xl'
-    ]),
+    responsive: React.PropTypes.shape({
+      sm: React.PropTypes.number,
+      md: React.PropTypes.number,
+      lg: React.PropTypes.number,
+      xl: React.PropTypes.number
+    }),
     type: React.PropTypes.string,
     value: React.PropTypes.any
   },
@@ -36,7 +39,10 @@ let FormControl = React.createClass({
     return {
       id: Strings.nextUid(),
       layout: 'inline',
-      responsive: 'md',
+      responsive: {
+        lg: 12,
+        xl: 8
+      },
       type: 'text'
     }
   },
@@ -128,14 +134,15 @@ let FormControl = React.createClass({
     if (children) {
       return this.getChildren(children, control.component)
     } else {
-      props = Object.assign(this.copyProps(), props || {})
+      props = Object.assign(this.copyProps(), props || {});
+      // 不从FormControl继承responsive设置
+      if (props) {
+        delete props.responsive;
+      }
       return control.render(props)
     }
   },
   renderInline(className) {
-    if (this.props.width) {
-      className = `${className} pure-u-1 pure-u-${this.props.responsive}-${this.props.width}-24`
-    }
     return (
       <div className={className}>
         {this.getControl({ width: this.props.width ? 24 : undefined })} { this.state.errorText ?
@@ -149,7 +156,7 @@ let FormControl = React.createClass({
   renderStacked(className) {
     return (
       <div className={className}>
-        <label className="label" htmlFor={this.props.id}>{this.props.label}</label>
+        <label className="label" htmlFor={this.props.id}>{this.props.label}:</label>
         <div className="pure-control-inner">
           {this.getControl()} { this.state.errorText ?
           <span className="error">{this.state.errorText}</span>
@@ -163,8 +170,14 @@ let FormControl = React.createClass({
   render() {
 // do not use Classable, cause width will set control width
 // if want to set group's width, use className
-    let hintType = this.props.hintType ? this.props.hintType : (this.props.layout === 'inline' ? 'pop' : 'block')
-    let className = classnames(this.props.className, 'pure-control-group', `hint-${hintType}`, {
+    let hintType = this.props.hintType ? this.props.hintType : (this.props.layout === 'inline' ? 'pop' : 'block');
+
+    let reps = [];
+    Objects.forEach(this.props.responsive, function (width, type) {
+      reps.push(`pure-u-${type}-${width}-24`);
+    });
+
+    let className = classnames(this.props.className, 'pure-control-group', `hint-${hintType}`, 'pure-u-1', reps.join(" "), {
       'has-error': this.state.hasError,
       'focused': this.state.focused
     });

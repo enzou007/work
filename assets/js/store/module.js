@@ -23,6 +23,7 @@ var Module = Backbone.Model.extend({
     target: null,
     parent: null,
     permission: null,
+    flows: [],
     queries: null,
     columns: null,
     roles: null

@@ -65,6 +65,19 @@
     type: js
     file: response/xwgg/xwsd/view.js
 - request:
+    url: /1/xwgg/xwsd/THIS_IS_A_OBJECTID
+  response:
+    type: js
+    file: response/xwgg/xwsd/THIS_IS_A_OBJECTID.js
+- request:
+    url: /1/flow/5582272444ae2b5937e53930
+  response:
+    file: response/flow/xwsd/flow.json
+- request:
+    url: /1/flow/5582272444ae2b5937e53930/THIS_IS_A_OBJECTID
+  response:
+    file: response/flow/xwsd/THIS_IS_A_OBJECTID.json
+- request:
     url: /1/xwgg/xwsd
     method: POST
   response:

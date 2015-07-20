@@ -1,133 +1,81 @@
-body{
-    background-color: white;
-}
+#form {
 
-.navbar{
-    margin-bottom: 8px;
-    .pull-right{
-      padding-right: 20px;
-      &>*{
-        margin:0px 1px;
-        //max-height: 38px;
-      }
-    }
-}
+  .container {
+    margin-top: 15px;
+  }
 
-.btn > i{
-  margin-left:8px;
-}
-
-#form{
-  background-color: white;
-  .form-content{
-    border: 1px solid #C5D0DC;
+  .form-content {
+    border: 1px solid #c5d0dc;
     padding: 10px;
-    background-color: white;
-  }
-  legend{
-    border: 0;
   }
 
-  .tab-content{
-    background-color: white;
-  }
-
-  .tab-content .form-content{
+  .tab-content .form-content {
     border: 0;
     padding: 0;
-
   }
-  .pure-control-group{
+
+  .pure-control-group {
+
     margin-bottom: 8px;
-    .label{
-      height:34px;
-      top:0;
-      left:4px;
-      //border:1px solid #cdcdcd;
-      padding-bottom: 0;
-      padding-top: 8px;
+
+    .label {
+      color: #464646;
+      background-color: transparent !important;
+      font-size: 14px;
+      top: 0.4em;
     }
 
-    .form-control{
-      border-radius:0;
+    .form-control {
+      border-radius: 0;
       margin: 0;
     }
+
     .datetime {
-      width:100%;
-    }
-    .date-picker{
-      border-radius:0;
-      .day{
-        border-radius:0;
+      width: 100%;
+
+      .date-picker, .day {
+        border-radius: 0;
       }
-    }
-    input[type="text"]{
-      height:34px;
-    }
-  }
-
-  .dropdown{
-    display:inline-block;
-  }
-
-  .input-icon-right{
-      input[type="text"]{
-        padding-right: 24px;
-      }
-      .fa {
-          position: absolute;
-          top:10px;
-          right:8px;
-          cursor: pointer;
-      }
-  }
-
-  .input-icon-left{
-      input[type="text"]{
-        padding-left: 24px;
-      }
-      .fa {
-          position: absolute;
-          top:10px;
-          right:8px;
-          cursor: pointer;
-      }
-  }
-
-
-//------------------------------------------------------------
-//测试中css
-
-
-
-.pure-control-group{
-
-    .select.active{
-        //border-bottom: 0;
-        border-radius:0;
     }
 
     .select {
-        border-radius:0;
-    }
+      border-radius: 0;
 
-    .options-wrap .options{
-        //border-top: 0;
+      .options-wrap .options {
         border-radius: 0;
+      }
     }
-    //
-    // hr{
-    //     display: none ;
-    // }
+  }
 
-    .label{
-        color: #000 ;
-        background-color: white !important;
-        font-size: 14px;
-    }
-    .dropup{
-        //border-top: 0;
-    }
-}
+  .dropdown {
+    display: inline-block;
+  }
 
+  .input-icon-right {
+
+    input[type="text"] {
+      padding-right: 24px;
+    }
+
+    .fa {
+      position: absolute;
+      top: 10px;
+      right: 8px;
+      cursor: pointer;
+    }
+  }
+
+  .input-icon-left {
+
+    input[type="text"] {
+      padding-left: 24px;
+    }
+
+    .fa {
+      position: absolute;
+      top: 10px;
+      right: 8px;
+      cursor: pointer;
+    }
+  }
 }

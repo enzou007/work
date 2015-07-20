@@ -1,45 +1,57 @@
-"use strict";
+import React from "react";
+import $ from "jquery";
 
-var React = require("react");
+import Toolbar from "./Toolbar.jsx";
+import TimeLine from "./timeline/TimeLine.jsx";
+import Form from "Component/form/Form.jsx";
 
-var Navbar = require("./Navbar.jsx"),
-  TimeLine = require("./timeline/TimeLine.jsx"),
-  SubmitBtn = require("./operate/SubmitBtn.jsx");
+import Message from 'rctui/Message';
 
-var Form = require("Component/form/Form.jsx");
+import formAction from "../../action/form";
 
-require("../../../less/flow.less");
-var FlowForm = React.createClass({
+import "../../../less/flow.less";
+
+let FlowForm = React.createClass({
   propTypes: {
     onBeforeSubmit: React.PropTypes.func,
     onSubmit: React.PropTypes.func
   },
   getDefaultProps: function () {
     return {
-      formTitle: "入职申请单"
+      hintType: "pop",
+      layout: "aligned"
     };
   },
-  flowOperate: function () {},
-  render: function () {
+  getInitialState() {
+    return {
+      flow: formAction.getFlow(),
+      log: formAction.getOperateLog(),
+      store: formAction.getDocument()
+    };
+  },
+  componentWillMount () {
+    formAction.on("load", () => {
+      this.forceUpdate();
+    });
+  },
+  render() {
+    var title = this.state.flow.name || "表单";
+
     return (
-      <div>
-        <Navbar operate={this.flowOperate} title={this.props.formTitle}>
-          <button className="btn btn-inverse" data-trigger="zb">
-            转办<i className="fa fa-user"/></button>
-          <button className="btn btn-inverse" data-trigger="jq">
-            加签
-            <i className="fa fa-user"/></button>
-          <button className="btn btn-inverse" data-trigger="reject">
-            驳回
-            <i className="fa fa-user"/>
-          </button><SubmitBtn/>
-        </Navbar>
+      <div className="no-skin">
+        <Message clickaway={true} top={true}/>
+        <Toolbar title={this.state.flow.name || "表单"}>{this.props.toolbar}</Toolbar>
+        <div className="main-container" id="main-container">
+          <Form className="container" hintType={this.props.hintType} layout={this.props.layout}
+            onSubmit={this.props.onSubmit} store={this.state.store}>
+            {this.props.children}
+          </Form>
+        </div>
         <TimeLine/>
-        <Form className="container form-horizontal" layout="aligned" hintType="pop" onSubmit={this.props.onSubmit}>
-          {this.props.children}
-        </Form>
       </div>
     );
   }
 });
-module.exports = FlowForm;
+
+export
+default FlowForm;

@@ -59,7 +59,7 @@ module.exports = {
     }, {
       test: /\.js$/,
       include: /(bootstrap|gritter|jsplumb)/,
-      loader: "exports?jQuery!imports?jQuery=jquery&this=>window"
+      loader: "exports?jQuery!imports?jQuery=jquery&this=>window&define=>false"
     }]
   },
   plugins: [

@@ -22,7 +22,8 @@
     "webfont-opensans": "~0.0.2",
     "element-icon-identicon": "~1.0.0",
     "bootstrap": "~3.3.5",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "jsplumb": "~1.7.6"
   },
   "overrides": {
     "jquery": {

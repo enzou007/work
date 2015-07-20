@@ -18,6 +18,7 @@ module.exports = {
       "View": __dirname + "/assets/js/view",
       // 默认引入React的插件
       "react$": "react/lib/ReactWithAddons",
+      "jsplumb$": "/dist/js/jquery.jsPlumb-1.7.6.js",
       "backbone-validation$": "backbone-validation/dist/backbone-validation-amd",
       "backbone.select$": "backbone.select/dist/amd/backbone.select"
     },
@@ -56,8 +57,8 @@ module.exports = {
       loader: 'bundle?lazy!babel?stage=0&optional=runtime'
     }, {
       test: /\.js$/,
-      include: /(bootstrap|gritter)/,
-      loader: "exports?jQuery!imports?jQuery=jquery"
+      include: /(bootstrap|gritter|jsplumb)/,
+      loader: "exports?jQuery!imports?jQuery=jquery&this=>window"
     }]
   },
   plugins: [

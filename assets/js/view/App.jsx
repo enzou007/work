@@ -3,8 +3,11 @@
 var React = require("react"),
   _ = require("underscore");
 
-var Nav = require("./navbar/Navbar.jsx"),
+var Navbar = require("./navbar/Navbar.jsx"),
+  UserMenu = require("./navbar/UserMenu.jsx"),
   Sidebar = require("./sidebar/Sidebar.jsx");
+
+var session = require("../store/session");
 
 var moduleStore = require("../store/module");
 
@@ -14,11 +17,14 @@ var App = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   render: function() {
     var Container = this.state.model.container,
-      options = _.omit(this.state.model, "container");
+      options = _.omit(this.state.model, "container"),
+      userInfo = session.toJSON();
 
     return (
       <div className="no-skin">
-        <Nav/>
+        <Navbar title="办公管理系统" href="#" ico="fa fa-leaf" menu={true}>
+          <UserMenu {...userInfo}></UserMenu>
+        </Navbar>
         <div className="main-container" id="main-container">
           <Sidebar collection={moduleStore}/>
           <div className="main-content">

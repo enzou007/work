@@ -57,7 +57,9 @@ var Tabs = React.createClass({
             var boundClick = this.toggleActive.bind(this, index); return (
               <li className={classNames({active: index === this.state.activated})} key={index}>
                 <a href={child.props.link || "#"} onClick={boundClick}>
-                  <i className={classNames("ace-icon",child.props.ico)}/>
+                  { child.props.ico ? (
+                    <i className={classNames("ace-icon",child.props.ico)}/>
+                  ): null }
                   {child.props.tab || "未命名"}
                 </a>
               </li>
@@ -70,7 +72,7 @@ var Tabs = React.createClass({
           ) : ( React.Children.map(this.props.children, function (child, index) { return (
             <div className={
                 classNames("tab-pane",{
-                  fade: this.props.fade, 
+                  fade: this.props.fade,
                   active:index === this.state.activated,
                   in: this.props.fade && index === this.state.activated && this.state.in
                 })

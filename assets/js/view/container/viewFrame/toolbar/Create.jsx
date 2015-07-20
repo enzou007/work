@@ -11,15 +11,15 @@ let Create = React.createClass({
 
     if (this.props.forms.length > 1) {
       Group.push(
-        <button className="btn btn-link dropdown-toggle" data-toggle="dropdown" title="新建">
+        <button className="btn btn-link dropdown-toggle" data-toggle="dropdown" title="新建" key="button">
           <i className="ace-icon fa fa-file-text-o"/>新建
         </button>,
-        <ul className="dropdown-menu dropdown-default">
+        <ul className="dropdown-menu dropdown-default" key="list">
           {
             this.props.forms.map(function (form) {
               return (
                 <li>
-                  <a href={`/${this.props.page}?form=${form.form}&flowId=${form.objectId}`} target="_blank"
+                  <a key={form.form} href={`/${this.props.page}?form=${form.form}&flowId=${form.objectId}`} target="_blank"
                     title={form.name}>
                     <i className="ace-icon fa fa-file-text-o"/>{form.name}
                   </a>
@@ -32,7 +32,7 @@ let Create = React.createClass({
     } else if(this.props.forms.length > 0){
       var form = this.props.forms[0];
       Group.push(
-        <a className="btn btn-link" title={form.name}
+        <a className="btn btn-link" key={form.name} title={form.name}
           href={`/${this.props.page}?form=${form.form}&flowId=${form.objectId}`} target="_blank">
           <i className="ace-icon fa fa-file-text-o"/>新建
         </a>

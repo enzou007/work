@@ -61,7 +61,7 @@ _.extend(Action.prototype, Backbone.Events, {
   buildDataCollection: function () {
     return new QueryData(null, {
       model: this.Model,
-      url: "/1/" + this.module.get("path")
+      url: "1/" + this.module.get("path")
     });
   },
   addCustomQuery: function (items) {

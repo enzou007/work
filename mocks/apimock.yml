@@ -65,6 +65,10 @@
     type: js
     file: response/xwgg/xwsd/view.js
 - request:
+    url: /1/xwgg/xwsd/@session
+  response:
+    file: response/session/me.json
+- request:
     url: /1/xwgg/xwsd/THIS_IS_A_OBJECTID
   response:
     type: js

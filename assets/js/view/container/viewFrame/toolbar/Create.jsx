@@ -4,7 +4,11 @@ import _ from "underscore"
 let Create = React.createClass({
   propTypes: {
     page: React.PropTypes.string.isRequired,
+    path: React.PropTypes.string.isRequired,
     forms: React.PropTypes.array.isRequired
+  },
+  _href(page, form, path, flowId) {
+    return `/${page}?form=${form}&path=${path}&flowId=${flowId}`;
   },
   render() {
     let Group = [];
@@ -19,8 +23,8 @@ let Create = React.createClass({
             this.props.forms.map(function (form) {
               return (
                 <li>
-                  <a key={form.form} href={`/${this.props.page}?form=${form.form}&flowId=${form.objectId}`} target="_blank"
-                    title={form.name}>
+                  <a key={form.form} href={this._href(this.props.page, form.form, this.props.path, form.objectId)}
+                    target="_blank" title={form.name}>
                     <i className="ace-icon fa fa-file-text-o"/>{form.name}
                   </a>
                 </li>
@@ -33,7 +37,7 @@ let Create = React.createClass({
       var form = this.props.forms[0];
       Group.push(
         <a className="btn btn-link" key={form.name} title={form.name}
-          href={`/${this.props.page}?form=${form.form}&flowId=${form.objectId}`} target="_blank">
+          href={this._href(this.props.page, form.form, this.props.path, form.objectId)} target="_blank">
           <i className="ace-icon fa fa-file-text-o"/>新建
         </a>
       );

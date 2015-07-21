@@ -44,7 +44,7 @@ var Toolbar = React.createClass({
       <div className="frame-toolbar btn-toolbar">
         {
           this.state.allowWrite ? (
-            <Create page={this.props.page} forms={flows}/>
+            <Create page={this.props.page} forms={flows} path={this.props.path}/>
           ) : null
         }
         {

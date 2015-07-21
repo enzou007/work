@@ -56,6 +56,7 @@ var ViewFrame = React.createClass({
       activatedItem = action.getActivatedItem(),
       columns = activatedItem.get("column") || action.getDefaultItem().get("column"),
       page = this.props.page,
+      path = _.result(action.getDataCollection(), "url"),
       formPath = _.values(this.props.form)[0];
 
     return (
@@ -70,7 +71,7 @@ var ViewFrame = React.createClass({
               </small>
             </h1>
           </div>
-          <Toolbar model={this.props.model} page={page} form={this.props.form}
+          <Toolbar model={this.props.model} page={page} form={this.props.form} path={path}
             showViewButton={this.props.viewButton} customs={this.props.CustomButton}/>
         </div>
 

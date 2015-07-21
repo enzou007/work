@@ -1,20 +1,34 @@
 import React from "react";
 import $ from "jquery";
+import iflux from 'iflux';
 
 import "rctui/lang/zh-cn";
 
 import "../less/form.less";
 
-import formAction from "./action/form";
+import {store as formStore, action as formAction, channel} from "./action/form";
 
-formAction.bind(location.search.substring(1));
+let StoreMixin = iflux.mixins.StoreMixin;
+
+formAction.resolve(location.search.substring(1));
 
 require.ensure([], function (require) {
-  require("./module/" + formAction.getFormPath() + ".jsx")(function (ModuleForm) {
-    var Form = React.createFactory(ModuleForm);
-    React.render(Form({
-      flow: formAction.getFlow(),
-      store: formAction.getDocument()
-    }), document.getElementById("form"));
+  require(`./module/${formAction.getFormPath() }.jsx`)(function (ModuleForm) {
+
+    let BootElement = React.createClass({
+      mixins: [StoreMixin(formStore)],
+      render: function () {
+        var store = formStore.data();
+        return React.createElement(ModuleForm, {
+          "session": store.get("session"),
+          "flow": store.get("flow"),
+          "log": store.get("log"),
+          "form": store.get("form"),
+          "channel": channel
+        });
+      }
+    });
+
+    React.render(React.createElement(BootElement), document.getElementById("form"));
   });
 });

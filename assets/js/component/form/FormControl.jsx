@@ -6,6 +6,8 @@ import Strings from 'rctui/utils/strings'
 import Objects from 'rctui/utils/objects'
 import Validatable from 'rctui/mixins/validatable';
 
+import {channel} from "../../action/form";
+
 let controls = {};
 
 const FormControl = React.createClass({
@@ -50,23 +52,28 @@ const FormControl = React.createClass({
     return {
       focused: false,
       hasError: false,
-      hasValue: this.props.value,
+      hasValue: !!this.props.value,
       value: this.props.value,
       valueType: controls[this.props.type].valueType,
       data: this.props.data,
       hintText: ''
     }
   },
-  componentWillMount: function () {
-    this.setState({})
+  componentWillReceiveProps: function (nextProps) {
+    this.setState({
+      hasValue: !!nextProps.value,
+      value: nextProps.value,
+      valueType: controls[nextProps.type].valueType,
+      data: nextProps.data
+    });
   },
   getReference() {
     return this.refs.control
   },
   handleChange(value) {
     this.validate(this.refs.control.getValue(null))
-    if (!this.props.ignore && this.props.store) {
-      this.props.store[this.props.name] = this.refs.control.getValue(null);
+    if (!this.props.ignore) {
+      channel.update(this.props.name, this.refs.control.getValue(null));
     }
     if (this.props.onChange) {
       this.props.onChange(value)
@@ -138,7 +145,7 @@ const FormControl = React.createClass({
       return this.getChildren(children, control.component)
     } else {
       props = Object.assign(this.copyProps(), props || {});
-      // 不从FormControl继承responsive设置
+// 不从FormControl继承responsive设置
       if (props) {
         delete props.responsive;
       }

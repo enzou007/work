@@ -53,6 +53,8 @@
     "cookies-js": "^1.2.1",
     "fixed-data-table": "^0.3.0",
     "gritter": "^1.7.4",
+    "iflux": "^1.1.7",
+    "immutable": "^3.7.4",
     "moment": "^2.10.3",
     "rctui": "^0.2.2",
     "react": "^0.13.3",

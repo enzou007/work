@@ -1,5 +1,8 @@
 import React from "react";
+import _ from "underscore";
 import $ from "jquery";
+
+import iflux from 'iflux';
 
 import Toolbar from "./Toolbar.jsx";
 import TimeLine from "./timeline/TimeLine.jsx";
@@ -7,47 +10,50 @@ import Form from "Component/form/Form.jsx";
 
 import Message from 'rctui/Message';
 
-import formAction from "../../action/form";
+import {store as formStore, action as formAction} from "../../action/form";
 
 import "../../../less/flow.less";
 
-let FlowForm = React.createClass({
+const FlowForm = React.createClass({
   propTypes: {
+    onCreate: React.PropTypes.func,
+    onLoad: React.PropTypes.func,
     onBeforeSubmit: React.PropTypes.func,
     onSubmit: React.PropTypes.func
   },
-  getDefaultProps: function () {
+  getDefaultProps() {
     return {
       hintType: "pop",
       layout: "aligned"
     };
   },
-  getInitialState() {
-    return {
-      flow: formAction.getFlow(),
-      log: formAction.getOperateLog(),
-      store: formAction.getDocument()
-    };
-  },
-  componentWillMount () {
-    formAction.on("load", () => {
-      this.forceUpdate();
-    });
+  componentWillMount: function () {
+    $.when(formAction.bindSession(), formAction.getObjectId() ? formAction.bindDocument() : formAction.bindFlow())
+      .then(() => {
+        if (formAction.getObjectId()) {
+          formAction.bindFlowLog().then(() => {
+            if (this.props.onLoad) {
+              this.props.onLoad();
+            }
+          });
+        } else if (this.props.onCreate) {
+          this.props.onCreate();
+        }
+      });
   },
   render() {
-    var title = this.state.flow.name || "表单";
+    let store = formStore.data();
 
     return (
       <div className="no-skin">
         <Message clickaway={true} top={true}/>
-        <Toolbar title={this.state.flow.name || "表单"}>{this.props.toolbar}</Toolbar>
+        <Toolbar title={store.get("flow").name || "表单"}>{this.props.toolbar}</Toolbar>
         <div className="main-container" id="main-container">
-          <Form className="container" hintType={this.props.hintType} layout={this.props.layout}
-            onSubmit={this.props.onSubmit} store={this.state.store}>
+          <Form className="container" hintType={this.props.hintType} layout={this.props.layout} onSubmit={this.props.onSubmit} store={store.get("form")}>
             {this.props.children}
           </Form>
         </div>
-        <TimeLine/>
+        {/*<TimeLine/>*/}
       </div>
     );
   }

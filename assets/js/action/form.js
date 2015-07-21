@@ -1,18 +1,25 @@
 import Backbone from "backbone";
 import _ from "underscore";
 import $ from "jquery";
+import {
+  Store, msg
+}
+from 'iflux';
 
-let Action = function () {
-  this._flow = {};
-  this._log = [];
-  this._store = {};
-};
+// 全局store
+const formStore = Store({
+  session: {},
+  flow: {},
+  log: [],
+  form: {}
+});
 
-_.extend(Action.prototype, Backbone.Events, {
-  reset: function () {
+export var store = formStore;
 
-  },
-  bind(search) {
+// 表单操作
+const formAction = {
+  _options: {},
+  resolve(search) {
     let options = {},
       key = "",
       value = null;
@@ -47,64 +54,63 @@ _.extend(Action.prototype, Backbone.Events, {
 
     if (!options.form) {
       throw Error(`Can't not get 'form' by location.search '${search}'`);
-    } else if (options.flowId && !options.objectId) {
-      this.bindFlow(options.flowId);
-    } else if (options.path && options.objectId) {
-      this.bindDocument(options.path, options.objectId).then((resp) => {
-        this.bindFlowLog(resp["@flowId"], options.objectId);
-      });
-    } else {
-      throw Error(`Can't not fetch a document or a flow by location.search '${search}'`);
     }
+    if (!options.path) {
+      throw Error(`Can't not get 'path' by location.search '${search}'`);
+    }
+
+    return this;
   },
   getFormPath() {
     return this._options.form;
   },
-  getFlow() {
-    return this._flow;
+  getPath() {
+    return this._options.path;
   },
-  getDocument() {
-    return this._store;
+  getFlowId() {
+    return this._options.flowId;
   },
-  getOperateLog() {
-    return this._log;
+  getObjectId() {
+    return this._options.objectId;
   },
-  bindFlow(flowId) {
-    this._options.flowId = flowId;
-    return $.get(`/1/flow/${flowId}`).done(resp => {
-      Object.assign(this._flow, resp);
-      this.trigger("load");
+  bindSession() {
+    return $.get(`${this.getPath()}/@session`).done(resp => {
+      formStore.cursor().get("session").merge(resp);
       return resp;
     });
   },
-  bindDocument(path, objectId) {
-    return $.get(`${path}/${objectId}`).done(resp => {
-      Object.assign(this._store, resp);
-      this.trigger("load");
+  bindFlow() {
+    return $.get(`1/flow/${this.getFlowId()}`).done(resp => {
+      formStore.cursor().get("flow").mergeDeep(resp);
       return resp;
     });
   },
-  bindFlowLog(flowId, objectId) {
-    return $.get(`/1/flow/${flowId}/${objectId}`).done(resp => {
-      Object.assign(this._flow, resp.flow);
-      this._log.push(...resp.log);
-      this.trigger("load");
+  bindDocument() {
+    return $.get(`${this.getPath()}/${this.getObjectId()}`).done(resp => {
+      this._options.flowId = resp["@flowId"];
+      formStore.cursor().get("form").merge(resp);
+      return resp;
+    });
+  },
+  bindFlowLog() {
+    return $.get(`1/flow/${this.getFlowId()}/${this.getObjectId()}`).done(resp => {
+      formStore.cursor().get("log").mergeDeep(resp);
       return resp;
     });
   },
   preview() {
-    return $.post(`/1/flow/${this._options.flowId}/${this._options.objectId}`, this._store).done(resp => {
+    return $.post(`1/flow/${this.getFlowId()}/${this.getObjectId()}`, formStore.data().get("form").toJS()).done(resp => {
       return resp;
     });
   },
   save() {
     return $.ajax({
-      url: `${this._options.path}/${this._options.objectId}`,
+      url: `${this.getPath()}/${this.getObjectId()}`,
       type: "POST",
       header: {
         "FlowControlType": "save"
       },
-      data: this._store
+      data: formStore.data().get("form").toJS()
     }).done(resp => {
 
     });
@@ -118,6 +124,26 @@ _.extend(Action.prototype, Backbone.Events, {
   jump() {
 
   }
+}
+
+export var action = formAction;
+
+//数据操作
+msg.on("update", function (key, val) {
+  if (key == null) return this;
+
+  let attrs;
+  if (typeof key === 'object') {
+    attrs = key;
+  } else {
+    (attrs = {})[key] = val;
+  }
+
+  formStore.cursor().get("form").merge(attrs);
 });
 
-export default new Action();
+export var channel = {
+  update: function (name, value) {
+    msg.emit("update", name, value)
+  }
+};

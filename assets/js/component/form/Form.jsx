@@ -24,17 +24,8 @@ const Form = React.createClass({
   },
   getInitialState() {
     return {
-      locked: false,
-      data: this.props.store
+      locked: false
     };
-  },
-  getValue() {
-    return this.state.data;
-  },
-  setData(data) {
-    Objects.forEach(this.refs, (ref, k) => {
-      ref.setValue(data[k])
-    });
   },
   equalValidate(targetRef, equalRef) {
     let self = this;
@@ -57,14 +48,15 @@ const Form = React.createClass({
       };
 
       if (child.type === FormControl) {
-        if (!child.props.name) {
+        let childName = child.props.name;
+        if (!childName) {
           console.warn('FormControl must have a name!');
           return null;
         }
-        props.store = this.state.data;
-        props.value = this.state.data[child.props.name];
+
+        props.value = this.props.store.get(childName);
         if (child.props.equal) {
-          props.onValidate = this.equalValidate(child.props.equal, child.props.name);
+          props.onValidate = this.equalValidate(child.props.equal, childName);
         }
 
         return React.addons.cloneWithProps(child, props);

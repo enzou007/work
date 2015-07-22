@@ -92,3 +92,8 @@
   response:
     type: js
     file: response/system/user/userSearch.js
+- request:
+    url: /1/system/department
+  response:
+    type: js
+    file: response/system/department/departmentSearch.js

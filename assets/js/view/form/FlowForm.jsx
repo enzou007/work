@@ -59,5 +59,4 @@ const FlowForm = React.createClass({
   }
 });
 
-export
-default FlowForm;
+export default FlowForm;

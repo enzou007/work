@@ -5,7 +5,8 @@ var FlowForm = require("View/form/FlowForm.jsx"),
   FormControl = require("Component/form/FormControl.jsx"),
   Tabs = require("Component/bootstrap/Tabs.jsx"),
   Fieldset = require("Component/form/Fieldset.jsx"),
-  Personnel = require("Component/form/Personnel.jsx");
+  Personnel = require("Component/form/Personnel.jsx"),
+  Department = require("Component/form/Department.jsx");
 
 var Input = require("rctui/input");
 var Select = require("rctui/select");
@@ -38,7 +39,7 @@ var NoteForm = React.createClass({
               <FormControl label="性别" name="StSex" type="select" data={SexData}/>
               <FormControl label="年龄" name="StAge" type="number"/>
               <FormControl label="部门领导" name="StLeader" type="personnel" />
-              <FormControl label="所属部门" data={["1","2","3","4"]} filterAble={true} mult={false} name="StDept" type="select"/>
+              <FormControl label="所属部门" name="StDept" type="department"/>
               <FormControl label="备注" name="Notes" type="textarea" responsive={{xl: 16}}/>
             </Fieldset>
           </div>

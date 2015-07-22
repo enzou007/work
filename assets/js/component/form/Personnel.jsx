@@ -194,13 +194,17 @@ const Personnel = React.createClass({
         <hr/>
         <div className="options" ref="options">
           <ul>
-            { this.state.options.map((item, index) => { var dept = _.first(item.departments); return (
-            <li className={classnames({show: true})} title={item.id} key={item.objectId}
-              onClick={this.handleChange.bind(this, index)} >
-              <span>{item.name}</span>
-              <span className="dept">{dept.name}</span>
-            </li>
-            ); }) }
+            { this.state.options.map((item, index) => {
+              let dept = _.first(item.departments),
+                selected = !!_.findWhere(this.state.data, {objectId: item.objectId});
+              return (
+                <li className={classnames({show: true, active: selected})} title={item.id} key={item.objectId}
+                  onClick={this.handleChange.bind(this, index)} >
+                  <span>{item.name}</span>
+                  <span className="dept">{dept.name}</span>
+                </li>
+              );
+            }) }
           </ul>
         </div>
       </div>

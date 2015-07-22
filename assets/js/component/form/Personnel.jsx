@@ -15,12 +15,10 @@ import action from "../../action/personnel";
 import "rctui/src/less/form.less";
 import "rctui/src/less/select.less";
 
-import "../../../less/component/personnel.less";
+import "../../../less/component/organization.less";
 
 const Personnel = React.createClass({
-  mixins: [
-    Classable, ReceiveValue, ClickAwayable
-  ],
+  mixins: [Classable, ReceiveValue, ClickAwayable],
   propTypes: {
     readOnly: React.PropTypes.bool
   },
@@ -78,7 +76,9 @@ const Personnel = React.createClass({
     }, 500);
   },
   triggerFocus() {
-    this.refs.input.getDOMNode().focus();
+    if(this.refs.input){
+      this.refs.input.getDOMNode().focus();
+    }
   },
   handleFocus(flag) {
     this.setState({
@@ -124,6 +124,10 @@ const Personnel = React.createClass({
     }
   },
   handleRemove(index) {
+    if(this.props.readOnly){
+      return;
+    }
+
     this.state.data.splice(index, 1);
     if (this.props.onChange) {
       let value = this.getValue()
@@ -165,7 +169,7 @@ const Personnel = React.createClass({
     return value
   },
   renderList() {
-    let placeholder = this.state.value == null ? (this.state.msg || this.props.placeholder) : null;
+    let placeholder = this.state.value.length === 0 ? (this.state.msg || this.props.placeholder) : null;
 
     return (
       <div>
@@ -175,10 +179,12 @@ const Personnel = React.createClass({
             {item.name}
           </span>
         ); }) }
-        <span className="search-field">
-          <input ref="input" onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
-            onFocus={this.handleFocus.bind(this, true)} placeholder={placeholder}/>
-        </span>
+        { !this.props.readOnly ? (
+          <span className="search-field">
+            <input ref="input" onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
+              onFocus={this.handleFocus.bind(this, true)} placeholder={placeholder}/>
+          </span>
+        ) : null}
       </div>
     );
   },
@@ -202,7 +208,7 @@ const Personnel = React.createClass({
   },
   render() {
     return (
-      <div className={this.getClasses("personnel", "select", "form-control", {
+      <div className={this.getClasses("organization", "personnel", "select", "form-control", {
           focus: this.state.focus,
           active: this.state.active,
           readonly: this.props.readOnly,

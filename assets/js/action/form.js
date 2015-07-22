@@ -1,10 +1,6 @@
-import Backbone from "backbone";
 import _ from "underscore";
 import $ from "jquery";
-import {
-  Store, msg
-}
-from 'iflux';
+import { Store, msg } from 'iflux';
 
 // 全局store
 const formStore = Store({

@@ -1,10 +1,8 @@
-"use strict";
-
 import React from 'react'
 import classnames from 'classnames'
-import Strings from 'rctui/utils/strings'
-import Objects from 'rctui/utils/objects'
-import Validatable from 'rctui/mixins/validatable';
+import Strings from 'rctui/src/js/utils/strings'
+import Objects from 'rctui/src/js/utils/objects'
+import Validatable from 'rctui/src/js/mixins/validatable';
 
 import {channel} from "../../action/form";
 

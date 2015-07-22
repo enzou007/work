@@ -1,6 +1,6 @@
 import React from 'react';
-import Objects from 'rctui/utils/objects';
-import Classable from 'rctui/mixins/classable';
+import Objects from 'rctui/src/js/utils/objects';
+import Classable from 'rctui/src/js/mixins/classable';
 import FormControl from './FormControl.jsx';
 
 const Form = React.createClass({
@@ -53,8 +53,12 @@ const Form = React.createClass({
           console.warn('FormControl must have a name!');
           return null;
         }
+        let value = this.props.store.get(childName);
+        if(value && typeof value.toJS === "function"){
+          value = value.toJS();
+        }
 
-        props.value = this.props.store.get(childName);
+        props.value = value;
         if (child.props.equal) {
           props.onValidate = this.equalValidate(child.props.equal, childName);
         }

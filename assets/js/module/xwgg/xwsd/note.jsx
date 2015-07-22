@@ -5,17 +5,20 @@ var FlowForm = require("View/form/FlowForm.jsx"),
   FormControl = require("Component/form/FormControl.jsx"),
   Tabs = require("Component/bootstrap/Tabs.jsx"),
   Fieldset = require("Component/form/Fieldset.jsx"),
-  Dept = require("Component/form/Dept.jsx");
+  Personnel = require("Component/form/Personnel.jsx");
 
-var Input = require("rctui/Input");
-var Select = require("rctui/Select");
-var DateTime = require("rctui/Datetime");
+var Input = require("rctui/input");
+var Select = require("rctui/select");
+var DateTime = require("rctui/datetime");
+
+var SexData = ["男","女"];
 
 var NoteForm = React.createClass({
   onCreate: function (store) {
     this.props.channel.update({
       AppPsnCn: this.props.session.get("name"),
-      StDate: "2015-07-21"
+      StDate: "2015-07-21",
+      StLeader: ["5582272444ae2b5937e53911"]
     });
   },
   beforeSubmit: function () {
@@ -31,10 +34,10 @@ var NoteForm = React.createClass({
           <div className="form-content" tab="基本信息">
             <Fieldset title="Form表单">
               <FormControl label="申请人" name="AppPsnCn" type="text" readOnly={true}/>
-              <FormControl label="申请日期" name="StDate" type="date" readOnly={true}/>
-              <FormControl data={["男","女"]} label="性别" mult={false} name="StSex" type="select"/>
+              <FormControl label="申请日期" name="StDate" type="date"/>
+              <FormControl label="性别" name="StSex" type="select" data={SexData}/>
               <FormControl label="年龄" name="StAge" type="number"/>
-              <FormControl label="部门领导" filterAble={true} mult={true} name="StLeader" src="/1/system/user/search" type="select"/>
+              <FormControl label="部门领导" name="StLeader" type="personnel" />
               <FormControl label="所属部门" data={["1","2","3","4"]} filterAble={true} mult={false} name="StDept" type="select"/>
               <FormControl label="备注" name="Notes" type="textarea" responsive={{xl: 16}}/>
             </Fieldset>

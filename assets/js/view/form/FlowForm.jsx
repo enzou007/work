@@ -8,7 +8,7 @@ import Toolbar from "./Toolbar.jsx";
 import TimeLine from "./timeline/TimeLine.jsx";
 import Form from "Component/form/Form.jsx";
 
-import Message from 'rctui/Message';
+import Message from 'rctui/message';
 
 import {store as formStore, action as formAction} from "../../action/form";
 
@@ -47,7 +47,7 @@ const FlowForm = React.createClass({
     return (
       <div className="no-skin">
         <Message clickaway={true} top={true}/>
-        <Toolbar title={store.get("flow").name || "表单"}>{this.props.toolbar}</Toolbar>
+        <Toolbar title={store.get("flow").get("name") || "表单"}>{this.props.toolbar}</Toolbar>
         <div className="main-container" id="main-container">
           <Form className="container" hintType={this.props.hintType} layout={this.props.layout} onSubmit={this.props.onSubmit} store={store.get("form")}>
             {this.props.children}

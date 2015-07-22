@@ -3,7 +3,7 @@
 var React = require("react"),
   _ = require("underscore");
 
-var Datetime = require("rctui/Datetime");
+var Datetime = require("rctui/datetime");
 
 require("rctui/lang/zh-cn");
 

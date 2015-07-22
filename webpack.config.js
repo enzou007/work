@@ -77,19 +77,6 @@ module.exports = {
         result.request = "../../../backbone/backbone.js";
       }
     }),
-    // 处理React-UI的依赖，简化路径处理
-    new webpack.NormalModuleReplacementPlugin(/^rctui/, function (result) {
-      var request = result.request,
-        infos = request.split("/");
-      if (infos.length === 2) {
-        var componentName = infos.pop().replace(/[A-Z]/g, function (input, index) {
-          return (index !== 0 ? "-" : "") + input.toLowerCase();
-        });
-        result.request = infos.shift() + "/src/js/components/" + infos.join("/") + (infos.length > 0 ? "/" : "") + componentName + ".jsx";
-      } else {
-        result.request = infos.shift() + "/src/js/" + infos.join("/");
-      }
-    }),
     // 将form-control.jsx 替换成新的实现
     new webpack.NormalModuleReplacementPlugin(/\.\/form-control\.jsx$/, "Component/form/FormControl.jsx"),
     new webpack.optimize.CommonsChunkPlugin("commons.js"),

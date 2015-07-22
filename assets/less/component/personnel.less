@@ -1,0 +1,76 @@
+.personnel {
+
+  min-height: 34px;
+  height: auto;
+  padding-bottom: 0;
+
+  &.select {
+    cursor: text;
+
+    .options-wrap {
+      top: 101%;
+    }
+
+    .result {
+      background-color: #DFE8F7;
+      padding: 3px;
+      margin: 3px 10px 3px 0;
+    }
+
+    .result:after {
+      position: static;
+      right: auto;
+      padding-left: 2px;
+      color: inherit;
+    }
+
+    .search-field {
+      display: inline-block;
+      width: 30%;
+      max-width: 100px;
+
+      > input {
+         border: 0 !important;
+         box-shadow: none !important;
+         padding-left: 0 !important;
+         padding-bottom: 0 !important;
+         width: 100%;
+      }
+    }
+
+    .result + .search-field {
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+      > input {
+        padding-top: 0 !important;
+        margin-top: -3px;
+      }
+    }
+
+    hr {
+      border-top: 0;
+    }
+  }
+
+  &.select.dropup .options-wrap {
+    top: auto;
+    bottom: 100%;
+  }
+
+  &.form-control {
+    padding-top: 0;
+  }
+
+  /* 设定pure的focus样式 */
+  &.focus {
+    outline: 0;
+    border-color: #129FEA;
+    color: #696969;
+  }
+
+  .dept {
+    float: right;
+  }
+
+}

@@ -2,38 +2,72 @@
 
 var React = require("react");
 
-var TimeLineItem = require("./TimeLineItem.jsx")
+var TimeLineItem = require("./TimeLineItem.jsx");
+
+var operates = {
+  "提交": "submit",
+  "驳回": "reject"
+}
 
 var TimeLine = React.createClass({
   propTypes: {
     nodeName: React.PropTypes.string,
     user: React.PropTypes.string,
+    operate: React.PropTypes.string,
     time: React.PropTypes.string
   },
-  render: function() {
+  ellipsis: function(nodeName){
+    if(nodeName.length > 4){
+      return nodeName.substr(0,4) + "...";
+    }else{
+      return nodeName;
+    }
+  },
+  render: function () {
     return (
       <div className="timeline-item clearfix">
-        <div className="timeline-info">
-          <i className="timeline-indicator icon-food btn btn-success no-hover"></i>
-        </div>
-
-        <div className="widget-box transparent">
-          <div className="widget-header widget-header-small">
-            {this.props.nodeName}
-          </div>
-					<div className="widget-body">
-						<div className="widget-main">
+        <div className={"timeline-info " + operates[this.props.operate]}>
+          <i className="timeline-indicator btn"></i>
+          <div className=" popover fade left in">
+            <div className="tooltip-arrow"></div>
+            <h3 className="popover-title">{this.props.nodeName}</h3>
+            <div className="popover-content">
               <div>
                 <i className="fa fa-user"></i>
                 {this.props.user}
               </div>
               <div>
+                <i className="fa fa-edit"></i>
+                {this.props.operate}
+              </div>
+              <div>
                 <i className="fa fa-clock-o"></i>
                 {this.props.time}
               </div>
-						</div>
-					</div>
-				</div>
+            </div>
+          </div>
+          <div className="item-title">{this.ellipsis(this.props.nodeName)}</div>
+        </div>
+
+        <div className="widget-box transparent">
+          <div className="widget-header widget-header-small"></div>
+          <div className="widget-body">
+            <div className="widget-main">
+              <div>
+                <i className="fa fa-user"></i>
+                {this.props.user}
+              </div>
+              <div>
+                <i className="fa fa-edit"></i>
+                {this.props.operate}
+              </div>
+              <div>
+                <i className="fa fa-clock-o"></i>
+                {this.props.time.substr(11,18)}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

@@ -12,7 +12,9 @@ module.exports = function (data) {
     "Subject": "@title",
     "SourceCompName": "@sentence(2,3)",
     "NewSource": "@sentence(2,3)",
-    "PubDate": "@date"
+    "PubDate": "@date",
+    "StType":"2",
+    "Notes":"text"
   };
 
   result.json = Mock.mock(template);

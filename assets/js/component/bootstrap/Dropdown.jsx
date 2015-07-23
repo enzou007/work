@@ -40,9 +40,9 @@ const Dropdown = React.createClass({
 
     this.setState({
       open: flag,
-      dropup: this.state.offset ? DOM.overView(el, this.state.offset) : this.state.dropup
+      dropup: this.props.dropup || (this.state.offset ? DOM.overView(el, this.state.offset) : this.state.dropup)
     }, () => {
-      if(this.state.open && this.state.offset === 0){
+      if(this.state.open && this.props.dropup == null && this.state.offset === 0){
         let offset = el.children[1].offsetHeight;
 
         this.setState({
@@ -57,10 +57,14 @@ const Dropdown = React.createClass({
 
     return React.addons.cloneWithProps(toggle, {
       className: classnames("dropdown-toggle"),
-      onClick: (...param) => {
+      onClick: (event, ...param) => {
         this.toggleOpen();
+        let prevent = false;
         if (toggle.props.onClick) {
-          toggle.props.onClick(...param);
+          prevent = toggle.props.onClick(event, ...param) === true;
+        }
+        if(!prevent){
+          event.preventDefault();
         }
       },
       ref: toggle.props.ref,
@@ -99,5 +103,4 @@ const Dropdown = React.createClass({
   }
 });
 
-export
-default Dropdown;
+export default Dropdown;

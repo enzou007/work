@@ -9,12 +9,12 @@ var SubmitBtn = React.createClass({
     getDefaultProps: function () {
       return {
         text: "提交",
-        className: "btn btn-inverse",
+        className: "btn btn-success",
         icon: "fa fa-arrow-right",
         befer: function(){
           return true;
         },
-        submit: function(){ }
+        trigger: function(){ }
       };
     },
     PropTypes:{
@@ -59,11 +59,11 @@ var SubmitBtn = React.createClass({
           </div>
           <hr></hr>
           <div className="row operate">
-            <button className="btn btn-danger" onClick={this.closeModalBox}>
+            <button className="btn" onClick={this.closeModalBox}>
               取消<i className="fa fa-times"></i>
             </button>
 
-            <button className="btn btn-success" onClick={this.props.submit}>
+            <button className="btn btn-success" onClick={this.props.trigger}>
               确定<i className="fa fa-arrow-right "></i>
             </button>
           </div>

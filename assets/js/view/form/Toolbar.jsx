@@ -3,6 +3,12 @@ import $ from "jquery";
 
 import Navbar from "../navbar/Navbar.jsx";
 import SubmitBtn from "./operate/SubmitBtn.jsx";
+import FlowBtn from "./operate/FlowBtn.jsx";
+import SaveBtn from "./operate/SaveBtn.jsx";
+import ExitBtn from "./operate/ExitBtn.jsx";
+import RejectBtn from "./operate/RejectBtn.jsx";
+
+import formAction from "../../action/form";
 
 const Toolbar = React.createClass({
   PropTypes: {
@@ -12,27 +18,13 @@ const Toolbar = React.createClass({
     document.title = this.props.title;
 
     return (
-      <Navbar title={this.props.title} ico="fa fa-leaf">
-        <button className="btn btn-inverse">
-          保存
-          <i className="fa fa-user"/>
-        </button>
-        <SubmitBtn/>
-        <button className="btn btn-inverse" data-trigger="reject">
-          驳回
-          <i className="fa fa-user"/>
-        </button>
-
-        <button className="btn btn-inverse" data-trigger="jq">
-          加签
-          <i className="fa fa-user"/></button>
-        <button className="btn btn-inverse" data-trigger="zb">
-          转办<i className="fa fa-user"/></button>
+      <Navbar ico="fa fa-leaf" title={this.props.title}>
+        <li><SaveBtn trigger={formAction.save}/> </li>
+        <li><SubmitBtn trigger={formAction.submit}/> </li>
+        <li><RejectBtn trigger={formAction.reject}/> </li>
         {this.props.children}
-        <button className="btn btn-inverse">
-          退出
-          <i className="fa fa-user"/>
-        </button>
+        <li><FlowBtn flow={this.props.flow}/></li>
+        <li><ExitBtn /></li>
       </Navbar>
     );
   }

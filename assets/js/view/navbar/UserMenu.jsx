@@ -23,7 +23,7 @@ const UserMenu = React.createClass({
   },
   render() {
     return (
-      <Dropdown tag="li" className="light-blue">
+      <Dropdown tag="li" className="light-blue" align="right">
         <a href="javascrip:user-menu">
           <Avatar className="nav-user-photo" detail={false} img={this.props.avatar} size={40} userId={this.props.objectId}/>
           <span className="user-info">
@@ -32,7 +32,7 @@ const UserMenu = React.createClass({
           </span>
           <i className="ace-icon fa fa-caret-down"/>
         </a>
-        <ul className="user-menu dropdown-menu-right dropdown-yellow dropdown-caret dropdown-close">
+        <ul className="user-menu dropdown-yellow dropdown-caret dropdown-close">
           <li>
             <a href="#">
               <i className="ace-icon fa fa-cog"/>

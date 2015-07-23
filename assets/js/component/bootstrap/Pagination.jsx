@@ -98,9 +98,9 @@ var Pagination = React.createClass({
     };
 
     return (
-      <Dropdown tag="li" dropup={true} clickAndClose={false} key={"jumper"+position}>
+      <Dropdown tag="li" dropup={true} clickAndClose={false} key={"jumper"+position} align={position}>
         <a href="javascript:more">...</a>
-        <div className={"page-jumper dropdown-menu-"+position}>
+        <div className="page-jumper">
           <input max={max} min={1} onMouseUp={handle} onChange={handle} ref={"jumper-"+position} type="range"/>
         </div>
       </Dropdown>

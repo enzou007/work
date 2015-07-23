@@ -1,7 +1,6 @@
 import React from "react";
 import classnames from "classnames";
 
-import DOM from "rctui/src/js/utils/dom";
 import ClickAwayable from "rctui/src/js/mixins/click-awayable";
 
 const Dropdown = React.createClass({
@@ -10,6 +9,9 @@ const Dropdown = React.createClass({
     tag: React.PropTypes.node,
     clickAndClose: React.PropTypes.bool,
     dropup: React.PropTypes.bool,
+    align: React.PropTypes.oneOf([
+      "left", "right"
+    ]),
     children: React.PropTypes.node.isRequired
   },
   getDefaultProps() {
@@ -21,8 +23,10 @@ const Dropdown = React.createClass({
   getInitialState() {
     return {
       open: false,
+      align: this.props.align || "left",
       dropup: this.props.dropup || false,
-      offset: 0
+      offsetWidth: 0,
+      offsetHeight: 0
     };
   },
   componentWillUpdate: function (nextProps, nextState) {
@@ -35,19 +39,39 @@ const Dropdown = React.createClass({
   componentClickAway() {
     this.toggleOpen(false)
   },
+  _overView(el, offsetWidth = this.state.offsetWidth, offsetHeight = this.state.offsetHeight) {
+    let height = window.innerHeight || document.documentElement.clientHeight,
+      width = window.innerWhdth || document.documentElement.clientWidth,
+      rect = el.getBoundingClientRect();
+
+    let bottom = rect.bottom + offsetHeight,
+      right = rect.right + offsetWidth;
+
+    return {
+      width: right > width,
+      height: bottom > height
+    }
+  },
   toggleOpen(flag = !this.state.open) {
-    let el = React.findDOMNode(this);
+    let el = React.findDOMNode(this),
+      overView = this._overView(el);
 
     this.setState({
       open: flag,
-      dropup: this.props.dropup || (this.state.offset ? DOM.overView(el, this.state.offset) : this.state.dropup)
+      align: this.props.align || (overView.width ? "right" : "left"),
+      dropup: this.props.dropup || overView.height
     }, () => {
-      if (this.state.open && this.props.dropup == null && this.state.offset === 0) {
-        let offset = el.children[1].offsetHeight;
+      if (this.state.open && this.state.offsetWidth === 0){
+        let child = el.children[1],
+          offsetWidth = child.offsetWidth,
+          offsetHeight = child.offsetHeight,
+          viewState = this._overView(el, offsetWidth, offsetHeight);
 
         this.setState({
-          offset,
-          dropup: DOM.overView(el, offset)
+          offsetWidth,
+          offsetHeight,
+          align: this.props.align || (viewState.width ? "right" : "left"),
+          dropup: this.props.dropup || viewState.height
         });
       }
     });
@@ -75,7 +99,9 @@ const Dropdown = React.createClass({
     let menu = this.props.children[1];
     if (menu) {
       return React.addons.cloneWithProps(menu, {
-        className: classnames("dropdown-menu"),
+        className: classnames("dropdown-menu", {
+          "dropdown-menu-right": this.state.align === "right"
+        }),
         onClick: (...param) => {
           let skip = false;
           if (menu.props.onClick) {

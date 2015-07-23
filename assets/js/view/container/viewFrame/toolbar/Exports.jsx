@@ -7,11 +7,11 @@ import action from "../../../../action/viewFrame";
 const Exports = React.createClass({
   render: function () {
     return (
-      <Dropdown className="btn-group">
+      <Dropdown className="btn-group" align="right">
         <button className="btn btn-link" title="导出">
           <i className="ace-icon fa fa-share"/>导出
         </button>
-        <ul className="dropdown-default pull-right export">
+        <ul className="dropdown-default export">
           <li>
             <a>导出所选项</a>
           </li>

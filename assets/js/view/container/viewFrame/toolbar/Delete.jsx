@@ -1,13 +1,11 @@
-"use strict";
+import React from "react";
 
-var React = require("react"),
-  Gritter= require("../../../../component/Gritter.jsx");
+import Gritter from "../../../../component/Gritter.jsx";
 
-var action = require("../../../../action/viewFrame");
+import action from "../../../../action/viewFrame";
 
-var Delete = React.createClass({
-  triggerDelete: function () {
-
+const Delete = React.createClass({
+  triggerDelete() {
     if (action.getDataCollection().selectedLength > 0) {
       var id = Gritter.add({
         title: '提示',
@@ -29,7 +27,7 @@ var Delete = React.createClass({
       });
     }
   },
-  render: function () {
+  render() {
     return (
       <div className="btn-group">
         <button className="btn btn-link" title="删除" onClick={this.triggerDelete}>
@@ -40,4 +38,4 @@ var Delete = React.createClass({
   }
 });
 
-module.exports = Delete;
+export default Delete;

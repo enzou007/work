@@ -1,15 +1,13 @@
-"use strict";
+import React from "react";
+import  _ from "underscore";
+import  $ from "jquery";
 
-var React = require("react"),
-  _ = require("underscore"),
-  $ = require("jquery");
+import action from "../../../../action/viewFrame";
 
-var action = require("../../../../action/viewFrame");
+import Condition from "./Condition.jsx";
 
-var Condition = require("./Condition.jsx");
-
-var CustomSearch = React.createClass({
-  getInitialState: function () {
+const CustomSearch = React.createClass({
+  getInitialState() {
     var defaultItem = {};
     defaultItem[_.uniqueId("condition_")] = null;
     return {
@@ -19,7 +17,7 @@ var CustomSearch = React.createClass({
       }, {}) : defaultItem
     };
   },
-  render: function () {
+  render() {
     return (
       <div className="custom-search-panel">
         <div className="search-container">
@@ -31,10 +29,10 @@ var CustomSearch = React.createClass({
             <div className="col-xs-12 form-horizontal">
               检索条件
               {
-                _.map(this.state.condition, function (value, key) { return (
+                _.map(this.state.condition, (value, key) => { return (
                   <Condition fields={this.props.fields} key={key} ref={key} value={value}
                     onRemove={this._removeCondition.bind(null, key)}/>
-                );}, this)
+                );})
               }
               <div className="clearfix" style={{marginTop: 20}}>
                 <a href="javascript:plus" onClick={this._addCondition}><i className="ace-icon fa fa-plus"/>添加条件</a>
@@ -52,36 +50,36 @@ var CustomSearch = React.createClass({
       </div>
     );
   },
-  getCondition: function () {
+  getCondition() {
     return _.filter(this.refs, function (value, key) {
       return key.indexOf("condition_") === 0;
     }).map(function (item) {
       return item.getValue();
     });
   },
-  doSave: function () {
+  doSave() {
     action.addCustomQuery([this._buildQueryItem().toJSON()]);
     // TODO 持久化
   },
-  doQuery: function () {
+  doQuery() {
     action.toggleSearchItem(this._buildQueryItem());
   },
-  _buildQueryItem: function () {
+  _buildQueryItem() {
     var QueryModel = this.props.items.model;
     return new QueryModel({
       name: this.refs.queryName.getDOMNode().value,
       condition: this.getCondition()
     });
   },
-  _addCondition: function (event) {
+  _addCondition(event) {
     this.state.condition[_.uniqueId("condition_")] = null;
     this.forceUpdate();
     event.preventDefault();
   },
-  _removeCondition: function (key) {
+  _removeCondition(key) {
     delete this.state.condition[key];
     this.forceUpdate();
   }
 });
 
-module.exports = CustomSearch;
+export default CustomSearch;

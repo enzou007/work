@@ -20,24 +20,20 @@ let Create = React.createClass({
             <i className="ace-icon fa fa-file-text-o"/>新建
           </button>
           <ul>
-            {
-              this.props.forms.map(function (form) {
-                return (
-                  <li>
-                    <a key={form.form} href={this._href(this.props.page, form.form, this.props.path, form.objectId)}
-                      target="_blank" title={form.name}>
-                      <i className="ace-icon fa fa-file-text-o"/>{form.name}
-                    </a>
-                  </li>
-                );
-              }, this)
-            }
+            { this.props.forms.map((form) => { return (
+              <li>
+                <a key={form.form} href={this._href(this.props.page, form.form, this.props.path, form.objectId)}
+                  target="_blank" title={form.name}>
+                  <i className="ace-icon fa fa-file-text-o"/>{form.name}
+                </a>
+              </li>
+            ); }) }
           </ul>
         </Dropdown>
       );
     } else if(this.props.forms.length > 0){
       var form = this.props.forms[0];
-      
+
       return (
         <div className="btn-group">
           <a className="btn btn-link" key={form.name} title={form.name}

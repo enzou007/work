@@ -1,20 +1,19 @@
-"use strict";
+import React from "react";
+import _ from "underscore";
+import classNames from "classnames";
 
-var React = require("react"),
-  _ = require("underscore"),
-  classNames = require("classnames");
+import FixedDataTable from "fixed-data-table";
+import Checkbox from "../../../component/Checkbox.jsx";
 
-var FixedDataTable = require("fixed-data-table"),
-  Table = FixedDataTable.Table,
-  Column = FixedDataTable.Column,
-  Checkbox = require("../../../component/Checkbox.jsx");
+import "backbone-react-component";
+import "fixed-data-table/dist/fixed-data-table.css";
 
-require("backbone-react-component");
-require("fixed-data-table/dist/fixed-data-table.css");
+const Table = FixedDataTable.Table,
+  Column = FixedDataTable.Column;
 
-var SORT_ICONS = ["fa fa-sort", "fa fa-sort-asc", "fa fa-sort-desc"];
+const SORT_ICONS = ["fa fa-sort", "fa fa-sort-asc", "fa fa-sort-desc"];
 
-var ViewTable = React.createClass({
+const ViewTable = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   propTypes: {
     width: React.PropTypes.number.isRequired,
@@ -24,48 +23,49 @@ var ViewTable = React.createClass({
     headerHeight: React.PropTypes.number,
     rowHeight: React.PropTypes.number
   },
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       headerHeight: 36,
       rowHeight: 36
     };
   },
-  getInitialState: function() {
+  getInitialState() {
     return {
       column : this._parseColumnProp(this.props),
       isColumnResizing: false
     };
   },
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       column: this._parseColumnProp(nextProps)
     });
   },
-  render: function() {
-    var firstColumn = this.props.column[0],
+  render() {
+    let firstColumn = this.props.column[0],
       dataCollection = this.getCollection(),
       sortHandle = this.toggleSort,
       page = this.props.page,
       form = this.props.form,
       path = _.result(this.getCollection(), "url");
+
     return (
       <Table {..._.omit(this.props, "column")} isColumnResizing={this.state.isColumnResizing}
         onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
         rowsCount={dataCollection.getPerPage()}
         rowGetter={this.props.rowGetter || this._rowGetter}>
-        <Column key="选择" dataKey="__index" fixed={true} width={35} align="center" headerRenderer={function () {
+        <Column key="选择" dataKey="__index" fixed={true} width={35} align="center" headerRenderer={() => {
           return <Checkbox checkboxClass={dataCollection.length !== dataCollection.selectedLength ? "ace-checkbox-2" : ""}
             checked={dataCollection.selectedLength > 0} onChange={this.selectAll}/>;
-        }.bind(this)} cellRenderer={function (cellData, cellDataKey, rowData, rowIndex, columnData, width) {
+        }} cellRenderer={(cellData, cellDataKey, rowData, rowIndex, columnData, width) => {
           return <Checkbox checked={dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
-        }.bind(this)}/>
+        }}/>
         {
-          _.map(this.state.column, function (column, key) {
-            var isFirst = key === firstColumn.dataKey;
-            var options = _.extend({
-              headerRenderer: function (label, dataKey) {
+          _.map(this.state.column, (column, key) => {
+            let isFirst = key === firstColumn.dataKey;
+            let options = _.extend({
+              headerRenderer: (label, dataKey) => {
                 return (
-                  <div className="sort" onClick={sortHandle.bind(null, dataKey)}>
+                  <div className="sort" onClick={sortHandle.bind(this, dataKey)}>
                     {label}
                     <span className={classNames("sort-icon", {"sorting": column.sorting > 0})}>
                       <i className={SORT_ICONS[column.sorting]}/>
@@ -75,7 +75,7 @@ var ViewTable = React.createClass({
               },
               cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
                 return (
-                  <a href={"/"+page+"?form="+form+"&path="+path+"&objectId="+rowData["@objectId"]} target="_blank">{cellData}</a>
+                  <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData["@objectId"]}`} target="_blank">{cellData}</a>
                 );
               }) : null,
               fixed: isFirst
@@ -88,12 +88,12 @@ var ViewTable = React.createClass({
       </Table>
     );
   },
-  _parseColumnProp: function (props) {
-    var tableWidth = props.width,
+  _parseColumnProp(props) {
+    let tableWidth = props.width,
       widthReg = /^([\d.]+)%$/;
 
     return _.reduce(props.column, function (memo, column) {
-      var item = _.extend({}, column);
+      let item = _.extend({}, column);
       if (widthReg.test(item.width)) {
         item.width = parseInt((tableWidth - 35) * (parseFloat(widthReg.exec(item.width)[1]) / 100));
       }
@@ -104,17 +104,17 @@ var ViewTable = React.createClass({
       return memo;
     }, {});
   },
-  _onColumnResize: function (width, dataKey) {
+  _onColumnResize(width, dataKey) {
     var columns = this.state.column;
     columns[dataKey].width = width;
     this.setState({
       isColumnResizing: false
     });
   },
-  _rowGetter: function (index) {
+  _rowGetter(index) {
     return this.state.collection[index];
   },
-  selectAll: function (event) {
+  selectAll(event) {
     if (this.getCollection().length > (this.getCollection().selectedLength || 0)) {
       this.getCollection().selectAll();
     } else {
@@ -123,8 +123,8 @@ var ViewTable = React.createClass({
     this.forceUpdate();
     event.stopPropagation();
   },
-  selectOne: function (index, event) {
-    var model = this.getCollection().at(index);
+  selectOne(index, event) {
+    let model = this.getCollection().at(index);
     if (event.target.checked) {
       model.select();
     } else {
@@ -133,8 +133,8 @@ var ViewTable = React.createClass({
     this.forceUpdate();
     event.stopPropagation();
   },
-  toggleSort: function (dataKey) {
-    var current = _.find(this.state.column, function (item) {
+  toggleSort(dataKey) {
+    let current = _.find(this.state.column, function (item) {
         return item.sorting > 0;
       }),
       column = this.state.column[dataKey];
@@ -148,4 +148,4 @@ var ViewTable = React.createClass({
   }
 });
 
-module.exports = ViewTable;
+export default ViewTable;

@@ -1,8 +1,6 @@
-"use strict";
+import React from "react";
 
-var React = require("react");
-
-var Page_404 = React.createClass({
+const Page_404 = React.createClass({
   render: function() {
     return (
       <div className="page-content-area">
@@ -61,4 +59,4 @@ var Page_404 = React.createClass({
   }
 });
 
-module.exports = Page_404;
+export default Page_404;

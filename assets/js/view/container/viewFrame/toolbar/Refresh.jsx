@@ -1,14 +1,12 @@
-"use strict";
+import React from "react";
 
-var React = require("react");
+import action from "../../../../action/viewFrame";
 
-var action = require("../../../../action/viewFrame");
-
-var Refresh = React.createClass({
-  triggerRefresh: function () {
+const Refresh = React.createClass({
+  triggerRefresh() {
     action.refreshDataCollection();
   },
-  render: function () {
+  render() {
     return (
       <div className="btn-group">
         <button className="btn btn-link" title="刷新" onClick={this.triggerRefresh}>
@@ -19,4 +17,4 @@ var Refresh = React.createClass({
   }
 });
 
-module.exports = Refresh;
+export default Refresh;

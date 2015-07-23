@@ -16,11 +16,6 @@ import "backbone-react-component";
 
 const SearchMenu = React.createClass({
   mixins: [Backbone.React.Component.mixin],
-  checkClose(event) {
-    if($(event.target).hasClass("item")){
-      return true;
-    }
-  },
   triggerSearch(model) {
     action.toggleSearchItem(model);
     this.setState({
@@ -78,6 +73,11 @@ const SearchMenu = React.createClass({
 
     return elements;
   },
+  checkClose(event) {
+    if($(event.target).hasClass("item")){
+      return true;
+    }
+  },
   render() {
     // 输出预定义查询项
     var currentItem = action.getActivatedItem(),
@@ -87,7 +87,7 @@ const SearchMenu = React.createClass({
       });
     return (
       <Dropdown className="btn-group" clickAndClose={false}>
-        <button className="btn btn-link btn-search-menu-toggle" data-toggle="dropdown">
+        <button className="btn btn-link btn-search-menu-toggle">
           {currentItem.get("name")}
           <span className="ace-icon fa fa-angle-down icon-on-right"></span>
         </button>

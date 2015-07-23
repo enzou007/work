@@ -1,17 +1,17 @@
-"use strict";
+import React from "react";
 
-var React = require("react");
+import Dropdown from "../../../../component/bootstrap/Dropdown.jsx";
 
-var action = require("../../../../action/viewFrame");
+import action from "../../../../action/viewFrame";
 
-var Exports = React.createClass({
+const Exports = React.createClass({
   render: function () {
     return (
-      <div className="btn-group">
-        <button className="btn btn-link dropdown-toggle" data-toggle="dropdown" title="导出">
+      <Dropdown className="btn-group">
+        <button className="btn btn-link" title="导出">
           <i className="ace-icon fa fa-share"/>导出
         </button>
-        <ul className="dropdown-menu dropdown-default pull-right export">
+        <ul className="dropdown-default pull-right export">
           <li>
             <a>导出所选项</a>
           </li>
@@ -22,9 +22,9 @@ var Exports = React.createClass({
             <a>导出所有页</a>
           </li>
         </ul>
-      </div>
+      </Dropdown>
     );
   }
 });
 
-module.exports = Exports;
+export default Exports;

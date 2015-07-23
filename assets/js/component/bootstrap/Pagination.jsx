@@ -1,8 +1,8 @@
-"use strict";
+import React from "react";
+import _ from "underscore";
+import classnames from "classnames";
 
-var React = require("react"),
-  _ = require("underscore"),
-  classNames = require("classnames");
+import Dropdown from "./Dropdown.jsx";
 
 var Pagination = React.createClass({
   propTypes: {
@@ -11,33 +11,33 @@ var Pagination = React.createClass({
     size: React.PropTypes.number,
     onChange: React.PropTypes.func.isRequired
   },
-  getDefaultProps: function () {
+  getDefaultProps() {
     return {
       current: 1,
       size: 7
     };
   },
-  componentDidUpdate: function (prevProps, prevState) {
-    var refs = this.refs,
+  componentDidUpdate(prevProps, prevState) {
+    let refs = this.refs,
       current = this.props.current;
       // 由于无法刷新defaultValue属性，需要使用js强制更新Orz
     [
       "left", "right"
     ].forEach(function (key) {
-      var node = refs["jumper-" + key];
+      let node = refs["jumper-" + key];
       if (node) {
         node.getDOMNode().value = current;
       }
     });
   },
-  trigger: function (page, event) {
+  trigger(page, event) {
     this.props.onChange(page);
     if(event){
       event.preventDefault();
     }
   },
-  render: function () {
-    var size = this.props.size,
+  render() {
+    let size = this.props.size,
       curPage = this.props.current,
       total = this.props.total,
       left,
@@ -58,8 +58,8 @@ var Pagination = React.createClass({
       right -= left > 1 ? 1 : 0;
     }
 
-    var ClickItem = [];
-    var i = left;
+    let ClickItem = [];
+    let i = left;
     if (left > 1) {
       ClickItem.push(this._pageItemBuilder(1));
       if (left > 2) {
@@ -79,11 +79,11 @@ var Pagination = React.createClass({
 
     return (
       <ul className="pagination">
-        <li className={classNames({disabled: curPage <= 1})} key="prev" onClick={this.trigger.bind(null, curPage-1)}>
+        <li className={classnames({disabled: curPage <= 1})} key="prev" onClick={this.trigger.bind(null, curPage-1)}>
           <a href="javascript:prev">上一页</a>
         </li>
         {ClickItem}
-        <li className={classNames({disabled: curPage >= total})} key="next" onClick={this.trigger.bind(null, curPage+1)}>
+        <li className={classnames({disabled: curPage >= total})} key="next" onClick={this.trigger.bind(null, curPage+1)}>
           <a href="javascript:next">下一页</a>
         </li>
       </ul>
@@ -92,23 +92,23 @@ var Pagination = React.createClass({
   _pageJumperTrigger: _.debounce(function (value) {
     this.trigger.call(this, value);
   }, 300),
-  _pageJumperBuilder: function (position, max) {
-    var handle = function (event) {
+  _pageJumperBuilder(position, max) {
+    const handle = (event) => {
       this._pageJumperTrigger(parseInt(event.target.value), event);
-    }.bind(this);
+    };
 
     return (
-      <li className="dropup" key={"jumper"+position}>
-        <a className="dropdown-toggle" data-toggle="dropdown" href="javascript:more">...</a>
-        <div className={"page-jumper dropdown-menu dropdown-menu-"+position}>
+      <Dropdown tagName="li" dropup={true} clickAndClose={false} key={"jumper"+position}>
+        <a href="javascript:more">...</a>
+        <div className={"page-jumper dropdown-menu-"+position}>
           <input max={max} min={1} onMouseUp={handle} onChange={handle} ref={"jumper-"+position} type="range"/>
         </div>
-      </li>
+      </Dropdown>
     );
   },
-  _pageItemBuilder: function (pageNumber) {
+  _pageItemBuilder(pageNumber) {
     return (
-      <li className={classNames({active: this.props.current === pageNumber})} key={pageNumber} onClick={this.trigger.bind(null, pageNumber)}>
+      <li className={classnames({active: this.props.current === pageNumber})} key={pageNumber} onClick={this.trigger.bind(null, pageNumber)}>
         <a href={"javascript:"+pageNumber}>
           {pageNumber}
         </a>
@@ -117,4 +117,4 @@ var Pagination = React.createClass({
   }
 });
 
-module.exports = Pagination;
+export default Pagination;

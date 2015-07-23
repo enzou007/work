@@ -1,92 +1,103 @@
-"use strict";
+import React from "react";
+import classnames from "classnames";
 
-var React = require("react"),
-  $ = require("jquery"),
-  CSSTransitionGroup = require("../react/CSSTransitionGroup/CSSTransitionGroup.js");
+import DOM from "rctui/src/js/utils/dom";
+import ClickAwayable from "rctui/src/js/mixins/click-awayable";
 
-var Dropdown = React.createClass({
+const Dropdown = React.createClass({
+  mixins: [ClickAwayable],
   propTypes: {
-    type: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    clickMenuClose: React.PropTypes.bool,
-    readOnly: React.PropTypes.bool,
+    tagName: React.PropTypes.string,
+    clickAndClose: React.PropTypes.bool,
     dropup: React.PropTypes.bool,
     children: React.PropTypes.node.isRequired
   },
-  getDefaultProps: function () {
+  getDefaultProps() {
     return {
-      type: "button", //input OR button
-      icon: "fa fa-caret-down",
-      clickMenuClose: true,
-      dropup: false,
-      readOnly: false
+      tagName: "div",
+      clickAndClose: true
     };
   },
-
-  componentDidMount: function () {
-    var flag = true;
-    var $node = $(this.getDOMNode());
-    $(document).on("click.dropdown", function (e) {
-      if (flag) {
-        $node.removeClass("open");
-      } else {
-        if (this.props.clickMenuClose) {
-          $node.removeClass("open");
-        }
-      }
-      flag = true;
-    }.bind(this));
-
-    $node.find(".dropdown-menu").on("click.dropdown", function (e) {
-      flag = false;
-    });
-
-    $(document).on("click.dropdown", ".dropdown > i", function (e) {
-      e.stopPropagation();
-    });
-    $(document).on("click.dropdown", ".dropdown > button", function (e) {
-      e.stopPropagation();
-    });
-    $(document).on("click.dropdown", ".dropdown > input", function (e) {
-      e.stopPropagation();
-    });
+  getInitialState() {
+    return {
+      open: false,
+      dropup: this.props.dropup || false,
+      offset: 0
+    };
   },
-  toggleShow: function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var $node = $(this.getDOMNode());
-    if ($node.hasClass("open")) {
-      $node.removeClass("open");
+  componentWillUpdate: function (nextProps, nextState) {
+    if (nextState.open) {
+      this.bindClickAway();
     } else {
-      $(".dropdown").removeClass("open");
-      $node.addClass("open");
+      this.unbindClickAway();
     }
   },
-  componentWillUnmount: function () {
-    $(document).off("click.dropdown");
+  componentClickAway() {
+    this.toggleOpen(false)
+  },
+  toggleOpen(flag = !this.state.open) {
+    let el = React.findDOMNode(this);
+
+    this.setState({
+      open: flag,
+      dropup: this.state.offset ? DOM.overView(el, this.state.offset) : this.state.dropup
+    }, () => {
+      if(this.state.open && this.state.offset === 0){
+        let offset = el.children[1].offsetHeight;
+
+        this.setState({
+          offset,
+          dropup: DOM.overView(el, offset)
+        });
+      }
+    });
+  },
+  getToggle() {
+    let toggle = this.props.children[0];
+
+    return React.addons.cloneWithProps(toggle, {
+      className: classnames("dropdown-toggle"),
+      onClick: (...param) => {
+        this.toggleOpen();
+        if (toggle.props.onClick) {
+          toggle.props.onClick(...param);
+        }
+      },
+      ref: toggle.props.ref,
+      key: toggle.props.key
+    });
+  },
+  getMenu() {
+    let menu = this.props.children[1];
+    if (menu) {
+      return React.addons.cloneWithProps(menu, {
+        className: classnames("dropdown-menu"),
+        onClick: (...param) => {
+          let skip = false;
+          if (menu.props.onClick) {
+            skip = menu.props.onClick(...param) === true;
+          }
+
+          if (this.props.clickAndClose || skip) {
+            this.toggleOpen(false);
+          }
+        },
+        ref: menu.props.ref,
+        key: menu.props.key
+      });
+    }
+    return menu;
   },
   render: function () {
-    var child = React.Children.only(this.props.children);
-    child.props.className = "dropdown-menu" + (child.props.className ? " " + child.props.className : "");
-
-    if (this.props.type === "button") {
-      return (
-        <span className={"dropdown" + (this.props.dropup ? " dropup" : "")}>
-          <button className={this.props.className} disabled={this.props.readOnly} onClick={this.toggleShow}>
-            {this.props.value + " "}
-            <i className={this.props.icon}/></button>
-          {child}
-        </span>
-      );
-    } else {
-      return (
-        <span className={"dropdown block input-icon input-icon-right" + (this.props.dropup ? " dropup" : "")}>
-          <input className={this.props.className} disabled={this.props.readOnly} onClick={this.toggleShow} type="text" value={this.props.value}/>
-          <i className={this.props.icon} onClick={this.toggleShow}/>{child}
-        </span>
-      );
-    }
+    let Tag = this.props.tagName;
+    return (
+      <Tag className={classnames(this.props.className, {dropup: this.state.dropup, open: this.state.open})}>
+        {this.getToggle()}
+        {this.getMenu()}
+      </Tag>
+    );
   }
 });
 
-module.exports = Dropdown;
+export
+default Dropdown;

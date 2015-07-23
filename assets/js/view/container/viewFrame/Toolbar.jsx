@@ -1,16 +1,12 @@
-"use strict";
+import React from "react";
+import _ from "underscore";
 
-var React = require("react"),
-  _ = require("underscore");
+import Create from "./toolbar/Create.jsx";
+import Delete from "./toolbar/Delete.jsx";
+import Refresh from "./toolbar/Refresh.jsx";
+import Exports from "./toolbar/Exports.jsx";
 
-var Create = require("./toolbar/Create.jsx"),
-  Delete = require("./toolbar/Delete.jsx"),
-  Refresh = require("./toolbar/Refresh.jsx"),
-  Exports = require("./toolbar/Exports.jsx");
-
-require("bootstrap/js/dropdown");
-
-var Toolbar = React.createClass({
+const Toolbar = React.createClass({
   propTypes: {
     page: React.PropTypes.string.isRequired,
     form: React.PropTypes.object.isRequired,
@@ -64,4 +60,4 @@ var Toolbar = React.createClass({
   }
 });
 
-module.exports = Toolbar;
+export default Toolbar;

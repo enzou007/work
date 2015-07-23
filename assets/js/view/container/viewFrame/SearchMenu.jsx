@@ -1,51 +1,34 @@
-"use strict";
+import React from "react";
+import _ from "underscore";
+import $ from "jquery";
+import classnames from "classnames";
 
-var React = require("react"),
-  _ = require("underscore"),
-  $ = require("jquery"),
-  classNames = require("classnames");
+import Tabs from "../../../component/bootstrap/Tabs.jsx";
+import Dropdown from "../../../component/bootstrap/Dropdown.jsx";
+import CustomSearch from "./searchMenu/CustomSearch.jsx";
+import Link from "../../../component/Link.jsx";
 
-var Tabs = require("../../../component/bootstrap/Tabs.jsx"),
-  CustomSearch = require("./searchMenu/CustomSearch.jsx"),
-  Link = require("../../../component/Link.jsx");
+import ModuleCollection from "../../../store/module";
 
-var ModuleCollection = require("../../../store/module");
+import action from "../../../action/viewFrame";
 
-var action = require("../../../action/viewFrame");
+import "backbone-react-component";
 
-require("backbone-react-component");
-
-var SearchMenu = React.createClass({
+const SearchMenu = React.createClass({
   mixins: [Backbone.React.Component.mixin],
-  render: function() {
-    // 输出预定义查询项
-    var currentItem = action.getActivatedItem(),
-      roots = this.getCollection().where({parent: null}),
-      currentIndex = this.state.currentIndex || _.findIndex(roots, function (item) {
-        return item.get("active");
-      });
-    return (
-      <div className="btn-group">
-        <button className="btn btn-link dropdown-toggle btn-search-menu-toggle" data-toggle="dropdown">
-          {currentItem.get("name")}
-          <span className="ace-icon fa fa-angle-down icon-on-right"></span>
-        </button>
-        <div className="dropdown-menu btn-search-menu">
-          <Tabs activated={currentIndex < 0 ? roots.length : currentIndex} className="tabbable tabs-left">
-            { this.selectionBulider() }
-          </Tabs>
-        </div>
-      </div>
-    );
+  checkClose(event) {
+    if($(event.target).hasClass("item")){
+      return true;
+    }
   },
-  triggerSearch: function (model) {
+  triggerSearch(model) {
     action.toggleSearchItem(model);
     this.setState({
       currentIndex: null,
       editQueryItem: null
     });
   },
-  itemBuilder: function (Tag, model) {
+  itemBuilder(Tag, model) {
     var children, handle;
     if (model.has("condition")) {
       children = <span className="item">{model.get("name")}</span>;
@@ -57,12 +40,12 @@ var SearchMenu = React.createClass({
     }
 
     return (
-      <Tag className={classNames("item", model.get("active") ? "active" : null)} onClick={handle} key={model.cid}>
-        <i className={classNames("ace-icon", model.get("ico"))}/>{children}
+      <Tag className={classnames("item", model.get("active") ? "active" : null)} onClick={handle} key={model.cid}>
+        <i className={classnames("ace-icon", model.get("ico"))}/>{children}
       </Tag>
     );
   },
-  selectionBulider: function() {
+  selectionBulider() {
     var elements = this.getCollection().where({
       parent: null
     }).map(function(item) {
@@ -77,7 +60,7 @@ var SearchMenu = React.createClass({
               //三级菜单
               <li key={child.cid}>
                 <dl className="item">
-                  <dt><i className={classNames("ace-icon", child.get("ico"))}/>{child.get("name")}</dt>
+                  <dt><i className={classnames("ace-icon", child.get("ico"))}/>{child.get("name")}</dt>
                   {nodes.map(function (node) {
                     return this.itemBuilder("dd",node);
                   }, this)}
@@ -94,12 +77,28 @@ var SearchMenu = React.createClass({
       item={editItem} column={editColumn} items={this.getCollection()}/>);
 
     return elements;
+  },
+  render() {
+    // 输出预定义查询项
+    var currentItem = action.getActivatedItem(),
+      roots = this.getCollection().where({parent: null}),
+      currentIndex = this.state.currentIndex || _.findIndex(roots, function (item) {
+        return item.get("active");
+      });
+    return (
+      <Dropdown className="btn-group" clickAndClose={false}>
+        <button className="btn btn-link btn-search-menu-toggle" data-toggle="dropdown">
+          {currentItem.get("name")}
+          <span className="ace-icon fa fa-angle-down icon-on-right"></span>
+        </button>
+        <div className="btn-search-menu" onClick={this.checkClose}>
+          <Tabs activated={currentIndex < 0 ? roots.length : currentIndex} className="tabbable tabs-left">
+            { this.selectionBulider() }
+          </Tabs>
+        </div>
+      </Dropdown>
+    );
   }
 });
 
-//阻止列表事件向上传播，导致下拉列表关闭
-$(document).on("click", ".btn-search-menu .nav-tabs > li", function(e) {
-  e.stopPropagation();
-});
-
-module.exports = SearchMenu;
+export default SearchMenu;

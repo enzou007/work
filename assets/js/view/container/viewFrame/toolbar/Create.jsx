@@ -1,5 +1,7 @@
-import React from "react"
-import _ from "underscore"
+import React from "react";
+import _ from "underscore";
+
+import Dropdown from "../../../../component/bootstrap/Dropdown.jsx";
 
 let Create = React.createClass({
   propTypes: {
@@ -11,43 +13,40 @@ let Create = React.createClass({
     return `/${page}?form=${form}&path=${path}&flowId=${flowId}`;
   },
   render() {
-    let Group = [];
-
     if (this.props.forms.length > 1) {
-      Group.push(
-        <button className="btn btn-link dropdown-toggle" data-toggle="dropdown" title="新建" key="button">
-          <i className="ace-icon fa fa-file-text-o"/>新建
-        </button>,
-        <ul className="dropdown-menu dropdown-default" key="list">
-          {
-            this.props.forms.map(function (form) {
-              return (
-                <li>
-                  <a key={form.form} href={this._href(this.props.page, form.form, this.props.path, form.objectId)}
-                    target="_blank" title={form.name}>
-                    <i className="ace-icon fa fa-file-text-o"/>{form.name}
-                  </a>
-                </li>
-              );
-            }, this)
-          }
-        </ul>
+      return (
+        <Dropdown className="btn-group">
+          <button className="btn btn-link" title="新建">
+            <i className="ace-icon fa fa-file-text-o"/>新建
+          </button>
+          <ul>
+            {
+              this.props.forms.map(function (form) {
+                return (
+                  <li>
+                    <a key={form.form} href={this._href(this.props.page, form.form, this.props.path, form.objectId)}
+                      target="_blank" title={form.name}>
+                      <i className="ace-icon fa fa-file-text-o"/>{form.name}
+                    </a>
+                  </li>
+                );
+              }, this)
+            }
+          </ul>
+        </Dropdown>
       );
     } else if(this.props.forms.length > 0){
       var form = this.props.forms[0];
-      Group.push(
-        <a className="btn btn-link" key={form.name} title={form.name}
-          href={this._href(this.props.page, form.form, this.props.path, form.objectId)} target="_blank">
-          <i className="ace-icon fa fa-file-text-o"/>新建
-        </a>
+      
+      return (
+        <div className="btn-group">
+          <a className="btn btn-link" key={form.name} title={form.name}
+            href={this._href(this.props.page, form.form, this.props.path, form.objectId)} target="_blank">
+            <i className="ace-icon fa fa-file-text-o"/>新建
+          </a>
+        </div>
       );
     }
-
-    return (
-      <div className="btn-group">
-        {Group}
-      </div>
-    );
   }
 });
 

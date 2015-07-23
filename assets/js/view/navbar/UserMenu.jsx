@@ -1,15 +1,15 @@
-"use strict";
+import React from "react";
 
-var React = require("react");
+import Avatar from "../../component/Avatar.jsx";
+import Dropdown from "../../component/bootstrap/Dropdown.jsx";
 
-var Avatar = require("../../component/Avatar.jsx");
+import sessionAction from "../../action/session";
 
-require("bootstrap/js/dropdown");
-
-var sessionAction = require("../../action/session");
-
-var UserMenu = React.createClass({
-  getDefaultProps: function() {
+const UserMenu = React.createClass({
+  propTypes: {
+    name: React.PropTypes.string
+  },
+  getDefaultProps() {
     return {
       objectId: "",
       name: "",
@@ -17,17 +17,14 @@ var UserMenu = React.createClass({
       identicons: null
     };
   },
-  propTypes: {
-    name: React.PropTypes.string
-  },
-  logout: function(event) {
+  logout(event) {
     sessionAction.logout();
     event.preventDefault();
   },
-  render: function() {
+  render() {
     return (
-      <li className="light-blue">
-        <a className="dropdown-toggle" data-toggle="dropdown" href="#">
+      <Dropdown tagName="li" className="light-blue">
+        <a href="#">
           <Avatar className="nav-user-photo" detail={false} img={this.props.avatar} size={40} userId={this.props.objectId}/>
           <span className="user-info">
             <small>欢迎您,</small>
@@ -35,7 +32,7 @@ var UserMenu = React.createClass({
           </span>
           <i className="ace-icon fa fa-caret-down"/>
         </a>
-        <ul className="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+        <ul className="user-menu dropdown-menu-right dropdown-yellow dropdown-caret dropdown-close">
           <li>
             <a href="#">
               <i className="ace-icon fa fa-cog"/>
@@ -55,9 +52,9 @@ var UserMenu = React.createClass({
             </a>
           </li>
         </ul>
-      </li>
+      </Dropdown>
     );
   }
 });
 
-module.exports = UserMenu;
+export default UserMenu;

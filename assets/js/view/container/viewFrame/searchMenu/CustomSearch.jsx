@@ -84,8 +84,4 @@ var CustomSearch = React.createClass({
   }
 });
 
-$(document).on("click", ".custom-search-panel", function (event) {
-  event.stopPropagation();
-});
-
 module.exports = CustomSearch;

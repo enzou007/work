@@ -1,32 +1,29 @@
-"use strict";
+import React from "react";
+import _ from "underscore";
+import classnames from "classnames";
+import $ from "jquery";
 
-var React = require("react"),
-  _ = require("underscore"),
-  classNames = require("classnames"),
-  $ = require("jquery");
+import SearchMenu from "./viewFrame/SearchMenu.jsx";
+import Toolbar from "./viewFrame/Toolbar.jsx";
+import PagingInfo from "./viewFrame/PagingInfo.jsx";
 
-var SearchMenu = require("./viewFrame/SearchMenu.jsx"),
-  Toolbar = require("./viewFrame/Toolbar.jsx"),
-  PagingInfo = require("./viewFrame/PagingInfo.jsx");
+import ModuleCollection from "../../store/module";
+import QueryCollection from "../../store/viewFrame/query";
 
-var ModuleCollection = require("../../store/module"),
-  QueryCollection = require("../../store/viewFrame/query");
+import action from "../../action/viewFrame";
 
-var action = require("../../action/viewFrame");
+import "../../../less/app/viewFrame.less";
+import "backbone-react-component";
 
-require("bootstrap/js/dropdown");
-require("../../../less/app/viewFrame.less");
-require("backbone-react-component");
+const PAGINATION_HEIGHT = 40, ROW_HEIGHT = 37;
 
-var PAGINATION_HEIGHT = 40, ROW_HEIGHT = 37;
-
-var ViewFrame = React.createClass({
+const ViewFrame = React.createClass({
+  mixins: [Backbone.React.Component.mixin],
   propTypes: {
     "model": React.PropTypes.instanceOf(ModuleCollection.model).isRequired,
     "collection": React.PropTypes.instanceOf(QueryCollection).isRequired
   },
-  mixins: [Backbone.React.Component.mixin],
-  getInitialState: function() {
+  getInitialState() {
     return {
       tableWidth: 1280,
       tableHeight: 600,
@@ -34,8 +31,8 @@ var ViewFrame = React.createClass({
       minHeight: 1280
     };
   },
-  componentDidMount: function () {
-    var $frame = $(this.getDOMNode()),
+  componentDidMount() {
+    let $frame = $(this.getDOMNode()),
       $row = $(this.refs.viewContainer.getDOMNode()),
       screenHeight = document.documentElement.clientHeight || screen.availHeight,
       // 计算行数需要减去标题行
@@ -51,8 +48,8 @@ var ViewFrame = React.createClass({
       tableHeight: tableHeight
     });
   },
-  render: function () {
-    var View = this.props.View,
+  render() {
+    let View = this.props.View,
       activatedItem = action.getActivatedItem(),
       columns = activatedItem.get("column") || action.getDefaultItem().get("column"),
       page = this.props.page,
@@ -60,7 +57,7 @@ var ViewFrame = React.createClass({
       formPath = _.values(this.props.form)[0];
 
     return (
-      <div id="view-frame" className={classNames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
+      <div id="view-frame" className={classnames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
         <div className="page-header">
           <div className="view-breadcrumb">
             <h1>
@@ -87,4 +84,4 @@ var ViewFrame = React.createClass({
   }
 });
 
-module.exports = ViewFrame;
+export default ViewFrame;

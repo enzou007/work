@@ -78,7 +78,7 @@ const action = {
     return $.ajax({
       url: "1/system/user",
       headers: {
-        "Condition": JSON.stringify([["@key", "lk", key]])
+        "Condition": JSON.stringify([["@key", "lk", encodeURIComponent(key)]])
       },
       data: {
         limit

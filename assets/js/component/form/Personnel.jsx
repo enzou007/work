@@ -49,17 +49,10 @@ const Personnel = React.createClass({
       let el = React.findDOMNode(this);
       let dropup = DOM.overView(el, offset);
 
-      DOM.withoutTransition(el, () => {
-        this.setState({
-          dropup
-        });
+      this.setState({
+        dropup,
+        active: true
       });
-
-      setTimeout(() => {
-        this.setState({
-          active: true
-        });
-      }, 0);
     }
   },
   close() {
@@ -87,13 +80,14 @@ const Personnel = React.createClass({
   },
   handleInput: _.debounce(function (event) {
     let inputValue = this.refs.input.getDOMNode().value;
-
-    action.query(inputValue).then(resp => {
-      this.setState({
-        options: resp
+    if (inputValue.trim() !== "") {
+      action.query(inputValue).then(resp => {
+        this.setState({
+          options: resp
+        });
       });
-    })
-    this.open();
+      this.open();
+    }
   }, 300),
   handleChange(index) {
     if (this.props.readOnly) {

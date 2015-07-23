@@ -7,14 +7,14 @@ import ClickAwayable from "rctui/src/js/mixins/click-awayable";
 const Dropdown = React.createClass({
   mixins: [ClickAwayable],
   propTypes: {
-    tagName: React.PropTypes.string,
+    tag: React.PropTypes.node,
     clickAndClose: React.PropTypes.bool,
     dropup: React.PropTypes.bool,
     children: React.PropTypes.node.isRequired
   },
   getDefaultProps() {
     return {
-      tagName: "div",
+      tag: "div",
       clickAndClose: true
     };
   },
@@ -42,7 +42,7 @@ const Dropdown = React.createClass({
       open: flag,
       dropup: this.props.dropup || (this.state.offset ? DOM.overView(el, this.state.offset) : this.state.dropup)
     }, () => {
-      if(this.state.open && this.props.dropup == null && this.state.offset === 0){
+      if (this.state.open && this.props.dropup == null && this.state.offset === 0) {
         let offset = el.children[1].offsetHeight;
 
         this.setState({
@@ -63,7 +63,7 @@ const Dropdown = React.createClass({
         if (toggle.props.onClick) {
           prevent = toggle.props.onClick(event, ...param) === true;
         }
-        if(!prevent){
+        if (!prevent) {
           event.preventDefault();
         }
       },
@@ -93,7 +93,7 @@ const Dropdown = React.createClass({
     return menu;
   },
   render: function () {
-    let Tag = this.props.tagName;
+    let Tag = this.props.tag;
     return (
       <Tag className={classnames(this.props.className, {dropup: this.state.dropup, open: this.state.open})}>
         {this.getToggle()}

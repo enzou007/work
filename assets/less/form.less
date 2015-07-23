@@ -1,7 +1,57 @@
 #form {
 
+  .ace-nav > li{
+    line-height: 0;
+    height:auto;
+  }
+
   .container {
     margin-top: 15px;
+  }
+
+  //默认为不显示时间轴
+  .timeline{
+    display: none;
+  }
+
+  .opinion{
+    overflow: hidden;
+    hr{
+      margin: 10px 0;
+    }
+  }
+  .fixed{
+    width:68%;
+    position: fixed;
+    bottom: 2px;
+    padding: 10px;
+    margin-left:-13px;
+    border: 1px solid #C5D0DC;
+    background-color: white;
+    & > div{
+      margin: 0;
+    }
+  }
+
+  //1024 以上分辨率表单靠左显示,并显o示时间轴.
+  @media screen and (min-width: 1025px){
+    .container{
+      width:80%;
+      margin-left:0;
+    }
+    .timeline{
+      display: block;
+    }
+  }
+  //1280 以上分辨率表单居中显示,并显示时间轴.
+  @media screen and (min-width:1281px){
+    .container{
+      width:70%;
+      margin-left:auto;
+    }
+    .timeline{
+      display: block;
+    }
   }
 
   .form-content {
@@ -9,38 +59,47 @@
     padding: 10px;
   }
 
+  //页签下 表单区块不显示边框
   .tab-content .form-content {
     border: 0;
     padding: 0;
   }
 
+  //重新定义字段组样式
   .pure-control-group {
 
     margin-bottom: 8px;
 
+    //字段标题
     .label {
-      color: #464646;
+      top:0;
+      left:4px;
       background-color: transparent !important;
-      font-size: 14px;
-      top: 0.4em;
+      color: #464646;
+      padding-bottom: 0;
+      padding-top: 8px;
+      height:100%;
+      //width:12em;
+      //border:1px solid #cdcdcd;
     }
 
+    //字段 原样式为圆角,这里统一设置为方角
     .form-control {
       border-radius: 0;
       margin: 0;
     }
 
+    //日期选择控件,默认宽度设置为100%,设置为方角
     .datetime {
       width: 100%;
-
       .date-picker, .day {
         border-radius: 0;
       }
     }
 
+    //下拉框 设置为方角
     .select {
       border-radius: 0;
-
       .options-wrap .options {
         border-radius: 0;
       }
@@ -51,24 +110,10 @@
     display: inline-block;
   }
 
+  // 文本框 右侧显示一个图标 样式
   .input-icon-right {
-
     input[type="text"] {
       padding-right: 24px;
-    }
-
-    .fa {
-      position: absolute;
-      top: 10px;
-      right: 8px;
-      cursor: pointer;
-    }
-  }
-
-  .input-icon-left {
-
-    input[type="text"] {
-      padding-left: 24px;
     }
 
     .fa {

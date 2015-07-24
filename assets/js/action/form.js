@@ -90,7 +90,7 @@ const formAction = {
   },
   bindFlowLog() {
     return $.get(`1/flow/${this.getFlowId()}/${this.getObjectId()}`).done(resp => {
-      formStore.cursor().get("log").mergeDeep(resp);
+      formStore.cursor().mergeDeep(resp);
       return resp;
     });
   },

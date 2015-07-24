@@ -64,7 +64,7 @@ var TimeLine = React.createClass({
         {
             _.map(groupLogs,function(log,key){
               return(
-                <div>
+                <div key={key}>
                   <span className="timeline-label">
           					<b>{key}</b>
           				</span>

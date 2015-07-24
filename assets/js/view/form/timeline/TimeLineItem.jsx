@@ -46,13 +46,17 @@ var TimeLine = React.createClass({
               </div>
             </div>
           </div>
-          <div className="item-title">{this.ellipsis(this.props.nodeName)}</div>
+          <div className="item-title">{this.props.time.substring(11,16)}</div>
         </div>
 
         <div className="widget-box transparent">
           <div className="widget-header widget-header-small"></div>
           <div className="widget-body">
             <div className="widget-main">
+              <div>
+                <i className="fa fa-circle"></i>
+                {this.ellipsis(this.props.nodeName)}
+              </div>
               <div>
                 <i className="fa fa-user"></i>
                 {this.props.user}
@@ -61,10 +65,7 @@ var TimeLine = React.createClass({
                 <i className="fa fa-edit"></i>
                 {this.props.operate}
               </div>
-              <div>
-                <i className="fa fa-clock-o"></i>
-                {this.props.time.substr(11,18)}
-              </div>
+
             </div>
           </div>
         </div>

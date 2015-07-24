@@ -8,7 +8,7 @@ import SaveBtn from "./operate/SaveBtn.jsx";
 import ExitBtn from "./operate/ExitBtn.jsx";
 import RejectBtn from "./operate/RejectBtn.jsx";
 
-import formAction from "../../action/form";
+import {store as formStore} from "../../action/form";
 
 const Toolbar = React.createClass({
   PropTypes: {
@@ -16,14 +16,14 @@ const Toolbar = React.createClass({
   },
   render() {
     document.title = this.props.title;
-
+    let store = formStore.data();
     return (
       <Navbar ico="fa fa-leaf" title={this.props.title}>
-        <li><SaveBtn trigger={formAction.save}/> </li>
-        <li><SubmitBtn trigger={formAction.submit}/> </li>
-        <li><RejectBtn trigger={formAction.reject}/> </li>
+        <li><SaveBtn/> </li>
+        <li><SubmitBtn/> </li>
+        <li><RejectBtn/> </li>
         {this.props.children}
-        <li><FlowBtn flow={this.props.flow}/></li>
+        <li><FlowBtn flow={store.get("flow").toJS()}/></li>
         <li><ExitBtn /></li>
       </Navbar>
     );

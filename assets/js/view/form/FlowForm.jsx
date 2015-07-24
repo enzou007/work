@@ -53,7 +53,7 @@ const FlowForm = React.createClass({
             {this.props.children}
           </Form>
         </div>
-        {/*<TimeLine/>*/}
+        <TimeLine logs={store.get("log").toJS()}/>
       </div>
     );
   }

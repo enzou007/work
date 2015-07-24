@@ -43,7 +43,7 @@ var FlowMap = React.createClass({
     return (
       <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
         { _.map(this.state.flow.nodes,function(item){
-          return <FlowNode {...item}/>
+          return <FlowNode key={item.nodeId} {...item}/>
         }.bind(this)) }
       </div>
     );

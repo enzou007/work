@@ -21,7 +21,8 @@ var FlowBtn = React.createClass({
   render: function () {
       return (
         <button className={this.props.className} onClick={this.showFlow}>
-          {this.props.text}<i className={this.props.icon}></i>
+          <i className={"ace-icon "+this.props.icon}></i>
+          {this.props.text}
         </button>
       );
   },

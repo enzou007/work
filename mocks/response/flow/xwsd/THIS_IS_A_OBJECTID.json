@@ -2,9 +2,9 @@
   "flow": {
     "name": "新闻发布申请",
     "nodes": [
-      {"nodeId":"StartNode","type":"start","nodeName":"开始","x":"240px","y":"100px","done":"true"},
-      {"nodeId":"node1","type":"node","nodeName":"部门主管","x":"200px","y":"220px","done":"true"},
-      {"nodeId":"node2","type":"node","nodeName":"部门经理","x":"200px","y":"340px","cur":"true"},
+      {"nodeId":"StartNode","type":"start","nodeName":"开始","x":"240px","y":"100px","done":true},
+      {"nodeId":"node1","type":"node","nodeName":"部门主管","x":"200px","y":"220px","done":true},
+      {"nodeId":"node2","type":"node","nodeName":"部门经理","x":"200px","y":"340px","cur":true},
       {"nodeId":"node3","type":"node","nodeName":"人力资源","x":"200px","y":"460px"},
       {"nodeId":"EndNode","type":"end","nodeName":"结束","x":"240px","y":"580px"}
     ],

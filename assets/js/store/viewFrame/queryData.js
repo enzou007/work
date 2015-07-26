@@ -38,6 +38,9 @@ var QueryData = Backbone.Collection.extend({
   },
   setPerPage: function (perPage) {
     this.options.count = perPage;
+    if (this.length > perPage) {
+      this.reset(this.slice(0, perPage));
+    }
     return this;
   },
   setCondition: function (condition) {

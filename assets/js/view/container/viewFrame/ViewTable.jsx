@@ -1,17 +1,17 @@
-import React from "react";
-import _ from "underscore";
-import classNames from "classnames";
+import React from 'react';
+import _ from 'underscore';
+import classNames from 'classnames';
 
-import FixedDataTable from "fixed-data-table";
-import Checkbox from "../../../component/Checkbox.jsx";
+import FixedDataTable from 'fixed-data-table';
+import Checkbox from '../../../component/Checkbox.jsx';
 
-import "backbone-react-component";
-import "fixed-data-table/dist/fixed-data-table.css";
+import 'backbone-react-component';
+import 'fixed-data-table/dist/fixed-data-table.css';
 
 const Table = FixedDataTable.Table,
   Column = FixedDataTable.Column;
 
-const SORT_ICONS = ["fa fa-sort", "fa fa-sort-asc", "fa fa-sort-desc"];
+const SORT_ICONS = ['fa fa-sort', 'fa fa-sort-asc', 'fa fa-sort-desc'];
 
 const ViewTable = React.createClass({
   mixins: [Backbone.React.Component.mixin],
@@ -46,16 +46,16 @@ const ViewTable = React.createClass({
       sortHandle = this.toggleSort,
       page = this.props.page,
       form = this.props.form,
-      path = _.result(this.getCollection(), "url");
+      path = _.result(dataCollection, 'url');
 
     return (
-      <Table {..._.omit(this.props, "column")} isColumnResizing={this.state.isColumnResizing}
+      <Table {..._.omit(this.props, 'column')} isColumnResizing={this.state.isColumnResizing}
         onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
         rowsCount={dataCollection.getPerPage()}
         rowGetter={this.props.rowGetter || this._rowGetter}>
-        <Column key="选择" dataKey="__index" fixed={true} width={35} align="center" headerRenderer={() => {
-          return <Checkbox checkboxClass={dataCollection.length !== dataCollection.selectedLength ? "ace-checkbox-2" : ""}
-            checked={dataCollection.selectedLength > 0} onChange={this.selectAll}/>;
+        <Column key='选择' dataKey='__index' fixed={true} width={35} align='center' headerRenderer={() => {
+          return <Checkbox checked={dataCollection.selectedLength > 0} onChange={this.selectAll}
+            half={dataCollection.getPerPage() > dataCollection.selectedLength}/>;
         }} cellRenderer={(cellData, cellDataKey, rowData, rowIndex, columnData, width) => {
           return <Checkbox checked={dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
         }}/>
@@ -65,9 +65,9 @@ const ViewTable = React.createClass({
             let options = _.extend({
               headerRenderer: (label, dataKey) => {
                 return (
-                  <div className="sort" onClick={sortHandle.bind(this, dataKey)}>
+                  <div className='sort' onClick={sortHandle.bind(this, dataKey)}>
                     {label}
-                    <span className={classNames("sort-icon", {"sorting": column.sorting > 0})}>
+                    <span className={classNames('sort-icon', {'sorting': column.sorting > 0})}>
                       <i className={SORT_ICONS[column.sorting]}/>
                     </span>
                   </div>
@@ -75,7 +75,7 @@ const ViewTable = React.createClass({
               },
               cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
                 return (
-                  <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData["@objectId"]}`} target="_blank">{cellData}</a>
+                  <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData['@objectId']}`} target='_blank'>{cellData}</a>
                 );
               }) : null,
               fixed: isFirst
@@ -105,7 +105,7 @@ const ViewTable = React.createClass({
     }, {});
   },
   _onColumnResize(width, dataKey) {
-    var columns = this.state.column;
+    let columns = this.state.column;
     columns[dataKey].width = width;
     this.setState({
       isColumnResizing: false

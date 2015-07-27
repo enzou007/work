@@ -1,21 +1,22 @@
-import React from "react";
-import _ from "underscore";
-import classnames from "classnames";
+import React from 'react';
+import _ from 'underscore';
+import classnames from 'classnames';
 
-import DOM from "rctui/src/js/utils/dom";
-import Strings from "rctui/src/js/utils/strings";
-import Classable from "rctui/src/js/mixins/classable";
-import ReceiveValue from "rctui/src/js/mixins/receive-value";
-import ClickAwayable from "rctui/src/js/mixins/click-awayable";
+import DOM from 'rctui/src/js/utils/dom';
+import Strings from 'rctui/src/js/utils/strings';
+import Classable from 'rctui/src/js/mixins/classable';
+import ReceiveValue from 'rctui/src/js/mixins/receive-value';
+import ClickAwayable from 'rctui/src/js/mixins/click-awayable';
 
-import FormControl from "./FormControl.jsx";
+import Dropdown from '../../component/bootstrap/Dropdown.jsx';
 
-import action from "../../action/personnel";
+import FormControl from './FormControl.jsx';
 
-import "rctui/src/less/form.less";
-import "rctui/src/less/select.less";
+import action from '../../action/personnel';
 
-import "../../../less/component/organization.less";
+import 'rctui/src/less/form.less';
+
+import '../../../less/component/organization.less';
 
 const Personnel = React.createClass({
   mixins: [Classable, ReceiveValue, ClickAwayable],
@@ -43,7 +44,7 @@ const Personnel = React.createClass({
   open() {
     if (!this.state.active && !this.props.readOnly) {
       let options = React.findDOMNode(this.refs.options);
-      options.style.display = "block";
+      options.style.display = 'block';
       let offset = DOM.getOuterHeight(options) + 5;
 
       let el = React.findDOMNode(this);
@@ -60,7 +61,7 @@ const Personnel = React.createClass({
       focus: false,
       active: false
     });
-    this.refs.input.getDOMNode().value = "";
+    this.refs.input.getDOMNode().value = '';
     // use setTimeout instead of transitionEnd
     setTimeout(() => {
       if (this.state.active === false) {
@@ -80,7 +81,7 @@ const Personnel = React.createClass({
   },
   handleInput: _.debounce(function (event) {
     let inputValue = this.refs.input.getDOMNode().value;
-    if (inputValue.trim() !== "") {
+    if (inputValue.trim() !== '') {
       action.query(inputValue).then(resp => {
         this.setState({
           options: resp
@@ -144,7 +145,7 @@ const Personnel = React.createClass({
         memo.push({
           objectId: objectId,
           id: objectId,
-          name: "加载中..."
+          name: '加载中...'
         });
         return memo;
       }, []));
@@ -166,27 +167,33 @@ const Personnel = React.createClass({
     let placeholder = this.state.value.length === 0 ? (this.state.msg || this.props.placeholder) : null;
 
     return (
-      <div>
+      <div className="handle">
         { this.state.data.map((item, index) => { return (
-          <span className="result" title={item.id} key={item.objectId}
+          <span className='result' title={item.id} key={item.objectId}
             onClick={this.handleRemove.bind(this, index)}>
             {item.name}
           </span>
         ); }) }
         { !this.props.readOnly ? (
-          <span className="search-field">
-            <input ref="input" onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
+          <span className='search-field'>
+            <input ref='input' onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
               onFocus={this.handleFocus.bind(this, true)} placeholder={placeholder}/>
           </span>
+        ) : null}
+        { !this.props.readOnly ? (
+          <Dropdown tag='span' className='tree-handle' clickAndClose={false}>
+            <a href='javascript:show-tree'><i className='fa fa-user'/></a>
+            <div className='organization-tree'></div>
+          </Dropdown>
         ) : null}
       </div>
     );
   },
   renderOptions() {
     return (
-      <div className="options-wrap">
+      <div className='options-wrap'>
         <hr/>
-        <div className="options" ref="options">
+        <div className='options' ref='options'>
           <ul>
             { this.state.options.map((item, index) => {
               let dept = _.first(item.departments),
@@ -195,7 +202,7 @@ const Personnel = React.createClass({
                 <li className={classnames({show: true, active: selected})} title={item.id} key={item.objectId}
                   onClick={this.handleChange.bind(this, index)} >
                   <span>{item.name}</span>
-                  <span className="dept">{dept.name}</span>
+                  <span className='dept'>{dept.name}</span>
                 </li>
               );
             }) }
@@ -206,7 +213,7 @@ const Personnel = React.createClass({
   },
   render() {
     return (
-      <div className={this.getClasses("organization", "personnel", "select", "form-control", {
+      <div className={this.getClasses('organization', 'personnel', 'form-control', {
           focus: this.state.focus,
           active: this.state.active,
           readonly: this.props.readOnly,
@@ -221,6 +228,6 @@ const Personnel = React.createClass({
 
 export default Personnel;
 
-FormControl.register("personnel", function (props) {
+FormControl.register('personnel', function (props) {
   return <Personnel {...props}/>
-}, Personnel, "array");
+}, Personnel, 'array');

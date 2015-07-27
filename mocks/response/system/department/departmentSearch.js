@@ -12,13 +12,13 @@ module.exports = function (data) {
 
   switch (first[0]) {
     case "objectId":
-      var objectIds = first[2],
-        templates = objectIds.map(function (objectId) {
-          return {
-            "objectId": objectId,
-            "name": "@region"
-          };
-        });
+        var objectIds = first[2],
+          templates = objectIds.map(function (objectId) {
+            return {
+              "objectId": objectId,
+              "name": "@region"
+            };
+          });
 
         result.json = templates.map(function (template) {
           return Mock.mock(template);
@@ -30,6 +30,18 @@ module.exports = function (data) {
         "name": "@region",
         "parent": ""
       }];
+      result.json = Mock.mock(template).data;
+      break;
+    case "@parent":
+      var parent = first[2],
+        start = (parent === null ? 5 : 0);
+      template["data|" + start + "-8"] = [{
+        "objectId|24": "",
+        "name": "@region",
+        "size|0-8": 1,
+        "parent": parent
+      }];
+
       result.json = Mock.mock(template).data;
       break;
   }

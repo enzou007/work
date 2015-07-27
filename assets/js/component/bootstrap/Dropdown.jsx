@@ -1,7 +1,7 @@
-import React from "react";
-import classnames from "classnames";
+import React from 'react';
+import classnames from 'classnames';
 
-import ClickAwayable from "rctui/src/js/mixins/click-awayable";
+import ClickAwayable from 'rctui/src/js/mixins/click-awayable';
 
 const Dropdown = React.createClass({
   mixins: [ClickAwayable],
@@ -10,20 +10,20 @@ const Dropdown = React.createClass({
     clickAndClose: React.PropTypes.bool,
     dropup: React.PropTypes.bool,
     align: React.PropTypes.oneOf([
-      "left", "right"
+      'left', 'right'
     ]),
     children: React.PropTypes.node.isRequired
   },
   getDefaultProps() {
     return {
-      tag: "div",
+      tag: 'div',
       clickAndClose: true
     };
   },
   getInitialState() {
     return {
       open: false,
-      align: this.props.align || "left",
+      align: this.props.align || 'left',
       dropup: this.props.dropup || false,
       offsetWidth: 0,
       offsetHeight: 0
@@ -54,24 +54,24 @@ const Dropdown = React.createClass({
   },
   toggleOpen(flag = !this.state.open) {
     let el = React.findDOMNode(this),
-      overView = this._overView(el);
+      { align, dropup } = this._overView(el);
 
     this.setState({
       open: flag,
-      align: this.props.align || (overView.width ? "right" : "left"),
-      dropup: this.props.dropup || overView.height
+      align: this.props.align || (align ? 'right' : 'left'),
+      dropup: this.props.dropup || dropup
     }, () => {
       if (this.state.open && this.state.offsetWidth === 0){
         let child = el.children[1],
           offsetWidth = child.offsetWidth,
           offsetHeight = child.offsetHeight,
-          viewState = this._overView(el, offsetWidth, offsetHeight);
+          { align, dropup } = this._overView(el, offsetWidth, offsetHeight);
 
         this.setState({
           offsetWidth,
           offsetHeight,
-          align: this.props.align || (viewState.width ? "right" : "left"),
-          dropup: this.props.dropup || viewState.height
+          align: this.props.align || (align ? 'right' : 'left'),
+          dropup: this.props.dropup || dropup
         });
       }
     });
@@ -80,7 +80,7 @@ const Dropdown = React.createClass({
     let toggle = this.props.children[0];
 
     return React.addons.cloneWithProps(toggle, {
-      className: classnames("dropdown-toggle"),
+      className: classnames('dropdown-toggle'),
       onClick: (event, ...param) => {
         this.toggleOpen();
         let prevent = false;
@@ -99,8 +99,8 @@ const Dropdown = React.createClass({
     let menu = this.props.children[1];
     if (menu) {
       return React.addons.cloneWithProps(menu, {
-        className: classnames("dropdown-menu", {
-          "dropdown-menu-right": this.state.align === "right"
+        className: classnames('dropdown-menu', {
+          'dropdown-menu-right': this.state.align === 'right'
         }),
         onClick: (...param) => {
           let skip = false;

@@ -1,0 +1,62 @@
+@import "../ace/bootstrap/variables";
+@import "../ace/bootstrap/mixins/vendor-prefixes";
+@import "../ace/variables";
+
+@enable-plugin-fuelux-spinner: false;
+@enable-plugin-fuelux-wizard: false;
+@enable-plugin-fuelux-treeview: true;
+@import "../ace/thirdparty-fuelux";
+
+.tree {
+
+  margin-left: 10px;
+  padding-left: 10px;
+
+  ul {
+    list-style: none;
+  }
+
+  &:before {
+    bottom: 12px;
+  }
+
+  .tree-folder:before, .tree-item:before {
+    top: 10px;
+    left: -11px;
+    width: 14px;
+  }
+
+  .tree-item, .tree-folder .tree-folder-header {
+    padding: 1px;
+  }
+
+  .tree-folder .tree-folder-header > .ace-icon:first-child {
+    top: 0;
+    color: #fdc447;
+  }
+
+  .tree-folder .tree-folder-content {
+    display: none;
+    margin-left: 17px;
+
+    &:before {
+      top: -6px;
+      bottom: 12px;
+      left: -11px;
+    }
+
+    &.open {
+      display: block;
+    }
+  }
+
+  .tree-item-icon {
+    margin-left: -2px;
+  }
+
+  .select-handle {
+    width: 18px !important;
+    display: inline !important;
+    margin: 0 1px 0 1px !important;
+  }
+}

@@ -1,18 +1,18 @@
-import React from "react";
-import _ from "underscore";
-import $ from "jquery";
+import React from 'react';
+import _ from 'underscore';
+import $ from 'jquery';
 
 import iflux from 'iflux';
 
-import Toolbar from "./Toolbar.jsx";
-import TimeLine from "./timeline/TimeLine.jsx";
-import Form from "Component/form/Form.jsx";
+import Toolbar from './Toolbar.jsx';
+import TimeLine from './timeline/TimeLine.jsx';
+import Form from 'Component/form/Form.jsx';
 
 import Message from 'rctui/message';
 
-import {store as formStore, action as formAction} from "../../action/form";
+import {store as formStore, action as formAction} from '../../action/form';
 
-import "../../../less/flow.less";
+import '../../../less/flow.less';
 
 const FlowForm = React.createClass({
   propTypes: {
@@ -23,8 +23,8 @@ const FlowForm = React.createClass({
   },
   getDefaultProps() {
     return {
-      hintType: "pop",
-      layout: "aligned"
+      hintType: 'pop',
+      layout: 'aligned'
     };
   },
   componentWillMount: function () {
@@ -45,11 +45,11 @@ const FlowForm = React.createClass({
     let store = formStore.data();
 
     return (
-      <div className="no-skin">
+      <div className='no-skin'>
         <Message clickaway={true} top={true}/>
-        <Toolbar title={store.get("flow").get("name") || "表单"}>{this.props.toolbar}</Toolbar>
-        <div className="main-container" id="main-container">
-          <Form className="container" hintType={this.props.hintType} layout={this.props.layout} onSubmit={this.props.onSubmit} store={store.get("form")}>
+        <Toolbar title={store.get('flow').get('name') || '表单'}>{this.props.toolbar}</Toolbar>
+        <div className='main-container' id='main-container'>
+          <Form className='container' hintType={this.props.hintType} layout={this.props.layout} onSubmit={this.props.onSubmit} store={store.get('form')}>
             {this.props.children}
           </Form>
         </div>

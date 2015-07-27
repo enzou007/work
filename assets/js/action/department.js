@@ -84,6 +84,11 @@ const action = {
         limit
       }
     });
+  },
+  children(parent){
+    return $.ajax({
+      url: `1/system/department/${encodeURIComponent(parent)}/@child`
+    });
   }
 };
 

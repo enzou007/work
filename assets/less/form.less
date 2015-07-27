@@ -14,25 +14,26 @@
     display: none;
   }
 
-  .opinion{
+  .opinion {
     overflow: hidden;
-    hr{
+    
+    hr {
       margin: 10px 0;
     }
   }
-  .fixed{
-    width:68%;
+
+  .fixed {
+    width: 68%;
     position: fixed;
     bottom: 2px;
     padding: 10px;
-    margin-left:-13px;
-    border: 1px solid #C5D0DC;
+    margin-left: -13px;
+    border: 1px solid #c5d0dc;
     background-color: white;
-    & > div{
+    & > div {
       margin: 0;
     }
   }
-
   //1024 以上分辨率表单靠左显示,并显o示时间轴.
   @media screen and (min-width: 1025px){
     .container{
@@ -103,6 +104,11 @@
       .options-wrap .options {
         border-radius: 0;
       }
+    }
+
+    /* 调整间距，统一对齐 */
+    .single.select::before {
+      right: 0.8em;
     }
   }
 

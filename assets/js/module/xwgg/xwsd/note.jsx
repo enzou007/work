@@ -15,7 +15,7 @@ var DateTime = require("rctui/datetime");
 var SexData = ["男","女"];
 
 var NoteForm = React.createClass({
-  onCreate: function (store) {
+  onCreate: function () {
     this.props.channel.update({
       AppPsnCn: this.props.session.get("name"),
       StDate: "2015-07-21",

@@ -7,7 +7,7 @@ var React = require('react'),
 
 require("jsplumb/dist/js/dom.jsPlumb-1.7.6.js");
 require("../../../../less/flowmap.less");
-require("jsplumb/css/jsplumbtoolkit-defaults.css");
+require("jsplumb/css/jsPlumbToolkit-defaults.css");
 
 var config = require("./flowMapConfig.js");
 var FlowMap = React.createClass({

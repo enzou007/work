@@ -1,72 +1,94 @@
-.organization {
+@import "~rctui/src/less/mixins.less";
 
+.organization {
+  position: relative;
+  min-width: 100px;
   min-height: 34px;
   height: auto;
   padding-bottom: 0;
 
-  &.select {
+  > .handle {
     cursor: text;
+  }
 
-    .options-wrap {
-      top: 101%;
-    }
+  .result {
+    position: relative;
+    display: inline-block;
+    padding: 3px;
+    margin: 3px 10px 3px 0;
+    background-color: #DFE8F7;
+    cursor: pointer;
 
-    .result {
-      background-color: #DFE8F7;
-      padding: 3px;
-      margin: 3px 10px 3px 0;
-    }
-
-    .result:after {
+    &:after {
       position: static;
-      right: auto;
+      content: '×';
       padding-left: 2px;
-      color: inherit;
+      font-weight: bold;
     }
 
-    .search-field {
-      display: inline-block;
-      width: 30%;
-      max-width: 100px;
-
-      > input {
-         border: 0 !important;
-         box-shadow: none !important;
-         padding-left: 0 !important;
-         padding-bottom: 0 !important;
-         width: 100%;
-      }
-    }
-
-    .result + .search-field {
-      padding-top: 5px;
-      padding-bottom: 5px;
-
-      > input {
-        padding-top: 0 !important;
-        margin-top: -3px;
-      }
-    }
-
-    hr {
-      border-top: 0;
+    &:hover, &:hover:after {
+      color: @red;
     }
   }
 
-  &.select.dropup .options-wrap {
-    top: auto;
-    bottom: 100%;
-  }
-
-  &.form-control {
-    padding-top: 0;
-  }
-
-  &.select.readonly {
+  &.readonly {
     cursor: auto;
 
     .result {
       background-color: transparent;
+
+      &::after {
+        content: '';
+      }
+    }
+  }
+
+  .options-wrap {
+    top: 101%;
+    z-index: 1050;
+    position: absolute;
+    overflow: hidden;
+    left: -13px;
+    right: -13px;
+  }
+
+  .options {
+    display: none;
+    border: solid 1px #ccc;
+    border-radius: 0 0 4px 4px;
+    border-top-width: 0;
+    background-color: #fff;
+    margin: 0 12px 20px;
+    .box-shadow(0px 6px 12px rgba(0,0,0,0.175));
+    .transition(0.45s);
+    .translate(0, -100%);
+
+    > ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      max-height: 300px;
+      overflow: auto;
+
+      li {
+        padding: 0.4em 0.6em;
+        cursor: pointer;
+        display: none;
+
+        &.show {
+          display: block;
+        }
+
+        &.active {
+          color: #000;
+          background-color: #ddd;
+        }
+
+        &:hover {
+          color: #fff;
+          background-color: @primary;
+        }
+      }
     }
   }
 
@@ -75,6 +97,97 @@
     outline: 0;
     border-color: #129FEA;
     color: #696969;
+  }
+
+  &.active {
+    border-radius: 4px 4px 0 0;
+    hr {
+      display: block;
+    }
+    .options {
+      .translate(0, 0);
+    }
+  }
+
+  &.dropup {
+    hr {
+      display: none;
+    }
+    .options-wrap {
+      top: auto;
+      bottom: 100%;
+    }
+    .options {
+      margin: 0 12px;
+      border-top-width: 1px;
+      .box-shadow(0px 2px 12px rgba(0,0,0,0.175));
+      .translate(0, 100%);
+    }
+
+    &.active {
+      border-radius: 0 0 4px 4px;
+      .options {
+        border-radius: 4px 4px 0 0;
+        .translate(0, 0);
+      }
+    }
+  }
+
+  .search-field {
+    display: inline-block;
+    width: 25%;
+    max-width: 100px;
+
+    > input {
+       border: 0 !important;
+       box-shadow: none !important;
+       padding-left: 0 !important;
+       padding-bottom: 0 !important;
+       width: 100%;
+    }
+  }
+
+  .result + .search-field {
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    > input {
+      padding-top: 0 !important;
+      margin-top: -3px;
+    }
+  }
+
+  .tree-handle {
+    float: right;
+    display: inline-block;
+    margin-top: 3px;
+
+    > a {
+      display: block;
+      padding: 4px;
+      margin-right: -2px;
+      color: #656565;
+    }
+
+    .organization-tree {
+      min-width: 250px;
+      max-height: 300px;
+      overflow:auto;
+    }
+  }
+
+  hr {
+    position: relative;
+    display: none;
+    z-index: 1060;
+    margin: 0px 12px 0;
+    border-width: 0;
+    border-top: 0;
+    border-bottom: solid 1px #e3e3e3;
+  }
+
+  &.form-control {
+    padding-top: 0;
   }
 
   .dept {

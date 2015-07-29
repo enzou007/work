@@ -1,9 +1,9 @@
-var Mock = require("mockjs");
+var _ = require("underscore"),
+  departments = require("../../../static/department");
 
 module.exports = function (data) {
 
-  var result = {},
-    template = {};
+  var result = {};
   var limit = data.query.limit || 50;
 
   var conditions = JSON.parse(data.header.condition);
@@ -12,37 +12,18 @@ module.exports = function (data) {
 
   switch (first[0]) {
     case "objectId":
-        var objectIds = first[2],
-          templates = objectIds.map(function (objectId) {
-            return {
-              "objectId": objectId,
-              "name": "@region"
-            };
-          });
+        var objectIds = first[2];
 
-        result.json = templates.map(function (template) {
-          return Mock.mock(template);
-        });
+        result.json = _.filter(departments, function (item) {
+          return _.indexOf(objectIds, item.objectId) !== -1;
+        }).slice(0, limit);
       break;
     case "@key":
-      template["data|1-" + limit] = [{
-        "objectId|24": "",
-        "name": "@region",
-        "parent": ""
-      }];
-      result.json = Mock.mock(template).data;
-      break;
-    case "@parent":
-      var parent = first[2],
-        start = (parent === null ? 5 : 0);
-      template["data|" + start + "-8"] = [{
-        "objectId|24": "",
-        "name": "@region",
-        "size|0-8": 1,
-        "parent": parent
-      }];
+      var key = decodeURIComponent(first[2]);
 
-      result.json = Mock.mock(template).data;
+      result.json = _.filter(departments, function (item) {
+        return item.name.indexOf(key) !== -1 || item.shortName.indexOf(key) === 0
+      }).slice(0, limit);
       break;
   }
 

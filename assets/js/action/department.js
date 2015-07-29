@@ -87,7 +87,7 @@ const action = {
   },
   children(parent){
     return $.ajax({
-      url: `1/system/department/${encodeURIComponent(parent)}/@child`
+      url: `1/system/department/${encodeURI(parent)}/@child`
     });
   }
 };

@@ -20,12 +20,12 @@ var NoteForm = React.createClass({
   onCreate: function () {
     this.props.channel.update({
       AppPsnCn: this.props.session.get("name"),
-      StDate: "2015-07-21",
+      PubDate: "2015-07-21",
       StLeader: ["5582272444ae2b5937e53911"]
     });
   },
   beforeSubmit: function () {
-
+    return true;
   },
   afterSubmit: function () {
 
@@ -33,30 +33,19 @@ var NoteForm = React.createClass({
   render: function () {
     return (
       <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}>
-        <Tabs>
-          <div className="form-content" tab="基本信息">
-            <Fieldset title="Form表单">
-              <FormControl label="申请人" name="AppPsnCn" type="text" readOnly={true}/>
-              <FormControl label="申请日期" name="StDate" type="date"/>
-              <FormControl label="性别" name="StSex" type="select" data={SexData}/>
-              <FormControl label="年龄" name="StAge" type="number"/>
-              <FormControl label="部门领导" name="StLeader" type="personnel" />
-              <FormControl label="所属部门" name="StDept" type="department"/>
-              <FormControl label="备注" name="Notes" type="textarea" responsive={{xl: 16}}/>
-            </Fieldset>
-            <Fieldset title="Form表格">
-              <FormControl label="动态表格" name="StData" type="grid" responsive={{xl: 24}}>
-                <Grid height={500}>
-                  <Column label="名称" width={0.5} dataKey={0}/>
-                  <Column label="类别" width={0.5} dataKey={1}/>
-                </Grid>
-              </FormControl>
-            </Fieldset>
-          </div>
+        <div className="form-content" tab="基本信息">
+          <Fieldset title="Form表单">
+            <FormControl label="申请人" name="AppPsnCn" type="text" readOnly={true}/>
+            <FormControl label="申请日期" name="PubDate" type="date"/>
+            <FormControl label="标题" name="Subject" type="text" responsive={{xl: 24}}/>
+            <FormControl label="发布部门" name="SourceCompName" type="department"/>
 
-          <div className="form-content" tab="基本信息"></div>
-
-        </Tabs>
+            <FormControl label="性别" name="StSex" type="select" data={SexData}/>
+            <FormControl label="年龄" name="StAge" type="number"/>
+            <FormControl label="部门领导" name="StLeader" type="personnel" />
+            <FormControl label="备注" name="Notes" type="textarea" responsive={{xl: 16}}/>
+          </Fieldset>
+        </div>
       </FlowForm>
     );
   }

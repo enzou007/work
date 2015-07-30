@@ -5,10 +5,9 @@ var React = require("react");
 var TimeLineItem = require("./TimeLineItem.jsx");
 
 var operates = {
-  "提交": "submit",
-  "驳回": "reject"
+  "submit": "提交",
+  "reject": "驳回"
 }
-
 var TimeLine = React.createClass({
   propTypes: {
     nodeName: React.PropTypes.string,
@@ -16,17 +15,17 @@ var TimeLine = React.createClass({
     operate: React.PropTypes.string,
     time: React.PropTypes.string
   },
-  ellipsis: function(nodeName){
-    if(nodeName.length > 4){
-      return nodeName.substr(0,4) + "...";
-    }else{
+  ellipsis: function (nodeName) {
+    if (nodeName.length > 4) {
+      return nodeName.substr(0, 4) + "...";
+    } else {
       return nodeName;
     }
   },
   render: function () {
     return (
       <div className="timeline-item clearfix">
-        <div className={"timeline-info " + operates[this.props.operate]}>
+        <div className={"timeline-info " + this.props.operate}>
           <i className="timeline-indicator btn"></i>
           <div className=" popover fade left in">
             <div className="tooltip-arrow"></div>
@@ -38,7 +37,7 @@ var TimeLine = React.createClass({
               </div>
               <div>
                 <i className="fa fa-edit"></i>
-                {this.props.operate}
+                {operates[this.props.operate]}
               </div>
               <div>
                 <i className="fa fa-clock-o"></i>
@@ -63,9 +62,8 @@ var TimeLine = React.createClass({
               </div>
               <div>
                 <i className="fa fa-edit"></i>
-                {this.props.operate}
+                {operates[this.props.operate]}
               </div>
-
             </div>
           </div>
         </div>

@@ -1,6 +1,9 @@
 import _ from "underscore";
 import $ from "jquery";
-import { Store, msg } from 'iflux';
+import {
+  Store, msg
+}
+from 'iflux';
 
 // 全局store
 const formStore = Store({
@@ -99,26 +102,61 @@ const formAction = {
       return resp;
     });
   },
-  save() {
+  save(callback) {
+    var result = {
+      url: "",
+      isNewNote: !formAction.getObjectId()
+    };
     return $.ajax({
-      url: `${this.getPath()}/${this.getObjectId()}`,
+      url: `${formAction.getPath()}/${formAction.getObjectId()}`,
       type: "POST",
-      header: {
+      headers: {
         "FlowControlType": "save"
       },
       data: formStore.data().get("form").toJS()
     }).done(resp => {
-
+      result.status = "succeed";
+      result.url = `/form.html?form=${formAction.getFormPath()}&path=${formAction.getPath()}&objectId=${resp["@objectId"]}`;
+      callback(result);
+    }).fail(resp => {
+      result.status = "failure";
+      callback(result);
     });
   },
-  submit() {
-
+  submit(option) {
+    option.FlowControlType = "submit";
+    return formAction.nextNode(option);
   },
-  reject() {
-
+  reject(option) {
+    option.FlowControlType = "reject";
+    return formAction.nextNode(option);
   },
-  jump() {
-
+  jump(option) {
+    option.FlowControlType = "jump";
+    return this.nextNode(option);
+  },
+  nextNode(option) {
+    var result = {
+      url: "",
+      isNewNote: !formAction.getObjectId()
+    };
+    return $.ajax({
+      url: `${formAction.getPath()}/nextNode/${this.getFlowId()}/${formAction.getObjectId()}`,
+      type: "POST",
+      headers: _.omit(option, "callback"),
+      data: formStore.data().get("form").toJS()
+    }).done(resp => {
+      if (option.callback) {
+        result.status = "succeed";
+        result.url = `/form.html?form=${formAction.getFormPath()}&path=${formAction.getPath()}&objectId=${resp["@objectId"]}`;
+        option.callback(result)
+      }
+    }).fail(resp => {
+      if (option.callback) {
+        result.status = "failure";
+        option.callback(result)
+      }
+    })
   }
 }
 

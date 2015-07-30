@@ -2,11 +2,9 @@ import React from 'react';
 import _ from 'underscore';
 import classnames from 'classnames';
 
-import DOM from 'rctui/src/js/utils/dom';
-import Strings from 'rctui/src/js/utils/strings';
-import Classable from 'rctui/src/js/mixins/classable';
-import ReceiveValue from 'rctui/src/js/mixins/receive-value';
-import ClickAwayable from 'rctui/src/js/mixins/click-awayable';
+import { getOuterHeight, overView } from 'rctui/src/js/utils/dom';
+import { toArray } from 'rctui/src/js/utils/strings';
+import clickAway from 'rctui/src/js/higherorder/clickaway';
 
 import Dropdown from '../../component/bootstrap/Dropdown.jsx';
 import OrganizationTree from './OrganizationTree.jsx';
@@ -19,67 +17,73 @@ import 'rctui/src/less/form.less';
 
 import '../../../less/component/organization.less';
 
-const Department = React.createClass({
-  mixins: [Classable, ReceiveValue, ClickAwayable],
-  propTypes: {
+@clickAway
+export default class Department extends React.Component {
+  static propTypes = {
     readOnly: React.PropTypes.bool
-  },
-  getInitialState() {
-    return {
-      focus: false,
-      active: false,
-      options: [],
-      data: []
-    };
-  },
-  componentWillUpdate: function (nextProps, nextState) {
+  }
+  state = {
+    focus: false,
+    active: false,
+    options: [],
+    data: [],
+    value: []
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.value !== this.props.value) {
+      this.setState({
+        value: this.formatValue(nextProps.value)
+      });
+    }
+  }
+  componentWillUpdate(nextProps, nextState) {
     if (nextState.active) {
       this.bindClickAway()
     } else {
       this.unbindClickAway()
     }
-  },
+  }
   componentClickAway() {
     this.close()
-  },
+  }
   open() {
     if (!this.state.active && !this.props.readOnly) {
       let options = React.findDOMNode(this.refs.options);
       options.style.display = 'block';
-      let offset = DOM.getOuterHeight(options) + 5;
+      let offset = getOuterHeight(options) + 5;
 
       let el = React.findDOMNode(this);
-      let dropup = DOM.overView(el, offset);
+      let dropup = overView(el, offset);
 
       this.setState({
         dropup,
         active: true
       });
     }
-  },
+  }
   close() {
     this.setState({
       focus: false,
       active: false
     });
-    this.refs.input.getDOMNode().value = '';
+    React.findDOMNode(this.refs.input).value = '';
     // use setTimeout instead of transitionEnd
     setTimeout(() => {
       if (this.state.active === false) {
         React.findDOMNode(this.refs.options).style.display = 'none';
       };
     }, 500);
-  },
-  triggerFocus() {
-    this.refs.input.getDOMNode().focus();
-  },
+  }
+  triggerFocus = () => {
+    React.findDOMNode(this.refs.input).focus();
+  }
   handleFocus(flag) {
     this.setState({
       focus: flag
     });
-  },
-  handleInput: _.debounce(function (event) {
-    let inputValue = this.refs.input.getDOMNode().value;
+  }
+  handleInput = _.debounce((event) => {
+    let inputValue = React.findDOMNode(this.refs.input).value;
     if (inputValue.trim() !== '') {
       action.query(inputValue).then(resp => {
         this.setState({
@@ -88,7 +92,7 @@ const Department = React.createClass({
       });
       this.open();
     }
-  }, 300),
+  }, 300)
   handleChange(index) {
     if (this.props.readOnly) {
       return;
@@ -116,7 +120,7 @@ const Department = React.createClass({
         this.props.onChange(value)
       }, 0)
     }
-  },
+  }
   handleRemove(index) {
     this.state.data.splice(index, 1);
     if (this.props.onChange) {
@@ -126,14 +130,14 @@ const Department = React.createClass({
       }, 0)
     }
     this.forceUpdate();
-  },
-  handleTreeChange(value){
+  }
+  handleTreeChange = (value) => {
     this.setState({
       data: value
     });
-  },
-  formatValue: function (value) {
-    value = Strings.toArray(value, this.props.sep)
+  }
+  formatValue(value) {
+    value = toArray(value, this.props.sep)
     if (this.state && this.state.data.length !== value.length) {
       action.fetch(value).then(data => {
         this.setState({
@@ -151,8 +155,8 @@ const Department = React.createClass({
       }, []));
     }
     return value
-  },
-  getValue: function (sep = this.props.sep, data = this.state.data) {
+  }
+  getValue(sep = this.props.sep, data = this.state.data) {
     let value = data.map(function (item) {
       return item.objectId;
     });
@@ -162,28 +166,28 @@ const Department = React.createClass({
     }
 
     return value
-  },
+  }
   renderList() {
     let placeholder = this.state.value == null ? (this.state.msg || this.props.placeholder) : null;
 
     return (
       <div className="handle">
         { this.state.data.map((item, index) => { return (
-          <span className='result' title={item.id} key={item.objectId}
+          <span className="result" title={item.id} key={item.objectId}
             onClick={this.handleRemove.bind(this, index)}>
             {item.name}
           </span>
         ); }) }
         { !this.props.readOnly ? (
-          <span className='search-field'>
-            <input ref='input' onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
+          <span className="search-field">
+            <input ref="input" onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
               onFocus={this.handleFocus.bind(this, true)} placeholder={placeholder}/>
           </span>
         ) : null}
         { !this.props.readOnly ? (
-          <Dropdown tag='span' className='tree-handle' clickAndClose={false}>
-            <a href='javascript:show-tree'><i className='fa fa-sitemap'/></a>
-            <div className='organization-tree'>
+          <Dropdown tag="span" className="tree-handle" clickAndClose={false}>
+            <a href="javascript:show-tree"><i className="fa fa-sitemap"/></a>
+            <div className="organization-tree">
               <OrganizationTree selectAble={true} value={this.state.data} mult={this.props.mult}
                 onChange={this.handleTreeChange}/>
             </div>
@@ -191,12 +195,12 @@ const Department = React.createClass({
         ) : null}
       </div>
     );
-  },
+  }
   renderOptions() {
     return (
-      <div className='options-wrap'>
+      <div className="options-wrap">
         <hr/>
-        <div className='options' ref='options'>
+        <div className="options" ref="options">
           <ul>
             { this.state.options.map((item, index) => {
               let selected = !!_.findWhere(this.state.data, {objectId: item.objectId});
@@ -211,23 +215,21 @@ const Department = React.createClass({
         </div>
       </div>
     );
-  },
+  }
   render() {
     return (
-      <div className={this.getClasses('organization', 'department', 'form-control', {
+      <div className={classnames("organization", "department", "form-control", {
           focus: this.state.focus,
           active: this.state.active,
           readonly: this.props.readOnly,
           dropup: this.state.dropup
-        })} onClick={this.triggerFocus}>
+        }, this.props.className)} onClick={this.triggerFocus}>
         {this.renderList()}
         {this.renderOptions()}
       </div>
     );
   }
-});
-
-export default Department;
+};
 
 FormControl.register('department', function (props) {
   return <Department {...props}/>

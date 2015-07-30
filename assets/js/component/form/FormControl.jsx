@@ -1,100 +1,198 @@
-import React from 'react'
-import classnames from 'classnames'
-import Strings from 'rctui/src/js/utils/strings'
-import Objects from 'rctui/src/js/utils/objects'
-import Validatable from 'rctui/src/js/mixins/validatable';
+import React, { PropTypes } from 'react';
+import _ from 'underscore';
+import classnames from 'classnames';
+import { nextUid, format, toArray } from 'rctui/src/js/utils/strings';
+import Regs from 'rctui/src/js/utils/regs';
+import { getLang } from 'rctui/src/js/lang';
 
-import {channel} from "../../action/form";
+import {channel} from '../../action/form';
 
 let controls = {};
 
-const FormControl = React.createClass({
-  displayName: 'FormControl',
-  propTypes: {
-    children: React.PropTypes.any,
-    className: React.PropTypes.string,
-    store: React.PropTypes.any,
-    data: React.PropTypes.any,
-    hintType: React.PropTypes.oneOf([
+function getTip(key, value) {
+  let text = getLang('validation.tips.' + key, null)
+  if (text) {
+    text = format(text, value)
+  }
+  return text
+}
+
+function getHint(hints, key, value) {
+  let text = getLang('validation.hints.' + key, null)
+  if (text) {
+    hints.push(format(text, value))
+  }
+}
+
+export default class FormControl extends React.Component {
+  static displayName: 'FormControl'
+  static propTypes = {
+    children: PropTypes.any,
+    className: PropTypes.string,
+    store: PropTypes.any,
+    data: PropTypes.any,
+    hintType: PropTypes.oneOf([
       'block', 'none', 'pop', 'inline'
     ]),
-    id: React.PropTypes.string,
-    label: React.PropTypes.string,
-    layout: React.PropTypes.oneOf([
+    id: PropTypes.string,
+    label: PropTypes.string,
+    layout: PropTypes.oneOf([
       'aligned', 'stacked', 'inline'
     ]),
-    name: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    responsive: React.PropTypes.shape({
-      sm: React.PropTypes.number,
-      md: React.PropTypes.number,
-      lg: React.PropTypes.number,
-      xl: React.PropTypes.number
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    responsive: PropTypes.shape({
+      sm: PropTypes.number,
+      md: PropTypes.number,
+      lg: PropTypes.number,
+      xl: PropTypes.number
     }),
-    type: React.PropTypes.string,
-    value: React.PropTypes.any
-  },
-  mixins: [Validatable],
-  getDefaultProps() {
-    return {
-      id: Strings.nextUid(),
-      layout: 'inline',
-      responsive: {
-        lg: 12,
-        xl: 8
-      },
-      type: 'text'
-    }
-  },
-  getInitialState() {
-    return {
-      focused: false,
-      hasError: false,
-      hasValue: !!this.props.value,
-      value: this.props.value,
-      valueType: controls[this.props.type].valueType,
-      data: this.props.data,
-      hintText: ''
-    }
-  },
-  componentWillReceiveProps: function (nextProps) {
+    type: PropTypes.string,
+    value: PropTypes.any
+  }
+  static defaultProps = {
+    id: nextUid(),
+    layout: 'inline',
+    responsive: {
+      lg: 12,
+      xl: 8
+    },
+    type: 'text'
+  }
+  state = {
+    focused: false,
+    hasError: false,
+    hasValue: !!this.props.value,
+    value: this.props.value,
+    valueType: controls[this.props.type].valueType,
+    data: this.props.data,
+    hintText: ''
+  }
+  componentWillMount() {
+    this.setHint(this.props)
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setHint(nextProps);
     this.setState({
       hasValue: !!nextProps.value,
       value: nextProps.value,
       valueType: controls[nextProps.type].valueType,
       data: nextProps.data
     });
-  },
+  }
+  setHint(props) {
+    if (props.tip) {
+      this.setState({ hintText: props.tip })
+      return
+    }
+
+    let hints = []
+
+    if (props.required) { getHint(hints, 'required') }
+    getHint(hints, this.props.type)
+    if (props.min) { getHint(hints, `min.${this.state.valueType}`, props.min) }
+    if (props.max) { getHint(hints, `max.${this.state.valueType}`, props.max) }
+
+    this.setState({ hintText: hints.join(', ') })
+  }
   getReference() {
-    return this.refs.control
-  },
-  handleChange(value) {
-    this.validate(this.refs.control.getValue(null))
+    return this.refs.control;
+  }
+  validate(value) {
+    value = value || this.getValue(null);
+
+    this.setState({ hasValue: !_.isEmpty(value) });
+
+    let { required, min, max, readOnly, type } = this.props;
+
+    if (readOnly) {
+      return true;
+    }
+
+    // validate require
+    if (required && (value === undefined || value === null || value.length === 0)) {
+      this.validateFail('required', value);
+      return false;
+    }
+
+    if (this.props.onValidate && !this.props.onValidate()) {
+      this.validateFail('', value);
+      return false;
+    }
+
+    if (value === undefined || value === null || value === '') {
+      this.validatePass();
+      return true;
+    }
+
+    // validate type
+    let reg = Regs[type];
+    if (reg && !reg.test(value)) {
+      this.validateFail(type, value);
+      return false;
+    }
+
+    let len = 0;
+    let valueType = this.state.valueType;
+
+    switch(valueType) {
+      case 'array':
+        len = toArray(value, this.props.sep).length;
+      break
+      case 'number':
+        len = parseFloat(value);
+      break
+      default:
+        len = value.length;
+      break
+    }
+
+    if (max && len > max) {
+      this.validateFail(`max.${valueType}`, max);
+      return false;
+    }
+
+    if (min && len < min) {
+      this.validateFail(`min.${valueType}`, min);
+      return false;
+    }
+
+    this.validatePass();
+    return true;
+  }
+  validatePass() {
+    this.setState({ hasError: false, errorText: '' });
+  }
+  validateFail(type, value) {
+    let text = getTip(type, value) || this.props.tip;
+    this.setState({ hasError: true, errorText: text });
+  }
+  handleChange = (value) => {
+    this.validate(this.refs.control.getValue(null));
     if (!this.props.ignore) {
       channel.update(this.props.name, this.refs.control.getValue(null));
     }
     if (this.props.onChange) {
-      this.props.onChange(value)
+      this.props.onChange(value);
     }
-  },
+  }
   getValue(sep) {
-    return this.refs.control.getValue(sep)
-  },
+    return this.refs.control.getValue(sep);
+  }
   setValue(value) {
     if (this.refs.control.setValue) {
-      this.refs.control.setValue(value)
+      this.refs.control.setValue(value);
     }
-    this.validate(value)
-  },
+    this.validate(value);
+  }
   handleFocus(focused) {
-    this.setState({
-      focused
-    })
-  },
+    this.setState({ focused });
+  }
   copyProps() {
 
     let props = Object.assign({}, this.props, {
-      ref: "control",
+      ref: 'control',
+      className: 'form-control',
       value: this.state.value
     });
 
@@ -113,7 +211,7 @@ const FormControl = React.createClass({
     props.data = this.state.data;
 
     return props;
-  },
+  }
   getChildren(children, component) {
     return React.Children.map(children, (child, i) => {
       let props = {
@@ -121,67 +219,69 @@ const FormControl = React.createClass({
         ref: child.ref
       }
       if (child.type === component) {
-        props.ref = 'control'
-        return React.addons.cloneWithProps(child, props)
+        props.ref = 'control';
+        return React.addons.cloneWithProps(child, props);
       } else if (child.props && typeof child.props.children === 'object') {
-        props.children = this.getChildren(child.props.children, component)
-        return React.addons.cloneWithProps(child, props)
+        props.children = this.getChildren(child.props.children, component);
+        return React.addons.cloneWithProps(child, props);
       }
 
-      return child
-    })
-  },
+      return child;
+    });
+  }
   getControl(props) {
-    let control = controls[this.props.type]
+    let control = controls[this.props.type];
     if (!control) {
-      console.warn(`${this.props.type} was not registed.`)
-      return null
+      console.warn(`${this.props.type} was not registed.`);
+      return null;
     }
 
-    let children = this.props.children
+    let children = this.props.children;
     if (children) {
-      return this.getChildren(children, control.component)
+      return this.getChildren(children, control.component);
     } else {
       props = Object.assign(this.copyProps(), props || {});
 // 不从FormControl继承responsive设置
       if (props) {
         delete props.responsive;
       }
-      return control.render(props)
+      return control.render(props);
     }
-  },
+  }
   renderInline(className) {
     return (
       <div className={className}>
-        {this.getControl({ width: this.props.width ? 24 : undefined })} { this.state.errorText ?
-        <span className="error">{this.state.errorText}</span>
-        : ( this.state.hintText &&
-        <span className="hint">{this.state.hintText}</span>
-        ) }
+        {this.getControl({ width: this.props.width ? 24 : undefined })}
+        {
+          this.state.errorText ?
+          <span className="error">{this.state.errorText}</span> :
+          ( this.state.hintText && <span className="hint">{this.state.hintText}</span> )
+        }
       </div>
     )
-  },
+  }
   renderStacked(className) {
     return (
       <div className={className}>
-        <label className="label" htmlFor={this.props.id}>{this.props.label}:</label>
+        <label className="label" htmlFor={this.props.id}>{this.props.label}</label>
         <div className="pure-control-inner">
-          {this.getControl()} { this.state.errorText ?
-          <span className="error">{this.state.errorText}</span>
-          : ( this.state.hintText &&
-          <span className="hint">{this.state.hintText}</span>
-          ) }
+          {this.getControl()}
+          {
+            this.state.errorText ?
+            <span className="error">{this.state.errorText}</span> :
+            ( this.state.hintText && <span className="hint">{this.state.hintText}</span> )
+          }
         </div>
       </div>
     )
-  },
+  }
   render() {
 // do not use Classable, cause width will set control width
 // if want to set group's width, use className
     let hintType = this.props.hintType ? this.props.hintType : (this.props.layout === 'inline' ? 'pop' : 'block');
 
     let reps = [];
-    Objects.forEach(this.props.responsive, function (width, type) {
+    _.forEach(this.props.responsive, function (width, type) {
       reps.push(`pure-u-${type}-${width}-24`);
     });
 
@@ -196,7 +296,9 @@ const FormControl = React.createClass({
       return this.renderStacked(className)
     }
   }
-}); // register component
+};
+
+// register component
 
 FormControl.register = function (types, render, component, valueType = 'string') {
   if (typeof types === 'string') {
@@ -210,5 +312,3 @@ FormControl.register = function (types, render, component, valueType = 'string')
     }
   })
 };
-
-module.exports = FormControl

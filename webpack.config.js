@@ -78,7 +78,7 @@ module.exports = {
       }
     }),
     // 将form-control.jsx 替换成新的实现
-    new webpack.NormalModuleReplacementPlugin(/\.\/form-control\.jsx$/, "Component/form/FormControl.jsx"),
+    new webpack.NormalModuleReplacementPlugin(/\.\/formControl\.jsx$/, "Component/form/FormControl.jsx"),
     new webpack.optimize.CommonsChunkPlugin("commons.js"),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])

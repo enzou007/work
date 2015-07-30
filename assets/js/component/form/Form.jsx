@@ -1,11 +1,13 @@
 import React from 'react';
+import classnames from 'classnames';
 import Objects from 'rctui/src/js/utils/objects';
-import Classable from 'rctui/src/js/mixins/classable';
 import FormControl from './FormControl.jsx';
 
-const Form = React.createClass({
-  displayName: 'Form',
-  propTypes: {
+import 'rctui/src/less/form.less';
+
+export default class Form extends React.Component {
+  static displayName = 'Form'
+  static propTypes = {
     store: React.PropTypes.object.isRequired,
     children: React.PropTypes.any,
     hintType: React.PropTypes.oneOf([
@@ -15,18 +17,13 @@ const Form = React.createClass({
       'aligned', 'stacked', 'inline'
     ]),
     onSubmit: React.PropTypes.func
-  },
-  mixins: [Classable],
-  getDefaultProps() {
-    return {
-      layout: 'inline'
-    };
-  },
-  getInitialState() {
-    return {
-      locked: false
-    };
-  },
+  }
+  static defaultProps = {
+    layout: 'inline'
+  }
+  state = {
+    locked: false
+  }
   equalValidate(targetRef, equalRef) {
     let self = this;
     return function () {
@@ -38,7 +35,7 @@ const Form = React.createClass({
       let equal = self.refs[equalRef]
       return target.getValue() === equal.getValue()
     };
-  },
+  }
   getChildren(children) {
     return React.Children.map(children || this.props.children, (child) => {
       let props = {
@@ -54,7 +51,7 @@ const Form = React.createClass({
           return null;
         }
         let value = this.props.store.get(childName);
-        if(value && typeof value.toJS === "function"){
+        if(value && typeof value.toJS === 'function'){
           value = value.toJS();
         }
 
@@ -71,10 +68,10 @@ const Form = React.createClass({
 
       return child;
     });
-  },
+  }
   getReference(name) {
     return this.refs[name];
-  },
+  }
   handleSubmit(event) {
     if (this.state.locked) {
       return;
@@ -101,14 +98,13 @@ const Form = React.createClass({
     }
 
     let data = this.getValue();
-  },
-
+  }
   render() {
-    let className = this.getClasses('pure-form', {
+    let className = classnames('pure-form', {
       'pure-form-aligned': this.props.layout === 'aligned',
       'pure-form-inline': this.props.layout === 'inline',
       'pure-form-stacked': this.props.layout === 'stacked'
-    });
+    }, this.props.className);
 
     return (
       <form action={this.props.action} className={className} onSubmit={this.handleSubmit}>
@@ -116,6 +112,4 @@ const Form = React.createClass({
       </form>
     );
   }
-});
-
-export default Form;
+};

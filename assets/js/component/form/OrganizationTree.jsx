@@ -7,7 +7,6 @@ import Checkbox from '../Checkbox.jsx';
 import Radio from '../Radio.jsx';
 
 import Strings from 'rctui/src/js/utils/strings';
-import Classable from 'rctui/src/js/mixins/classable';
 
 import action from '../../action/department';
 
@@ -15,30 +14,24 @@ import '../../../less/component/organization-tree.less';
 
 const ROOT_CODE = '__root__';
 
-const OrganizationTree = React.createClass({
-  propTypes: {
+export default class OrganizationTree extends React.Component {
+  static propTypes = {
     selectAble: React.PropTypes.bool,
     mult: React.PropTypes.bool,
     greedy: React.PropTypes.bool,
     onChange: React.PropTypes.func,
     onClick: React.PropTypes.func,
     value: React.PropTypes.array
-  },
-  mixins: [ Classable ],
-  getDefaultProps() {
-    return {
-      sep: ',',
-      selectAble: false,
-      mult: false
-    };
-  },
-  getInitialState() {
-    return {
-      store: {},
-      value: this.props.value,
-      checked: this.getChecked()
-    };
-  },
+  }
+  static defaultProps = {
+    selectAble: false,
+    mult: false
+  }
+  state = {
+    store: {},
+    value: this.props.value,
+    checked: this.getChecked()
+  }
   componentWillMount() {
     action.children('@root').then(resp => {
       this.setState({
@@ -47,13 +40,13 @@ const OrganizationTree = React.createClass({
         }
       });
     });
-  },
+  }
   componentWillReceiveProps(nextProps) {
     this.setState({
       value: nextProps.value,
       checked: this.getChecked({}, nextProps.value)
     });
-  },
+  }
   _checkParent(checed, parentId) {
     if(parentId === null){
       return;
@@ -77,7 +70,7 @@ const OrganizationTree = React.createClass({
     }
 
     return checked;
-  },
+  }
   getChecked(checked = {}, value = this.props.value) {
     _.forEach(value, (item) => {
       checked[item.objectId] = 2;
@@ -94,12 +87,12 @@ const OrganizationTree = React.createClass({
     });
 
     return checked;
-  },
+  }
   toggleAll(open) {
     _.forEach(this.refs, function (ref) {
       ref.toggleAll(open);
     });
-  },
+  }
   getValue() {
     let list = [];
 
@@ -108,8 +101,8 @@ const OrganizationTree = React.createClass({
     });
 
     return list;
-  },
-  handleChange(item) {
+  }
+  handleChange = (item) => {
     if(!this.props.mult){
       this.setState({
         value: [item],
@@ -124,13 +117,13 @@ const OrganizationTree = React.createClass({
     } else if (this.props.onChange) {
       this.props.onChange(this.getValue());
     }
-  },
+  }
   onClick(item) {
     if (this.props.onClick) {
       this.props.onClick(item);
     }
-  },
-  checkChildren(event) {
+  }
+  checkChildren = (event) => {
     let handle = $(event.target).closest('.tree-folder-header');
     if (handle.size() === 1 && handle.data('id')) {
       let id = handle.data('id');
@@ -148,7 +141,7 @@ const OrganizationTree = React.createClass({
         });
       }
     }
-  },
+  }
   render() {
     let { selectAble, name } = this.props;
     let Items = (this.state.store[ROOT_CODE] || []).map((item, i) => {
@@ -159,21 +152,18 @@ const OrganizationTree = React.createClass({
       );
     });
 
-    let className = this.getClasses('tree', {
+    let className = classnames('tree', {
       'tree-selectable': !this.props.readOnly
-    });
+    }, this.props.className);
 
     return (
       <ul className={className} onClick={this.checkChildren}>{Items}</ul>
     );
   }
-});
+};
 
-export default OrganizationTree;
-
-
-let Item = React.createClass({
-  propTypes: {
+class Item extends React.Component {
+  static propTypes = {
     selectAble: React.PropTypes.bool,
     mult: React.PropTypes.bool,
     store: React.PropTypes.object,
@@ -182,35 +172,33 @@ let Item = React.createClass({
     onStatusChange: React.PropTypes.func,
     open: React.PropTypes.bool,
     checked: React.PropTypes.object
-  },
-  getInitialState() {
-    return _.extend({
-      open: this.props.open,
-      status: this.checkStatus()
-    });
-  },
+  }
+  state = {
+    open: this.props.open,
+    status: this.checkStatus()
+  }
   componentWillReceiveProps(nextProps) {
     let status = this.checkStatus(nextProps.checked);
     if (this.getStatus() !== status) {
       this.setState({ status });
     }
-  },
+  }
   checkStatus(checked = this.props.checked) {
     return checked[this.props.data.objectId] || 0;
-  },
-  toggle(event) {
+  }
+  toggle = (event) => {
     this.setState({
       open: !this.state.open
     });
     event.preventDefault();
-  },
+  }
   toggleAll(open) {
     this.setState({ open });
     _.forEach(this.refs, function (ref) {
       ref.toggleAll(open);
     });
-  },
-  check() {
+  }
+  check = () => {
     if (this.props.readOnly) {
       return;
     }
@@ -221,7 +209,7 @@ let Item = React.createClass({
     _.defer(() => {
       this.props.onStatusChange(this.props.data);
     });
-  },
+  }
   setStatus(status) {
     if (this.props.mult && status !== 1) {
       _.forEach(this.refs, function (ref) {
@@ -236,17 +224,17 @@ let Item = React.createClass({
     }
 
     this.setState({ status });
-  },
+  }
   getStatus() {
     return this.state.status;
-  },
+  }
   onClick(data) {
     if (this.props.onClick) {
       this.props.onClick(data);
     }
-  },
+  }
   // 通过事件向上传播，检查所有子级是否已被选中
-  updateStatus(data) {
+  updateStatus = (data) => {
     if (this.props.mult) {
       let status = null;
       _.some(this.refs, (ref) => {
@@ -266,7 +254,7 @@ let Item = React.createClass({
     }
 
     this.props.onStatusChange(data);
-  },
+  }
   getChecked(list, greedy) {
     if (this.getStatus() >= (greedy ? 1 : 2)) {
       list.push(this.props.data);
@@ -277,10 +265,10 @@ let Item = React.createClass({
         ref.getChecked(list, greedy);
       });
     }
-  },
+  }
   render() {
     let children,
-    SelectHandle = "";
+    SelectHandle = '';
 
     let { name, data, selectAble, readOnly, open, checked } = this.props;
 
@@ -330,4 +318,4 @@ let Item = React.createClass({
       );
     }
   }
-});
+};

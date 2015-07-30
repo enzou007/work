@@ -1,44 +1,40 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 
-import ClickAwayable from 'rctui/src/js/mixins/click-awayable';
+import clickAway from 'rctui/src/js/higherorder/clickaway';
 
-const Dropdown = React.createClass({
-  mixins: [ClickAwayable],
-  propTypes: {
-    tag: React.PropTypes.node,
-    clickAndClose: React.PropTypes.bool,
-    dropup: React.PropTypes.bool,
-    align: React.PropTypes.oneOf([
+@clickAway
+export default class Dropdown extends React.Component {
+  static propTypes = {
+    tag: PropTypes.node,
+    clickAndClose: PropTypes.bool,
+    dropup: PropTypes.bool,
+    align: PropTypes.oneOf([
       'left', 'right'
     ]),
-    children: React.PropTypes.node.isRequired
-  },
-  getDefaultProps() {
-    return {
-      tag: 'div',
-      clickAndClose: true
-    };
-  },
-  getInitialState() {
-    return {
-      open: false,
-      align: this.props.align || 'left',
-      dropup: this.props.dropup || false,
-      offsetWidth: 0,
-      offsetHeight: 0
-    };
-  },
-  componentWillUpdate: function (nextProps, nextState) {
+    children: PropTypes.node.isRequired
+  }
+  static defaultProps = {
+    tag: 'div',
+    clickAndClose: true
+  }
+  state = {
+    open: false,
+    align: this.props.align || 'left',
+    dropup: this.props.dropup || false,
+    offsetWidth: 0,
+    offsetHeight: 0
+  }
+  componentWillUpdate(nextProps, nextState) {
     if (nextState.open) {
       this.bindClickAway();
     } else {
       this.unbindClickAway();
     }
-  },
+  }
   componentClickAway() {
     this.toggleOpen(false)
-  },
+  }
   _overView(el, offsetWidth = this.state.offsetWidth, offsetHeight = this.state.offsetHeight) {
     let height = window.innerHeight || document.documentElement.clientHeight,
       width = window.innerWhdth || document.documentElement.clientWidth,
@@ -51,7 +47,7 @@ const Dropdown = React.createClass({
       width: right > width,
       height: bottom > height
     }
-  },
+  }
   toggleOpen(flag = !this.state.open) {
     let el = React.findDOMNode(this),
       { align, dropup } = this._overView(el);
@@ -75,7 +71,7 @@ const Dropdown = React.createClass({
         });
       }
     });
-  },
+  }
   getToggle() {
     let toggle = this.props.children[0];
 
@@ -94,7 +90,7 @@ const Dropdown = React.createClass({
       ref: toggle.props.ref,
       key: toggle.props.key
     });
-  },
+  }
   getMenu() {
     let menu = this.props.children[1];
     if (menu) {
@@ -117,8 +113,8 @@ const Dropdown = React.createClass({
       });
     }
     return menu;
-  },
-  render: function () {
+  }
+  render() {
     let Tag = this.props.tag;
     return (
       <Tag className={classnames(this.props.className, {dropup: this.state.dropup, open: this.state.open})}>
@@ -127,6 +123,4 @@ const Dropdown = React.createClass({
       </Tag>
     );
   }
-});
-
-export default Dropdown;
+};

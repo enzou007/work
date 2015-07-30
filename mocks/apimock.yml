@@ -59,34 +59,57 @@
   response:
     file: response/system/module/xwgg/xwsd.json
 - request:
-    url: /1/xwgg/xwsd
-    method: GET
-  response:
-    type: js
-    file: response/xwgg/xwsd/view.js
-- request:
     url: /1/xwgg/xwsd/@session
   response:
     file: response/session/me.json
 - request:
-    url: /1/xwgg/xwsd/THIS_IS_A_OBJECTID
+    url: /1/xwgg/xwsd
+    method: GET
   response:
     type: js
-    file: response/xwgg/xwsd/THIS_IS_A_OBJECTID.js
-- request:
-    url: /1/flow/5582272444ae2b5937e53930
-  response:
-    file: response/flow/xwsd/flow.json
-- request:
-    url: /1/flow/5582272444ae2b5937e53930/THIS_IS_A_OBJECTID
-  response:
-    file: response/flow/xwsd/THIS_IS_A_OBJECTID.json
+    file: response/xwgg/xwsd/XWSD.js
 - request:
     url: /1/xwgg/xwsd
     method: POST
   response:
     type: js
-    file: response/xwgg/xwsd/create.js
+    file: response/xwgg/xwsd/XWSD.js
+- request:
+    url: /1/xwgg/xwsd/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/xwgg/xwsd/XWSD.js
+- request:
+    url: /1/xwgg/xwsd/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/xwgg/xwsd/XWSD.js
+- request:
+    url: /1/xwgg/xwsd/nextNode/:flowId/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/xwgg/xwsd/XWSD.js
+- request:
+    url: /1/xwgg/xwsd/nextNode/:flowId
+    method: POST
+  response:
+    type: js
+    file: response/xwgg/xwsd/XWSD.js
+- request:
+    url: /1/flow/:flowId/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/flow/FlowData.js
+- request:
+    url: /1/flow/:flowId
+    method: GET
+  response:
+    type: js
+    file: response/flow/FlowData.js
 - request:
     url: /1/system/user
   response:

@@ -6,8 +6,21 @@ import Checkbox from 'Component/Checkbox.jsx';
 import Radio from 'Component/Radio.jsx';
 import Gritter from 'Component/Gritter.jsx';
 
+
 const RejectBtn = React.createClass({
   getDefaultProps() {
+
+var React = require("react"),
+  $ = require("jquery"),
+  _ = require('underscore');
+var Modal = require("Component/bootstrap/Modal.jsx");
+var Checkbox = require("Component/Checkbox.jsx");
+var Radio = require("Component/Radio.jsx");
+var Gritter = require('Component/Gritter.jsx');
+
+var RejectBtn = React.createClass({
+
+  getDefaultProps: function () {
     return {
       text: "驳回",
       className: "btn btn-info",

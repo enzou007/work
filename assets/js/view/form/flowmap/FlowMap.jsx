@@ -22,9 +22,9 @@ var FlowMap = React.createClass({
       flow: this.props.flow
     };
   },
-  shouldComponentUpdate: function (nextProps, nextState) {
-    return nextState.flow.nodes.length != this.state.flow.nodes.length;
-  },
+// shouldComponentUpdate: function (nextProps, nextState) {
+//   return nextState.flow.nodes.length != this.state.flow.nodes.length;
+// },
   propTypes: {
     readonly: React.PropTypes.bool,
     data: React.PropTypes.object
@@ -41,53 +41,56 @@ var FlowMap = React.createClass({
   },
   render: function () {
     return (
-      <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
-        { _.map(this.state.flow.nodes,function(item){
-          return <FlowNode key={item.nodeId} {...item}/>
-        }.bind(this)) }
-      </div>
+        <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
+          { _.map(this.state.flow.nodes,function(item){
+            return <FlowNode key={item.nodeId} {...item}/>
+            }.bind(this))
+          }
+        </div>
     );
   },
   componentDidMount: function () {
-    _.defer(function(){
+    _.defer(function () {
       this.initFlow();
-    }.bind(this))
+    }.bind(this));
   },
   initFlow: function () {
-
-    /*延迟执行 所以不用写在jsPlumb.ready里面 还可提高执行效率 */
+/*延迟执行 所以不用写在jsPlumb.ready里面 还可提高执行效率 */
     var flowMap = this.flowMap = jsPlumb.getInstance(config.instance);
 
     this.buildNodes();
     this.buildLines();
     this.draggable();
 
-    // ???
+// ???
     jsPlumb.fire("jsPlumbDemoLoaded", flowMap);
   },
-  buildNodes: function(nodes){
+  buildNodes: function (nodes) {
     var toId = "";
     var nodeConfig;
-    _.each(this.state.flow.nodes,function(node){
+    _.each(this.state.flow.nodes, function (node) {
       toId = node.nodeId;
       node.readonly
-      nodeConfig = config.getEndpointStyle(node,{readonly:this.props.readonly});
-      _.each(config.anchors,function(anchor){
+      nodeConfig = config.getEndpointStyle(node, {
+        readonly: this.props.readonly
+      });
+      _.each(config.anchors, function (anchor) {
         var sourceUUID = toId + anchor;
         this.flowMap.addEndpoint(toId, nodeConfig, {
           anchor: anchor,
           uuid: sourceUUID
         });
       }.bind(this))
-
     }.bind(this))
   },
-  buildLines: function(lines){
-    _.each(this.state.flow.lines,function(line){
-      this.flowMap.connect({uuids: line.connect , editable: false});
+  buildLines: function (lines) {
+    _.each(this.state.flow.lines, function (line) {
+      this.flowMap.connect({
+        uuids: line.connect,
+        editable: false
+      });
     }.bind(this))
-  },
-
+  }
 });
 
 module.exports = FlowMap;

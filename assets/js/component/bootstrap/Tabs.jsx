@@ -12,7 +12,8 @@ var Tabs = React.createClass({
     fade: React.PropTypes.bool,
     lazy: React.PropTypes.bool,
     triggerLink: React.PropTypes.bool,
-    activated: React.PropTypes.number
+    activated: React.PropTypes.number,
+    tabClick: React.PropTypes.func
   },
   getDefaultProps: function() {
     return {
@@ -28,7 +29,7 @@ var Tabs = React.createClass({
       in: true
     };
   },
-  toggleActive: function(clickIndex, event) {
+  toggleActive: function(clickIndex, clickName, event) {
     if (this.props.triggerLink && clickIndex === this.state.activated) {
       return;
     }
@@ -47,6 +48,11 @@ var Tabs = React.createClass({
         activated: clickIndex
       });
     }
+
+    if(this.props.tabClick){
+      this.props.tabClick(clickName, clickIndex);
+    }
+
     event.preventDefault();
   },
   render: function() {
@@ -54,7 +60,7 @@ var Tabs = React.createClass({
       <div className={this.props.className}>
         <ul className="nav nav-tabs">
           {React.Children.map(this.props.children, function (child, index) {
-            var boundClick = this.toggleActive.bind(this, index); return (
+            var boundClick = this.toggleActive.bind(this, index, child.props.tab); return (
               <li className={classNames({active: index === this.state.activated})} key={index}>
                 <a href={child.props.link || "#"} onClick={boundClick}>
                   { child.props.ico ? (

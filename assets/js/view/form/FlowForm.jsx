@@ -4,10 +4,11 @@ import $ from 'jquery';
 
 import iflux from 'iflux';
 
-import Toolbar from './Toolbar.jsx';
-import TimeLine from './timeline/TimeLine.jsx';
-import Form from 'Component/form/Form.jsx';
-
+import Toolbar from "./Toolbar.jsx";
+import TimeLine from "./timeline/TimeLine.jsx";
+import FlowMap from "./flowmap/FlowMap.jsx";
+import Form from "Component/form/Form.jsx";
+import Tabs from "Component/bootstrap/Tabs.jsx";
 import Message from 'rctui/message';
 
 import {store as formStore, action as formAction} from '../../action/form';
@@ -20,6 +21,11 @@ const FlowForm = React.createClass({
     onLoad: React.PropTypes.func,
     onBeforeSubmit: React.PropTypes.func,
     onSubmit: React.PropTypes.func
+  },
+  getInitialState() {
+    return {
+      showFlow: false
+    };
   },
   getDefaultProps() {
     return {
@@ -41,19 +47,36 @@ const FlowForm = React.createClass({
         }
       });
   },
+
+  tabClick(tabName, tabIndex) {
+    if(tabName === "流程信息"){
+      if(!this.state.showFlow){
+        this.setState({
+          showFlow: true
+        });
+      }
+    }
+  },
   render() {
     let store = formStore.data();
-
+    var logs = store.get("log").toJS();
     return (
       <div className='no-skin'>
         <Message clickaway={true} top={true}/>
-        <Toolbar title={store.get('flow').get('name') || '表单'}>{this.props.toolbar}</Toolbar>
-        <div className='main-container' id='main-container'>
-          <Form className='container' hintType={this.props.hintType} layout={this.props.layout} onSubmit={this.props.onSubmit} store={store.get('form')}>
-            {this.props.children}
+        <Toolbar title={store.get("flow").get("name") || "表单"} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}>{this.props.toolbar}</Toolbar>
+        <div className="main-container" id="main-container">
+          <Form hintType={this.props.hintType} layout={this.props.layout}
+            className={"container" + (logs.length === 0 ? " container-center" : "")}
+            onSubmit={this.props.onSubmit} store={store.get("form")} >
+            <Tabs tabClick={this.tabClick}>
+              {this.props.children}
+              <div className="form-content" tab="流程信息">
+                {this.state.showFlow ? <FlowMap flow={store.get("flow").toJS()} /> : <div />}
+              </div>
+            </Tabs>
           </Form>
         </div>
-        <TimeLine logs={store.get("log").toJS()}/>
+        <TimeLine logs={logs} />
       </div>
     );
   }

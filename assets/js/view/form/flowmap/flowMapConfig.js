@@ -18,8 +18,6 @@ var Config = function(){
   this.lineDoneColor = "#8BC34A"; //线色
   this.lineHoverColor = "#61B7CF"; //线色
 
-
-
   this.paintWidth = 3; //连接点 大小
   this.paintColor = "#7AB02C"; //连接点 颜色
 

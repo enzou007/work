@@ -65,6 +65,12 @@ _.extend(Flow.prototype, {
     });
   },
 
+  getLine: function (nodeId, nextNodeId) {
+    return _.find(this.getFlowInfo().flow.lines, function (line) {
+      return line.source === nodeId && line.target === nextNodeId;
+    });
+  },
+
   getNextNodes: function (nodeId) {
     var lines = this.getLines(nodeId);
     var nodes = [];
@@ -101,6 +107,12 @@ _.extend(Flow.prototype, {
     log("Flow nextNode Change Node");
     if (!flowInfo.log) {
       flowInfo.log = [];
+    }
+
+    var line = this.getLine(curNode.nodeId, option.flownodeid);
+    if(line){
+      line.flowPast = true;
+      line.operate = option.flowcontroltype;
     }
 
     flowInfo.log.push({

@@ -25,7 +25,7 @@ const Toolbar = React.createClass({
     var display = {
       save: curNode && curNode.nodeId != "EndNode",
       submit: curNode && curNode.nodeId != "EndNode",
-      reject: curNode && curNode.nodeId != "StartNode",
+      reject: curNode && curNode.nodeId != "StartNode" && curNode.nodeId != "EndNode",
       exit: true
     }
     return (

@@ -9,10 +9,10 @@
     {"nodeId":"EndNode","type":"end","nodeName":"结束","x":"240px","y":"580px"}
   ],
   "lines":[
-    {"source":"StartNode","target":"node1","connect":["StartNodeBottomCenter", "node1TopCenter"]},
-    {"source":"node1","target":"node2","connect":["node1BottomCenter", "node2TopCenter"]},
-    {"source":"node1","target":"node3","connect":["node1RightMiddle", "node3RightMiddle"]},
-    {"source":"node2","target":"node3","connect":["node2BottomCenter", "node3TopCenter"]},
-    {"source":"node3","target":"EndNode","connect":["node3BottomCenter", "EndNodeTopCenter"]}
+    {"source":"StartNode","target":"node1","connect":["BottomCenter", "TopCenter"]},
+    {"source":"node1","target":"node2","connect":["BottomCenter", "TopCenter"]},
+    {"source":"node1","target":"node3","connect":["RightMiddle", "RightMiddle"]},
+    {"source":"node2","target":"node3","connect":["BottomCenter", "TopCenter"]},
+    {"source":"node3","target":"EndNode","connect":["BottomCenter", "TopCenter"]}
   ]
 }]

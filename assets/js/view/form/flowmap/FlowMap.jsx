@@ -56,7 +56,7 @@ var FlowMap = React.createClass({
   },
   initFlow: function () {
 /*延迟执行 所以不用写在jsPlumb.ready里面 还可提高执行效率 */
-    var flowMap = this.flowMap = jsPlumb.getInstance(config.instance);
+    var flowMap = this.flowMap = window.flowMap = jsPlumb.getInstance(config.instance);
 
     this.buildNodes();
     this.buildLines();
@@ -85,10 +85,15 @@ var FlowMap = React.createClass({
   },
   buildLines: function (lines) {
     _.each(this.state.flow.lines, function (line) {
+
       this.flowMap.connect({
-        uuids: line.connect,
-        editable: false
-      });
+        source:line.source,
+        target:line.target,
+        anchors: line.connect,
+        paintStyle: {strokeStyle:(line.flowPast ? "#8BC34A" : "#CACDCF"), lineWidth:3},
+        endpoints: ["Blank", "Blank"],
+        connector: ["Flowchart", {stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true}]
+      })
     }.bind(this))
   }
 });

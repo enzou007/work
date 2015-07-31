@@ -14,7 +14,7 @@ var Config = function(){
   this.anchors = ["TopCenter", "BottomCenter", "LeftMiddle", "RightMiddle"];
 
   this.lineWidth = 3;  //线宽
-  this.lineColor = "#94B1BF"; //线色
+  this.lineColor = "#CACDCF"; //线色
   this.lineDoneColor = "#8BC34A"; //线色
   this.lineHoverColor = "#61B7CF"; //线色
 
@@ -125,6 +125,14 @@ var Config = function(){
     }else{
       return this.endpointStyle;
     }
+  }
+
+  this.lineStyle = function() {
+    // {
+    //   endpoints:["Blank", "Blank" ],
+    //   paintStyle:{strokeStyle:this.lineColor,lineWidth:3},
+    //   connector:["Flowchart", {stub: [40, 60],gap: 10,cornerRadius: 5,alwaysRespectStubs: true}]
+    // }
   }
 }
 

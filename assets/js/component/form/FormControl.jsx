@@ -263,7 +263,7 @@ export default class FormControl extends React.Component {
   renderStacked(className) {
     return (
       <div className={className}>
-        <label className="label" htmlFor={this.props.id}>{this.props.label}:</label>
+        {this.props.label && <label className="label" htmlFor={this.props.id}>{this.props.label}:</label>}
         <div className="pure-control-inner">
           {this.getControl()}
           {

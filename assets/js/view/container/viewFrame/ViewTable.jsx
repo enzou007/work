@@ -89,8 +89,8 @@ const ViewTable = React.createClass({
     );
   },
   _parseColumnProp(props) {
-    let tableWidth = props.width,
-      widthReg = /^([\d.]+)%$/;
+    const widthReg = /^([\d.]+)%$/;
+    let tableWidth = props.width;
 
     return _.reduce(props.column, function (memo, column) {
       let item = _.extend({}, column);

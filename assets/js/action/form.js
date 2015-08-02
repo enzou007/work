@@ -102,8 +102,8 @@ const formAction = {
       return resp;
     });
   },
-  save(callback) {
-    var result = {
+  save(option, callback) {
+    let result = {
       url: "",
       isNewNote: !formAction.getObjectId()
     };
@@ -123,19 +123,19 @@ const formAction = {
       callback(result);
     });
   },
-  submit(option) {
+  submit(option, callback) {
     option.FlowControlType = "submit";
-    return formAction.nextNode(option);
+    return formAction.processFlow(option, callback);
   },
-  reject(option) {
+  reject(option, callback) {
     option.FlowControlType = "reject";
-    return formAction.nextNode(option);
+    return formAction.processFlow(option, callback);
   },
-  jump(option) {
+  jump(option, callback) {
     option.FlowControlType = "jump";
-    return this.nextNode(option);
+    return this.processFlow(option, callback);
   },
-  nextNode(option) {
+  processFlow(option, callback) {
     var result = {
       url: "",
       isNewNote: !formAction.getObjectId()
@@ -146,15 +146,15 @@ const formAction = {
       headers: _.omit(option, "callback"),
       data: formStore.data().get("form").toJS()
     }).done(resp => {
-      if (option.callback) {
+      if (callback) {
         result.status = "succeed";
         result.url = `/form.html?form=${formAction.getFormPath()}&path=${formAction.getPath()}&objectId=${resp["@objectId"]}`;
-        option.callback(result)
+        callback(result)
       }
     }).fail(resp => {
-      if (option.callback) {
+      if (callback) {
         result.status = "failure";
-        option.callback(result)
+        callback(result)
       }
     })
   }

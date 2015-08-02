@@ -1,15 +1,13 @@
-"use strict";
+import React from 'react';
+import _ from 'underscore';
+import $ from 'jquery';
+import moment from 'moment';
+import TimeLineItem from './TimeLineItem.jsx';
 
-var React = require("react"),
-  _ = require("underscore"),
-  $ = require("jquery"),
-  moment = require("moment");
+import 'moment/locale/zh-cn';
 
-require("moment/locale/zh-cn");
-
-var TimeLineItem = require("./TimeLineItem.jsx")
-var TimeLine = React.createClass({
-  getDefaultProps: function () {
+const TimeLine = React.createClass({
+  getDefaultProps() {
     return {
       now: moment(new Date()),
       logs: []
@@ -45,13 +43,11 @@ var TimeLine = React.createClass({
   //   this.hiddenTimeLine();
   //   $(window).on("resize",this.hiddenTimeLine);
   // },
-  render: function () {
+  render() {
     var year = this.props.now.year();
-    var groupLogs = _.sortBy(this.props.logs,function(item){
-      return item.time;
-    });
+    var groupLogs = _.sortBy(this.props.logs, item => item.time);
 
-    groupLogs = _.groupBy(groupLogs,function(item){
+    groupLogs = _.groupBy(groupLogs, item => {
       var date = item.time.substr(0,10);
       if(date.substr(0,4) == year){
         date = date.substr(5,10);
@@ -62,25 +58,25 @@ var TimeLine = React.createClass({
     return (
       <div className="timeline-container timeline-style2 timeline">
         {
-            _.map(groupLogs,function(log,key){
-              return(
-                <div key={key}>
-                  <span className="timeline-label">
-          					<b>{key}</b>
-          				</span>
-                  <div className="timeline-items">
-                    { _.map(log,function(item,index){
-                        return <TimeLineItem key={index} {...item}/>
-                      })
-                    }
-                  </div>
+          _.map(groupLogs,(log,key) => {
+            return(
+              <div key={key}>
+                <span className="timeline-label">
+        					<b>{key}</b>
+        				</span>
+                <div className="timeline-items">
+                  { _.map(log, (item,index) => {
+                      return <TimeLineItem key={index} {...item}/>
+                    })
+                  }
                 </div>
-              )
-            })
+              </div>
+            )
+          })
         }
       </div>
     );
   }
 });
 
-module.exports = TimeLine;
+export default TimeLine;

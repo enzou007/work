@@ -1,24 +1,18 @@
-"use strict";
+import React from 'react';
+import $ from 'jquery';
+import _ from 'underscore';
+import Modal from 'Component/bootstrap/Modal.jsx';
+import Checkbox from 'Component/Checkbox.jsx';
+import Radio from 'Component/Radio.jsx';
+import Gritter from 'Component/Gritter.jsx';
 
-var React = require("react"),
-  $ = require("jquery"),
-  _ = require('underscore');
-var Modal = require("Component/bootstrap/Modal.jsx");
-var Checkbox = require("Component/Checkbox.jsx");
-var Radio = require("Component/Radio.jsx");
-var Gritter = require('Component/Gritter.jsx');
-
-var RejectBtn = React.createClass({
-
-  getDefaultProps: function () {
+const RejectBtn = React.createClass({
+  getDefaultProps() {
     return {
       text: "驳回",
       className: "btn btn-info",
       icon: "fa fa-arrow-left",
-      befer: function () {
-        return true;
-      },
-      trigger: function () {}
+      befer: () => true
     };
   },
   PropTypes: {
@@ -26,14 +20,13 @@ var RejectBtn = React.createClass({
     trigger: React.PropTypes.func,
     onSubmit: React.PropTypes.func
   },
-
-  triggerClick: function () {
+  triggerClick() {
     this.ModalBox = Modal.create(this.getSubmitBox(), {
       id: "flowSubmitBox",
       className: "flow"
     });
   },
-  render: function () {
+  render() {
     return (
       <button className={this.props.className} onClick={this.triggerClick}>
         <i className={"ace-icon "+this.props.icon}></i>
@@ -41,7 +34,7 @@ var RejectBtn = React.createClass({
       </button>
     );
   },
-  getSubmitBox: function () {
+  getSubmitBox() {
     return (
       <div className="submitBox">
         <div className="title">
@@ -79,12 +72,10 @@ var RejectBtn = React.createClass({
       </div>
     )
   },
-  getNextNodes: function () {
-    var nodes = _.filter(this.props.flow.nodes, function (node) {
-      return node.done;
-    });
+  getNextNodes() {
+    var nodes = _.filter(this.props.flow.nodes, node => node.done);
 
-    return _.map(nodes, function (node, index) {
+    return _.map(nodes, (node, index) => {
       if (index !== 0) {
         return (
           <li>
@@ -98,54 +89,52 @@ var RejectBtn = React.createClass({
           </li>
         );
       }
-
     })
   },
-  submit: function () {
+  submit() {
     $("#flowSubmitBox").css("zIndex", "1000");
-    var option = {
+    let option = {
       FlowNodeId: $(".flownodes :checked").val(),
       FlowUsers: escape("张三/zhangsan"),
-      FlowOpinion: escape($("#opinion").val() || "不同意"),
-      callback: function (result) {
-        var id = Gritter.add({
-          title: '提示',
-          time: 1000,
-          sticky: result.status == "failure",
-          class_name: "gritter-center " + (result.status == "succeed"
-            ? "gritter-success"
-            : "gritter-error"),
-          after_close: function () {
-            if (result.isNewNote) {
-              window.location.href = result.url;
-            } else {
-              window.location.reload();
-            }
-            Gritter.remove(id, {
-              fade: false,
-              speed: 'fast'
-            });
-          },
-          text: (
-            <div>
-              <h5>{result.status == "succeed" ? "驳回成功!" : "驳回失败,请重试或联系管理员!"}</h5>
-              <div style={{textAlign: "right"}}>
-                <a className="btn btn-sm btn-primary" onClick={function(){Gritter.remove(id, {fade: false,speed: 'fast'});}}>确定</a>
-              </div>
-            </div>
-          )
-        });
-      }
+      FlowOpinion: escape($("#opinion").val() || "不同意")
     };
-    this.props.trigger(option);
+    this.props.trigger(option, result => {
+      var id = Gritter.add({
+        title: '提示',
+        time: 1000,
+        sticky: result.status == "failure",
+        class_name: "gritter-center " + (result.status == "succeed"
+          ? "gritter-success"
+          : "gritter-error"),
+        after_close() {
+          if (result.isNewNote) {
+            window.location.href = result.url;
+          } else {
+            window.location.reload();
+          }
+          Gritter.remove(id, {
+            fade: false,
+            speed: 'fast'
+          });
+        },
+        text: (
+          <div>
+            <h5>{result.status == "succeed" ? "驳回成功!" : "驳回失败,请重试或联系管理员!"}</h5>
+            <div style={{textAlign: "right"}}>
+              <a className="btn btn-sm btn-primary" onClick={function(){Gritter.remove(id, {fade: false,speed: 'fast'});}}>确定</a>
+            </div>
+          </div>
+        )
+      });
+    });
     this.props.onSubmit();
   },
-  closeModalBox: function () {
+  closeModalBox() {
     if (this.ModalBox) {
       this.ModalBox.close();
     }
   },
-  toggleItem: function (e) {
+  toggleItem(e) {
     if (e.target.tagName.toUpperCase() != "UL") {
       var $item = $(e.target);
       $item.closest("ul").find("li").removeClass("active");
@@ -154,4 +143,4 @@ var RejectBtn = React.createClass({
   }
 });
 
-module.exports = RejectBtn;
+export default RejectBtn;

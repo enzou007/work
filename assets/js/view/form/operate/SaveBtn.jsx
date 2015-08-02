@@ -1,19 +1,16 @@
-"use strict";
+import React from 'react';
+import Gritter from 'Component/Gritter.jsx';
+import classnames from 'classnames';
 
-var React = require('react');
-var Gritter = require('Component/Gritter.jsx');
-var classnames = require('classnames');
-
-var SaveBtn = React.createClass({
-  getDefaultProps: function () {
+const SaveBtn = React.createClass({
+  getDefaultProps() {
     return {
       text: "保存",
       className: "btn btn-info",
-      icon: "fa fa-check",
-      trigger: function () {}
+      icon: "fa fa-check"
     };
   },
-  after: function (option) {
+  after(option) {
     var cn = classnames({
       "gritter-center": option.isNewNote,
       "gritter-light": !option.isNewNote,
@@ -24,7 +21,7 @@ var SaveBtn = React.createClass({
       title: '提示',
       time: 1500,
       class_name: cn,
-      after_close: function () {
+      after_close() {
         if (option.status === "succeed") {
           if (option.isNewNote) {
             window.location.href = option.url;
@@ -38,15 +35,15 @@ var SaveBtn = React.createClass({
         <div>
           <h5>{option.status == "succeed" ? "保存成功!" : "保存失败!"}</h5>
           <div style={{textAlign: "right"}}>
-            <a className="btn btn-sm btn-primary" onClick={function(){Gritter.remove(id);}}>确定</a>
+            <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id)}>确定</a>
           </div>
         </div>
       )
     });
   },
-  render: function () {
+  render() {
     return (
-      <button className={this.props.className} onClick={this.props.trigger.bind(this, this.after)}>
+      <button className={this.props.className} onClick={this.props.trigger.bind(this, null, this.after)}>
         <i className={"ace-icon "+this.props.icon}/>
         {this.props.text}
       </button>
@@ -54,4 +51,4 @@ var SaveBtn = React.createClass({
   }
 });
 
-module.exports = SaveBtn;
+export default SaveBtn;

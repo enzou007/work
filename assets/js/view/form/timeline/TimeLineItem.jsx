@@ -1,28 +1,26 @@
-"use strict";
+import React from 'react';
 
-var React = require("react");
+import TimeLineItem from './TimeLineItem.jsx';
 
-var TimeLineItem = require("./TimeLineItem.jsx");
-
-var operates = {
+const operates = {
   "submit": "提交",
   "reject": "驳回"
 }
-var TimeLine = React.createClass({
+const TimeLine = React.createClass({
   propTypes: {
     nodeName: React.PropTypes.string,
     user: React.PropTypes.string,
     operate: React.PropTypes.string,
     time: React.PropTypes.string
   },
-  ellipsis: function (nodeName) {
+  ellipsis(nodeName) {
     if (nodeName.length > 4) {
       return nodeName.substr(0, 4) + "...";
     } else {
       return nodeName;
     }
   },
-  render: function () {
+  render() {
     return (
       <div className="timeline-item clearfix">
         <div className={"timeline-info " + this.props.operate}>
@@ -72,4 +70,4 @@ var TimeLine = React.createClass({
   }
 });
 
-module.exports = TimeLine;
+export default TimeLine;

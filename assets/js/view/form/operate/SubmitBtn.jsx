@@ -1,24 +1,18 @@
-"use strict";
+import React from 'react';
+import $ from 'jquery';
+import _ from 'underscore';
+import Modal from 'Component/bootstrap/Modal.jsx';
+import Checkbox from 'Component/Checkbox.jsx';
+import Radio from 'Component/Radio.jsx';
+import Gritter from 'Component/Gritter.jsx';
 
-var React = require("react"),
-  $ = require("jquery"),
-  _ = require('underscore');
-
-var Modal = require("Component/bootstrap/Modal.jsx");
-var Checkbox = require("Component/Checkbox.jsx");
-var Radio = require("Component/Radio.jsx");
-var Gritter = require('Component/Gritter.jsx');
-
-var SubmitBtn = React.createClass({
-
-  getDefaultProps: function () {
+const SubmitBtn = React.createClass({
+  getDefaultProps() {
     return {
       text: "提交",
       className: "btn btn-success",
       icon: "fa fa-arrow-right",
-      onBeforeSubmit: function () {
-        return true;
-      },
+      onBeforeSubmit: () => true,
       trigger: function () {},
       onSubmit: function () {}
     };
@@ -29,7 +23,7 @@ var SubmitBtn = React.createClass({
     onSubmit: React.PropTypes.func
   },
 
-  triggerClick: function () {
+  triggerClick() {
     if (this.props.onBeforeSubmit()) {
       this.ModalBox = Modal.create(this.getSubmitBox(), {
         id: "flowSubmitBox",
@@ -37,7 +31,7 @@ var SubmitBtn = React.createClass({
       });
     }
   },
-  render: function () {
+  render() {
     return (
       <button className={this.props.className} onClick={this.triggerClick}>
         <i className={"ace-icon "+this.props.icon}></i>
@@ -45,8 +39,7 @@ var SubmitBtn = React.createClass({
       </button>
     );
   },
-  getSubmitBox: function () {
-
+  getSubmitBox() {
     return (
       <div className="submitBox">
         <div className="title">
@@ -84,22 +77,13 @@ var SubmitBtn = React.createClass({
       </div>
     )
   },
-  getNextNodes: function () {
-    var curNode = _.find(this.props.flow.nodes, function (node) {
-      return node.cur;
-    });
+  getNextNodes() {
+    let curNode = _.find(this.props.flow.nodes, node => node.cur);
 
-    var lines = _.filter(this.props.flow.lines, function (line) {
-      return line.source === curNode.nodeId;
-    });
-    var getNode = function (nodeId) {
-      return _.find(this.props.flow.nodes, function (node) {
-        return node.nodeId === nodeId;
-      });
-    }.bind(this);
+    let lines = _.filter(this.props.flow.lines, line => line.source === curNode.nodeId);
 
-    return _.map(lines, function (line, index) {
-      var node = getNode(line.target);
+    return _.map(lines, (line, index) => {
+      let node = _.find(this.props.flow.nodes, node => node.nodeId === line.target)
       if (index !== 0) {
         return (
           <li >
@@ -115,51 +99,50 @@ var SubmitBtn = React.createClass({
       }
     })
   },
-  submit: function () {
+  submit() {
     $("#flowSubmitBox").css("zIndex", "1000");
-    var option = {
+    let option = {
       FlowNodeId: $(".flownodes :checked").val(),
       FlowUsers: escape("张三/zhangsan"),
-      FlowOpinion: escape($("#opinion").val() || "同意"),
-      callback: function (result) {
-        var id = Gritter.add({
-          title: '提示',
-          time: 1000,
-          sticky: result.status == "failure",
-          class_name: "gritter-center " + (result.status == "succeed"
-            ? "gritter-success"
-            : "gritter-error"),
-          after_close: function () {
-            if (result.isNewNote) {
-              window.location.href = result.url;
-            } else {
-              window.location.reload();
-            }
-            Gritter.remove(id, {
-              fade: false,
-              speed: 'fast'
-            });
-          },
-          text: (
-            <div>
-              <h5>{result.status == "succeed" ? "提交成功!" : "提交失败,请重试或联系管理员!"}</h5>
-              <div style={{textAlign: "right"}}>
-                <a className="btn btn-sm btn-primary" onClick={function(){Gritter.remove(id, {fade: false,speed: 'fast'});}}>确定</a>
-              </div>
-            </div>
-          )
-        });
-      }
+      FlowOpinion: escape($("#opinion").val() || "同意")
     };
-    this.props.trigger(option);
+    this.props.trigger(option, result => {
+      var id = Gritter.add({
+        title: '提示',
+        time: 1000,
+        sticky: result.status == "failure",
+        class_name: "gritter-center " + (result.status == "succeed"
+          ? "gritter-success"
+          : "gritter-error"),
+        after_close() {
+          if (result.isNewNote) {
+            window.location.href = result.url;
+          } else {
+            window.location.reload();
+          }
+          Gritter.remove(id, {
+            fade: false,
+            speed: 'fast'
+          });
+        },
+        text: (
+          <div>
+            <h5>{result.status == "succeed" ? "提交成功!" : "提交失败,请重试或联系管理员!"}</h5>
+            <div style={{textAlign: "right"}}>
+              <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id, {fade: false,speed: 'fast'})}>确定</a>
+            </div>
+          </div>
+        )
+      });
+    });
     this.props.onSubmit();
   },
-  closeModalBox: function () {
+  closeModalBox() {
     if (this.ModalBox) {
       this.ModalBox.close();
     }
   },
-  toggleItem: function (e) {
+  toggleItem(e) {
     if (e.target.tagName.toUpperCase() != "UL") {
       var $item = $(e.target);
       $item.closest("ul").find("li").removeClass("active");
@@ -168,4 +151,4 @@ var SubmitBtn = React.createClass({
   }
 });
 
-module.exports = SubmitBtn;
+export default SubmitBtn;

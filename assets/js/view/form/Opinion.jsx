@@ -1,30 +1,28 @@
-"use strict";
+import React from 'react';
+import $ from 'jquery';
+import FormControl from 'Component/form/FormControl.jsx';
 
-var React = require('react'),
-  $ = require("jquery"),
-  FormControl = require("Component/form/FormControl.jsx");
+import SaveBtn from './operate/SaveBtn.jsx';
+import SubmitBtn from './operate/SubmitBtn.jsx';
+import RejectBtn from './operate/RejectBtn.jsx';
 
-var SaveBtn = require("./operate/SaveBtn.jsx"),
-  SubmitBtn = require("./operate/SubmitBtn.jsx"),
-  RejectBtn = require("./operate/RejectBtn.jsx");
-
-var Opinion = React.createClass({
-  getDefaultProps: function() {
+const Opinion = React.createClass({
+  getDefaultProps() {
     return {
       fixed: false
     };
   },
-  componentDidMount: function() {
+  componentDidMount() {
     if(this.props.fixed){
       $(".opinion").width($(".container").width()-23)
-      $(window).on("resize",function(){
+      $(window).on("resize",() => {
         $(".opinion").width($(".container").width()-23)
       });
 
       $(".container").css("marginBottom",$(".opinion").height()+30)
     }
   },
-  render: function() {
+  render() {
     return (
       <div className={"opinion"+(this.props.fixed?" fixed":"")}>
         <FormControl layout="aligned" type="textarea" label="意见" name="opinion" responsive={{xl: 24}}/>
@@ -39,4 +37,4 @@ var Opinion = React.createClass({
   }
 });
 
-module.exports = Opinion;
+export default Opinion;

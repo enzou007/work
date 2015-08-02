@@ -1,10 +1,8 @@
-"use strict";
+import React from 'react';
+import classNames from 'classnames';
 
-var React = require('react'),
-  classNames = require("classnames");
-
-var FlowNode = React.createClass({
-  getDefaultProps: function() {
+const FlowNode = React.createClass({
+  getDefaultProps() {
     return {
       nodeId:"",
       type: "node",
@@ -20,7 +18,7 @@ var FlowNode = React.createClass({
     done: React.PropTypes.bool,
     cur: React.PropTypes.bool
   },
-  render: function() {
+  render() {
     var cn = classNames({
       "node": true,
       "start": this.props.type === "start",
@@ -36,4 +34,4 @@ var FlowNode = React.createClass({
 
 });
 
-module.exports = FlowNode;
+export default FlowNode;

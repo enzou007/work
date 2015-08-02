@@ -1,9 +1,8 @@
-"use strict";
+import _ from 'underscore';
 
-var _ = require("underscore");
-
-var Config = function(){
-  this.instance = {
+//const Config = function(){
+class Config{
+  instance = {
     DragOptions: {cursor: 'pointer',zIndex: 2000},
     ConnectionOverlays: [
       ["Arrow", {location: 1}]
@@ -11,17 +10,17 @@ var Config = function(){
     Container: "canvas"
   };
 
-  this.anchors = ["TopCenter", "BottomCenter", "LeftMiddle", "RightMiddle"];
+  anchors = ["TopCenter", "BottomCenter", "LeftMiddle", "RightMiddle"];
 
-  this.lineWidth = 3;  //线宽
-  this.lineColor = "#CACDCF"; //线色
-  this.lineDoneColor = "#8BC34A"; //线色
-  this.lineHoverColor = "#61B7CF"; //线色
+  lineWidth = 3;  //线宽
+  lineColor = "#CACDCF"; //线色
+  lineDoneColor = "#8BC34A"; //线色
+  lineHoverColor = "#61B7CF"; //线色
 
-  this.paintWidth = 3; //连接点 大小
-  this.paintColor = "#7AB02C"; //连接点 颜色
+  paintWidth = 3; //连接点 大小
+  paintColor = "#7AB02C"; //连接点 颜色
 
-  this.defaultStyle = {
+  defaultStyle = {
     isSource: true,  //可为起点
     isTarget: true,  //可为终点
     maxConnections: -1,  //不限制连接数
@@ -65,9 +64,9 @@ var Config = function(){
     ]
   }
 
-  this.endpointStyle = (function(){
+  endpointStyle = (() => {
     var result = {};
-    _.extend(result,this.defaultStyle,{
+    Object.assign(result, this.defaultStyle, {
       paintStyle: {
         strokeStyle: this.paintColor,
         radius: this.paintWidth,
@@ -78,14 +77,13 @@ var Config = function(){
         strokeStyle: this.lineHoverColor
       }
     });
-
     return result;
-  }.bind(this))()
+  })()
 
 
-  this.endpointReadonlyStyle = (function(){
+  endpointReadonlyStyle = (() => {
     var result = {};
-    _.extend(result,this.defaultStyle,{
+    Object.assign(result, this.defaultStyle, {
       isSource:false,
       isTarget:false,
       maxConnections:-1,
@@ -95,21 +93,20 @@ var Config = function(){
         lineWidth: 2
       }
     });
-
     return result;
-  }.bind(this))()
+  })()
 
-  this.getEndpointReadonlyStyle = function(node){
+  getEndpointReadonlyStyle(node){
     var result = {};
     if(node.done){
-      _.extend(result,this.endpointReadonlyStyle,{
+      Object.assign(result, this.endpointReadonlyStyle, {
           connectorStyle: {
             lineWidth: this.lineWidth,
             strokeStyle: this.lineDoneColor
           },
       });
     }else{
-      _.extend(result,this.endpointReadonlyStyle,{
+      Object.assign(result, this.endpointReadonlyStyle, {
             connectorStyle: {
               lineWidth: this.lineWidth,
               strokeStyle: this.lineColor
@@ -119,7 +116,7 @@ var Config = function(){
     return result;
   }
 
-  this.getEndpointStyle = function(node,option){
+  getEndpointStyle(node,option){
     if(option.readonly){
       return this.getEndpointReadonlyStyle(node);
     }else{
@@ -127,7 +124,7 @@ var Config = function(){
     }
   }
 
-  this.lineStyle = function() {
+  lineStyle() {
     // {
     //   endpoints:["Blank", "Blank" ],
     //   paintStyle:{strokeStyle:this.lineColor,lineWidth:3},
@@ -137,4 +134,4 @@ var Config = function(){
 }
 
 
-module.exports = window.Config = new Config();
+export default new Config();

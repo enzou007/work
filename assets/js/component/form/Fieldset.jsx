@@ -1,11 +1,11 @@
-var React = require("react");
+import React from 'react';
 
-var Fieldset = React.createClass({
+const Fieldset = React.createClass({
   propTypes: {
     className: React.PropTypes.any,
     title: React.PropTypes.string
   },
-  render: function () {
+  render() {
     return (
       <fieldset className={this.props.className}>
         { this.props.title ? (
@@ -17,4 +17,4 @@ var Fieldset = React.createClass({
   }
 });
 
-module.exports = Fieldset;
+export default Fieldset;

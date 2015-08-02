@@ -1,23 +1,22 @@
-"use strict";
+import React from 'react';
+import FlowNode from './FlowNode.jsx';
+import $ from 'jquery';
+import _ from 'underscore';
 
-var React = require('react'),
-  FlowNode = require("./FlowNode.jsx"),
-  $ = require("jquery"),
-  _ = require("underscore");
+import 'jsplumb/dist/js/dom.jsPlumb-1.7.6.js';
+import '../../../../less/flowmap.less';
+import 'jsplumb/css/jsPlumbToolkit-defaults.css';
 
-require("jsplumb/dist/js/dom.jsPlumb-1.7.6.js");
-require("../../../../less/flowmap.less");
-require("jsplumb/css/jsPlumbToolkit-defaults.css");
+import config from './flowMapConfig.js';
 
-var config = require("./flowMapConfig.js");
-var FlowMap = React.createClass({
-  getDefaultProps: function (e) {
+const FlowMap = React.createClass({
+  getDefaultProps() {
     return {
       readonly: true,
       flow: null
     };
   },
-  getInitialState: function () {
+  getInitialState() {
     return {
       flow: this.props.flow
     };
@@ -29,32 +28,33 @@ var FlowMap = React.createClass({
     readonly: React.PropTypes.bool,
     data: React.PropTypes.object
   },
-  addNodeItem: function (item) {
+  addNodeItem(item) {
     this.setState({
       nodes: this.state.nodes.concat([item])
     })
   },
-  draggable: function () {
+  draggable() {
     if (!this.props.readonly) {
       this.flowMap.draggable(jsPlumb.getSelector(".canvas .node"));
     }
   },
-  render: function () {
+  render() {
     return (
-        <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
-          { _.map(this.state.flow.nodes,function(item){
-            return <FlowNode key={item.nodeId} {...item}/>
-            }.bind(this))
-          }
-        </div>
+      <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
+        {
+          _.map(this.state.flow.nodes, node => {
+            return <FlowNode key={node.nodeId} {...node}/>
+          })
+        }
+      </div>
     );
   },
-  componentDidMount: function () {
-    _.defer(function () {
+  componentDidMount() {
+    _.defer(() => {
       this.initFlow();
-    }.bind(this));
+    });
   },
-  initFlow: function () {
+  initFlow() {
 /*延迟执行 所以不用写在jsPlumb.ready里面 还可提高执行效率 */
     var flowMap = this.flowMap = window.flowMap = jsPlumb.getInstance(config.instance);
 
@@ -65,37 +65,48 @@ var FlowMap = React.createClass({
 // ???
     jsPlumb.fire("jsPlumbDemoLoaded", flowMap);
   },
-  buildNodes: function (nodes) {
+  buildNodes(nodes) {
     var toId = "";
     var nodeConfig;
-    _.each(this.state.flow.nodes, function (node) {
+    _.each(this.state.flow.nodes, node => {
       toId = node.nodeId;
       node.readonly
       nodeConfig = config.getEndpointStyle(node, {
         readonly: this.props.readonly
       });
-      _.each(config.anchors, function (anchor) {
+      _.each(config.anchors, anchor => {
         var sourceUUID = toId + anchor;
         this.flowMap.addEndpoint(toId, nodeConfig, {
           anchor: anchor,
           uuid: sourceUUID
         });
-      }.bind(this))
-    }.bind(this))
-  },
-  buildLines: function (lines) {
-    _.each(this.state.flow.lines, function (line) {
-
-      this.flowMap.connect({
-        source:line.source,
-        target:line.target,
-        anchors: line.connect,
-        paintStyle: {strokeStyle:(line.flowPast ? "#8BC34A" : "#CACDCF"), lineWidth:3},
-        endpoints: ["Blank", "Blank"],
-        connector: ["Flowchart", {stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true}]
       })
-    }.bind(this))
+    })
+  },
+  buildLines(lines) {
+    _.each(this.state.flow.lines, line => {
+      this.flowMap.connect({
+        source: line.source,
+        target: line.target,
+        anchors: line.connect,
+        paintStyle: {
+          strokeStyle: (line.flowPast ? "#8BC34A" : "#CACDCF"),
+          lineWidth: 3
+        },
+        endpoints: [
+          "Blank", "Blank"
+        ],
+        connector: [
+          "Flowchart", {
+            stub: [40, 60],
+            gap: 10,
+            cornerRadius: 5,
+            alwaysRespectStubs: true
+          }
+        ]
+      })
+    })
   }
 });
 
-module.exports = FlowMap;
+export default FlowMap;

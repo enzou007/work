@@ -19,9 +19,7 @@ const Toolbar = React.createClass({
   render() {
     document.title = this.props.title;
     let store = formStore.data();
-    var curNode = _.find(store.get("flow").toJS().nodes, function(node){
-      return node.cur;
-    });
+    let curNode = _.find(store.get("flow").toJS().nodes, node => node.cur);
     var display = {
       save: curNode && curNode.nodeId != "EndNode",
       submit: curNode && curNode.nodeId != "EndNode",

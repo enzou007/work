@@ -1,10 +1,8 @@
-"use strict";
+import React from 'react';
 
-var React = require('react');
+const ExitBtn = React.createClass({
 
-var ExitBtn = React.createClass({
-
-  getDefaultProps: function () {
+  getDefaultProps() {
     return {
       text: "关闭",
       className: "btn",
@@ -12,7 +10,7 @@ var ExitBtn = React.createClass({
       trigger: function(){}
     };
   },
-  render: function() {
+  render() {
     return (
       <button className={this.props.className} onClick={this.props.trigger}>
         <i className={"ace-icon "+this.props.icon}/>
@@ -23,4 +21,4 @@ var ExitBtn = React.createClass({
 
 });
 
-module.exports = ExitBtn;
+export default ExitBtn;

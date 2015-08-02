@@ -3,6 +3,7 @@ import _ from 'underscore';
 import $ from 'jquery';
 import classnames from 'classnames';
 import { Table, Column } from 'fixed-data-table';
+<<<<<<< HEAD
 import { List } from 'immutable';
 import { mixins } from 'iflux';
 

@@ -23,19 +23,19 @@
     query:
       count: 6
   response:
-    file: response/xwgg/tzgg.json
+    file: response/module/xwgg/tzgg.json
 - request:
     url: /1/xwgg/rsrm
     query:
       count: 6
   response:
-    file: response/xwgg/rsrm.json
+    file: response/module/xwgg/rsrm.json
 - request:
     url: /1/xwgg/zktd
     query:
       count: 4
   response:
-    file: response/xwgg/zktd.json
+    file: response/module/xwgg/zktd.json
 - request:
     url: /1/cx/ybcx
     query:
@@ -67,37 +67,37 @@
     method: GET
   response:
     type: js
-    file: response/xwgg/xwsd/XWSD.js
+    file: response/module/xwgg/xwsd/allDocument.js
 - request:
     url: /1/xwgg/xwsd
     method: POST
   response:
     type: js
-    file: response/xwgg/xwsd/XWSD.js
+    file: response/module/xwgg/xwsd/createDocument.js
 - request:
     url: /1/xwgg/xwsd/:objectId
     method: GET
   response:
     type: js
-    file: response/xwgg/xwsd/XWSD.js
+    file: response/module/xwgg/xwsd/document.js
 - request:
     url: /1/xwgg/xwsd/:objectId
     method: POST
   response:
     type: js
-    file: response/xwgg/xwsd/XWSD.js
+    file: response/module/xwgg/xwsd/updateDocument.js
 - request:
     url: /1/xwgg/xwsd/nextNode/:flowId/:objectId
     method: POST
   response:
     type: js
-    file: response/xwgg/xwsd/XWSD.js
+    file: response/module/xwgg/xwsd/updateDocument.js
 - request:
     url: /1/xwgg/xwsd/nextNode/:flowId
     method: POST
   response:
     type: js
-    file: response/xwgg/xwsd/XWSD.js
+    file: response/module/xwgg/xwsd/createDocument.js
 - request:
     url: /1/flow/:flowId/:objectId
     method: GET

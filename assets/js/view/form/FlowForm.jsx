@@ -50,14 +50,11 @@ const FlowForm = React.createClass({
         }
       });
   },
-
-  tabClick(tabName, tabIndex) {
-    if(tabName === "流程信息"){
-      if(!this.state.showFlow){
-        this.setState({
-          showFlow: true
-        });
-      }
+  showFlowMap(tabName, tabIndex) {
+    if(!this.state.showFlow){
+      this.setState({
+        showFlow: true
+      });
     }
   },
   render() {
@@ -72,9 +69,9 @@ const FlowForm = React.createClass({
           <Form hintType={this.props.hintType} layout={this.props.layout}
             className={"container" + (logs.length === 0 ? " container-center" : "")}
             onSubmit={this.props.onSubmit} store={store.get("form")} >
-            <Tabs tabClick={this.tabClick}>
+            <Tabs>
               {this.props.children}
-              <div className="form-content" tab="流程信息">
+              <div className="form-content" tab="流程信息" onShow={this.showFlowMap}>
                 {this.state.showFlow ? <FlowMap flow={store.get("flow").toJS()} /> : <div />}
               </div>
             </Tabs>

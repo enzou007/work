@@ -1,14 +1,18 @@
 import React from 'react';
 import classnames from 'classnames';
+import { Map } from 'immutable';
+
 import Objects from 'rctui/src/js/utils/objects';
 import FormControl from './FormControl.jsx';
+import Action from '../../action/form';
 
 import 'rctui/src/less/form.less';
 
 export default class Form extends React.Component {
   static displayName = 'Form'
   static propTypes = {
-    store: React.PropTypes.object.isRequired,
+    store: React.PropTypes.instanceOf(Map).isRequired,
+    channel: React.PropTypes.instanceOf(Action).isRequired,
     children: React.PropTypes.any,
     hintType: React.PropTypes.oneOf([
       'block', 'none', 'pop', 'inline'
@@ -16,6 +20,7 @@ export default class Form extends React.Component {
     layout: React.PropTypes.oneOf([
       'aligned', 'stacked', 'inline'
     ]),
+    onBeforeSubmit: React.PropTypes.func,
     onSubmit: React.PropTypes.func
   }
   static defaultProps = {
@@ -50,12 +55,9 @@ export default class Form extends React.Component {
           console.warn('FormControl must have a name!');
           return null;
         }
-        let value = this.props.store.get(childName);
-        if(value && typeof value.toJS === 'function'){
-          value = value.toJS();
-        }
 
-        props.value = value;
+        props.value = this.props.store.get(childName);
+        props.channel = this.props.channel;
         if (child.props.equal) {
           props.onValidate = this.equalValidate(child.props.equal, childName);
         }
@@ -82,12 +84,10 @@ export default class Form extends React.Component {
       locked: true
     });
 
-    let success = true;
-
-    Objects.forEach(this.refs, function (child) {
-      let suc = child.validate()
-      success = success && suc
-    });
+    let success = this.props.channel.validateAll();
+    if(success && this.props.onBeforeSubmit){
+      success = this.props.onBeforeSubmit();
+    }
 
     if (!success) {
       this.setState({
@@ -97,7 +97,9 @@ export default class Form extends React.Component {
       return;
     }
 
-    let data = this.getValue();
+    if(this.props.onSubmit){
+      this.props.onSubmit();
+    }
   }
   render() {
     let className = classnames('pure-form', {

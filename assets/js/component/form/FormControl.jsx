@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
 import classnames from 'classnames';
+
 import { nextUid, format, toArray } from 'rctui/src/js/utils/strings';
 import Regs from 'rctui/src/js/utils/regs';
 import { getLang } from 'rctui/src/js/lang';
 
-import {channel} from '../../action/form';
+import Action from '../../action/form';
 
 let controls = {};
 
@@ -29,7 +30,7 @@ export default class FormControl extends React.Component {
   static propTypes = {
     children: PropTypes.any,
     className: PropTypes.string,
-    store: PropTypes.any,
+    channel: PropTypes.instanceOf(Action),
     data: PropTypes.any,
     hintType: PropTypes.oneOf([
       'block', 'none', 'pop', 'inline'
@@ -69,7 +70,8 @@ export default class FormControl extends React.Component {
     hintText: ''
   }
   componentWillMount() {
-    this.setHint(this.props)
+    this.setHint(this.props);
+    this.props.channel.registerControl(this);
   }
   componentWillReceiveProps(nextProps) {
     this.setHint(nextProps);
@@ -79,6 +81,9 @@ export default class FormControl extends React.Component {
       valueType: controls[nextProps.type].valueType,
       data: nextProps.data
     });
+  }
+  componentWillUnmount() {
+    this.props.channel.unregisterControl(this);
   }
   setHint(props) {
     if (props.tip) {
@@ -170,7 +175,7 @@ export default class FormControl extends React.Component {
   handleChange = (value) => {
     this.validate(this.refs.control.getValue(null));
     if (!this.props.ignore) {
-      channel.update(this.props.name, this.refs.control.getValue(null));
+      this.props.channel.setField(this.props.name, this.refs.control.getValue(null));
     }
     if (this.props.onChange) {
       this.props.onChange(value);
@@ -241,10 +246,13 @@ export default class FormControl extends React.Component {
       return this.getChildren(children, control.component);
     } else {
       props = Object.assign(this.copyProps(), props || {});
-// 不从FormControl继承responsive设置
-      if (props) {
-        delete props.responsive;
+      // 不从FormControl继承responsive设置
+      delete props.responsive;
+      // ReactUI的默认组件不支持immutable.js，进行转换
+      if(control.valueType === "array" && props.value && _.isFunction(props.value.toJS)){
+        props.value = props.value.toJS();
       }
+
       return control.render(props);
     }
   }

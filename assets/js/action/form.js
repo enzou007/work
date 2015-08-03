@@ -10,6 +10,7 @@ export default class Action {
     this.uniqueId = _.uniqueId('form_action_');
     this._param = param;
     this._store = Store(this.getDefaultStore());
+    this._controls = [];
 
     actions.push(this);
   }
@@ -28,6 +29,17 @@ export default class Action {
   }
   emit(name, ...arg) {
     msg.emit(`${this.uniqueId}:${name}`, ...arg);
+  }
+  registerControl(element) {
+    this._controls.push(element);
+  }
+  unregisterControl(element) {
+    this._controls.splice(_.indexOf(this._controls, element), 1);
+  }
+  validateAll() {
+    return _.every(this._controls, function (element) {
+      return element.validate();
+    })
   }
 }
 

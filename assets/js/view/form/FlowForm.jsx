@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import $ from 'jquery';
+import classnames from 'classnames';
 
 import iflux from 'iflux';
 
@@ -58,17 +59,17 @@ const FlowForm = React.createClass({
     }
   },
   render() {
-    let store = this.state.action.getStore().data();
-    var logs = store.get("log").toJS();
+    let action = this.state.action,
+      store = action.getStore().data();
+    var logs = store.get('log').toJS();
 
     return (
-      <div className='no-skin'>
+      <div className="no-skin">
         <Message clickaway={true} top={true}/>
         <Toolbar title={store.get("flow").get("name") || "表单"} action={this.state.action} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}>{this.props.toolbar}</Toolbar>
         <div className="main-container" id="main-container">
           <Form hintType={this.props.hintType} layout={this.props.layout}
-            className={"container" + (logs.length === 0 ? " container-center" : "")}
-            onSubmit={this.props.onSubmit} store={store.get("form")} >
+            className={`container ${logs.length === 0 ? "container-center" : ""}`} channel={action} store={store.get("form")} >
             <Tabs>
               {this.props.children}
               <div className="form-content" tab="流程信息" onShow={this.showFlowMap}>

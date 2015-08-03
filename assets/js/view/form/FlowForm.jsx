@@ -11,7 +11,7 @@ import Form from "Component/form/Form.jsx";
 import Tabs from "Component/bootstrap/Tabs.jsx";
 import Message from 'rctui/message';
 
-import {store as formStore, action as formAction} from '../../action/form';
+import { getAction } from '../../action/form';
 
 import '../../../less/flow.less';
 
@@ -24,7 +24,8 @@ const FlowForm = React.createClass({
   },
   getInitialState() {
     return {
-      showFlow: false
+      showFlow: false,
+      action: getAction('@main')
     };
   },
   getDefaultProps() {
@@ -34,6 +35,8 @@ const FlowForm = React.createClass({
     };
   },
   componentWillMount: function () {
+    let formAction = this.state.action;
+
     $.when(formAction.bindSession(), formAction.getObjectId() ? formAction.bindDocument() : formAction.bindFlow())
       .then(() => {
         if (formAction.getObjectId()) {
@@ -58,12 +61,13 @@ const FlowForm = React.createClass({
     }
   },
   render() {
-    let store = formStore.data();
+    let store = this.state.action.getStore().data();
     var logs = store.get("log").toJS();
+
     return (
       <div className='no-skin'>
         <Message clickaway={true} top={true}/>
-        <Toolbar title={store.get("flow").get("name") || "表单"} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}>{this.props.toolbar}</Toolbar>
+        <Toolbar title={store.get("flow").get("name") || "表单"} action={this.state.action} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}>{this.props.toolbar}</Toolbar>
         <div className="main-container" id="main-container">
           <Form hintType={this.props.hintType} layout={this.props.layout}
             className={"container" + (logs.length === 0 ? " container-center" : "")}

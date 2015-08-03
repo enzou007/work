@@ -8,17 +8,18 @@ import SaveBtn from "./operate/SaveBtn.jsx";
 import ExitBtn from "./operate/ExitBtn.jsx";
 import RejectBtn from "./operate/RejectBtn.jsx";
 
-import {store as formStore,action} from "../../action/form";
-
 const Toolbar = React.createClass({
   PropTypes: {
     title: React.PropTypes.string,
+    action: React.PropTypes.object.isRequired,
     onBeforeSubmit: React.PropTypes.func,
     onSubmit: React.PropTypes.func
   },
   render() {
     document.title = this.props.title;
-    let store = formStore.data();
+
+    let action = this.props.action,
+      store = action.getStore().data();
     let curNode = _.find(store.get("flow").toJS().nodes, node => node.cur);
     var display = {
       save: curNode && curNode.nodeId != "EndNode",

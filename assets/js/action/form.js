@@ -5,12 +5,13 @@ import { Store, msg } from 'iflux';
 const actions = [];
 
 export default class Action {
-  constructor(param) {
+  constructor(param = {}) {
     this.id = param.id;
     this.uniqueId = _.uniqueId('form_action_');
     this._param = param;
     this._store = Store(this.getDefaultStore());
     this._controls = [];
+    this._events = [];
 
     actions.push(this);
   }
@@ -24,7 +25,9 @@ export default class Action {
     return this._store;
   }
   on(name, callback) {
-    msg.on(`${this.uniqueId}:${name}`, callback);
+    let eventName = `${this.uniqueId}:${name}`;
+    this._events.push(eventName);
+    msg.on(eventName, callback);
     return this;
   }
   emit(name, ...arg) {
@@ -40,6 +43,25 @@ export default class Action {
     return _.every(this._controls, function (element) {
       return element.validate();
     })
+  }
+  destroy() {
+    _.forEach(this._events, function (name) {
+      msg.removeListener(name);
+    });
+    actions.splice(_.indexOf(actions, this), 1);
+  }
+  setField(key, val) {
+    if (key == null) return this;
+
+    let attrs;
+    if (typeof key === 'object') {
+      attrs = key;
+    } else {
+      (attrs = {})[key] = val;
+    }
+
+    this.getStore().cursor().mergeDeep(attrs);
+    return this;
   }
 }
 

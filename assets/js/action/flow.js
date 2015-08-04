@@ -22,6 +22,7 @@ export default class FlowAction extends Action {
     }
 
     this.getStore().cursor().get("form").mergeDeep(attrs);
+    return this;
   }
   getFormPath() {
     return this.getParam().form;

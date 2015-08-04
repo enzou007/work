@@ -30,6 +30,14 @@ var NoteForm = React.createClass({
   afterSubmit: function () {
 
   },
+  getGridForm: function () {
+    return (
+      <div>
+        <FormControl label="名称" name="StSomeName" type="text"/>
+        <FormControl label="类别" name="StSomeType" type="text"/>
+      </div>
+    );
+  },
   render: function () {
     return (
       <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}>
@@ -45,9 +53,9 @@ var NoteForm = React.createClass({
           </Fieldset>
           <Fieldset title="Form表格">
             <FormControl label="动态表格" name="StData" type="grid" responsive={{xl: 24}}>
-              <Grid height={500}>
-                <Column label="名称" width={0.5} dataKey={0}/>
-                <Column label="类别" width={0.5} dataKey={1}/>
+              <Grid height={500} form={this.getGridForm()}>
+                <Column label="名称" width={0.5} dataKey="StSomeName"/>
+                <Column label="类别" width={0.5} dataKey="StSomeType"/>
               </Grid>
             </FormControl>
           </Fieldset>

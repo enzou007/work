@@ -102,7 +102,16 @@ export default class FormControl extends React.Component {
   validate(value) {
     value = value || this.getValue(null);
 
-    this.setState({ hasValue: !_.isEmpty(value) });
+    let hasValue = false;
+    switch(this.state.valueType){
+      case 'List':
+        hasValue = value.size > 0;
+        break;
+      default:
+        hasValue = !_.isEmpty(value);
+    }
+
+    this.setState({ hasValue });
 
     let { required, min, max, readOnly, type } = this.props;
 
@@ -139,13 +148,15 @@ export default class FormControl extends React.Component {
     switch(valueType) {
       case 'array':
         len = toArray(value, this.props.sep).length;
-      break
+        break;
       case 'number':
         len = parseFloat(value);
-      break
+        break;
+      case 'List':
+        len = value.size;
+        break;
       default:
         len = value.length;
-      break
     }
 
     if (max && len > max) {
@@ -191,7 +202,7 @@ export default class FormControl extends React.Component {
   }
   copyProps() {
 
-    let props = Object.assign({}, this.props, {
+    let props = _.extend({}, this.props, {
       ref: 'control',
       className: 'form-control',
       value: this.state.value
@@ -220,8 +231,12 @@ export default class FormControl extends React.Component {
         ref: child.ref
       }
       if (child.type === component) {
-        props.ref = 'control';
-        return React.addons.cloneWithProps(child, props);
+        return React.addons.cloneWithProps(child, _.defaults({
+          ref: 'control'
+        }, {
+          onChange: this.handleChange,
+          value: this.state.value
+        }, child.props));
       } else if (child.props && typeof child.props.children === 'object') {
         props.children = this.getChildren(child.props.children, component);
         return React.addons.cloneWithProps(child, props);
@@ -241,7 +256,7 @@ export default class FormControl extends React.Component {
     if (children) {
       return this.getChildren(children, control.component);
     } else {
-      props = Object.assign(this.copyProps(), props || {});
+      props =_.defaults(this.copyProps(), props);
       // 不从FormControl继承responsive设置
       delete props.responsive;
       // ReactUI的默认组件不支持immutable.js，进行转换

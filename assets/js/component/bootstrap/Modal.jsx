@@ -9,8 +9,8 @@ require("bootstrap/js/modal");
 
 var Modal = React.createClass({
   statics: {
-    create: function(element, props) {
-      var $container = $("<div>").appendTo(document.body);
+    create: function(element, props, parent = document.body) {
+      var $container = $("<div>").appendTo(parent);
       return React.render(<Modal {...props}>{element}</Modal>, $container[0]);
     }
   },

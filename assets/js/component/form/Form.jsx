@@ -85,12 +85,13 @@ export default class Form extends React.Component {
   getReference(name) {
     return this.refs[name];
   }
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     if (this.state.locked) {
       return;
     }
 
     event.preventDefault();
+
     this.setState({
       locked: true
     });

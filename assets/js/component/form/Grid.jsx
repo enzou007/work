@@ -19,6 +19,7 @@ const Grid = React.createClass({
     headerHeight: PropTypes.number,
     rowHeight: PropTypes.number,
     form: PropTypes.element,
+    readOnly: PropTypes.bool,
     channel: PropTypes.instanceOf(Action),
     value: PropTypes.instanceOf(List)
   },
@@ -26,6 +27,7 @@ const Grid = React.createClass({
     return {
       headerHeight: 36,
       rowHeight: 36,
+      readOnly: false,
       action: new Action(),
       value: new List()
     };
@@ -122,13 +124,17 @@ const Grid = React.createClass({
   },
   render() {
     return (
-      <div className={classnames('grid', this.props.className)}>
-        <div className="grid-toolbar btn-group">
-          <button className="btn btn-white btn-inverse btn-bold" type="button" onClick={this.addRow}>
-            <i className="ace-icon fa fa-file-o"/>
-            新增
-          </button>
-        </div>
+      <div className={classnames('grid', {
+          readonly: this.props.readOnly
+        }, this.props.className)}>
+        { !this.props.readOnly && (
+          <div className="grid-toolbar btn-group">
+            <button className="btn btn-white btn-inverse btn-bold" type="button" onClick={this.addRow}>
+              <i className="ace-icon fa fa-file-o"/>
+              新增
+            </button>
+          </div>
+        )}
         <Table headerHeight={this.props.headerHeight} rowHeight={this.props.rowHeight}
           width={this.state.width} maxHeight={this.props.height}
           rowsCount={this.getRowLength()} rowGetter={this.getRowData}

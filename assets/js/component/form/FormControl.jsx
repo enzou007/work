@@ -54,10 +54,6 @@ export default class FormControl extends React.Component {
   static defaultProps = {
     id: nextUid(),
     layout: 'inline',
-    responsive: {
-      lg: 12,
-      xl: 8
-    },
     type: 'text'
   }
   state = {

@@ -20,11 +20,21 @@ export default class Form extends React.Component {
     layout: React.PropTypes.oneOf([
       'aligned', 'stacked', 'inline'
     ]),
+    responsive: React.PropTypes.shape({
+      sm: React.PropTypes.number,
+      md: React.PropTypes.number,
+      lg: React.PropTypes.number,
+      xl: React.PropTypes.number
+    }),
     onBeforeSubmit: React.PropTypes.func,
     onSubmit: React.PropTypes.func
   }
   static defaultProps = {
-    layout: 'inline'
+    layout: 'inline',
+    responsive: {
+      lg: 12,
+      xl: 8
+    }
   }
   state = {
     locked: false
@@ -46,6 +56,7 @@ export default class Form extends React.Component {
       let props = {
         hintType: child.props.hintType || this.props.hintType,
         readOnly: child.props.readOnly || this.state.locked,
+        responsive: child.props.responsive || this.props.responsive,
         layout: this.props.layout
       };
 

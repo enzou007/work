@@ -180,9 +180,15 @@ export default class FormControl extends React.Component {
     this.setState({ hasError: true, errorText: text });
   }
   handleChange = (value) => {
-    this.validate(this.refs.control.getValue(null));
+    if(!value){
+      _.defer(() => {
+        this.handleChange(this.refs.control.getValue(null));
+      });
+    }
+
+    this.validate(value);
     if (!this.props.ignore) {
-      this.props.channel.setField(this.props.name, this.refs.control.getValue(null));
+      this.props.channel.setField(this.props.name, value);
     }
     if (this.props.onChange) {
       this.props.onChange(value);
@@ -226,20 +232,17 @@ export default class FormControl extends React.Component {
   }
   getChildren(children, component) {
     return React.Children.map(children, (child, i) => {
-      let props = {
-        key: child.key,
-        ref: child.ref
-      }
+      let props = {};
       if (child.type === component) {
-        return React.addons.cloneWithProps(child, _.defaults({
+        return React.cloneElement(child, _.defaults({
           ref: 'control'
-        }, {
+        }, child.props, {
           onChange: this.handleChange,
           value: this.state.value
-        }, child.props));
+        }));
       } else if (child.props && typeof child.props.children === 'object') {
         props.children = this.getChildren(child.props.children, component);
-        return React.addons.cloneWithProps(child, props);
+        return React.cloneElement(child, props);
       }
 
       return child;

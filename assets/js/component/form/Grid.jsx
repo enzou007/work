@@ -84,9 +84,8 @@ const Grid = React.createClass({
     this.setState({
       value: list
     });
-    _.defer(() => {
-      this.props.onChange(list);
-    });
+    
+    this.props.onChange(list);
   },
   getValue() {
     return this.state.value;

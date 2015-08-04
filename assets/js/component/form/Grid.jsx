@@ -40,6 +40,9 @@ const Grid = React.createClass({
     this.setState({
       columnWidth: this.getColumWidth()
     });
+    this.props.action.on("close", () => {
+      this._modal.close();
+    })
   },
   componentDidMount() {
     let $node = $(React.findDOMNode(this)),
@@ -78,14 +81,41 @@ const Grid = React.createClass({
     this.state.columnWidth[dataKey] = width;
     this.forceUpdate();
   },
+  showModal(store, callback) {
+    this._modal = Modal.create((
+      <GridForm channel={this.props.action} store={store} form={this.props.form} onSubmit={() => {
+        this._modal.close();
+        callback();
+      }}/>
+    ), {backdrop: true}, document.getElementById("form"));
+  },
   addRow() {
-    let data = this.props.action.getStore().data(),
-      list = this.state.value.push(data);
-    this.setState({
-      value: list
+    let store = this.props.action.getStore();
+    store.reset();
+
+    this.showModal(store, () => {
+      let data = store.data(),
+        list = this.state.value.push(data);
+      this.setState({
+        value: list
+      });
+
+      this.props.onChange(list);
     });
-    
-    this.props.onChange(list);
+  },
+  editRow(event, index, data) {
+    let action = this.props.action;
+    action.setField(data);
+
+    this.showModal(action.getStore(), (store) => {
+      let data = action.getStore().data(),
+        list = this.state.value.set(index, data);
+      this.setState({
+        value: list
+      });
+
+      this.props.onChange(list);
+    });
   },
   getValue() {
     return this.state.value;
@@ -93,55 +123,25 @@ const Grid = React.createClass({
   render() {
     return (
       <div className={classnames('grid', this.props.className)}>
-        <Toolbar form={this.props.form} action={this.props.action} value={this.state.value}
-          onAdd={this.addRow}/>
-          <Table headerHeight={this.props.headerHeight} rowHeight={this.props.rowHeight}
-            width={this.state.width} maxHeight={this.props.height}
-            rowsCount={this.getRowLength()} rowGetter={this.getRowData}
-            onColumnResizeEndCallback={this.setColumnWidth}>
-            {React.Children.map(this.props.children, (child, index) => {
-              return React.cloneElement(child, {
-                width: this.state.columnWidth[child.props.dataKey],
-                cellDataGetter: function (cellDataKey, rowData) {
-                  return rowData.get(cellDataKey);
-                }
-              });
-            })}
-          </Table>
-      </div>
-    );
-  }
-});
-
-const Toolbar = React.createClass({
-  propTypes: {
-    form: PropTypes.element.isRequired,
-    value: PropTypes.instanceOf(List).isRequired
-  },
-  componentWillMount: function() {
-    this.props.action.on("close", () => {
-      this._modal.close();
-    });
-    this.setState({
-      store: this.props.action.getStore()
-    });
-  },
-  onSubmit() {
-    this.props.onAdd();
-    this._modal.close();
-  },
-  showModal() {
-    this._modal = Modal.create((
-      <GridForm channel={this.props.action} store={this.state.store} form={this.props.form} onSubmit={this.onSubmit}/>
-    ), {backdrop: true}, document.getElementById("form"));
-  },
-  render() {
-    return (
-      <div className="grid-toolbar btn-group">
-        <button className="btn btn-white btn-inverse btn-bold" type="button" onClick={this.showModal}>
-          <i className="ace-icon fa fa-file-o"/>
-          新增
-        </button>
+        <div className="grid-toolbar btn-group">
+          <button className="btn btn-white btn-inverse btn-bold" type="button" onClick={this.addRow}>
+            <i className="ace-icon fa fa-file-o"/>
+            新增
+          </button>
+        </div>
+        <Table headerHeight={this.props.headerHeight} rowHeight={this.props.rowHeight}
+          width={this.state.width} maxHeight={this.props.height}
+          rowsCount={this.getRowLength()} rowGetter={this.getRowData}
+          onColumnResizeEndCallback={this.setColumnWidth} onRowClick={this.editRow}>
+          {React.Children.map(this.props.children, (child, index) => {
+            return React.cloneElement(child, {
+              width: this.state.columnWidth[child.props.dataKey],
+              cellDataGetter: function (cellDataKey, rowData) {
+                return rowData.get(cellDataKey);
+              }
+            });
+          })}
+        </Table>
       </div>
     );
   }
@@ -150,10 +150,6 @@ const Toolbar = React.createClass({
 export { Grid, Column };
 
 const GridForm = React.createClass({
-  getInitialState: function() {
-    this.props.store.reset();
-    return this.props.store.data();
-  },
   componentDidMount: function() {
     this.props.store.onStoreChange((nextState, path) => {
       if (this.isMounted()) {

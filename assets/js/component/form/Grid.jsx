@@ -89,9 +89,9 @@ const Grid = React.createClass({
     this.state.columnWidth[dataKey] = width;
     this.forceUpdate();
   },
-  showModal(store, callback) {
+  showModal(title, store, callback) {
     this._modal = Modal.create((
-      <GridForm channel={this.props.action} store={store} form={this.props.form} onSubmit={() => {
+      <GridForm title={title} channel={this.props.action} store={store} form={this.props.form} onSubmit={() => {
         this._modal.close();
         callback();
       }}/>
@@ -101,7 +101,7 @@ const Grid = React.createClass({
     let store = this.props.action.getStore();
     store.reset();
 
-    this.showModal(store, () => {
+    this.showModal('新增数据', store, () => {
       let data = store.data(),
         list = this.state.value.push(data);
       this.setState({
@@ -120,7 +120,7 @@ const Grid = React.createClass({
     let action = this.props.action;
     action.setField(data);
 
-    this.showModal(action.getStore(), (store) => {
+    this.showModal('修改数据', action.getStore(), (store) => {
       let data = action.getStore().data(),
         list = this.state.value.set(index, data);
       this.setState({
@@ -233,7 +233,7 @@ const GridForm = React.createClass({
           <button type="button" className="close" onClick={this.closeModal}>
             <span aria-hidden="true">×</span>
           </button>
-          <h4 className="modal-title">新增数据</h4>
+          <h4 className="modal-title">{this.props.title}</h4>
         </div>
         <div className="modal-body">
           {this.props.form}

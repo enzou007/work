@@ -21,7 +21,7 @@ var NoteForm = React.createClass({
     this.props.action.setField({
       AppPsnCn: this.props.session.get("name"),
       PubDate: "2015-07-21",
-      StLeader: ["5582272444ae2b5937e53911"]
+      StLeader: ["bneppmeerermeoerupenelne"]
     });
   },
   beforeSubmit: function () {

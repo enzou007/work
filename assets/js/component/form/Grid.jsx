@@ -131,7 +131,9 @@ const Grid = React.createClass({
     });
   },
   removeRow() {
-    let list = this.state.value.deleteIn(_.keys(this.state.selected));
+    let list = this.state.value.filterNot((item, index) => {
+      return this.state.selected[index];
+    });
     this.setState({
       value: list,
       selected: {}

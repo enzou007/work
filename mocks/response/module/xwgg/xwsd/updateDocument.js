@@ -4,7 +4,7 @@ var _ = require("underscore");
 module.exports = function (data) {
   var Doc = new Document({
     flowId: "xwsd",
-    filePath: "mocks/response/module/xwgg/xwsd/docs.json"
+    docType: "xwsd"
   })
 
   var doc = data.body;

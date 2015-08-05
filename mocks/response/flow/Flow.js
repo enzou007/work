@@ -1,6 +1,5 @@
 var FlowData = require("./FlowData.js");
 var _ = require("underscore");
-var moment = require("moment");
 var Mock = require("mockjs");
 var flowData = new FlowData();
 
@@ -18,9 +17,9 @@ _.extend(Flow.prototype, {
     log("Flow initialize");
     if (this._objectId) {
       log("Flow initialize " + this._objectId);
-      this._flowInfo = flowData.getDocFlow(this._flowId, this._objectId);
+      this._flowInfo = this.getFlowById(this._flowId, this._objectId);
     } else {
-      this._flowInfo = this.getDefaultFlow();
+      this._flowInfo = {flow: this.getDefaultFlow()};
     }
   },
 
@@ -40,11 +39,17 @@ _.extend(Flow.prototype, {
 
   createFlow: function (objectId) {
     log("Flow createFlow");
-    return flowData.createFlow(this._flowId, objectId);
+    var flow = flowData.createFlow(this._flowId, objectId);
+    this.setObjectId(objectId);
+    return flow;
   },
 
   getDefaultFlow: function () {
     return flowData.getDefaultFlow(this._flowId);
+  },
+
+  getFlowById: function(flowId, objectId){
+    return flowData.getDocFlow(flowId, objectId);
   },
 
   getCurNode: function () {
@@ -84,17 +89,9 @@ _.extend(Flow.prototype, {
     if (!this._objectId) {
       return false;
     }
-    log("Flow nextNode Start");
-    log("-------option-info-start----------");
-    console.log(option);
-    log("-------option-info-end----------");
     var flowInfo = this.getFlowInfo();
-
     var curNode = this.getCurNode();
-    log("Flow nextNode curNode.nodeId===" + curNode.nodeId);
-
     if (curNode.nodeId === option.flownodeid) {
-      log("Flow nextNode return false");
       return false;
     }
 
@@ -102,9 +99,7 @@ _.extend(Flow.prototype, {
     curNode.done = true;
 
     var nextNode = this.getNode(option.flownodeid);
-    log(nextNode);
     nextNode.cur = true;
-    log("Flow nextNode Change Node");
     if (!flowInfo.log) {
       flowInfo.log = [];
     }
@@ -121,16 +116,18 @@ _.extend(Flow.prototype, {
       "opinion": unescape(option.flowopinion),
       "user": "admin",
       "operate": option.flowcontroltype,
-      "time": moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
+      "time": Mock.Random.now()
     });
-    log("Flow nextNode Save Log ");
+    
     flowData.saveDocFlowInfo();
-    log("Flow nextNode End");
+
+    return nextNode;
   }
 });
 
 var FlowID = {
-  xwsd: "5582272444ae2b5937e53930"
+  xwsd: "5582272444ae2b5937e53930",
+  entry: "5582272444ae2b5937e53931"
 }
 
 module.exports = Flow;

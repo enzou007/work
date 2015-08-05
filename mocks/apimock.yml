@@ -55,9 +55,13 @@
   response:
     file: response/cx/pfcx.json
 - request:
-    url: /1/system/module/5582272444ae2b5937e53911
+    url: /1/system/module/:moduleId
   response:
-    file: response/system/module/xwgg/xwsd.json
+    type: js
+    file: response/system/module/module.js
+
+
+# 新闻速递 URL配置
 - request:
     url: /1/xwgg/xwsd/@session
   response:
@@ -98,6 +102,50 @@
   response:
     type: js
     file: response/module/xwgg/xwsd/createDocument.js
+
+# 入职申请 URL配置
+- request:
+    url: /1/hr/entry/@session
+  response:
+    file: response/session/me.json
+- request:
+    url: /1/hr/entry
+    method: GET
+  response:
+    type: js
+    file: response/module/hr/entry/allDocument.js
+- request:
+    url: /1/hr/entry
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/entry/createDocument.js
+- request:
+    url: /1/hr/entry/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/module/hr/entry/document.js
+- request:
+    url: /1/hr/entry/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/entry/updateDocument.js
+- request:
+    url: /1/hr/entry/nextNode/:flowId/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/entry/updateDocument.js
+- request:
+    url: /1/hr/entry/nextNode/:flowId
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/entry/createDocument.js
+
+# 流程 URL配置
 - request:
     url: /1/flow/:flowId/:objectId
     method: GET
@@ -110,6 +158,7 @@
   response:
     type: js
     file: response/flow/FlowData.js
+
 - request:
     url: /1/system/user
   response:

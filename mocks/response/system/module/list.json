@@ -1,5 +1,18 @@
 [{
   "ico": "fa fa-list",
+  "objectId": "5582272444ae2b5937e53908",
+  "sort": 0,
+  "name": "人事管理",
+  "path": "hr"
+},{
+  "ico": "fa fa-list",
+  "parent": "5582272444ae2b5937e53908",
+  "objectId": "5582272444ae2b5937e53909",
+  "sort": 0,
+  "name": "入职申请",
+  "path": "hr/entry"
+},{
+  "ico": "fa fa-list",
   "objectId": "5582272444ae2b5937e53910",
   "sort": 0,
   "name": "新闻公告",

@@ -13,13 +13,13 @@ const SubmitBtn = React.createClass({
       className: "btn btn-success",
       icon: "fa fa-arrow-right",
       onBeforeSubmit: () => true,
-      trigger: function () {},
+      action: React.PropTypes.object.isRequired,
       onSubmit: function () {}
     };
   },
   PropTypes: {
     onBeforeSubmit: React.PropTypes.func,
-    trigger: React.PropTypes.func,
+    action: React.PropTypes.object.isRequired,
     onSubmit: React.PropTypes.func
   },
 
@@ -106,7 +106,7 @@ const SubmitBtn = React.createClass({
       FlowUsers: escape("张三/zhangsan"),
       FlowOpinion: escape($("#opinion").val() || "同意")
     };
-    this.props.trigger(option, result => {
+    this.props.action.submit(option, result => {
       var id = Gritter.add({
         title: '提示',
         time: 1000,

@@ -10,40 +10,45 @@ const SaveBtn = React.createClass({
       icon: "fa fa-check"
     };
   },
-  after(option) {
-    var cn = classnames({
-      "gritter-center": option.isNewNote,
-      "gritter-light": !option.isNewNote,
-      "gritter-success": option.status === "succeed",
-      "gritter-error": option.status === "failure"
-    })
-    var id = Gritter.add({
-      title: '提示',
-      time: 1500,
-      class_name: cn,
-      after_close() {
-        if (option.status === "succeed") {
-          if (option.isNewNote) {
-            window.location.href = option.url;
+  propTypes: {
+    action: React.PropTypes.object.isRequired
+  },
+  triggerClick(){
+    this.props.action.save(null, option => {
+      var cn = classnames({
+        "gritter-center": option.isNewNote,
+        "gritter-light": !option.isNewNote,
+        "gritter-success": option.status === "succeed",
+        "gritter-error": option.status === "failure"
+      })
+      var id = Gritter.add({
+        title: '提示',
+        time: 1500,
+        class_name: cn,
+        after_close() {
+          if (option.status === "succeed") {
+            if (option.isNewNote) {
+              window.location.href = option.url;
+            }
+          } else {
+            window.location.reload();
           }
-        } else {
-          window.location.reload();
-        }
-        Gritter.remove(id);
-      },
-      text: (
-        <div>
-          <h5>{option.status == "succeed" ? "保存成功!" : "保存失败!"}</h5>
-          <div style={{textAlign: "right"}}>
-            <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id)}>确定</a>
+          Gritter.remove(id);
+        },
+        text: (
+          <div>
+            <h5>{option.status == "succeed" ? "保存成功!" : "保存失败!"}</h5>
+            <div style={{textAlign: "right"}}>
+              <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id)}>确定</a>
+            </div>
           </div>
-        </div>
-      )
-    });
+        )
+      })
+    })
   },
   render() {
     return (
-      <button className={this.props.className} onClick={this.props.trigger.bind(this, null, this.after)}>
+      <button className={this.props.className} onClick={this.triggerClick}>
         <i className={"ace-icon "+this.props.icon}/>
         {this.props.text}
       </button>

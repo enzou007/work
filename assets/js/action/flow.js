@@ -32,7 +32,7 @@ export default class FlowAction extends Action {
     return this.getParam().flowId;
   }
   getObjectId() {
-    return this.getParam().objectId;
+    return this.getParam().objectId || "";
   }
   bindSession() {
     return $.get(`${this.getPath()}/@session`).done(resp => {
@@ -48,7 +48,7 @@ export default class FlowAction extends Action {
   }
   bindDocument() {
     return $.get(`${this.getPath()}/${this.getObjectId()}`).done(resp => {
-      this._options.flowId = resp["@flowId"];
+      this._param.flowId = resp["@flowId"];
       this.getStore().cursor().get("form").merge(resp);
       return resp;
     });
@@ -67,10 +67,10 @@ export default class FlowAction extends Action {
   save(option, callback) {
     let result = {
       url: "",
-      isNewNote: !formAction.getObjectId()
+      isNewNote: !this.getObjectId()
     };
     return $.ajax({
-      url: `${formAction.getPath()}/${formAction.getObjectId()}`,
+      url: `${this.getPath()}/${this.getObjectId()}`,
       type: "POST",
       headers: {
         "FlowControlType": "save"
@@ -78,7 +78,7 @@ export default class FlowAction extends Action {
       data: this.getStore().data().get("form").toJS()
     }).done(resp => {
       result.status = "succeed";
-      result.url = `/form.html?form=${formAction.getFormPath()}&path=${formAction.getPath()}&objectId=${resp["@objectId"]}`;
+      result.url = `/form.html?form=${this.getFormPath()}&path=${this.getPath()}&objectId=${resp["@objectId"]}`;
       callback(result);
     }).fail(resp => {
       result.status = "failure";
@@ -87,11 +87,11 @@ export default class FlowAction extends Action {
   }
   submit(option, callback) {
     option.FlowControlType = "submit";
-    return formAction.processFlow(option, callback);
+    return this.processFlow(option, callback);
   }
   reject(option, callback) {
     option.FlowControlType = "reject";
-    return formAction.processFlow(option, callback);
+    return this.processFlow(option, callback);
   }
   jump(option, callback) {
     option.FlowControlType = "jump";
@@ -100,17 +100,17 @@ export default class FlowAction extends Action {
   processFlow(option, callback) {
     var result = {
       url: "",
-      isNewNote: !formAction.getObjectId()
+      isNewNote: !this.getObjectId()
     };
     return $.ajax({
-      url: `${formAction.getPath()}/nextNode/${this.getFlowId()}/${formAction.getObjectId()}`,
+      url: `${this.getPath()}/nextNode/${this.getFlowId()}/${this.getObjectId()}`,
       type: "POST",
-      headers: _.omit(option, "callback"),
+      headers: option,
       data: this.getStore().data().get("form").toJS()
     }).done(resp => {
       if (callback) {
         result.status = "succeed";
-        result.url = `/form.html?form=${formAction.getFormPath()}&path=${formAction.getPath()}&objectId=${resp["@objectId"]}`;
+        result.url = `/form.html?form=${this.getFormPath()}&path=${this.getPath()}&objectId=${resp["@objectId"]}`;
         callback(result)
       }
     }).fail(resp => {

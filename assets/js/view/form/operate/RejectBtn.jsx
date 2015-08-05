@@ -6,21 +6,8 @@ import Checkbox from 'Component/Checkbox.jsx';
 import Radio from 'Component/Radio.jsx';
 import Gritter from 'Component/Gritter.jsx';
 
-
 const RejectBtn = React.createClass({
   getDefaultProps() {
-
-var React = require("react"),
-  $ = require("jquery"),
-  _ = require('underscore');
-var Modal = require("Component/bootstrap/Modal.jsx");
-var Checkbox = require("Component/Checkbox.jsx");
-var Radio = require("Component/Radio.jsx");
-var Gritter = require('Component/Gritter.jsx');
-
-var RejectBtn = React.createClass({
-
-  getDefaultProps: function () {
     return {
       text: "驳回",
       className: "btn btn-info",
@@ -30,7 +17,7 @@ var RejectBtn = React.createClass({
   },
   PropTypes: {
     onBeforeSubmit: React.PropTypes.func,
-    trigger: React.PropTypes.func,
+    action: React.PropTypes.object.isRequired,
     onSubmit: React.PropTypes.func
   },
   triggerClick() {
@@ -111,7 +98,7 @@ var RejectBtn = React.createClass({
       FlowUsers: escape("张三/zhangsan"),
       FlowOpinion: escape($("#opinion").val() || "不同意")
     };
-    this.props.trigger(option, result => {
+    this.props.action.reject(option, result => {
       var id = Gritter.add({
         title: '提示',
         time: 1000,

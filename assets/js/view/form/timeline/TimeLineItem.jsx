@@ -1,12 +1,6 @@
 import React from 'react';
 
-import TimeLineItem from './TimeLineItem.jsx';
-
-const operates = {
-  "submit": "提交",
-  "reject": "驳回"
-}
-const TimeLine = React.createClass({
+const TimeLineItem = React.createClass({
   propTypes: {
     nodeName: React.PropTypes.string,
     user: React.PropTypes.string,
@@ -70,4 +64,9 @@ const TimeLine = React.createClass({
   }
 });
 
-export default TimeLine;
+const operates = TimeLineItem.operates = {
+  "submit": "提交",
+  "reject": "驳回"
+}
+
+export default TimeLineItem;

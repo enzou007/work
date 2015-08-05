@@ -73,7 +73,17 @@ const FlowForm = React.createClass({
             <Tabs>
               {this.props.children}
               <div className="form-content" tab="流程信息" onShow={this.showFlowMap}>
-                {this.state.showFlow && <FlowMap flow={store.get("flow").toJS()} />}
+                <div className="page-header">
+                  <h1>{store.get("flow").get("name") + "-流程图"}</h1>
+                </div>
+                {this.state.showFlow ? <FlowMap flow={store.get("flow")} /> : <div />}
+
+                <div className="hr hr-double dotted"></div>
+
+                <div className="page-header">
+                  <h1>{store.get("flow").get("name") + "-操作日志"}</h1>
+                </div>
+                <TimeLine logs={logs} type="table"/>
               </div>
             </Tabs>
           </Form>

@@ -29,9 +29,9 @@ const Toolbar = React.createClass({
     }
     return (
       <Navbar ico="fa fa-leaf" title={this.props.title}>
-        {display.save?<li><SaveBtn trigger={action.save}/></li>:null}
-        {display.submit?<li><SubmitBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} trigger={action.submit} flow={store.get("flow").toJS()}/> </li>:null}
-        {display.reject?<li><RejectBtn trigger={action.reject} flow={store.get("flow").toJS()}/> </li>:null}
+        {display.save?<li><SaveBtn action={action}/></li>:null}
+        {display.submit?<li><SubmitBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} action={action} flow={store.get("flow").toJS()}/> </li>:null}
+        {display.reject?<li><RejectBtn action={action} flow={store.get("flow").toJS()}/> </li>:null}
         {this.props.children}
         <li><ExitBtn /></li>
       </Navbar>

@@ -1,6 +1,8 @@
+
+//TODO 使用Immutable重新封装
+
 import _ from 'underscore';
 
-//const Config = function(){
 class Config{
   instance = {
     DragOptions: {cursor: 'pointer',zIndex: 2000},
@@ -124,13 +126,6 @@ class Config{
     }
   }
 
-  lineStyle() {
-    // {
-    //   endpoints:["Blank", "Blank" ],
-    //   paintStyle:{strokeStyle:this.lineColor,lineWidth:3},
-    //   connector:["Flowchart", {stub: [40, 60],gap: 10,cornerRadius: 5,alwaysRespectStubs: true}]
-    // }
-  }
 }
 
 

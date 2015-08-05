@@ -2,6 +2,7 @@ import React from 'react';
 import FlowNode from './FlowNode.jsx';
 import $ from 'jquery';
 import _ from 'underscore';
+import Scrollbar from 'Component/Scrollbar.jsx'
 
 import 'jsplumb/dist/js/dom.jsPlumb-1.7.6.js';
 import '../../../../less/flowmap.less';
@@ -25,12 +26,11 @@ const FlowMap = React.createClass({
 //   return nextState.flow.nodes.length != this.state.flow.nodes.length;
 // },
   propTypes: {
-    readonly: React.PropTypes.bool,
-    data: React.PropTypes.object
+    readonly: React.PropTypes.bool
   },
   addNodeItem(item) {
     this.setState({
-      nodes: this.state.nodes.concat([item])
+      nodes: this.state.flow.get("nodes").push(item)
     })
   },
   draggable() {
@@ -40,13 +40,13 @@ const FlowMap = React.createClass({
   },
   render() {
     return (
-      <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
+      <Scrollbar className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
         {
-          _.map(this.state.flow.nodes, node => {
-            return <FlowNode key={node.nodeId} {...node}/>
+          this.state.flow.get("nodes").map(node => {
+            return <FlowNode key={node.get("nodeId")} {...node.toJS()}/>
           })
         }
-      </div>
+      </Scrollbar>
     );
   },
   componentDidMount() {
@@ -68,10 +68,11 @@ const FlowMap = React.createClass({
   buildNodes(nodes) {
     var toId = "";
     var nodeConfig;
-    _.each(this.state.flow.nodes, node => {
-      toId = node.nodeId;
+
+    this.state.flow.get("nodes").forEach(node => {
+      toId = node.get("nodeId");
       node.readonly
-      nodeConfig = config.getEndpointStyle(node, {
+      nodeConfig = config.getEndpointStyle(node.toJS(), {
         readonly: this.props.readonly
       });
       _.each(config.anchors, anchor => {
@@ -84,13 +85,13 @@ const FlowMap = React.createClass({
     })
   },
   buildLines(lines) {
-    _.each(this.state.flow.lines, line => {
+    this.state.flow.get("lines").forEach(line => {
       this.flowMap.connect({
-        source: line.source,
-        target: line.target,
-        anchors: line.connect,
+        source: line.get("source"),
+        target: line.get("target"),
+        anchors: line.get("connect").toArray(),
         paintStyle: {
-          strokeStyle: (line.flowPast ? "#8BC34A" : "#CACDCF"),
+          strokeStyle: (line.get("flowPast") ? "#8BC34A" : "#CACDCF"),
           lineWidth: 3
         },
         endpoints: [

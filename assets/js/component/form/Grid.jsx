@@ -3,10 +3,8 @@ import _ from 'underscore';
 import $ from 'jquery';
 import classnames from 'classnames';
 import { Table, Column } from 'fixed-data-table';
-<<<<<<< HEAD
 import { List } from 'immutable';
 import { mixins } from 'iflux';
-
 import Modal from '../bootstrap/Modal.jsx';
 import Checkbox from '../Checkbox.jsx';
 import Form from './Form.jsx';
@@ -14,7 +12,6 @@ import FormControl from './FormControl.jsx';
 import Action from '../../action/form';
 
 import '../../../less/component/grid.less';
-
 const Grid = React.createClass({
   propTypes: {
     height: PropTypes.number.isRequired,

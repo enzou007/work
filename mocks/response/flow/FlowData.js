@@ -27,7 +27,13 @@ module.exports = function (data) {
     }
     docFlowsData.add(flow);
     this.saveDocFlowInfo();
+  }
 
+  this.deleteDocFlow = function(flowId, objectIds){
+    docFlowsData.setData(_.filter(docFlowsData.getData(), function (flow) {
+      return flow.flowId === flowId && objectIds.indexOf(flow.objectId) === -1;
+    }));
+    this.saveDocFlowInfo();
   }
 
   this.saveFlowInfo = function () {

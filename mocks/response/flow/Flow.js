@@ -44,6 +44,10 @@ _.extend(Flow.prototype, {
     return flow;
   },
 
+  deleteFlow: function(objectIds){
+    return flowData.deleteDocFlow(this._flowId, objectIds);
+  },
+
   getDefaultFlow: function () {
     return flowData.getDefaultFlow(this._flowId);
   },
@@ -118,7 +122,7 @@ _.extend(Flow.prototype, {
       "operate": option.flowcontroltype,
       "time": Mock.Random.now()
     });
-    
+
     flowData.saveDocFlowInfo();
 
     return nextNode;

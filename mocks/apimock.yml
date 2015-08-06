@@ -79,6 +79,12 @@
     type: js
     file: response/module/xwgg/xwsd/createDocument.js
 - request:
+    url: /1/xwgg/xwsd/delete
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/entry/deleteDocument.js
+- request:
     url: /1/xwgg/xwsd/:objectId
     method: GET
   response:
@@ -120,6 +126,12 @@
   response:
     type: js
     file: response/module/hr/entry/createDocument.js
+- request:
+    url: /1/hr/entry/delete
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/entry/deleteDocument.js
 - request:
     url: /1/hr/entry/:objectId
     method: GET

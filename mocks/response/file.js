@@ -11,6 +11,10 @@ function File(path) {
     data.push(obj);
   }
 
+  this.setData = function(newData){
+    data = newData;
+  }
+
   this.save = function () {
     fs.writeFileSync(path, JSON.stringify(data));
     //重新加载文件, 切断所用对象的引用关系.

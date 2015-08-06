@@ -66,7 +66,10 @@ _.extend(Document.prototype, {
     return this.docs.getData();
   },
   deleteDocument: function(objectIds){
-
+    this.docs.setData(_.filter(this.getAllDocuments(), function(doc){
+      return objectIds.indexOf(doc["@objectId"]) === -1;
+    }));
+    this.docs.save();
   },
   getDocumentsByPage: function(page, count, condition){
     var docs = this.getAllDocuments();

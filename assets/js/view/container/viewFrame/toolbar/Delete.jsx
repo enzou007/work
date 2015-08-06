@@ -9,7 +9,7 @@ const Delete = React.createClass({
     if (action.getDataCollection().selectedLength > 0) {
       var id = Gritter.add({
         title: '提示',
-        class_name: 'gritter-center gritter-info',
+        class_name: 'gritter-light gritter-info',
         text: (
           <div>
             <h5>是否删除所选文档？</h5>

@@ -16,8 +16,7 @@ const SaveBtn = React.createClass({
   triggerClick(){
     this.props.action.save(null, option => {
       var cn = classnames({
-        "gritter-center": option.isNewNote,
-        "gritter-light": !option.isNewNote,
+        "gritter-light": true,
         "gritter-success": option.status === "succeed",
         "gritter-error": option.status === "failure"
       })

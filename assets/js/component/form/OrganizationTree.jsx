@@ -13,6 +13,7 @@ import Action from '../../action/department';
 import '../../../less/component/organization-tree.less';
 
 const ROOT_CODE = '__root__';
+let action = new Action()
 
 export default class OrganizationTree extends React.Component {
   static propTypes = {

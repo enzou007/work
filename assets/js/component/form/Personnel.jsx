@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'underscore';
 import classnames from 'classnames';
-import { Set } from 'immutable';
 
 import Dropdown from '../../component/bootstrap/Dropdown.jsx';
 import OrganizationTree from './OrganizationTree.jsx';

@@ -8,11 +8,12 @@ import Radio from '../Radio.jsx';
 
 import Strings from 'rctui/src/js/utils/strings';
 
-import action from '../../action/department';
+import Action from '../../action/department';
 
 import '../../../less/component/organization-tree.less';
 
 const ROOT_CODE = '__root__';
+let action = new Action()
 
 export default class OrganizationTree extends React.Component {
   static propTypes = {

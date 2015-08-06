@@ -1,9 +1,9 @@
 import React from 'react';
 import _ from 'underscore';
 import classnames from 'classnames';
+import { Set } from 'immutable';
 
 import { getOuterHeight, overView } from 'rctui/src/js/utils/dom';
-import { toArray } from 'rctui/src/js/utils/strings';
 import clickAway from 'rctui/src/js/higherorder/clickaway';
 
 import Dropdown from '../../component/bootstrap/Dropdown.jsx';
@@ -11,11 +11,13 @@ import OrganizationTree from './OrganizationTree.jsx';
 
 import FormControl from './FormControl.jsx';
 
-import action from '../../action/department';
+import Action from '../../action/department';
 
 import 'rctui/src/less/form.less';
 
 import '../../../less/component/organization.less';
+
+let action = new Action();
 
 @clickAway
 export default class Department extends React.Component {
@@ -83,10 +85,13 @@ export default class Department extends React.Component {
       focus: flag
     });
   }
+  queryOptions(input) {
+    return action.query(input);
+  }
   handleInput = _.debounce((event) => {
     let inputValue = React.findDOMNode(this.refs.input).value;
     if (inputValue.trim() !== '') {
-      action.query(inputValue).then(resp => {
+      this.queryOptions(inputValue).then(resp => {
         this.setState({
           options: resp
         });
@@ -121,15 +126,19 @@ export default class Department extends React.Component {
   }
   handleRemove(index) {
     this.state.data.splice(index, 1);
+
+    this.forceUpdate();
     if (this.props.onChange) {
       this.props.onChange();
     }
-    this.forceUpdate();
   }
   handleTreeChange = (value) => {
     this.setState({
       data: value
     });
+  }
+  fetchList(objectIds){
+    return action.fetch(objectIds);
   }
   formateData(value) {
     if(!value){
@@ -142,37 +151,22 @@ export default class Department extends React.Component {
         id: objectId,
         name: '加载中...'
       };
-    }).toArray(), newIndex = {};
+    }).toArray();
 
-    _.forEach(newList, (data, index) => {
-      if(!_.findWhere(this.state.data, {objectId: data.objectId})){
-        newIndex[index] = data;
-      }
+    this.fetchList(value.toArray()).then(data => {
+      this.setState({
+        data: newList.map(function (item) {
+          return _.findWhere(data, {objectId: item.objectId});
+        })
+      });
     });
 
-    if(!_.isEmpty(newIndex)){
-      let objectIds = _.map(newIndex, function (item) {
-        return item.objectId;
-      });
-      action.fetch(objectIds).then(data => {
-        _.forEach(newIndex, function (val, index) {
-          newList[index] = _.findWhere(data, {objectId: val.objectId});
-        });
-
-        this.setState({
-          data: newList
-        });
-      });
-
-      return newList;
-    }
-
-    return this.state.data;
+    return newList;
   }
-  getValue(data = this.state.data) {
-    return data.map(function (item) {
+  getValue() {
+    return Set.of(...this.state.data.map(function (item) {
       return item.objectId;
-    });
+    }));
   }
   renderList() {
     let placeholder = this.state.value == null ? (this.state.msg || this.props.placeholder) : null;

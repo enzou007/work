@@ -1,5 +1,6 @@
 import _ from "underscore";
 import $ from "jquery";
+import { Map, List, Set } from 'immutable';
 import { Store, msg } from 'iflux';
 
 const actions = [];
@@ -10,7 +11,7 @@ export default class Action {
     this.uniqueId = _.uniqueId('form_action_');
     this._param = param;
     this._store = Store(this.getDefaultStore());
-    this._controls = [];
+    this._controls = new Map();
     this._events = [];
 
     actions.push(this);
@@ -34,15 +35,15 @@ export default class Action {
     msg.emit(`${this.uniqueId}:${name}`, ...arg);
   }
   registerControl(element) {
-    this._controls.push(element);
+    this._controls = this._controls.set(element.props.name, element);
   }
   unregisterControl(element) {
-    this._controls.splice(_.indexOf(this._controls, element), 1);
+    this._controls = this._controls.remove(element.props.name);
   }
   validateAll() {
-    return _.every(this._controls, function (element) {
+    return this._controls.forEach(function (element) {
       return element.validate();
-    })
+    });
   }
   destroy() {
     _.forEach(this._events, function (name) {
@@ -50,17 +51,44 @@ export default class Action {
     });
     actions.splice(_.indexOf(actions, this), 1);
   }
+  parseValue(key, val){
+    if (typeof key === 'object') {
+      let result = {};
+      _.forEach(key, (item, name) => {
+        result[name] = this.parseValue(name, item);
+      });
+      return result;
+    } else {
+      let valueType = this._controls.get(key).state.valueType;
+      switch (valueType) {
+        case 'List':
+          if (!List.isList(val)) {
+            return new List(val);
+          }
+          break;
+        case 'Set':
+          if (!Set.isSet(val)) {
+            return new Set(val);
+          }
+          break;
+        default:
+          if (_.isFunction(val.toJS)) {
+            return val.toJS();
+          }
+      }
+      return val;
+    }
+  }
   setField(key, val) {
     if (key == null) return this;
 
-    let attrs;
+    val = this.parseValue(key, val);
     if (typeof key === 'object') {
-      attrs = key;
+      this.getStore().cursor().merge(val);
     } else {
-      (attrs = {})[key] = val;
+      this.getStore().cursor().set(key, val);
     }
 
-    this.getStore().cursor().mergeDeep(attrs);
     return this;
   }
 }

@@ -44,7 +44,7 @@ var NoteForm = React.createClass({
         <div className="form-content" tab="基本信息">
           <Fieldset title="Form表单">
             <FormControl label="申请人" name="AppPsnCn" type="text" readOnly={true}/>
-            <FormControl label="申请日期" name="StDate" type="date"/>
+            <FormControl label="申请日期" name="PubDate" type="date"/>
             <FormControl label="性别" name="StSex" type="select" data={SexData}/>
             <FormControl label="年龄" name="StAge" type="number"/>
             <FormControl label="部门领导" name="StLeader" type="personnel" />

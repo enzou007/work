@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
 import classnames from 'classnames';
+import { List, Set } from 'immutable';
 
 import { nextUid, format, toArray } from 'rctui/src/js/utils/strings';
 import Regs from 'rctui/src/js/utils/regs';
@@ -265,21 +266,6 @@ export default class FormControl extends React.Component {
       props =_.defaults(this.copyProps(), props);
       // 不从FormControl继承responsive设置
       delete props.responsive;
-      if(props.value){
-        // 按数值类型进行转换
-        switch(control.valueType){
-          case 'List':
-            props.value = props.value.toList();
-            break;
-          case 'Set':
-            props.value = props.value.toSet();
-            break;
-          case 'array':
-            props.value = props.value.toJS();
-            break;
-        }
-      }
-
       return control.render(props);
     }
   }

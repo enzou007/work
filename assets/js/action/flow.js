@@ -14,14 +14,12 @@ export default class FlowAction extends Action {
   setField(key, val) {
     if (key == null) return this;
 
-    let attrs;
+    val = this.parseValue(key, val);
     if (typeof key === 'object') {
-      attrs = key;
+      this.getStore().cursor().get("form").merge(val);
     } else {
-      (attrs = {})[key] = val;
+      this.getStore().cursor().get("form").set(key, val);
     }
-
-    this.getStore().cursor().get("form").mergeDeep(attrs);
     return this;
   }
   getFormPath() {

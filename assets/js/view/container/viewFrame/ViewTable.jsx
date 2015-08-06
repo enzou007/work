@@ -57,7 +57,7 @@ const ViewTable = React.createClass({
           return <Checkbox checked={dataCollection.selectedLength > 0} onChange={this.selectAll}
             half={dataCollection.getPerPage() > dataCollection.selectedLength}/>;
         }} cellRenderer={(cellData, cellDataKey, rowData, rowIndex, columnData, width) => {
-          return <Checkbox checked={dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
+          return <Checkbox checked={dataCollection.at(rowIndex) && dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
         }}/>
         {
           _.map(this.state.column, (column, key) => {

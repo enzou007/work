@@ -59,7 +59,9 @@ var Action = Backbone.Router.extend({
     "home": "loadHome",
     ":notfound": "loadNotFoundContent"
   },
+  _moduleOptions: {},
   _registerRoute: function (model) {
+    var _this = this;
     if (model.getChildren().length === 0 && model.has("path")) {
       var path = model.get("path");
       this.route(path, path.replace(/\//g, ":"), function () {
@@ -69,8 +71,10 @@ var Action = Backbone.Router.extend({
           require("../module/" + path + "/option")(function (Module) {
             // 激活菜单项
             moduleStore.setActiveItem(model.id);
-            // 构建模块基本信息，绑定视图框架
-            var moduleOption = new Module(model);
+            // 构建模块基本信息
+            var moduleOption = _this._moduleOptions[model.id] ? _this._moduleOptions[model.id] : _this._moduleOptions[model.id] = new Module(model);
+            // 手动绑定视图框架
+            moduleOption.bindViewFrame();
             // 触发界面变更
             appStore.setAttrubute(_.defaults(moduleOption.getOption(), {
               container: moduleOption.getContainer(),

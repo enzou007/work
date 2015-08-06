@@ -14,7 +14,7 @@ var Base = function (model) {
 
 _.extend(Base.prototype, {
   initialize: function () {
-    viewFrameAction.bind(this);
+    //viewFrameAction.bind(this);
   },
   page: "form.html",
   form: {},
@@ -30,12 +30,24 @@ _.extend(Base.prototype, {
   getOption: function () {
     return _.pick(this, "page", "form", "Model", "View", "viewButton", "CustomButton");
   },
-  getQueryCollection: _.once(function () {
-    return new QueryCollection(this.menu, {
-      parse: true,
-      module: this.module
-    });
-  })
+  getQueryCollection: function () {
+    if(!this._QueryCollection){
+      this._QueryCollection = new QueryCollection(this.menu, {
+        parse: true,
+        module: this.module
+      });
+    }
+    return this._QueryCollection;
+  },
+  bindViewFrame: function(){
+    viewFrameAction.bind(this);
+  },
+  // getQueryCollection: _.once(function () {
+  //   return new QueryCollection(this.menu, {
+  //     parse: true,
+  //     module: this.module
+  //   });
+  // })
 });
 
 Base.extend = Backbone.Model.extend;

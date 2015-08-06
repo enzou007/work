@@ -100,11 +100,12 @@ export default class FormControl extends React.Component {
     return this.refs.control;
   }
   validate(value) {
-    value = value || this.getValue(null);
+    value = value || this.getValue();
 
     let hasValue = false;
     switch(this.state.valueType){
       case 'List':
+      case 'Set':
         hasValue = value.size > 0;
         break;
       default:
@@ -153,6 +154,7 @@ export default class FormControl extends React.Component {
         len = parseFloat(value);
         break;
       case 'List':
+      case 'Set':
         len = value.size;
         break;
       default:
@@ -182,8 +184,9 @@ export default class FormControl extends React.Component {
   handleChange = (value) => {
     if(!value){
       _.defer(() => {
-        this.handleChange(this.refs.control.getValue(null));
+        this.handleChange(this.refs.control.getValue(this.props.seq));
       });
+      return;
     }
 
     this.validate(value);
@@ -262,9 +265,19 @@ export default class FormControl extends React.Component {
       props =_.defaults(this.copyProps(), props);
       // 不从FormControl继承responsive设置
       delete props.responsive;
-      // ReactUI的默认组件不支持immutable.js，进行转换
-      if(control.valueType === "array" && props.value && _.isFunction(props.value.toJS)){
-        props.value = props.value.toJS();
+      if(props.value){
+        // 按数值类型进行转换
+        switch(control.valueType){
+          case 'List':
+            props.value = props.value.toList();
+            break;
+          case 'Set':
+            props.value = props.value.toSet();
+            break;
+          case 'array':
+            props.value = props.value.toJS();
+            break;
+        }
       }
 
       return control.render(props);

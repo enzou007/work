@@ -9,8 +9,8 @@ const action = {
   handles: [],
   _batchRequest: _.debounce(function () {
 
-    let params = this.params.slice(0),
-      handles = this.handles.slice(0),
+    let params = this.params.slice(),
+      handles = this.handles.slice(),
       objectIds = _.reduce(params, function (memo, item) {
         if (_.isArray(item)) {
           memo.push(...item);
@@ -49,6 +49,9 @@ const action = {
         handle.reject(resp);
       }
     });
+
+    this.params = [];
+    this.handles = [];
 
   }, 50),
   fetch(objectId) {

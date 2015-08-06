@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import classnames from 'classnames';
+import { Set } from 'immutable';
 
 import { getOuterHeight, overView } from 'rctui/src/js/utils/dom';
 import { toArray } from 'rctui/src/js/utils/strings';
@@ -21,17 +22,21 @@ export default class Personnel extends React.Component {
   static propTypes = {
     readOnly: React.PropTypes.bool
   }
+  static defaultValue = {
+    value: new Set()
+  }
   state = {
     focus: false,
     active: false,
     options: [],
-    data: [],
-    value: []
+    data: this.formateData(this.props.value),
+    value: this.props.value
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.value !== this.props.value) {
       this.setState({
-        value: this.formatValue(nextProps.value)
+        data: this.formateData(nextProps.value),
+        value: nextProps.value
       });
     }
   }
@@ -116,10 +121,7 @@ export default class Personnel extends React.Component {
     this.setState({ data });
     this.close()
     if (this.props.onChange) {
-      let value = this.getValue()
-      setTimeout(() => {
-        this.props.onChange(value)
-      }, 0)
+      this.props.onChange();
     }
   }
   handleRemove(index) {
@@ -129,46 +131,55 @@ export default class Personnel extends React.Component {
 
     this.state.data.splice(index, 1);
     if (this.props.onChange) {
-      let value = this.getValue()
-      setTimeout(() => {
-        this.props.onChange(value)
-      }, 0)
+      this.props.onChange();
     }
     this.forceUpdate();
   }
-  formatValue(value) {
-    value = toArray(value, this.props.sep)
-    if (this.state && this.state.data.length !== value.length) {
-      action.fetch(value).then(data => {
-        this.setState({
-          data
-        });
-      });
-      // 在action未返回值前，先初始化一个形式值
-      this.setState(_.reduce(value, function (memo, objectId) {
-        memo.push({
-          objectId: objectId,
-          id: objectId,
-          name: '加载中...'
-        });
-        return memo;
-      }, []));
+  formateData(value) {
+    if(!value){
+      return [];
     }
-    return value
-  }
-  getValue(sep = this.props.sep, data = this.state.data) {
-    let value = data.map(function (item) {
-      return item.objectId;
+
+    let newList = value.map(function (objectId) {
+      return {
+        objectId: objectId,
+        id: objectId,
+        name: '加载中...'
+      };
+    }).toArray(), newIndex = {};
+
+    _.forEach(newList, (data, index) => {
+      if(!_.findWhere(this.state.data, {objectId: data.objectId})){
+        newIndex[index] = data;
+      }
     });
 
-    if (sep) {
-      value = value.join(sep)
+    if(!_.isEmpty(newIndex)){
+      let objectIds = _.map(newIndex, function (item) {
+        return item.objectId;
+      });
+      action.fetch(objectIds).then(data => {
+        _.forEach(newIndex, function (val, index) {
+          newList[index] = _.findWhere(data, {objectId: val.objectId});
+        });
+
+        this.setState({
+          data: newList
+        });
+      });
+
+      return newList;
     }
 
-    return value
+    return this.state.data;
+  }
+  getValue(data = this.state.data) {
+    return new Set(data.map(function (item) {
+      return item.objectId;
+    }));
   }
   renderList() {
-    let placeholder = this.state.value.length === 0 ? (this.state.msg || this.props.placeholder) : null;
+    let placeholder = this.state.data.length === 0 ? (this.state.msg || this.props.placeholder) : null;
 
     return (
       <div className="handle">
@@ -226,4 +237,4 @@ export default class Personnel extends React.Component {
 
 FormControl.register('personnel', function (props) {
   return <Personnel {...props}/>
-}, Personnel, 'array');
+}, Personnel, 'Set');

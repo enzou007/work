@@ -50,6 +50,9 @@ const action = {
       }
     });
 
+    this.params = [];
+    this.handles = [];
+
   }, 50),
   fetch(objectId) {
     // 对于数组参数，使用Promise.all直接封装

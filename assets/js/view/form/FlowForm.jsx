@@ -61,7 +61,7 @@ const FlowForm = React.createClass({
   render() {
     let action = this.state.action,
       store = action.getStore().data();
-    var logs = store.get('log').toJS();
+    var logs = store.get('log');
 
     return (
       <div className="no-skin">
@@ -69,16 +69,16 @@ const FlowForm = React.createClass({
         <Toolbar title={store.get("flow").get("name") || "表单"} action={this.state.action} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}>{this.props.toolbar}</Toolbar>
         <div className="main-container" id="main-container">
           <Form hintType={this.props.hintType} layout={this.props.layout}
-            className={`container ${logs.length === 0 ? "container-center" : ""}`} channel={action} store={store.get("form")} >
+            className={`container ${logs.size === 0 ? "container-center" : ""}`} channel={action} store={store.get("form")} >
             <Tabs>
               {this.props.children}
               <div className="form-content" tab="流程信息" onShow={this.showFlowMap}>
-                {this.state.showFlow ? <FlowMap flow={store.get("flow").toJS()} /> : <div />}
+                {this.state.showFlow && <FlowMap flow={store.get("flow").toJS()} />}
               </div>
             </Tabs>
           </Form>
         </div>
-        <TimeLine logs={logs} />
+        <TimeLine logs={logs.toJS()} />
       </div>
     );
   }

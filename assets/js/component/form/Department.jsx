@@ -26,13 +26,14 @@ export default class Department extends React.Component {
     focus: false,
     active: false,
     options: [],
-    data: [],
-    value: []
+    data: this.formateData(this.props.value),
+    value: this.props.value
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.value !== this.props.value) {
       this.setState({
-        value: this.formatValue(nextProps.value)
+        data: this.formateData(nextProps.value),
+        value: nextProps.value
       });
     }
   }
@@ -115,19 +116,13 @@ export default class Department extends React.Component {
     this.setState({ data });
     this.close()
     if (this.props.onChange) {
-      let value = this.getValue()
-      setTimeout(() => {
-        this.props.onChange(value)
-      }, 0)
+      this.props.onChange();
     }
   }
   handleRemove(index) {
     this.state.data.splice(index, 1);
     if (this.props.onChange) {
-      let value = this.getValue()
-      setTimeout(() => {
-        this.props.onChange(value)
-      }, 0)
+      this.props.onChange();
     }
     this.forceUpdate();
   }
@@ -136,36 +131,48 @@ export default class Department extends React.Component {
       data: value
     });
   }
-  formatValue(value) {
-    value = toArray(value, this.props.sep)
-    if (this.state && this.state.data.length !== value.length) {
-      action.fetch(value).then(data => {
-        this.setState({
-          data
-        });
-      });
-      // 在action未返回值前，先初始化一个形式值
-      this.setState(_.reduce(value, function (memo, objectId) {
-        memo.push({
-          objectId: objectId,
-          id: objectId,
-          name: '加载中...'
-        });
-        return memo;
-      }, []));
+  formateData(value) {
+    if(!value){
+      return [];
     }
-    return value
-  }
-  getValue(sep = this.props.sep, data = this.state.data) {
-    let value = data.map(function (item) {
-      return item.objectId;
+
+    let newList = value.map(function (objectId) {
+      return {
+        objectId: objectId,
+        id: objectId,
+        name: '加载中...'
+      };
+    }).toArray(), newIndex = {};
+
+    _.forEach(newList, (data, index) => {
+      if(!_.findWhere(this.state.data, {objectId: data.objectId})){
+        newIndex[index] = data;
+      }
     });
 
-    if (sep) {
-      value = value.join(sep)
+    if(!_.isEmpty(newIndex)){
+      let objectIds = _.map(newIndex, function (item) {
+        return item.objectId;
+      });
+      action.fetch(objectIds).then(data => {
+        _.forEach(newIndex, function (val, index) {
+          newList[index] = _.findWhere(data, {objectId: val.objectId});
+        });
+
+        this.setState({
+          data: newList
+        });
+      });
+
+      return newList;
     }
 
-    return value
+    return this.state.data;
+  }
+  getValue(data = this.state.data) {
+    return data.map(function (item) {
+      return item.objectId;
+    });
   }
   renderList() {
     let placeholder = this.state.value == null ? (this.state.msg || this.props.placeholder) : null;
@@ -233,4 +240,4 @@ export default class Department extends React.Component {
 
 FormControl.register('department', function (props) {
   return <Department {...props}/>
-}, Department, 'array');
+}, Department, 'Set');

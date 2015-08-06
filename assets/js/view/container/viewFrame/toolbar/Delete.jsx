@@ -14,11 +14,15 @@ const Delete = React.createClass({
           <div>
             <h5>是否删除所选文档？</h5>
             <div style={{textAlign: "right"}}>
-              <a className="btn btn-sm btn-danger" onClick={function() {
-                action.deleteSelectedData();
+              <a className="btn btn-sm btn-danger" onClick={() => {
+                action.deleteSelectedData().done(() => {
+                  this.showInfo("gritter-success", "删除成功!");
+                }).fail(() => {
+                  this.showInfo("gritter-error", "删除失败!");
+                });
                 Gritter.remove(id);
               }}>确定</a>&nbsp;
-              <a className="btn btn-sm" onClick={function() {
+              <a className="btn btn-sm" onClick={() => {
                 Gritter.remove(id);
               }}>取消</a>
             </div>
@@ -26,6 +30,23 @@ const Delete = React.createClass({
         )
       });
     }
+  },
+  showInfo(cn, info) {
+    var id = Gritter.add({
+      title: '提示',
+      time: 1000,
+      class_name: "gritter-light " + cn,
+      text: (
+        <div>
+          <h5>{info}</h5>
+          <div style={{textAlign: "right"}}>
+            <a className="btn btn-sm" onClick={() => {
+              Gritter.remove(id);
+            }}>关闭</a>
+          </div>
+        </div>
+      )
+    });
   },
   render() {
     return (

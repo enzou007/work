@@ -1,7 +1,8 @@
 "use strict";
 
 var Backbone = require("backbone"),
-  _ = require("underscore");
+  _ = require("underscore"),
+  $ = require("jquery");
 
 var QueryData = require("../store/viewFrame/queryData");
 
@@ -84,10 +85,16 @@ _.extend(Action.prototype, Backbone.Events, {
     });
   },
   deleteSelectedData: function () {
-    // TODO 实现删除
-    this._dataCollection.fetch({
-      reset: true
-    });
+    var objectIds = _.map(this._dataCollection.selected, function(model){
+      return model.get("@objectId");
+    }).join(";");
+
+    return $.post(this._dataCollection.url+"/delete", {objectIds:objectIds})
+      .done(function(){
+        this._dataCollection.fetch({
+          reset: true
+        });
+      }.bind(this));
   },
   toggleSearchItem: function (item) {
     this.setActiveItem(item);

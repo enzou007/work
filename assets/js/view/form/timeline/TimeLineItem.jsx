@@ -41,22 +41,17 @@ const TimeLineItem = React.createClass({
         </div>
 
         <div className="widget-box transparent">
-          <div className="widget-header widget-header-small"></div>
-          <div className="widget-body">
-            <div className="widget-main">
-              <div>
-                <i className="fa fa-circle"></i>
-                {this.ellipsis(this.props.nodeName)}
-              </div>
-              <div>
-                <i className="fa fa-user"></i>
-                {this.props.user}
-              </div>
-              <div>
-                <i className="fa fa-edit"></i>
-                {operates[this.props.operate]}
-              </div>
-            </div>
+          <div>
+            <i className="fa fa-circle"></i>
+            {this.ellipsis(this.props.nodeName)}
+          </div>
+          <div>
+            <i className="fa fa-user"></i>
+            {this.props.user}
+          </div>
+          <div>
+            <i className="fa fa-edit"></i>
+            {operates[this.props.operate]}
           </div>
         </div>
       </div>

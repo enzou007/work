@@ -14,8 +14,15 @@ const TimeLine = React.createClass({
       logs: []
     };
   },
-  componentDidMount: function() {
-    var $timeline = $(this.getDOMNode())
+  getInitialState: function() {
+    return {
+      top: 0
+    };
+  },
+  componentWillReceiveProps: function() {
+    if(this.props.type === "timeline"){
+      _.defer(() => this.scrollEnd("up"));
+    }
   },
   render() {
     if(this.props.type === "table"){
@@ -54,7 +61,10 @@ const TimeLine = React.createClass({
     )
   },
   renderTimeLine(){
-    window.$ = $;
+    if(this.props.logs.size === 0){
+      return false;
+    }
+
     var year = this.props.now.year();
     let groupLogs = this.props.logs
       .sortBy (item => item.time)
@@ -68,8 +78,14 @@ const TimeLine = React.createClass({
 
     return (
       <div className="timeline">
+        <div className="scroll-up"
+          onMouseOver={this.scrollStart.bind(this, "up")}
+          onClick={this.scrollEnd.bind(this, "up")}
+          onMouseOut={this.scrollStop}>
+            <i className="fa fa-angle-up fa-2x"></i>
+        </div>
         <div className="timeline-content">
-          <div className="timeline-container timeline-style2 ">
+          <div className="timeline-container timeline-style2" style={{top: this.state.top}}>
               {
                 groupLogs.map((log, key) => {
                   return(
@@ -90,8 +106,57 @@ const TimeLine = React.createClass({
               }
           </div>
         </div>
+        <div className="scroll-down"
+          onMouseOver={this.scrollStart.bind(this, "down")}
+          onClick={this.scrollEnd.bind(this, "down")}
+          onMouseOut={this.scrollStop}>
+            <i className="fa fa-angle-down fa-2x"></i>
+        </div>
       </div>
     );
+  },
+  scrolling: null,
+  scrollStart(flag) {
+    const step = 4;
+    const timeStep = 10;
+
+    let $content = $(".timeline-container");
+    let contentTop = Math.abs(parseInt($content[0].style.top));
+    let contentHieght = $content.height();
+
+    let height = $(".timeline-content").height();
+    if(flag === "up"){
+      this.scrolling = setInterval(function(){
+        if(contentHieght - contentTop > height){
+          contentTop += step;
+          $content.animate({top: -contentTop + "px"},timeStep)
+        }
+      }, timeStep)
+    }else{
+      this.scrolling = setInterval(function(){
+        if(contentTop > 0){
+          contentTop -= step;
+          $content.animate({top: -contentTop + "px"},timeStep)
+        }
+      }, timeStep)
+    }
+  },
+  scrollStop() {
+    if(this.scrolling){
+      clearInterval(this.scrolling);
+      this.scrolling = null;
+    }
+  },
+  scrollEnd(flag) {
+    this.scrollStop();
+    let $container = $(".timeline-container");
+    let contentHieght = $(".timeline-container").height();
+    let height = $(".timeline-content").height();
+    if(flag === "up"){
+      $container.animate({top: (height - contentHieght) + "px"}, 100);
+    }else{
+      $container.animate({top: "0px"}, 300);
+    }
   }
 });
 

@@ -104,9 +104,19 @@
 
 .timeline {
   position: fixed;
-  height: 80%;
+  height: 75%;
   top: 80px;
   right: 15px;
+
+  .scroll-up, .scroll-down{
+    padding-right: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #c2c2c2;
+    &:hover{
+      background-color: #efefef;
+    }
+  }
 
   .timeline-content{
     overflow: hidden;
@@ -116,6 +126,11 @@
   .timeline-container{
     position: relative;
     top: 0px;
+    // -webkit-transition: top .9s ease-in;
+    // -moz-transition: top .1s ease-in;
+    // -o-transition: top .1s ease-in;
+    // -ms-transition: top .1s ease-in;
+    // transition: top .9s ease-in;
   }
 
   .timeline-label{

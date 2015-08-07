@@ -88,7 +88,7 @@ const FlowForm = React.createClass({
             </Tabs>
           </Form>
         </div>
-        <TimeLine logs={logs.toJS()} />
+        <TimeLine logs={logs} />
       </div>
     );
   }

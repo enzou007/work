@@ -37,7 +37,7 @@ const Grid = React.createClass({
   },
   getInitialState() {
     return {
-      width: 1280,
+      width: 600,
       selected: {},
       value: this.props.value
     };
@@ -53,7 +53,7 @@ const Grid = React.createClass({
   componentDidMount() {
     let $node = $(React.findDOMNode(this)),
     // 减去边距
-      width = $node.parent().width() - 12;
+      width = this.props.width || ($node.parent().width() - 12);
     this.setState({
       width,
       // 减去选择项

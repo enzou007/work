@@ -56,7 +56,7 @@
     "iflux": "^1.1.7",
     "immutable": "^3.7.4",
     "moment": "^2.10.3",
-    "rctui": "^0.3.0",
+    "rctui": "^0.3.2",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
     "underscore": "^1.8.3"

@@ -50,7 +50,7 @@ var NoteForm = React.createClass({
             <FormControl label="联系电话" name="Phone" type="text"/>
           </Fieldset>
 
-          <Fieldset title="入职信息">
+          <Fieldset>
             <FormControl label="员工工号" name="AppPsnNumber" type="text"/>
             <FormControl label="入职部门" name="EntryDept" type="department"/>
             <FormControl label="部门负责人" name="DeptLeader" type="personnel"/>

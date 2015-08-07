@@ -14,6 +14,9 @@ const TimeLine = React.createClass({
       logs: []
     };
   },
+  componentDidMount: function() {
+    var $timeline = $(this.getDOMNode())
+  },
   render() {
     if(this.props.type === "table"){
       return this.renderTable();
@@ -26,21 +29,21 @@ const TimeLine = React.createClass({
     return (
       <table className="table table-striped table-bordered table-hover">
         <thead>
-          <th>操作时间</th>
-          <th>操作人</th>
-          <th>环节</th>
-          <th>操作类型</th>
-          <th>意见</th>
+          <th width="15%">环节</th>
+          <th width="15%">操作类型</th>
+          <th width="15%">操作时间</th>
+          <th width="15%">操作人</th>
+          <th width="40%">意见</th>
         </thead>
         <tbody>
           {
             groupLogs.map(item => {
               return(
                 <tr>
-                  <td>{item.get("time")}</td>
-                  <td>{item.get("user")}</td>
                   <td>{item.get("nodeName")}</td>
                   <td>{TimeLineItem.operates[item.get("operate")]}</td>
+                  <td>{item.get("time")}</td>
+                  <td>{item.get("user")}</td>
                   <td>{item.get("opinion")}</td>
                 </tr>
               )
@@ -51,6 +54,7 @@ const TimeLine = React.createClass({
     )
   },
   renderTimeLine(){
+    window.$ = $;
     var year = this.props.now.year();
     let groupLogs = this.props.logs
       .sortBy (item => item.time)
@@ -63,25 +67,29 @@ const TimeLine = React.createClass({
       });
 
     return (
-      <div className="timeline-container timeline-style2 timeline">
-        {
-          groupLogs.map((log, key) => {
-            return(
-              <div key={key}>
-                <span className="timeline-label">
-        					<b>{key}</b>
-        				</span>
-                <div className="timeline-items">
-                  {
-                    log.map((item, index)=> {
-                      return <TimeLineItem key={index} {...item.toJS()}/>
-                    })
-                  }
-                </div>
-              </div>
-            )
-          })
-        }
+      <div className="timeline">
+        <div className="timeline-content">
+          <div className="timeline-container timeline-style2 ">
+              {
+                groupLogs.map((log, key) => {
+                  return(
+                    <div key={key}>
+                      <span className="timeline-label">
+              					<b>{key}</b>
+              				</span>
+                      <div className="timeline-items">
+                        {
+                          log.map((item, index)=> {
+                            return <TimeLineItem key={index} {...item.toJS()}/>
+                          })
+                        }
+                      </div>
+                    </div>
+                  )
+                })
+              }
+          </div>
+        </div>
       </div>
     );
   }

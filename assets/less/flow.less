@@ -101,10 +101,23 @@
 .hidden-self{
   display: none;
 }
+
 .timeline {
-  position: absolute;
+  position: fixed;
+  height: 80%;
   top: 80px;
   right: 15px;
+
+  .timeline-content{
+    overflow: hidden;
+    height: 95%;
+  }
+
+  .timeline-container{
+    position: relative;
+    top: 0px;
+  }
+
   .timeline-label{
       width:77px;
   }
@@ -127,6 +140,9 @@
       text-align: right;
       .item-title{
         padding-right: 25px;
+      }
+      &:hover{
+        position:fixed;
       }
     }
 

@@ -2,6 +2,8 @@ import React from 'react';
 import $ from 'jquery';
 import ScrollBar from 'fixed-data-table/internal/Scrollbar.react.js';
 
+import 'fixed-data-table/dist/fixed-data-table.min.css'
+
 const Scrollbar = React.createClass({
   getInitialState() {
     return {
@@ -17,18 +19,18 @@ const Scrollbar = React.createClass({
     let $node = $(this.getDOMNode());
     let $content = $node.find("div:first");
     let state = { };
-    //$node.height($content.height());
-    //$node.width($content.width());
-
-    //$content.height("auto");
-    //$content.width("auto");
-
+    // $node.height($content.height());
+    // //$node.width($content.width());
+    //
+    // $content.height("auto");
+    // $content.width("auto");
+    //
     // state.contentHeiget = $content.height();
     // state.contentWidth = $content.width();
     //
     // state.containerHeiget = $node.height();
     // state.containerWidth = $node.width();
-
+    //
     // this.setState(state);
   },
   scrollY(scrollPos) {

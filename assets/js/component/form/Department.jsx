@@ -146,7 +146,18 @@ export default class Department extends React.Component {
       return [];
     }
 
+    let currentData = _.reduce(this.state.data, function (memo, item) {
+      memo[item.objectId] = item;
+      return memo;
+    }, {});
+
+    let fetchItems = {};
     let newList = value.map(function (objectId) {
+      if(currentData[objectId]){
+        return currentData[objectId];
+      }
+
+      fetchItems[objectId] = true;
       return {
         objectId: objectId,
         id: objectId,
@@ -154,13 +165,18 @@ export default class Department extends React.Component {
       };
     }).toArray();
 
-    this.fetchList(value.toArray()).then(data => {
-      this.setState({
-        data: newList.map(function (item) {
-          return _.findWhere(data, {objectId: item.objectId});
-        })
+    if(!_.isEmpty(fetchItems)){
+      this.fetchList(_.keys(fetchItems)).then(data => {
+        this.setState({
+          data: newList.map(function (item) {
+            if(fetchItems[item.objectId]){
+              return _.findWhere(data, {objectId: item.objectId});
+            }
+            return item;
+          })
+        });
       });
-    });
+    }
 
     return newList;
   }

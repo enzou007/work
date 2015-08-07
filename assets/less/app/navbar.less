@@ -14,3 +14,13 @@ canvas.nav-user-photo {
   vertical-align: middle;
   background-color: #fff;
 }
+
+@media (max-width: 991px) {
+  //覆盖原有样式规则  同步按钮显示和菜单悬浮 , 按钮不显示和菜单停靠
+  .navbar-toggle{
+    display: block;
+  }
+  #sidebar{
+    position: absolute;
+  }
+}

@@ -22,7 +22,8 @@ let action = new Action();
 @clickAway
 export default class Department extends React.Component {
   static propTypes = {
-    readOnly: React.PropTypes.bool
+    readOnly: React.PropTypes.bool,
+    region: React.PropTypes.string
   }
   state = {
     focus: false,
@@ -86,7 +87,7 @@ export default class Department extends React.Component {
     });
   }
   queryOptions(input) {
-    return action.query(input);
+    return action.query(input, this.props.region);
   }
   handleInput = _.debounce((event) => {
     let inputValue = React.findDOMNode(this.refs.input).value;
@@ -190,7 +191,7 @@ export default class Department extends React.Component {
             <a href="javascript:show-tree"><i className="fa fa-sitemap"/></a>
             <div className="organization-tree">
               <OrganizationTree selectAble={true} value={this.state.data} mult={this.props.mult}
-                onChange={this.handleTreeChange}/>
+                region={this.props.region} onChange={this.handleTreeChange}/>
             </div>
           </Dropdown>
         ) : null}

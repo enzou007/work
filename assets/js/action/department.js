@@ -2,10 +2,40 @@ import _ from 'underscore';
 import $ from 'jquery';
 import { Iterable } from 'immutable';
 
+const CACHE_NAME = "DEPARTMENT_CACHE";
+const CACHE_DURING = 1000 * 60 * 60 * 24; //1天
+const WRITE_DURING = 1000 * 60; //1分钟
+
 class Action {
   params = []
   handles = []
-  cache = new Iterable.Keyed()
+  cache = new Iterable.Keyed(this.getLocalStorage())
+  mixinCache(data) {
+    this.cache = this.cache.concat(_.reduce(data, function (memo, item) {
+      memo[item.objectId] = _.extend({
+        $timeStamp: item.$tiemStamp || _.now()
+      }, item);
+      return memo;
+    }, {}));
+    this.setLocalStorage();
+  }
+  getLocalStorage() {
+    let now = _.now();
+    return _.chain(JSON.parse(localStorage.getItem(CACHE_NAME)) || [])
+      .filter(function (item) {
+        return item.$timeStamp + CACHE_DURING > now;
+      })
+      .reduce(function (memo, item) {
+        memo[item.objectId] = item;
+        return memo;
+      }, {}).value();
+  }
+  setLocalStorage = _.throttle(() => {
+    let now = _.now();
+    localStorage.setItem(CACHE_NAME, JSON.stringify(_.filter(this.cache.toArray(), function (item) {
+      return item.$timeStamp + CACHE_DURING > now;
+    })));
+  }, WRITE_DURING)
   _batchRequest = _.debounce(function () {
 
     let params = this.params.slice(0),
@@ -26,11 +56,7 @@ class Action {
         'Condition': JSON.stringify([['objectId', 'in', objectIds]])
       }
     }).done(resp => {
-
-      this.cache = this.cache.concat(_.reduce(resp, function (memo, item) {
-        memo[item.objectId] = item;
-        return memo;
-      }, {}));
+      this.mixinCache(resp);
 
       while (handle = handles.shift()) {
         let objectId = params.shift();
@@ -75,20 +101,29 @@ class Action {
 
     return promise;
   }
-  query(key, limit = 10) {
+  query(key, region, limit = 10) {
     return $.ajax({
       url: '1/system/department',
       headers: {
-        'Condition': JSON.stringify([['@key', 'lk', encodeURIComponent(key)]])
+        'Condition': JSON.stringify([
+          ['@key', 'lk', encodeURIComponent(key)],
+          ['@region', 'in', region]
+        ])
       },
       data: {
         limit
       }
+    }).then((resp) => {
+      this.mixinCache(resp);
+      return resp;
     });
   }
-  children(parent){
+  children(parent) {
     return $.ajax({
       url: `1/system/department/${encodeURI(parent)}/@child`
+    }).then((resp) => {
+      this.mixinCache(resp);
+      return resp;
     });
   }
 };

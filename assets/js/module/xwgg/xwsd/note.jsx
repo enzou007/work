@@ -48,7 +48,7 @@ var NoteForm = React.createClass({
             <FormControl label="性别" name="StSex" type="select" data={SexData}/>
             <FormControl label="年龄" name="StAge" type="number"/>
             <FormControl label="部门领导" name="StLeader" type="personnel" />
-            <FormControl label="所属部门" name="StDept" type="department"/>
+            <FormControl label="所属部门" name="StDept" type="department" />
             <FormControl label="备注" name="Notes" type="textarea" responsive={{xl: 16}}/>
           </Fieldset>
           <Fieldset title="Form表格">

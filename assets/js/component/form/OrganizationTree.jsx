@@ -13,39 +13,55 @@ import Action from '../../action/department';
 import '../../../less/component/organization-tree.less';
 
 const ROOT_CODE = '__root__';
-let action = new Action()
 
 export default class OrganizationTree extends React.Component {
   static propTypes = {
     selectAble: React.PropTypes.bool,
     mult: React.PropTypes.bool,
     greedy: React.PropTypes.bool,
+    region: React.PropTypes.string,
     onChange: React.PropTypes.func,
     onClick: React.PropTypes.func,
     value: React.PropTypes.array
   }
   static defaultProps = {
     selectAble: false,
-    mult: false
+    mult: false,
+    region: null,
+    action: new Action()
   }
   state = {
+    roots: null,
     store: {},
     value: this.props.value,
     checked: this.getChecked()
   }
   componentWillMount() {
-    action.children('@root').then(resp => {
-      this.setState({
-        store: {
-          [ROOT_CODE]: resp
+    if(this.props.region){
+      this.props.action.fetch(this.props.region).then(item => {
+        this.setState({roots: [item]});
+      });
+      this._loadChildren(this.props.region);
+    } else {
+      this.props.action.children('@root').then(roots => {
+        this.setState({ roots });
+        if(roots.length === 1){
+          this._loadChildren(roots[0].objectId);
         }
       });
-    });
+    }
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
       value: nextProps.value,
       checked: this.getChecked({}, nextProps.value)
+    });
+  }
+  _loadChildren(parent) {
+    this.props.action.children(parent).then(resp => {
+      let store = this.state.store;
+      store[parent] = resp;
+      this.setState({ store });
     });
   }
   _checkParent(checed, parentId) {
@@ -129,7 +145,7 @@ export default class OrganizationTree extends React.Component {
     if (handle.size() === 1 && handle.data('id')) {
       let id = handle.data('id');
       if (!this.state.store[id]) {
-        action.children(id).then(resp => {
+        this.props.action.children(id).then(resp => {
           this.state.store[id] = resp;
 
           if(this.props.mult && this.state.checked[id] === 2){
@@ -145,11 +161,12 @@ export default class OrganizationTree extends React.Component {
   }
   render() {
     let { selectAble, name } = this.props;
-    let Items = (this.state.store[ROOT_CODE] || []).map((item, i) => {
+    let roots = this.state.roots || [];
+    let Items = roots.map((item, i) => {
       return (
         <Item selectAble={selectAble} mult={this.props.mult} data={item} key={item.objectId}
           onClick={this.onClick} onStatusChange={this.handleChange}
-          ref={i} store={this.state.store} checked={this.state.checked}/>
+          ref={i} store={this.state.store} checked={this.state.checked} open={roots.length === 1}/>
       );
     });
 
@@ -292,7 +309,7 @@ class Item extends React.Component {
           return (
             <Item selectAble={selectAble} data={item} key={item.objectId} mult={this.props.mult}
               onClick={this.onClick} onStatusChange={this.updateStatus} store={this.props.store}
-              open={open} readOnly={readOnly} ref={i} checked={checked}/>
+              readOnly={readOnly} ref={i} checked={checked}/>
           )
         });
 

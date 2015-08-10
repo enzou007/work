@@ -170,9 +170,29 @@
     }
 
     .organization-tree {
-      min-width: 320px;
+      width: 320px;
       max-height: 300px;
       overflow:auto;
+
+      .tree-folder-header, .tree-item {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .personnel-select {
+      padding: 5px;
+      min-width: 640px;
+
+      > .organization-tree {
+        float: left;
+        width: 250px;
+      }
+
+      > .personnel-table {
+        margin-left: 265px;
+      }
     }
   }
 

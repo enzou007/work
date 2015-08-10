@@ -17,13 +17,14 @@ import 'rctui/src/less/form.less';
 
 import '../../../less/component/organization.less';
 
-let action = new Action();
-
 @clickAway
 export default class Department extends React.Component {
   static propTypes = {
     readOnly: React.PropTypes.bool,
     region: React.PropTypes.string
+  }
+  static defaultProps = {
+    action: new Action()
   }
   state = {
     focus: false,
@@ -87,7 +88,7 @@ export default class Department extends React.Component {
     });
   }
   queryOptions(input) {
-    return action.query(input, this.props.region);
+    return this.props.action.query(input, this.props.region);
   }
   handleInput = _.debounce((event) => {
     let inputValue = React.findDOMNode(this.refs.input).value;
@@ -106,17 +107,9 @@ export default class Department extends React.Component {
     }
 
     let selected = this.state.options[index],
-      data = [selected];
+      data = Set.of(selected);
     if (this.props.mult) {
-      data = this.state.data.slice(0);
-      let exist = _.findIndex(data, item => {
-        return item.objectId === selected.objectId;
-      });
-
-      if (exist !== -1) {
-        data.splice(exist, 1);
-      }
-      data.push(selected);
+      data = this.state.date.merge(data);
     }
 
     this.setState({ data });
@@ -125,28 +118,28 @@ export default class Department extends React.Component {
       this.props.onChange();
     }
   }
-  handleRemove(index) {
-    this.state.data.splice(index, 1);
-
-    this.forceUpdate();
+  handleRemove(item) {
+    this.setState({
+      data: this.state.data.delete(item)
+    })
     if (this.props.onChange) {
       this.props.onChange();
     }
   }
   handleTreeChange = (value) => {
     this.setState({
-      data: value
+      data: this.state.data.merge(value)
     });
   }
   fetchList(objectIds){
-    return action.fetch(objectIds);
+    return this.props.action.fetch(objectIds);
   }
   formateData(value) {
     if(!value){
-      return [];
+      return Set.of();
     }
 
-    let currentData = _.reduce(this.state.data, function (memo, item) {
+    let currentData = this.state.data.reduce(function (memo, item) {
       memo[item.objectId] = item;
       return memo;
     }, {});
@@ -163,7 +156,7 @@ export default class Department extends React.Component {
         id: objectId,
         name: '加载中...'
       };
-    }).toArray();
+    });
 
     if(!_.isEmpty(fetchItems)){
       this.fetchList(_.keys(fetchItems)).then(data => {
@@ -190,9 +183,9 @@ export default class Department extends React.Component {
 
     return (
       <div className="handle">
-        { this.state.data.map((item, index) => { return (
+        { this.state.data.map((item) => { return (
           <span className="result" title={item.id} key={item.objectId}
-            onClick={this.handleRemove.bind(this, index)}>
+            onClick={this.handleRemove.bind(this, item)}>
             {item.name}
           </span>
         ); }) }
@@ -221,7 +214,9 @@ export default class Department extends React.Component {
         <div className="options" ref="options">
           <ul>
             { this.state.options.map((item, index) => {
-              let selected = !!_.findWhere(this.state.data, {objectId: item.objectId});
+              let selected = this.state.data.some(function (dataItem) {
+                return dataItem.objectId === item.objectId
+              });
               return (
                 <li className={classnames({show: true, active: selected})} key={item.objectId}
                   onClick={this.handleChange.bind(this, index)} >

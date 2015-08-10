@@ -1,6 +1,18 @@
 var _ = require("underscore"),
   departments = require("../../../static/department");
 
+departments = _.chain(departments)
+  .sortBy(function (item) {
+    return item.sort;
+  })
+  .map(function (item) {
+    item.size = _.where(departments, {
+      parent: item.objectId
+    }).length;
+
+    return item;
+  }).value();
+
 module.exports = function (data) {
 
   var result = {};
@@ -25,6 +37,12 @@ module.exports = function (data) {
         return item.name.indexOf(key) !== -1 || item.shortName.indexOf(key) === 0
       }).slice(0, limit);
       break;
+    case "parent":
+      var parentId = first[2];
+
+      result.json = _.filter(departments, function (item) {
+        return item.parent === parentId;
+      });
   }
 
   return result;

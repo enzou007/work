@@ -75,8 +75,8 @@ export default class Dropdown extends React.Component {
   getToggle() {
     let toggle = this.props.children[0];
 
-    return React.addons.cloneWithProps(toggle, {
-      className: classnames('dropdown-toggle'),
+    return React.cloneElement(toggle, {
+      className: classnames('dropdown-toggle', toggle.props.className),
       onClick: (event, ...param) => {
         this.toggleOpen();
         let prevent = false;
@@ -86,30 +86,26 @@ export default class Dropdown extends React.Component {
         if (!prevent) {
           event.preventDefault();
         }
-      },
-      ref: toggle.props.ref,
-      key: toggle.props.key
+      }
     });
   }
   getMenu() {
     let menu = this.props.children[1];
     if (menu) {
-      return React.addons.cloneWithProps(menu, {
+      return React.cloneElement(menu, {
         className: classnames('dropdown-menu', {
           'dropdown-menu-right': this.state.align === 'right'
-        }),
-        onClick: (...param) => {
+        }, menu.props.className),
+        onClick: (event, ...param) => {
           let skip = false;
           if (menu.props.onClick) {
-            skip = menu.props.onClick(...param) === true;
+            skip = menu.props.onClick(event, ...param) === true;
           }
 
           if (this.props.clickAndClose || skip) {
             this.toggleOpen(false);
           }
-        },
-        ref: menu.props.ref,
-        key: menu.props.key
+        }
       });
     }
     return menu;

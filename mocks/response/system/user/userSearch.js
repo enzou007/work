@@ -26,6 +26,12 @@ module.exports = function (data) {
         return item.name.indexOf(key) !== -1 || item.shortName.indexOf(key) === 0
       }).slice(0, limit);
       break;
+    case "departmentId":
+      var departmentId = first[2];
+      users = _.filter(personnels, function (item) {
+        return item.departmentId === departmentId;
+      });
+      break;
   }
 
   result.json = _.map(users, function (item) {

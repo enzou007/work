@@ -15,10 +15,10 @@ const TimeLineItem = React.createClass({
       return nodeName;
     }
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     $(this.refs.timeNode.getDOMNode()).mouseover(this.showInfo).mouseout(this.closeInfo);
   },
-  showInfo(){
+  showInfo() {
     const windowHeight = $(window).height();
     const $node = $(this.refs.timeNode.getDOMNode());
     const position = $node.offset();
@@ -28,20 +28,18 @@ const TimeLineItem = React.createClass({
       display: "block",
       top: position.top - 10,
       bottom: "auto",
-      //bottom: $(window).height() - position.top - 23,
       left: position.left - 200
     }
-
     React.render(this.getDetailInfo(style, false), $("<div id='timeline-detail-info'></div>").appendTo(document.body)[0], reactNodeInfo => {
-      if($("#timeline-detail-info div:first").height() + style.top > windowHeight){
+      if ($("#timeline-detail-info div:first").height() + style.top > windowHeight) {
         style.top = "auto";
         style.bottom = windowHeight - position.top - 23;
         React.render(this.getDetailInfo(style, true), $("#timeline-detail-info")[0])
       }
     });
   },
-  getDetailInfo(style, dropup){
-    var info = [];
+  getDetailInfo(style, dropup) {
+    let info = [];
     info.push(
       <h3 className="popover-title">{this.props.nodeName}
         <div className="tooltip-arrow"></div>
@@ -61,24 +59,20 @@ const TimeLineItem = React.createClass({
           <i className="fa fa-clock-o"></i>
           {this.props.time}
         </div>
-        <div>
-          <i className="fa fa-user"></i>
-          {"啥的放寒假了阿萨德飞可经理说粉色的方解石方解石大副驾的放寒假了阿萨德飞可经理说粉色的方解石方解石大副驾驶的付款了分精神科雷锋精神了副驾驶的付款了是的飞"}
-        </div>
       </div>
     );
 
-    if(dropup){
+    if (dropup) {
       info.reverse();
     }
 
-    return(
+    return (
       <div className={"timeline-detail-info popover fade left in " + this.props.operate} style={style}>
         {info}
       </div>
     )
   },
-  closeInfo(){
+  closeInfo() {
     React.unmountComponentAtNode(document.getElementById("timeline-detail-info"));
     $("#timeline-detail-info").remove();
   },

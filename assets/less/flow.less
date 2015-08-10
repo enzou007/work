@@ -109,7 +109,8 @@
   right: 15px;
 
   .scroll-up, .scroll-down{
-    padding-right: 10px;
+    width: 100%;
+    margin-left: -5px;
     text-align: center;
     cursor: pointer;
     color: #c2c2c2;
@@ -156,58 +157,50 @@
       .item-title{
         padding-right: 25px;
       }
-      &:hover{
-        position:fixed;
-      }
     }
+  }
+}
 
-    .tooltip-arrow{
-      border-width: 11px 0 11px 11px;
-      top:4px;
-      right:-10px;
-    }
+.timeline-detail-info{
+  width: 200px;
+  max-width: 200px;
+  .popover-title{
+    position: relative;
+  }
+  .tooltip-arrow{
+    border-width: 11px 0 11px 11px;
+    top:4px;
+    right:-10px;
+  }
+  .popover-content i{
+    margin-right: 5px;
+  }
+}
 
-    .popover {
-      display: none;
-      width: 200px;
-      left: -115px;
-      top: -7px;
-    }
-    i:hover +.popover {
-      display: block;
-    }
-    .popover.left {
-      .arrow {
-        top: 15px;
-      }
-    }
+.submit{
+  .popover-title {
+    background-color:#8BC34A;
+  }
+  .tooltip-arrow{
+    border-left-color: #8BC34A;
+    -moz-border-left-colors: #8BC34A;
+  }
+  .timeline-indicator{
+    background-color:#87B87F !important;
+    border-color:#87B87F;
+  }
+}
 
-    .submit{
-      .popover-title {
-        background-color:#8BC34A;
-      }
-      .tooltip-arrow{
-        border-left-color: #8BC34A;
-        -moz-border-left-colors: #8BC34A;
-      }
-      .timeline-indicator{
-        background-color:#87B87F !important;
-        border-color:#87B87F;
-      }
-    }
-
-    .reject{
-      .popover-title {
-        background-color:#FFB752 ;
-      }
-      .tooltip-arrow {
-        border-left-color: #FFB752;
-        -moz-border-left-colors: #FFB752;
-      }
-      .timeline-indicator{
-        background-color:#FFB752 !important;
-        border-color:#FFB752;
-      }
-    }
+.reject{
+  .popover-title {
+    background-color:#FFB752 ;
+  }
+  .tooltip-arrow {
+    border-left-color: #FFB752;
+    -moz-border-left-colors: #FFB752;
+  }
+  .timeline-indicator{
+    background-color:#FFB752 !important;
+    border-color:#FFB752;
   }
 }

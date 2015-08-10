@@ -61,6 +61,17 @@
     file: response/system/module/module.js
 
 
+- request:
+    url: /1/system/user
+  response:
+    type: js
+    file: response/system/user/userSearch.js
+- request:
+    url: /1/system/department
+  response:
+    type: js
+    file: response/system/department/departmentSearch.js
+
 # 新闻速递 URL配置
 - request:
     url: /1/xwgg/xwsd/@session
@@ -170,19 +181,3 @@
   response:
     type: js
     file: response/flow/FlowData.js
-
-- request:
-    url: /1/system/user
-  response:
-    type: js
-    file: response/system/user/userSearch.js
-- request:
-    url: /1/system/department/:deptId/@child
-  response:
-    type: js
-    file: response/system/department/departmentChild.js
-- request:
-    url: /1/system/department
-  response:
-    type: js
-    file: response/system/department/departmentSearch.js

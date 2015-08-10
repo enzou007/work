@@ -1,13 +1,42 @@
 import _ from "underscore";
 import $ from "jquery";
+import { Iterable } from 'immutable';
 
-const LOCAL_CACHE_MAP = {};
-const LOCAL_CACHE = [];
+const CACHE_NAME = "PERSONNEL_CACHE";
+const CACHE_DURING = 1000 * 60 * 60 * 24; //1天
+const WRITE_DURING = 1000 * 60; //1分钟
 
-const action = {
-  params: [],
-  handles: [],
-  _batchRequest: _.debounce(function () {
+class Action {
+  params = []
+  handles = []
+  cache = new Iterable.Keyed(this.getLocalStorage())
+  mixinCache(data) {
+    this.cache = this.cache.concat(_.reduce(data, function (memo, item) {
+      memo[item.objectId] = _.extend({
+        $timeStamp: item.$tiemStamp || _.now()
+      }, item);
+      return memo;
+    }, {}));
+    this.setLocalStorage();
+  }
+  getLocalStorage() {
+    let now = _.now();
+    return _.chain(JSON.parse(localStorage.getItem(CACHE_NAME)) || [])
+      .filter(function (item) {
+        return item.$timeStamp + CACHE_DURING > now;
+      })
+      .reduce(function (memo, item) {
+        memo[item.objectId] = item;
+        return memo;
+      }, {}).value();
+  }
+  setLocalStorage = _.throttle(() => {
+    let now = _.now();
+    localStorage.setItem(CACHE_NAME, JSON.stringify(_.filter(this.cache.toArray(), function (item) {
+      return item.$timeStamp + CACHE_DURING > now;
+    })));
+  }, WRITE_DURING)
+  _batchRequest = _.debounce(function () {
 
     let params = this.params.slice(),
       handles = this.handles.slice(),
@@ -27,20 +56,16 @@ const action = {
         "Condition": JSON.stringify([["objectId", "in", objectIds]])
       }
     }).done(resp => {
-      // 由于可能存在objectId不存在的情况，此处需要逐步比对respone和objectId
-      let response = resp.slice(0);
+      this.mixinCache(resp);
+
       while (handle = handles.shift()) {
-        let objectId = params.shift(),
-          data = response[0];
-        if (data.objectId === objectId) {
-          handle.resolve(response.shift());
-        } else {
-          handle.resolve({
-            objectId: objectId,
-            id: "未知用户",
-            name: "未知用户"
-          });
-        }
+        let objectId = params.shift();
+        handle.resolve(this.cache.get(objectId, {
+          objectId: objectId,
+          id: '未知用户',
+          name: '未知用户',
+          dept: [{name:''}]
+        }));
       }
 
       return resp;
@@ -53,7 +78,7 @@ const action = {
     this.params = [];
     this.handles = [];
 
-  }, 50),
+  }, 50)
   fetch(objectId) {
     // 对于数组参数，使用Promise.all直接封装
     if (_.isArray(objectId)) {
@@ -62,8 +87,8 @@ const action = {
       }));
     }
     // 从缓存中直接获取数据
-    if (LOCAL_CACHE_MAP[objectId]) {
-      return Promise.resolve(LOCAL_CACHE_MAP[objectId]);
+    if (this.cache.has(objectId)) {
+      return Promise.resolve(this.cache.get(objectId));
     }
 
     let promise = new Promise((resolve, reject) => {
@@ -76,18 +101,36 @@ const action = {
     this._batchRequest();
 
     return promise;
-  },
-  query(key, limit = 10) {
+  }
+  query(key, region, limit = 10) {
     return $.ajax({
       url: "1/system/user",
       headers: {
-        "Condition": JSON.stringify([["@key", "lk", encodeURIComponent(key)]])
+        'Condition': JSON.stringify([
+          ['@key', 'lk', encodeURIComponent(key)],
+          ['@region', 'in', region]
+        ])
       },
       data: {
         limit
       }
+    }).then((resp) => {
+      this.mixinCache(resp);
+      return resp;
     });
   }
-};
+  byDepartment(deptId) {
+    return $.ajax({
+      url: "1/system/user",
+      headers: {
+        "Condition": JSON.stringify([["departmentId", "=", deptId]])
+      }
+    }).then((resp) => {
+      this.mixinCache(resp);
+      return resp;
+    });
+  }
+}
 
-export default action;
+
+export default Action;

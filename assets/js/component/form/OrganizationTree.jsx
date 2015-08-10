@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import _ from 'underscore';
 import classnames from 'classnames';
+import { Set } from 'immutable';
 
 import Checkbox from '../Checkbox.jsx';
 import Radio from '../Radio.jsx';
@@ -12,9 +13,6 @@ import Action from '../../action/department';
 
 import '../../../less/component/organization-tree.less';
 
-const ROOT_CODE = '__root__';
-let action = new Action()
-
 export default class OrganizationTree extends React.Component {
   static propTypes = {
     selectAble: React.PropTypes.bool,
@@ -23,7 +21,7 @@ export default class OrganizationTree extends React.Component {
     region: React.PropTypes.string,
     onChange: React.PropTypes.func,
     onClick: React.PropTypes.func,
-    value: React.PropTypes.array
+    value: React.PropTypes.instanceOf(Set)
   }
   static defaultProps = {
     selectAble: false,
@@ -44,7 +42,7 @@ export default class OrganizationTree extends React.Component {
       });
       this._loadChildren(this.props.region);
     } else {
-      this.props.action.children('@root').then(roots => {
+      this.props.action.byParent(null).then(roots => {
         this.setState({ roots });
         if(roots.length === 1){
           this._loadChildren(roots[0].objectId);
@@ -59,13 +57,13 @@ export default class OrganizationTree extends React.Component {
     });
   }
   _loadChildren(parent) {
-    this.props.action.children(parent).then(resp => {
+    this.props.action.byParent(parent).then(resp => {
       let store = this.state.store;
       store[parent] = resp;
       this.setState({ store });
     });
   }
-  _checkParent(checed, parentId) {
+  _checkParent(checked, parentId) {
     if(parentId === null){
       return;
     }
@@ -90,11 +88,11 @@ export default class OrganizationTree extends React.Component {
     return checked;
   }
   getChecked(checked = {}, value = this.props.value) {
-    _.forEach(value, (item) => {
+    value.forEach((item) => {
       checked[item.objectId] = 2;
 
       if(this.props.mult){
-        if (!checked[item.parent]) {
+        if (checked[item.parent]) {
           this._checkParent(item.parent);
         }
 
@@ -136,7 +134,7 @@ export default class OrganizationTree extends React.Component {
       this.props.onChange(this.getValue());
     }
   }
-  onClick(item) {
+  onClick = (item) => {
     if (this.props.onClick) {
       this.props.onClick(item);
     }
@@ -146,7 +144,7 @@ export default class OrganizationTree extends React.Component {
     if (handle.size() === 1 && handle.data('id')) {
       let id = handle.data('id');
       if (!this.state.store[id]) {
-        this.props.action.children(id).then(resp => {
+        this.props.action.byParent(id).then(resp => {
           this.state.store[id] = resp;
 
           if(this.props.mult && this.state.checked[id] === 2){
@@ -166,7 +164,7 @@ export default class OrganizationTree extends React.Component {
     let Items = roots.map((item, i) => {
       return (
         <Item selectAble={selectAble} mult={this.props.mult} data={item} key={item.objectId}
-          onClick={this.onClick} onStatusChange={this.handleChange}
+          onClick={this.props.onClick ? this.onClick : null} onStatusChange={this.handleChange}
           ref={i} store={this.state.store} checked={this.state.checked} open={roots.length === 1}/>
       );
     });
@@ -247,10 +245,9 @@ class Item extends React.Component {
   getStatus() {
     return this.state.status;
   }
-  onClick(data) {
-    if (this.props.onClick) {
-      this.props.onClick(data);
-    }
+  onClick = (data) => {
+    data = data.hasOwnProperty('_dispatchListeners') ? this.props.data : data
+    this.props.onClick(data);
   }
   // 通过事件向上传播，检查所有子级是否已被选中
   updateStatus = (data) => {
@@ -309,7 +306,7 @@ class Item extends React.Component {
         Items = childrenData.map((item, i) => {
           return (
             <Item selectAble={selectAble} data={item} key={item.objectId} mult={this.props.mult}
-              onClick={this.onClick} onStatusChange={this.updateStatus} store={this.props.store}
+              onClick={this.props.onClick} onStatusChange={this.updateStatus} store={this.props.store}
               readOnly={readOnly} ref={i} checked={checked}/>
           )
         });
@@ -320,7 +317,7 @@ class Item extends React.Component {
             <i className={classnames('ace-icon', 'fa', this.state.open ? 'fa-folder-open' : 'fa-folder', 'fa-fw')}
               onClick={this.toggle}/>
             {SelectHandle}
-            <span onClick={this.toggle}>{data.name}</span>
+            <span onClick={this.props.onClick ? this.onClick : this.toggle}>{data.name}</span>
           </div>
           <ul className={classnames('tree-folder-content', {
               open: this.state.open
@@ -329,7 +326,7 @@ class Item extends React.Component {
       );
     } else {
       return (
-        <li className="tree-item">
+        <li className="tree-item" onClick={this.onClick}>
           <i className="tree-item-icon fa fa-file-o fa-fw"/>
           {SelectHandle}
           <span className="tree-item-name">{data.name}</span>

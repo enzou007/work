@@ -38,8 +38,8 @@ class Action {
   }, WRITE_DURING)
   _batchRequest = _.debounce(function () {
 
-    let params = this.params.slice(0),
-      handles = this.handles.slice(0),
+    let params = this.params.slice(),
+      handles = this.handles.slice(),
       objectIds = _.reduce(params, function (memo, item) {
         if (_.isArray(item)) {
           memo.push(...item);
@@ -118,9 +118,14 @@ class Action {
       return resp;
     });
   }
-  children(parent) {
+  byParent(parent) {
     return $.ajax({
-      url: `1/system/department/${encodeURI(parent)}/@child`
+      url: '1/system/department',
+      headers: {
+        'Condition': JSON.stringify([
+          ['parent', '=', parent]
+        ])
+      }
     }).then((resp) => {
       this.mixinCache(resp);
       return resp;

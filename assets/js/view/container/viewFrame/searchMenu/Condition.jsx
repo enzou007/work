@@ -142,7 +142,7 @@ const Condition = React.createClass({
   },
   changeOperate() {
     this.setState({
-      operate: _.findWhere(thi.state.operates, {
+      operate: _.findWhere(this.state.operates, {
         value: this.refs.operate.getDOMNode().value
       }),
       value: ""
@@ -165,7 +165,7 @@ const Condition = React.createClass({
       case "date":
         return <Datetime ref="value" placeholder="日期" dateOnly={true} defaultValue={this.state.value}/>;
       default:
-        return <input ref="value" className="form-control" placeholder="数值" type="text" defaultValue={this.state.value}/>;
+        return <input ref="value" className="form-control" placeholder="文本" type="text" defaultValue={this.state.value}/>;
     }
   }
 });

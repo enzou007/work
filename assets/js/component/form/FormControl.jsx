@@ -5,24 +5,33 @@ import { List, Set } from 'immutable';
 
 import { nextUid, format, toArray } from 'rctui/src/js/utils/strings';
 import Regs from 'rctui/src/js/utils/regs';
-import { getLang } from 'rctui/src/js/lang';
+import { getLang, setLang } from 'rctui/src/js/lang';
 
 import Action from '../../action/form';
 
+// 为必填提示添加label占位
+setLang({
+  validation:{
+    tips:{
+      required:"{1}不能为空"
+    }
+  }
+});
+
 let controls = {};
 
-function getTip(key, value) {
-  let text = getLang('validation.tips.' + key, null)
+function getTip(key, value, label) {
+  let text = getLang('validation.tips.' + key, null);
   if (text) {
-    text = format(text, value)
+    text = format(text, value, label);
   }
-  return text
+  return text;
 }
 
 function getHint(hints, key, value) {
-  let text = getLang('validation.hints.' + key, null)
+  let text = getLang('validation.hints.' + key, null);
   if (text) {
-    hints.push(format(text, value))
+    hints.push(format(text, value));
   }
 }
 
@@ -126,9 +135,12 @@ export default class FormControl extends React.Component {
       return false;
     }
 
-    if (this.props.onValidate && !this.props.onValidate()) {
-      this.validateFail('', value);
-      return false;
+    if (this.props.onValidate) {
+      let { flag, type } = this.props.onValidate();
+      if (flag) {
+        this.validateFail(type, value);
+        return false;
+      }
     }
 
     if (value === undefined || value === null || value === '') {
@@ -177,8 +189,8 @@ export default class FormControl extends React.Component {
   validatePass() {
     this.setState({ hasError: false, errorText: '' });
   }
-  validateFail(type, value) {
-    let text = getTip(type, value) || this.props.tip;
+  validateFail(type, value, label = this.props.label) {
+    let text = getTip(type, value, label);
     this.setState({ hasError: true, errorText: text });
   }
   handleChange = (value) => {

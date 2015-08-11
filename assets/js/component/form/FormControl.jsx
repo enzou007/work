@@ -53,7 +53,6 @@ export default class FormControl extends React.Component {
     value: PropTypes.any
   }
   static defaultProps = {
-    id: nextUid(),
     layout: 'inline',
     type: 'text'
   }
@@ -215,7 +214,8 @@ export default class FormControl extends React.Component {
     let props = _.extend({}, this.props, {
       ref: 'control',
       className: 'form-control',
-      value: this.state.value
+      value: this.state.value,
+      id: this.props.id || this.props.name
     });
 
     if (!this.props.readOnly) {
@@ -284,7 +284,7 @@ export default class FormControl extends React.Component {
   renderStacked(className) {
     return (
       <div className={className}>
-        {this.props.label && <label className="label" htmlFor={this.props.id}>{this.props.label}:</label>}
+        {this.props.label && <label className="label" htmlFor={this.props.id || this.props.name}>{this.props.label}:</label>}
         <div className="pure-control-inner">
           {this.getControl()}
           {

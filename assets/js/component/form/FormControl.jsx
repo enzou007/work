@@ -281,13 +281,21 @@ export default class FormControl extends React.Component {
       return control.render(props);
     }
   }
+  triggerErrorClick(){
+    let curNode = React.findDOMNode(this.refs.control);
+
+    curNode.click();
+    this.setState({
+      hasError: false
+    }, () => curNode.focus());
+  }
   renderInline(className) {
     return (
       <div className={className}>
         {this.getControl({ width: this.props.width ? 24 : undefined })}
         {
           this.state.errorText ?
-          <span className="error">{this.state.errorText}</span> :
+          <label className="error" onClick={this.triggerErrorClick.bind(this)} htmlFor={this.props.id}>{this.state.errorText}</label> :
           ( this.state.hintText && <span className="hint">{this.state.hintText}</span> )
         }
       </div>
@@ -301,7 +309,7 @@ export default class FormControl extends React.Component {
           {this.getControl()}
           {
             this.state.errorText ?
-            <span className="error">{this.state.errorText}</span> :
+            <label className="error" onClick={this.triggerErrorClick.bind(this)} htmlFor={this.props.id}>{this.state.errorText}</label> :
             ( this.state.hintText && <span className="hint">{this.state.hintText}</span> )
           }
         </div>

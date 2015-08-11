@@ -18,6 +18,11 @@ var EmployData = ["社会招聘","人才市场","互联网络","内部招聘","�
 var MarriageData = ["未婚","已婚","离异"];
 
 var NoteForm = React.createClass({
+  getInitialState: function() {
+    return {
+      readonly: false
+    };
+  },
   onCreate: function () {
     this.props.action.setField({
       AgentPsn: this.props.session.get("name"),
@@ -25,25 +30,29 @@ var NoteForm = React.createClass({
     });
   },
   beforeSubmit: function () {
-    return true;
+    if(this.props.action.getField("Birthday").value === ""){
+      return false;
+    }else{
+      return true;
+    }
   },
   afterSubmit: function () {
 
   },
   render: function () {
     return (
-      <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit} >
+      <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit} readonly={this.state.readonly}>
         <div className="form-content" tab="基本信息">
-          <Fieldset title="基本信息" readOnly={true}>
+          <Fieldset title="基本信息">
             <FormControl label="代办人" name="AgentPsn" type="text" readOnly={true}/>
             <FormControl label="申请日期" name="CreateDate" type="date" readOnly={true}/>
             <FormControl label="所属部门" name="AgentDept" type="text" readOnly={true}/>
 
-            <FormControl label="姓名" name="AppPsnCn" type="text"/>
-            <FormControl label="性别" name="Sex" type="select" data={SexData}/>
-            <FormControl label="年龄" name="Age" type="number"/>
-            <FormControl label="出生日期" name="Birthday" type="date"/>
-            <FormControl label="身份证号" name="CardNumber" type="text"/>
+            <FormControl label="姓名" name="AppPsnCn" type="text" required={true}/>
+            <FormControl label="性别" name="Sex" type="select" data={SexData} required={true} tip="请选择性别"/>
+            <FormControl label="年龄" name="Age" type="number" required={true}/>
+            <FormControl label="出生日期" name="Birthday" type="date" required={true}/>
+            <FormControl label="身份证号" name="CardNumber" type="text" required={true} tip="请填写姓名"/>
             <FormControl label="婚姻状况" name="Marriage" type="select" data={MarriageData}/>
             <FormControl label="学历" name="Degrees" type="text"/>
             <FormControl label="户籍" name="Hukou" type="text"/>
@@ -52,7 +61,7 @@ var NoteForm = React.createClass({
 
           <Fieldset>
             <FormControl label="员工工号" name="AppPsnNumber" type="text"/>
-            <FormControl label="入职部门" name="EntryDept" type="department"/>
+            <FormControl label="入职部门" name="EntryDept" type="department" required={true}/>
             <FormControl label="部门负责人" name="DeptLeader" type="personnel"/>
             <FormControl label="职位" name="Post" type="text"/>
             <FormControl label="级别" name="Level" type="select" data={LevelData}/>

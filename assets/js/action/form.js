@@ -41,9 +41,13 @@ export default class Action {
     this._controls = this._controls.remove(element.props.name);
   }
   validateAll() {
-    return this._controls.forEach(function (element) {
-      return element.validate();
+    let flag = true
+    this._controls.forEach(function (element) {
+      if(!element.validate()){
+        flag = false;
+      };
     });
+    return flag;
   }
   destroy() {
     _.forEach(this._events, function (name) {
@@ -90,6 +94,16 @@ export default class Action {
     }
 
     return this;
+  }
+  getField(key){
+    let field = this._controls.get(key);
+    if(field){
+      let result = field.props;
+      result.value = field.getValue() || "";
+      return result;
+    }else{
+      return null;
+    }
   }
 }
 

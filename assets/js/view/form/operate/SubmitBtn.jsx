@@ -24,11 +24,13 @@ const SubmitBtn = React.createClass({
   },
 
   triggerClick() {
-    if (this.props.onBeforeSubmit()) {
-      this.ModalBox = Modal.create(this.getSubmitBox(), {
-        id: "flowSubmitBox",
-        className: "flow"
-      });
+    if(this.props.action.validateAll()){
+      if (this.props.onBeforeSubmit("save")) {
+        this.ModalBox = Modal.create(this.getSubmitBox(), {
+          id: "flowSubmitBox",
+          className: "flow"
+        });
+      }
     }
   },
   render() {
@@ -100,6 +102,7 @@ const SubmitBtn = React.createClass({
     })
   },
   submit() {
+    this.props.onSubmit();
     $("#flowSubmitBox").css("zIndex", "1000");
     let option = {
       FlowNodeId: $(".flownodes :checked").val(),
@@ -135,7 +138,6 @@ const SubmitBtn = React.createClass({
         )
       });
     });
-    this.props.onSubmit();
   },
   closeModalBox() {
     if (this.ModalBox) {

@@ -8,33 +8,26 @@
 }
 
 #form {
-
   .ace-nav > li{
     line-height: 0;
     height:auto;
   }
 
+  //表单容器
   .container {
     margin-top: 15px;
   }
-
+  //强制居中表单容器
   .container-center {
     margin-left:auto !important;
   }
 
-  //默认为不显示时间轴
-  .timeline{
-    display: none;
-  }
-
   .opinion {
     overflow: hidden;
-
     hr {
       margin: 10px 0;
     }
   }
-
   .fixed {
     width: 68%;
     position: fixed;
@@ -47,6 +40,12 @@
       margin: 0;
     }
   }
+
+  //默认为不显示时间轴
+  .timeline{
+    display: none;
+  }
+
   //1024 以上分辨率表单靠左显示,并显示时间轴.
   @media screen and (min-width: 1025px){
     .container{
@@ -118,7 +117,7 @@
     .single.select::before {
       right: 0.8em;
     }
-    
+    //重定义 表单错误提示信息 显示样式
     .error{
       padding: 0;
       margin: 0;
@@ -127,6 +126,7 @@
       border: 0;
       border-radius: 0;
       box-shadow: 0 0 0;
+      width: auto;
       &::before{
         display: none;
       }

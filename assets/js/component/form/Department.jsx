@@ -109,7 +109,7 @@ export default class Department extends React.Component {
     let selected = this.state.options[index],
       data = Set.of(selected);
     if (this.props.mult) {
-      data = this.state.date.merge(data);
+      data = this.state.data.merge(data);
     }
 
     this.setState({ data });
@@ -128,7 +128,7 @@ export default class Department extends React.Component {
   }
   handleTreeChange = (value) => {
     this.setState({
-      data: this.state.data.merge(value)
+      data: Set.of(...value)
     });
   }
   fetchList(objectIds){
@@ -235,7 +235,8 @@ export default class Department extends React.Component {
           focus: this.state.focus,
           active: this.state.active,
           readonly: this.props.readOnly,
-          dropup: this.state.dropup
+          mult: this.props.mult,
+          single: !this.props.mult
         }, this.props.className)} onClick={this.triggerFocus}>
         {this.renderList()}
         {this.renderOptions()}

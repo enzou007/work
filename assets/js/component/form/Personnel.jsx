@@ -18,7 +18,6 @@ import Department from './Department.jsx';
 export default class Personnel extends Department {
   static propTypes = {
     readOnly: React.PropTypes.bool,
-    allowDepartment: React.PropTypes.bool,
     region: React.PropTypes.string
   }
   static defaultProps = {
@@ -37,11 +36,6 @@ export default class Personnel extends Department {
   }
   fetchList(objectIds){
     return this.props.action.fetch(objectIds);
-  }
-  handleTreeChange = (value) => {
-    this.setState({
-      data: this.state.data.merge(value)
-    });
   }
   handleTreeClick = (item) => {
     this.props.action.byDepartment(item.objectId).then(resp => {
@@ -85,8 +79,7 @@ export default class Personnel extends Department {
             <a href="javascript:show-tree"><i className="fa fa-user"/></a>
             <div className="personnel-select">
               <div className="organization-tree">
-                <OrganizationTree selectAble={this.props.allowDepartment} value={this.state.data} mult={this.props.mult}
-                  onChange={this.props.allowDepartment ? this.handleTreeChange : null} onClick={this.handleTreeClick}/>
+                <OrganizationTree value={this.state.data} mult={this.props.mult} onClick={this.handleTreeClick}/>
               </div>
               <div className="personnel-table">
                 <DataTable bordered={true} checkAble={this.props.mult} height={250} value={this.state.personnels}

@@ -130,6 +130,9 @@ export default class Department extends React.Component {
     this.setState({
       data: Set.of(...value)
     });
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
   }
   fetchList(objectIds){
     return this.props.action.fetch(objectIds);

@@ -53,9 +53,10 @@ export default class Personnel extends Department {
     } else {
       data = Set.of(change);
     }
-    this.setState({
-      data
-    });
+    this.setState({ data });
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
   }
   renderList() {
     let placeholder = this.state.data.size === 0 ? (this.state.msg || this.props.placeholder) : null;

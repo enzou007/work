@@ -92,8 +92,8 @@ export default class OrganizationTree extends React.Component {
       checked[item.objectId] = 2;
 
       if(this.props.mult){
-        if (checked[item.parent]) {
-          this._checkParent(item.parent);
+        if (!checked[item.parent]) {
+          this._checkParent(checked, item.parent);
         }
 
         if (this.state.store[item.objectId]) {
@@ -246,8 +246,11 @@ class Item extends React.Component {
     return this.state.status;
   }
   onClick = (data) => {
-    data = data.hasOwnProperty('_dispatchListeners') ? this.props.data : data
-    this.props.onClick(data);
+    if(this.props.onClick){
+      // 排除冒泡事件
+      data = data.hasOwnProperty('_dispatchListeners') ? this.props.data : data
+      this.props.onClick(data);
+    }
   }
   // 通过事件向上传播，检查所有子级是否已被选中
   updateStatus = (data) => {

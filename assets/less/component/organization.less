@@ -31,6 +31,15 @@
     }
   }
 
+  &.single .result {
+    max-width: 85%;
+    margin-right: 2px;
+    margin-bottom: -3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   &.readonly {
     cursor: auto;
 
@@ -155,6 +164,10 @@
       padding-top: 0 !important;
       margin-top: -3px;
     }
+  }
+
+  &.single .result + .search-field {
+    display: none;
   }
 
   .tree-handle {

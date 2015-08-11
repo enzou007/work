@@ -44,30 +44,30 @@ export default class Dropdown extends React.Component {
       right = rect.right + offsetWidth;
 
     return {
-      width: right > width,
-      height: bottom > height
+      overWidth: right > width,
+      overHeight: bottom > height
     }
   }
   toggleOpen(flag = !this.state.open) {
     let el = React.findDOMNode(this),
-      { align, dropup } = this._overView(el);
+      { overWidth, overHeight } = this._overView(el);
 
     this.setState({
       open: flag,
-      align: this.props.align || (align ? 'right' : 'left'),
-      dropup: this.props.dropup || dropup
+      align: this.props.align || (overWidth ? 'right' : 'left'),
+      dropup: this.props.dropup || overHeight
     }, () => {
       if (this.state.open && this.state.offsetWidth === 0){
         let child = el.children[1],
           offsetWidth = child.offsetWidth,
           offsetHeight = child.offsetHeight,
-          { align, dropup } = this._overView(el, offsetWidth, offsetHeight);
+          { overWidth, overHeight } = this._overView(el, offsetWidth, offsetHeight);
 
         this.setState({
           offsetWidth,
           offsetHeight,
-          align: this.props.align || (align ? 'right' : 'left'),
-          dropup: this.props.dropup || dropup
+          align: this.props.align || (overWidth ? 'right' : 'left'),
+          dropup: this.props.dropup || overHeight
         });
       }
     });

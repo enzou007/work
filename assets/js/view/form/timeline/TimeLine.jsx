@@ -65,9 +65,9 @@ const TimeLine = React.createClass({
     return (
       <div className="timeline">
         <div className="scroll-up fa fa-angle-up fa-2x"
-          onClick={this.scrollEnd.bind(this, "up")}
+          onClick={this.scrollEnd.bind(this, "down")}
           onMouseOut={this.scrollStop.bind(this)}
-          onMouseOver={this.scrollStart.bind(this, "up")}>
+          onMouseOver={this.scrollStart.bind(this, "down")}>
         </div>
         <div className="timeline-content">
           <div className="timeline-container timeline-style2">
@@ -88,9 +88,9 @@ const TimeLine = React.createClass({
             </div>
           </div>
           <div className="scroll-down fa fa-angle-down fa-2x"
-            onClick={this.scrollEnd.bind(this, "down")}
+            onClick={this.scrollEnd.bind(this, "up")}
             onMouseOut={this.scrollStop.bind(this)}
-            onMouseOver={this.scrollStart.bind(this, "down")}>
+            onMouseOver={this.scrollStart.bind(this, "up")}>
           </div>
         </div>
     );
@@ -104,7 +104,7 @@ const TimeLine = React.createClass({
     let $content = $(".timeline-container");
     let contentTop = Math.abs(parseInt($content[0].style.top));
     let contentHieght = $content.height();
-    let height = $(".timeline-content").height();
+    let height = $(".timeline-content").height() + step;
 
     if (contentHieght < height) {
       return false;
@@ -112,7 +112,7 @@ const TimeLine = React.createClass({
 
     if (flag === "up") {
       this.scrolling = setInterval(function () {
-        if (contentHieght - contentTop > height) {
+        if (contentHieght - contentTop >= height) {
           contentTop += step;
           $content.animate({
             top: -contentTop + "px"
@@ -121,7 +121,7 @@ const TimeLine = React.createClass({
       }, timeStep)
     } else {
       this.scrolling = setInterval(function () {
-        if (contentTop > 0) {
+        if (contentTop > 1) {
           contentTop -= step;
           $content.animate({
             top: -contentTop + "px"
@@ -145,7 +145,7 @@ const TimeLine = React.createClass({
     if (contentHieght < height) {
       return false;
     }
-
+    $container.stop();
     if (flag === "up") {
       $container.animate({
         top: (height - contentHieght) + "px"

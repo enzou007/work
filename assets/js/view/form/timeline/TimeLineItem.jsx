@@ -15,8 +15,11 @@ const TimeLineItem = React.createClass({
       return nodeName;
     }
   },
-  componentDidMount: function () {
+  componentDidMount() {
     $(this.refs.timeNode.getDOMNode()).mouseover(this.showInfo).mouseout(this.closeInfo);
+  },
+  componentWillUnmount(){
+    $(this.refs.timeNode.getDOMNode()).off("mouseover mouseout");
   },
   showInfo() {
     const windowHeight = $(window).height();

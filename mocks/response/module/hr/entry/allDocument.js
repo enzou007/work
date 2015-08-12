@@ -6,5 +6,5 @@ module.exports = function (data) {
     docType: "entry"
   })
 
-  return Doc.getDocumentsByPage(parseInt(data.query.page), parseInt(data.query.count), JSON.parse(data.header.condition));
+  return Doc.getDocumentsByPage(parseInt(data.query.page), parseInt(data.query.count), JSON.parse(decodeURIComponent(data.header.condition)));
 }

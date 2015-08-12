@@ -26,7 +26,7 @@ var QueryData = Backbone.Collection.extend({
     options.data.total = options.total || null;
     var condition = this._condition;
     options.beforeSend = function (xhr) {
-      xhr.setRequestHeader("Condition", JSON.stringify(condition));
+      xhr.setRequestHeader("Condition", encodeURIComponent(JSON.stringify(condition)));
     }
     return QueryData.__super__.fetch.call(this, options);
   },

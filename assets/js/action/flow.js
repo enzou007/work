@@ -75,7 +75,7 @@ export default class FlowAction extends Action {
       headers: {
         "FlowControlType": "save"
       },
-      data: this.getStore().data().get("form").toJS()
+      data: {content:JSON.stringify(this.getStore().data().get("form"))}
     }).done(resp => {
       result.status = "succeed";
       result.url = `/form.html?form=${this.getFormPath()}&path=${this.getPath()}&objectId=${resp["@objectId"]}`;
@@ -106,7 +106,7 @@ export default class FlowAction extends Action {
       url: `${this.getPath()}/nextNode/${this.getFlowId()}/${this.getObjectId()}`,
       type: "POST",
       headers: option,
-      data: this.getStore().data().get("form").toJS()
+      data: {content:JSON.stringify(this.getStore().data().get("form"))}
     }).done(resp => {
       if (callback) {
         result.status = "succeed";

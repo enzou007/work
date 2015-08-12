@@ -7,7 +7,7 @@ module.exports = function (data) {
     docType: "xwsd"
   })
 
-  var doc = data.body;
+  var doc = JSON.parse(data.body.content);
   var option = _.pick(data.header, "flowcontroltype", "flowusers", "flownodeid", "flowopinion");
 
   return {json:Doc.updateDocument(doc, option)};

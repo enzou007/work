@@ -6,7 +6,8 @@ var FlowForm = require("View/form/FlowForm.jsx"),
   Tabs = require("Component/bootstrap/Tabs.jsx"),
   Fieldset = require("Component/form/Fieldset.jsx"),
   Personnel = require("Component/form/Personnel.jsx"),
-  Department = require("Component/form/Department.jsx")
+  Department = require("Component/form/Department.jsx"),
+  FileUp = require("Component/form/FileUp.jsx");
 
 var Input = require("rctui/input");
 var Select = require("rctui/select");
@@ -74,6 +75,11 @@ var NoteForm = React.createClass({
             <FormControl label="公司座机" name="ComTel" type="text" responsive={{xl: 12}}/>
             <FormControl label="公司邮箱" name="ComEmail" type="email" responsive={{xl: 12}}/>
           </Fieldset>
+
+          <Fieldset title="附件">
+            <FormControl label="附件" name="fileTest" type="file" responsive={{xl: 24}}/>
+          </Fieldset>
+
         </div>
       </FlowForm>
     );

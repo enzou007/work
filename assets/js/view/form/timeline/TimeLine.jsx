@@ -3,6 +3,9 @@ import _ from 'underscore';
 import $ from 'jquery';
 import TimeLineItem from './TimeLineItem.jsx';
 
+const STEP = 4;
+const TIME_STEP = 10;
+
 const TimeLine = React.createClass({
   getDefaultProps() {
     return {
@@ -66,7 +69,7 @@ const TimeLine = React.createClass({
       <div className="timeline">
         <div className="scroll-up fa fa-angle-up fa-2x"
           onClick={this.scrollEnd.bind(this, "down")}
-          onMouseOut={this.scrollStop.bind(this)}
+          onMouseOut={this.scrollStop}
           onMouseOver={this.scrollStart.bind(this, "down")}>
         </div>
         <div className="timeline-content">
@@ -89,7 +92,7 @@ const TimeLine = React.createClass({
           </div>
           <div className="scroll-down fa fa-angle-down fa-2x"
             onClick={this.scrollEnd.bind(this, "up")}
-            onMouseOut={this.scrollStop.bind(this)}
+            onMouseOut={this.scrollStop}
             onMouseOver={this.scrollStart.bind(this, "up")}>
           </div>
         </div>
@@ -98,13 +101,11 @@ const TimeLine = React.createClass({
   scrolling: null,
   scrollStart(flag) {
     this.scrollStop();
-    const step = 4;
-    const timeStep = 10;
 
     let $content = $(".timeline-container");
     let contentTop = Math.abs(parseInt($content[0].style.top));
     let contentHieght = $content.height();
-    let height = $(".timeline-content").height() + step;
+    let height = $(".timeline-content").height() + STEP;
 
     if (contentHieght < height) {
       return false;
@@ -113,21 +114,21 @@ const TimeLine = React.createClass({
     if (flag === "up") {
       this.scrolling = setInterval(function () {
         if (contentHieght - contentTop >= height) {
-          contentTop += step;
+          contentTop += STEP;
           $content.animate({
             top: -contentTop + "px"
-          }, timeStep)
+          }, TIME_STEP)
         }
-      }, timeStep)
+      }, TIME_STEP)
     } else {
       this.scrolling = setInterval(function () {
         if (contentTop > 1) {
-          contentTop -= step;
+          contentTop -= STEP;
           $content.animate({
             top: -contentTop + "px"
-          }, timeStep)
+          }, TIME_STEP)
         }
-      }, timeStep)
+      }, TIME_STEP)
     }
   },
   scrollStop() {
@@ -149,7 +150,7 @@ const TimeLine = React.createClass({
     if (flag === "up") {
       $container.animate({
         top: (height - contentHieght) + "px"
-      }, 100);
+      }, 300);
     } else {
       $container.animate({
         top: "0px"

@@ -36,10 +36,20 @@ _.extend(Document.prototype, {
       doc["@CurNodeId"] = curNode.nodeId;
       doc["@CurNodeName"] = curNode.nodeName;
     }
+
+    this.processAtts(doc);
+
     this.docs.add(doc);
     this.docs.save();
     return doc;
   },
+
+  processAtts: function(doc){
+    if(JSON.stringify(doc).indexOf("mocks/atts/") > -1){
+      // TODO 将附件从临时目录拷贝到和文档关联的目录中
+    }
+  },
+
   updateDocument: function(doc, option){
     var objectId = doc["@objectId"];
 

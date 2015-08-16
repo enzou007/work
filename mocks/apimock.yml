@@ -61,18 +61,6 @@
     file: response/system/module/module.js
 
 - request:
-    url: /1/system/fileSystemServer/
-    method: POST
-  response:
-    type: js
-    file: response/system/file/processFileUploader.js
-- request:
-    url: /1/system/fileSystemServer/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/system/file/processFileUploader.js
-- request:
     url: /1/system/user
   response:
     type: js

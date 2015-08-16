@@ -56,8 +56,7 @@ export default class FileUp extends React.Component {
     })
 
     this.uploader.on("uploadSuccess", (file, res) => {
-      //TODO 由后台输出完整附件地址
-      this.state.files[file.id].originPath = res.originPath + file.name;
+      this.state.files[file.id].originPath = res.originPath;
       this.setState({
         files: this.state.files
       })

@@ -141,7 +141,8 @@ gulp.task("server:mock", ["webpack:server"], function() {
 
   var modRewrite = require('connect-modrewrite'),
     apimock = require('apimock-middleware'),
-    bodyParser = require('body-parser');;
+    bodyParser = require('body-parser'),
+    FileUpLoader = require('./mocks/response/system/file/processFileUploader');
 
   browserSync({
     server: {
@@ -154,7 +155,8 @@ gulp.task("server:mock", ["webpack:server"], function() {
           extended: false
         }),
         bodyParser.json(),
-        apimock("./mocks/apimock.yml")
+        apimock("./mocks/apimock.yml"),
+        FileUpLoader
       ]
     }
   }, function(err) {

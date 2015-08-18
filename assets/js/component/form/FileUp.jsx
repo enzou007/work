@@ -5,7 +5,7 @@ import _ from 'underscore';
 var $ = window.jQuery = window.$ = require("jquery");
 var WebUploader = window.WebUploader = require("fex-webuploader");
 
-require("../../../less/component/fileup.less");
+import '../../../less/component/fileup.less';
 
 export default class FileUp extends React.Component {
 
@@ -14,7 +14,7 @@ export default class FileUp extends React.Component {
   }
 
   static defaultProps = {
-    option: {
+    options: {
       swf: "fex-webuploader/dist/Uploader.swf"
     }
   }
@@ -41,7 +41,7 @@ export default class FileUp extends React.Component {
     }
   }
   componentDidMount() {
-    this.uploader = window.uploader = WebUploader.create(_.extend(this.props.option, {
+    this.uploader = window.uploader = WebUploader.create(_.extend(this.props.options, {
       pick: "#picker",
       server: "1/system/fileSystemServer/",
       method: "POST"

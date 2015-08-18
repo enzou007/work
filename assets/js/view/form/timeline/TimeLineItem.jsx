@@ -23,20 +23,21 @@ const TimeLineItem = React.createClass({
   },
   showInfo() {
     const windowHeight = $(window).height();
+    const windowScrollTop = $(window).scrollTop();
     const $node = $(this.refs.timeNode.getDOMNode());
     const position = $node.offset();
 
     let style = {
       position: "fixed",
       display: "block",
-      top: position.top - 10,
+      top: position.top - windowScrollTop - 10,
       bottom: "auto",
       left: position.left - 200
     }
     React.render(this.getDetailInfo(style, false), $("<div id='timeline-detail-info'></div>").appendTo(document.body)[0], reactNodeInfo => {
       if ($("#timeline-detail-info div:first").height() + style.top > windowHeight) {
         style.top = "auto";
-        style.bottom = windowHeight - position.top - 23;
+        style.bottom = windowHeight - position.top + windowScrollTop - 23;
         React.render(this.getDetailInfo(style, true), $("#timeline-detail-info")[0])
       }
     });

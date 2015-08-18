@@ -326,7 +326,8 @@ export default class FormControl extends React.Component {
       reps.push(`pure-u-${type}-${width}-24`);
     });
 
-    let className = classnames(this.props.className, 'pure-control-group', `hint-${hintType}`, 'pure-u-1', reps.join(" "), {
+    let className = classnames(this.props.className,  `hint-${hintType}`, 'pure-u-1', reps.join(" "), {
+      'pure-control-group': this.props.label && this.props.label !== "",
       'has-error': this.state.hasError,
       'focused': this.state.focused
     });

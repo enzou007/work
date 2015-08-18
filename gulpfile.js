@@ -142,7 +142,7 @@ gulp.task("server:mock", ["webpack:server"], function() {
   var modRewrite = require('connect-modrewrite'),
     apimock = require('apimock-middleware'),
     bodyParser = require('body-parser'),
-    FileUpLoader = require('./mocks/response/system/file/processFileUploader');
+    FileUpLoader = require('./mocks/response/system/file/FileUploader');
 
   browserSync({
     server: {
@@ -164,7 +164,34 @@ gulp.task("server:mock", ["webpack:server"], function() {
   });
 });
 
+gulp.task("atts:folder", function(){
+  var fs = require('fs');
+
+  if(!fs.existsSync("build/atts/tmp")){
+    if(!fs.existsSync("build/atts/")){
+      fs.mkdirSync("build/atts/");
+    }
+    fs.mkdirSync("build/atts/tmp");
+  }
+
+  if(!fs.existsSync("build/atts/ueditor/image")){
+    if(!fs.existsSync("build/atts/ueditor")){
+      fs.mkdirSync("build/atts/ueditor");
+    }
+    if(!fs.existsSync("build/atts/ueditor/video")){
+      fs.mkdirSync("build/atts/ueditor/video");
+    }
+    if(!fs.existsSync("build/atts/ueditor/file")){
+      fs.mkdirSync("build/atts/ueditor/file");
+    }
+    if(!fs.existsSync("build/atts/ueditor/scrawl")){
+      fs.mkdirSync("build/atts/ueditor/scrawl");
+    }
+    fs.mkdirSync("build/atts/ueditor/image");
+  }
+})
+
 // 纯前端开发模式，使用mock获取需要的数据
-gulp.task("dev", ["html", "server:mock"], function() {
+gulp.task("dev", ["html", "server:mock", "atts:folder"], function() {
   gulp.watch(["assets/less/*.less", "assets/less/ace/**/*.less"], ["less"]);
 });

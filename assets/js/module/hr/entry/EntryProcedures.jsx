@@ -22,7 +22,7 @@ var MarriageData = ["未婚","已婚","离异"];
 var NoteForm = React.createClass({
   getInitialState: function() {
     return {
-      readonly: false
+      readonly: true
     };
   },
   onCreate: function () {
@@ -32,20 +32,20 @@ var NoteForm = React.createClass({
     });
   },
   beforeSubmit: function () {
-    if(this.props.action.getField("Birthday").value === ""){
-      return false;
-    }else{
-      return true;
-    }
+    // if(this.props.action.getField("Birthday").value === ""){
+    //   return false;
+    // }else{
+    //   return true;
+    // }
   },
   afterSubmit: function () {
 
   },
   render: function () {
     return (
-      <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit} readonly={this.state.readonly}>
+      <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}>
         <div className="form-content" tab="基本信息">
-          <Fieldset title="基本信息">
+          <Fieldset title="基本信息" readOnly={this.state.readonly}>
             <FormControl label="代办人" name="AgentPsn" type="text" readOnly={true}/>
             <FormControl label="申请日期" name="CreateDate" type="date" readOnly={true}/>
             <FormControl label="所属部门" name="AgentDept" type="text" readOnly={true}/>
@@ -61,7 +61,7 @@ var NoteForm = React.createClass({
             <FormControl label="联系电话" name="Phone" type="text"/>
           </Fieldset>
 
-          <Fieldset>
+          <Fieldset readOnly={this.state.readonly}>
             <FormControl label="员工工号" name="AppPsnNumber" type="text"/>
             <FormControl label="入职部门" name="EntryDept" type="department" required={true}/>
             <FormControl label="部门负责人" name="DeptLeader" type="personnel"/>
@@ -72,18 +72,17 @@ var NoteForm = React.createClass({
             <FormControl label="入职日期" name="EntryDate" type="date"/>
           </Fieldset>
 
-          <Fieldset title="IT信息">
+          <Fieldset title="IT信息" readOnly={this.state.readonly}>
             <FormControl label="公司座机" name="ComTel" type="text" responsive={{xl: 12}}/>
             <FormControl label="公司邮箱" name="ComEmail" type="email" responsive={{xl: 12}}/>
           </Fieldset>
 
           <Fieldset title="附件">
-            <FormControl label="附件" name="fileTest" type="file" responsive={{xl: 24}}/>
+            <FormControl label="附件" name="fileTest" type="file" readOnly={this.state.readonly} responsive={{xl: 24}}/>
           </Fieldset>
-
-          <Fieldset title="文本编辑器">
-            <FormControl name="RichText_Test" type="richtext" responsive={{xl: 24}}/>
-          </Fieldset>
+        </div>
+        <div className="form-content" tab="正文">
+          <FormControl name="RichText_Test" type="richtext" readOnly={this.state.readonly} responsive={{xl: 24}}/>
         </div>
       </FlowForm>
     );

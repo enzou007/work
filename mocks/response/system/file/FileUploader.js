@@ -7,7 +7,8 @@ var BASE_PATH = "build/atts/";
 var BASE_PATH_TMP = "build/atts/tmp/"
 
 function Uploader(req, res, next) {
-  if(req.method.toUpperCase() === "POST" && req.url.toLowerCase().indexOf("/1/system/filesystemserver") > -1){
+  var _url = req.url.toLowerCase();
+  if(req.method.toUpperCase() === "POST" && _url.indexOf("/1/system/filesystemserver") > -1){
     //附件控件上传处理
     res.setHeader("Content-Type", "application/json; charset=utf-8");
     var result = { info: "ok" }
@@ -39,7 +40,7 @@ function Uploader(req, res, next) {
       res.end(JSON.stringify(result));
       next();
     });
-  }else if(req.url.toLowerCase().indexOf("/1/system/richtextserver") > -1){
+  }else if(_url.indexOf("/1/system/richtextserver") > -1){
     //文本编辑器内附件处理
     var result;
     switch (req.query.action.toLowerCase()) {
@@ -83,6 +84,14 @@ function Uploader(req, res, next) {
     res.setHeader("Content-Type", "application/json; charset=utf-8");
     res.statusCode = "200";
     res.end(JSON.stringify(result));
+    next()
+  }else if(_url.indexOf("atts") > -1){
+    //atts目录下文件请求设置为文件下载, atts/ueditor目录除外.
+    if(_url.indexOf("atts/ueditor") === -1){
+      //res.setHeader("Content-Type", "application/force-download");
+      res.setHeader("Content-Disposition", "attachment")
+      //res.end();
+    }
     next()
   }else{
     next()

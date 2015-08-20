@@ -78,6 +78,13 @@
     padding: 0;
   }
 
+  fieldset{
+    padding: 0;
+    legend{
+      margin-bottom: 0.75em;
+    }
+  }
+
   //重新定义字段组样式
   .pure-control-group {
 
@@ -85,7 +92,9 @@
 
     //字段标题
     .label {
-      top: 0.4em;
+      //top: 0.4em;
+      line-height: 0;
+      padding: 0 0.2em 0.6em 0.3em;
       background-color: transparent !important;
       color: #464646;
       font-size: 14px;

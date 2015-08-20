@@ -1,27 +1,30 @@
 import React from 'react';
 import FormControl from './FormControl.jsx';
 import _ from 'underscore';
+import $ from 'jquery';
 
-import 'ueditor/dist/utf8-jsp/ueditor.config.js';
+import './lib/ueditor/ueditor.config.js';
 
-import 'ueditor/dist/utf8-jsp/ueditor.all.js';
-import 'ueditor/dist/utf8-jsp/lang/zh-cn/zh-cn.js';
+import './lib/ueditor/ueditor.all.js';
+import './lib/ueditor/zh-cn.js';
 
 import '../../../less/component/richtext/ueditor.css';
-
+//TODO IE11不显示内容  上传图片失败
 export default class RichText extends React.Component{
 
   static defaultProps = {
     value: "",
     options: { },
-    readonly: true
+    readOnly: false,
+    height: ($(window).height() - 230) < 500 ? 500 : $(window).height() - 230
   }
   componentDidMount() {
     this.ue = window.UE.getEditor('richtext_container', _.extend(this.props.options, {
-      readonly: this.props.readonly
+      readonly: this.props.readOnly
     }));
     this.ue.ready(() => {
       this.ue.setContent(this.props.value, false);
+      this.ue.setHeight(this.props.height);
     });
 
     if(this.props.onChange){

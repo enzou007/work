@@ -8,7 +8,7 @@ var FlowForm = require("View/form/FlowForm.jsx"),
   Personnel = require("Component/form/Personnel.jsx"),
   Department = require("Component/form/Department.jsx"),
   FileUp = require("Component/form/FileUp.jsx"),
-  RichText = require("Component/form/RichText.jsx");
+  Ueditor = require("Component/form/Ueditor.jsx");
 
 var Input = require("rctui/input");
 var Select = require("rctui/select");
@@ -82,7 +82,7 @@ var NoteForm = React.createClass({
           </Fieldset>
         </div>
         <div className="form-content" tab="正文">
-          <FormControl name="RichText_Test" type="richtext" readOnly={this.state.readonly} responsive={{xl: 24}}/>
+          <FormControl name="RichText_Test" type="ueditor" readOnly={this.state.readonly} responsive={{xl: 24}}/>
         </div>
       </FlowForm>
     );

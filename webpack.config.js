@@ -77,6 +77,12 @@ module.exports = {
         result.request = "../../../backbone/backbone.js";
       }
     }),
+    // 处理webuploader的jquery依赖
+    new webpack.NormalModuleReplacementPlugin(/dollar$/, function (result) {
+      if (/fex-webuploader[\/\\]src$/.test(result.context)) {
+        result.request = "jquery";
+      }
+    }),
     // 将form-control.jsx 替换成新的实现
     new webpack.NormalModuleReplacementPlugin(/\.\/formControl\.jsx$/, "Component/form/FormControl.jsx"),
     new webpack.optimize.CommonsChunkPlugin("commons.js"),

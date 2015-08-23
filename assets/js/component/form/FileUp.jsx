@@ -3,9 +3,7 @@ import FormControl from './FormControl.jsx';
 import _ from 'underscore';
 import Gritter from 'Component/Gritter.jsx';
 
-var $ = window.jQuery = window.$ = require("jquery");
-var WebUploader = window.WebUploader = require("fex-webuploader");
-// var WebUploader = window.WebUploader = require("./lib/webuploader/webuploader");
+var WebUploader = window.WebUploader = require("fex-webuploader/src/preset/withoutimage");
 
 import '../../../less/component/fileup.less';
 

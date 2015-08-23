@@ -71,6 +71,9 @@
       "normalize": {
         "fonts": "opensans-*"
       }
+    },
+    "fex-webuploader": {
+      "ignore": true
     }
   }
 }

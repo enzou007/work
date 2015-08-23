@@ -1,5 +1,5 @@
 module.exports = function(data) {
-  if (data.body.email != "admin@localhost.com") {
+  if (data.body.user != "admin") {
     return {
       status: 400,
       html: "Code 100, Unknown User"

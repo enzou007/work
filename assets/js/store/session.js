@@ -14,8 +14,8 @@ var Session = Backbone.Model.extend({
   urlRoot: "1/session",
   defaults: {
     token: localStorage.getItem(TOKEN_KEY) || Cookies.get(TOKEN_KEY),
-    password: null,
-    objectId: null
+    user: null,
+    password: null
   },
   validation: {
     password: [{

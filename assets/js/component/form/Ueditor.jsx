@@ -3,9 +3,9 @@ import FormControl from './FormControl.jsx';
 import _ from 'underscore';
 import $ from 'jquery';
 
-import '../../../lib/ueditor/ueditor.config.js';
-import '../../../lib/ueditor/ueditor.all.js';
-import '../../../lib/ueditor/lang/zh-cn/zh-cn.js';
+import './ueditor/ueditor.config.js';
+import 'ueditor/ueditor.all.js';
+import 'ueditor/lang/zh-cn/zh-cn.js';
 
 //TODO IE11不显示内容  上传图片失败
 export default class Ueditor extends React.Component{

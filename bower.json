@@ -24,7 +24,8 @@
     "bootstrap": "~3.3.5",
     "jquery": "~2.1.4",
     "jsplumb": "1.7.6",
-    "fex-webuploader": "~0.1.5"
+    "fex-webuploader": "~0.1.5",
+    "ueditor": "http://ueditor.baidu.com/build/build_down.php?n=ueditor&v=1_4_3-utf8-jsp"
   },
   "overrides": {
     "jquery": {

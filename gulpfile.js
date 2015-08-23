@@ -51,9 +51,8 @@ gulp.task("sync", function () {
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
-    .pipe(dirSync('assets/lib', 'build/lib', {
-      printSummary: true,
-      nodelete: true
+    .pipe(dirSync('bower_components/ueditor', 'build/lib/ueditor', {
+      printSummary: true
     }));
 });
 

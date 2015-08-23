@@ -17,9 +17,6 @@ var less = require("gulp-less"),
   });
 gulp.task("less", function() {
   return gulp.src(["assets/less/main.less", "assets/less/ace/ace.less"])
-    .pipe(changed("build/css", {
-      extension: '.css'
-    }))
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
@@ -47,9 +44,22 @@ gulp.task("bower", function() {
     .pipe(gulp.dest("build/lib"));
 });
 
+// 同步目录
+var dirSync = require("gulp-directory-sync");
+gulp.task("sync", function () {
+  return gulp.src('')
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
+    .pipe(dirSync('assets/lib', 'build/lib', {
+      printSummary: true,
+      nodelete: true
+    }));
+});
+
 // 编译html，自动引入相关静态资源
 var inject = require("gulp-inject");
-gulp.task("html", ["bower", "less"], function() {
+gulp.task("html", ["bower", "less", "sync"], function() {
 
   var injectSource = function(src, name) {
     return inject(gulp.src(src, {
@@ -137,10 +147,9 @@ gulp.task("webpack:server", function() {
   });
 });
 
+var modRewrite = require('connect-modrewrite');
 gulp.task("server:mock", ["webpack:server"], function() {
-
-  var modRewrite = require('connect-modrewrite'),
-    apimock = require('apimock-middleware'),
+  var apimock = require('apimock-middleware'),
     bodyParser = require('body-parser'),
     FileUpLoader = require('./mocks/response/system/file/FileUploader');
 
@@ -164,34 +173,56 @@ gulp.task("server:mock", ["webpack:server"], function() {
   });
 });
 
+gulp.task("server:proxy", ["webpack:server"], function () {
+  browserSync({
+    server: {
+      baseDir: "build",
+      middleware: [
+        modRewrite([
+          "^/js/(.*)$ http://" + HOST + ":3005/js/$1 [P]",
+          "^/1/(.*)$ http://" + HOST + ":8080/1/$1 [P]"
+        ])
+      ]
+    }
+  }, function(err) {
+    if (err) throw new gutil.PluginError("browser-sync", err);
+  });
+});
+
 gulp.task("atts:folder", function(){
   var fs = require('fs');
 
-  if(!fs.existsSync("build/atts/tmp")){
-    if(!fs.existsSync("build/atts/")){
-      fs.mkdirSync("build/atts/");
-    }
-    fs.mkdirSync("build/atts/tmp");
-  }
+  // 创建所有目录
+  var mkdirs = function (dirpath, mode, callback) {
+    fs.exists(dirpath, function (exists) {
+      if (exists) {
+        callback && callback(dirpath);
+      } else {
+        //尝试创建父目录，然后再创建当前目录
+        mkdirs(path.dirname(dirpath), mode, function () {
+          fs.mkdir(dirpath, mode, callback);
+        });
+      }
+    });
+  };
 
-  if(!fs.existsSync("build/atts/ueditor/image")){
-    if(!fs.existsSync("build/atts/ueditor")){
-      fs.mkdirSync("build/atts/ueditor");
-    }
-    if(!fs.existsSync("build/atts/ueditor/video")){
-      fs.mkdirSync("build/atts/ueditor/video");
-    }
-    if(!fs.existsSync("build/atts/ueditor/file")){
-      fs.mkdirSync("build/atts/ueditor/file");
-    }
-    if(!fs.existsSync("build/atts/ueditor/scrawl")){
-      fs.mkdirSync("build/atts/ueditor/scrawl");
-    }
-    fs.mkdirSync("build/atts/ueditor/image");
-  }
+  [
+    "build/atts/tmp",
+    "build/atts/ueditor/image",
+    "build/atts/ueditor/video",
+    "build/atts/ueditor/file",
+    "build/atts/ueditor/scrawl"
+  ].forEach(function (path) {
+    mkdirs(path);
+  });
 })
 
 // 纯前端开发模式，使用mock获取需要的数据
 gulp.task("dev", ["html", "server:mock", "atts:folder"], function() {
+  gulp.watch(["assets/less/*.less", "assets/less/ace/**/*.less"], ["less"]);
+});
+
+// 混合开发模式，通过反向代理访问后端服务获取数据
+gulp.task("proxy", ["html", "server:proxy", "atts:folder"], function() {
   gulp.watch(["assets/less/*.less", "assets/less/ace/**/*.less"], ["less"]);
 });

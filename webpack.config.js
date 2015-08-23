@@ -58,7 +58,7 @@ module.exports = {
       loader: 'bundle?lazy!babel?stage=0&optional=runtime'
     }, {
       test: /\.js$/,
-      include: /(bootstrap|gritter|jsplumb|ueditor)/,
+      include: /(bootstrap|gritter|jsplumb)/,
       loader: "exports?jQuery!imports?jQuery=jquery&this=>window&define=>false"
     }]
   },

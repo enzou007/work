@@ -12,7 +12,7 @@ import '../../../less/component/fileup.less';
 export default class FileUp extends React.Component {
 
   static propTypes = {
-    readOnly: false
+    readOnly: React.PropTypes.bool
   }
 
   static defaultProps = {

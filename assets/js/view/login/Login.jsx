@@ -51,7 +51,7 @@ var Login = React.createClass({
     });
   },
   onSubmit: function(e) {
-    action.login(_.pick(this.state, "email", "password", "remember"));
+    action.login(_.pick(this.state, "user", "password", "remember"));
     e.preventDefault();
   },
   getValidationInfo: function() {
@@ -96,8 +96,8 @@ var Login = React.createClass({
               请输入您的信息
             </legend>
             <div className={classNames("form-group input-icon input-icon-right", {"has-error": validation.email})}>
-              <input className="form-control " name="email" onChange={this.handleChange}
-                placeholder="请输入注册邮箱" type="email"/>
+              <input className="form-control " name="user" onChange={this.handleChange}
+                placeholder="请输入用户ID" type="text"/>
               <i className="ace-icon fa fa-user fa-fw"/>
               <span className="help-block">{validation.email}</span>
             </div>

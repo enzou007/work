@@ -22,7 +22,7 @@ var MarriageData = ["未婚","已婚","离异"];
 var NoteForm = React.createClass({
   getInitialState: function() {
     return {
-      readonly: true
+      readonly: false
     };
   },
   onCreate: function () {
@@ -35,7 +35,7 @@ var NoteForm = React.createClass({
     // if(this.props.action.getField("Birthday").value === ""){
     //   return false;
     // }else{
-    //   return true;
+       return true;
     // }
   },
   afterSubmit: function () {

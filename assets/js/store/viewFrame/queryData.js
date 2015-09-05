@@ -8,7 +8,7 @@ var SORT_TYPES = [null, "ascending", "descending"];
 
 var QueryData = Backbone.Collection.extend({
   options: {
-    page: 1,
+    page: 0,
     count: 50
   },
   _total: 0,

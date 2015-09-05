@@ -25,7 +25,7 @@ const UserMenu = React.createClass({
     return (
       <Dropdown tag="li" className="light-blue" align="right">
         <a href="javascrip:user-menu">
-          <Avatar className="nav-user-photo" detail={false} img={this.props.avatar} size={40} userId={this.props.objectId}/>
+          <Avatar className="nav-user-photo" detail={false} img={this.props.avatar} size={40} userId={this.props.id}/>
           <span className="user-info">
             <small>欢迎您,</small>
             {this.props.name}

@@ -42,6 +42,8 @@ let Create = React.createClass({
           </a>
         </div>
       );
+    } else {
+      return null;
     }
   }
 });

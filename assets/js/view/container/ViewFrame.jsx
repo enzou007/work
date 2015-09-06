@@ -54,7 +54,7 @@ const ViewFrame = React.createClass({
       columns = activatedItem.get("column") || action.getDefaultItem().get("column"),
       page = this.props.page,
       path = _.result(action.getDataCollection(), "url"),
-      formPath = _.values(this.props.form)[0];
+      formPath = this.props.form;
 
     return (
       <div id="view-frame" className={classnames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>

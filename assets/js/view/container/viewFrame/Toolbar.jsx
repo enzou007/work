@@ -9,7 +9,7 @@ import Exports from "./toolbar/Exports.jsx";
 const Toolbar = React.createClass({
   propTypes: {
     page: React.PropTypes.string.isRequired,
-    form: React.PropTypes.object.isRequired,
+    form: React.PropTypes.string.isRequired,
     showViewButton: React.PropTypes.bool.isRequired,
     customs: React.PropTypes.arrayOf(React.PropTypes.element).isRequired
   },
@@ -20,21 +20,11 @@ const Toolbar = React.createClass({
     }
   },
   render: function () {
-    var flows = this.props.model.get("flows"),
-      formPath = _.values(this.props.form)[0];
-
-    if (flows.length === 0) {
-      flows = _.map(this.props.form, function (form, name) {
-        return {
-          form: form,
-          name: name
-        };
-      });
-    } else {
-      flows.forEach(function (flow) {
+    var formPath = this.props.form,
+      flows = this.props.model.get("flows").map(function (flow) {
         flow.form = formPath;
+        return flow;
       });
-    }
 
     return (
       <div className="frame-toolbar btn-toolbar">

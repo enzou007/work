@@ -17,7 +17,7 @@ _.extend(Base.prototype, {
     //viewFrameAction.bind(this);
   },
   page: "form.html",
-  form: {},
+  form: null,
   menu: [],
   Container: require("../view/container/ViewFrame.jsx"),
   View: require("../view/container/viewFrame/ViewTable.jsx"),

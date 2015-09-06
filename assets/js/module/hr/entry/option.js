@@ -5,9 +5,7 @@ var Config = require("./config.js")
 
 module.exports = BaseOption.extend({
   Model: require("./model"),
-  form: {
-    "入职申请": "hr/entry/EntryProcedures"
-  },
+  form: "hr/entry/EntryProcedures",
   menu: [{
     name: "按状态检索",
     ico: "fa fa-reorder",

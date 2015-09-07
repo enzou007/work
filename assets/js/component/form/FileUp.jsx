@@ -3,7 +3,7 @@ import FormControl from './FormControl.jsx';
 import _ from 'underscore';
 import Gritter from 'Component/Gritter.jsx';
 
-var WebUploader = window.WebUploader = require("fex-webuploader/src/preset/withoutimage");
+var WebUploader = require("fex-webuploader/src/preset/withoutimage");
 
 import '../../../less/component/fileup.less';
 
@@ -24,12 +24,13 @@ export default class FileUp extends React.Component {
     progress: 0,
     showProgress: false
   }
+
   formatData(value) {
     let rst = { }
     if(value){
       value = value.toJS();
       for(let i = 0; i < value.length; i++){
-        rst[value[i].id] = value[i];
+        rst[value[i]._guid] = value[i];
       }
     }
     return rst;
@@ -51,75 +52,97 @@ export default class FileUp extends React.Component {
       this.uploader.destroy();
     }
   }
-
+  totalSize = 0.0
+  uploaderSize = 0.0
   initUploader(){
-    this.uploader = window.uploader = WebUploader.create(_.extend(this.props.options, {
-      pick: "#picker",
+    this.uploader = WebUploader.create(_.extend(this.props.options, {
+      pick: {
+        id: this.refs.picker.getDOMNode()
+      },
       server: "1/system/fileSystemServer/",
-      method: "POST"
+      method: "POST",
+      fileVal: "file"
     }));
 
     this.uploader.on("fileQueued", file => {
       this.addFile(file);
-    })
+    });
 
     this.uploader.on("uploadProgress", (file, progress) => {
-      let showProgress = true;
-      this.setState({ progress, showProgress })
-    })
+      progress = (progress * file.size + this.uploaderSize) / this.totalSize;
+      this.setState({ progress });
+    });
 
     this.uploader.on("uploadSuccess", (file, res) => {
       let showProgress = false;
-      this.state.files[file.id].originPath = res.originPath;
+      this.state.files[file._guid].originPath = res.originPath;
       this.setState({
-        progress: 1,
         files: this.state.files
-      }, () => {
-        setTimeout(() => this.setState({
-          progress: 0,
-          showProgress: false
-        }), 1000)
-      })
+      });
+
+      this.uploaderSize += file.size;
+
       if(this.props.onChange){
         this.props.onChange();
       }
       this.Alert("[" + file.name + "] 上传成功!");
-    })
+    });
 
     this.uploader.on("uploadError", (file, res) => {
       this.Alert("[" + file.name + "] 上传失败!", "error");
+    });
+
+    this.uploader.on("uploadFinished", () => {
+      this.setState({ progress: 1 }, () => {
+        setTimeout(() => this.setState({
+          showProgress: false
+        }), 1000)
+      });
     })
   }
 
   getValue(){
     let rst = [];
     _.map(this.state.files, (file) => {
-      rst.push({
-        originPath: file.originPath,
-        id: file.id,
-        name: file.name
-      });
+      //if(file.originPath){
+        rst.push({
+          originPath: file.originPath,
+          _guid: file._guid,
+          name: file.name
+        });
+      //}
     })
     return rst;
   }
 
   addFile(file){
-    this.state.files[file.id] = file;
+    file._guid = new Date().getTime().toString(16);
+    this.state.files[file._guid] = file;
+    this.totalSize += file.size;
+    console.log(this.totalSize);
     this.setState({
       files: this.state.files
     });
   }
 
   removeFile(file, index){
-    if(file.Status){
+    if(!file.originPath){
+      this.totalSize -= file.size;
       this.uploader.removeFile(file, true);
     }
     // TODO 删除服务器的附件
-    delete this.state.files[file.id];
+    delete this.state.files[file._guid];
     this.setState({files: this.state.files});
+    // if(this.props.onChange){
+    //   this.props.onChange();
+    // }
   }
 
   UploaderStart(){
+    this.setState({
+      progress: 0,
+      showProgress: true
+    });
     this.uploader.upload();
   }
 
@@ -142,11 +165,11 @@ export default class FileUp extends React.Component {
     return (
       <div className="file-container">
         {this.props.readOnly ? null :
-          [<div className="progress progress-striped active myprogress">
+          [(this.state.showProgress? <div className="progress progress-striped active myprogress">
             <div className="progress-bar progress-bar-success" style={{width: (+this.state.progress * 100) + "%"}}></div>
-          </div>,
+          </div>: null),
           <div className="file-operates">
-            <div className="operate-item" id="picker"><i className="fa fa-plus"></i>添加</div>
+            <div className="operate-item" ref="picker"><i className="fa fa-plus"></i>添加</div>
             <div className="operate-item" onClick={this.UploaderStart.bind(this)}><i className="fa fa-save"></i>上传</div>
           </div>]
         }

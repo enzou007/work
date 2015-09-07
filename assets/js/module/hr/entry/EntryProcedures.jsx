@@ -35,7 +35,7 @@ var NoteForm = React.createClass({
     // if(this.props.action.getField("Birthday").value === ""){
     //   return false;
     // }else{
-       return true;
+    //   return true;
     // }
   },
   afterSubmit: function () {

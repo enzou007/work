@@ -25,7 +25,7 @@ const SubmitBtn = React.createClass({
 
   triggerClick() {
     if(this.props.action.validateAll()){
-      if (this.props.onBeforeSubmit("save")) {
+      if (this.props.onBeforeSubmit("save") !== false) {
         this.ModalBox = Modal.create(this.getSubmitBox(), {
           id: "flowSubmitBox",
           className: "flow"

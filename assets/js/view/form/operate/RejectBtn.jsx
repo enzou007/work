@@ -21,10 +21,12 @@ const RejectBtn = React.createClass({
     onSubmit: React.PropTypes.func
   },
   triggerClick() {
-    this.ModalBox = Modal.create(this.getSubmitBox(), {
-      id: "flowSubmitBox",
-      className: "flow"
-    });
+    if (this.props.onBeforeSubmit("reject") !== false) {
+      this.ModalBox = Modal.create(this.getSubmitBox(), {
+        id: "flowSubmitBox",
+        className: "flow"
+      });
+    }
   },
   render() {
     return (

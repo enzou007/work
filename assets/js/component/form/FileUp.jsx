@@ -61,16 +61,27 @@ export default class FileUp extends React.Component {
       },
       server: "1/system/fileSystemServer/",
       method: "POST",
-      fileVal: "file"
+      fileVal: "file",
+      auto: true
     }));
 
     this.uploader.on("fileQueued", file => {
       this.addFile(file);
     });
 
+    this.uploader.on("startUpload", file => {
+      this.setState({
+        progress: 0,
+        showProgress: true
+      });
+    });
+
     this.uploader.on("uploadProgress", (file, progress) => {
       progress = (progress * file.size + this.uploaderSize) / this.totalSize;
       this.setState({ progress });
+      {
+        progress: progress
+      }
     });
 
     this.uploader.on("uploadSuccess", (file, res) => {
@@ -104,13 +115,11 @@ export default class FileUp extends React.Component {
   getValue(){
     let rst = [];
     _.map(this.state.files, (file) => {
-      //if(file.originPath){
-        rst.push({
-          originPath: file.originPath,
-          _guid: file._guid,
-          name: file.name
-        });
-      //}
+      rst.push({
+        originPath: file.originPath,
+        _guid: file._guid,
+        name: file.name
+      });
     })
     return rst;
   }
@@ -119,7 +128,6 @@ export default class FileUp extends React.Component {
     file._guid = new Date().getTime().toString(16);
     this.state.files[file._guid] = file;
     this.totalSize += file.size;
-    console.log(this.totalSize);
     this.setState({
       files: this.state.files
     });
@@ -133,16 +141,13 @@ export default class FileUp extends React.Component {
     // TODO 删除服务器的附件
     delete this.state.files[file._guid];
     this.setState({files: this.state.files});
-    // if(this.props.onChange){
-    //   this.props.onChange();
-    // }
+    if(this.props.onChange){
+      this.props.onChange();
+    }
   }
 
   UploaderStart(){
-    this.setState({
-      progress: 0,
-      showProgress: true
-    });
+
     this.uploader.upload();
   }
 

@@ -6,27 +6,14 @@ export default class FlowAction extends Action {
   getDefaultStore() {
     return {
       session: {},
+      module: {},
       flow: {},
       log: [],
-      form: {}
+      fields: {}
     };
-  }
-  setField(key, val) {
-    if (key == null) return this;
-
-    val = this.parseValue(key, val);
-    if (typeof key === 'object') {
-      this.getStore().cursor().get("form").merge(val);
-    } else {
-      this.getStore().cursor().get("form").set(key, val);
-    }
-    return this;
   }
   getFormPath() {
     return this.getParam().form;
-  }
-  getPath() {
-    return this.getParam().path;
   }
   getFlowId() {
     return this.getParam().flowId;
@@ -34,14 +21,8 @@ export default class FlowAction extends Action {
   getObjectId() {
     return this.getParam().objectId || "";
   }
-  bindSession() {
-    return $.get(`${this.getPath()}/@session`).done(resp => {
-      this.getStore().cursor().get("session").merge(resp);
-      return resp;
-    });
-  }
   bindFlow() {
-    return $.get(`1/flow/${this.getFlowId()}`).done(resp => {
+    return $.get(`1/system/flow/${this.getFlowId()}`).done(resp => {
       this.getStore().cursor().get("flow").mergeDeep(resp);
       return resp;
     });

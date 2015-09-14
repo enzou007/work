@@ -9,8 +9,7 @@ var React = require("react"),
 var Modal = require("../../component/bootstrap/Modal.jsx"),
   Button = require("../../component/bootstrap/Button.jsx");
 
-var session = require("../../store/session"),
-  action = require("../../action/session");
+var session = require("../../store/session");
 
 require("../../../less/app/login.less");
 require("backbone-react-component");
@@ -51,7 +50,7 @@ var Login = React.createClass({
     });
   },
   onSubmit: function(e) {
-    action.login(_.pick(this.state, "user", "password", "remember"));
+    session.save(_.pick(this.state, "user", "password", "remember"));
     e.preventDefault();
   },
   getValidationInfo: function() {

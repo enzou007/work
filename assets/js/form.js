@@ -4,6 +4,8 @@ import $ from 'jquery';
 import { mixins } from 'iflux';
 import { Map } from 'immutable';
 
+import session from './action/session';
+
 import 'rctui/lang/zh-cn';
 
 import '../less/form.less';
@@ -20,8 +22,8 @@ if (param.path) {
 if (!param.form) {
   throw Error(`Can't not get 'form' by location.search '${search}'`);
 }
-if (!param.path) {
-  throw Error(`Can't not get 'path' by location.search '${search}'`);
+if (!param.moduleId) {
+  throw Error(`Can't not get 'moduleId' by location.search '${search}'`);
 }
 
 require.ensure([], function (require) {
@@ -35,7 +37,8 @@ require.ensure([], function (require) {
       mixins: [mixins.StoreMixin(action.getStore())],
       render: function () {
         return React.createElement(ModuleForm, {
-          'session': this.state.get('session'),
+          'session': new Map(session.getSession().toJSON()),
+          'module': this.state.get('module'),
           'flow': this.state.get('flow'),
           'log': this.state.get('log'),
           'form': this.state.get('form'),
@@ -44,6 +47,8 @@ require.ensure([], function (require) {
       }
     });
 
-    React.render(React.createElement(BootElement), document.getElementById('form'));
+    session.validate(function () {
+      React.render(React.createElement(BootElement), document.getElementById('form'));
+    });
   });
 });

@@ -75,7 +75,7 @@ const ViewTable = React.createClass({
               },
               cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
                 return (
-                  <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData['@objectId']}`} target='_blank'>{cellData}</a>
+                  <a href={`${page}?form=${form}&path=${path}&objectId=${rowData['@objectId']}`} target='_blank'>{cellData}</a>
                 );
               }) : null,
               fixed: isFirst

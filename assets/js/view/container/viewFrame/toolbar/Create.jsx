@@ -6,11 +6,11 @@ import Dropdown from "../../../../component/bootstrap/Dropdown.jsx";
 let Create = React.createClass({
   propTypes: {
     page: React.PropTypes.string.isRequired,
-    path: React.PropTypes.string.isRequired,
+    moduleId: React.PropTypes.string.isRequired,
     forms: React.PropTypes.array.isRequired
   },
-  _href(page, form, path, flowId) {
-    return `/${page}?form=${form}&path=${path}&flowId=${flowId}`;
+  _href(page, form, moduleId, flowId) {
+    return `${page}?form=${form}&moduleId=${moduleId}&flowId=${flowId}`;
   },
   render() {
     if (this.props.forms.length > 1) {
@@ -22,7 +22,7 @@ let Create = React.createClass({
           <ul>
             { this.props.forms.map((form) => { return (
               <li>
-                <a key={form.form} href={this._href(this.props.page, form.form, this.props.path, form.objectId)}
+                <a key={form.form} href={this._href(this.props.page, form.form, this.props.moduleId, form.objectId)}
                   target="_blank" title={form.name}>
                   <i className="ace-icon fa fa-file-text-o"/>{form.name}
                 </a>
@@ -37,7 +37,7 @@ let Create = React.createClass({
       return (
         <div className="btn-group">
           <a className="btn btn-link" key={form.name} title={form.name}
-            href={this._href(this.props.page, form.form, this.props.path, form.objectId)} target="_blank">
+            href={this._href(this.props.page, form.form, this.props.moduleId, form.objectId)} target="_blank">
             <i className="ace-icon fa fa-file-text-o"/>新建
           </a>
         </div>

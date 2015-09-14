@@ -17,13 +17,25 @@ export default class Action {
     actions.push(this);
   }
   getDefaultStore() {
-    return {};
+    return {
+      module: {},
+      fields: {}
+    };
   }
   getParam() {
     return this._param;
   }
   getStore() {
     return this._store;
+  }
+  getModuleId() {
+    return this.getParam().moduleId;
+  }
+  bindModule() {
+    return $.get(`1/system/module/${this.getModuleId()}`).done(resp => {
+      this.getStore().cursor().get("module").merge(resp);
+      return resp;
+    });
   }
   on(name, callback) {
     let eventName = `${this.uniqueId}:${name}`;
@@ -95,15 +107,16 @@ export default class Action {
 
     return this;
   }
-  getField(key){
-    let field = this._controls.get(key);
-    if(field){
-      let result = field.props;
-      result.value = field.getValue() || "";
-      return result;
-    }else{
-      return null;
+  setField(key, val) {
+    if (key == null) return this;
+
+    val = this.parseValue(key, val);
+    if (typeof key === 'object') {
+      this.getStore().cursor().get("fields").merge(val);
+    } else {
+      this.getStore().cursor().get("fields").set(key, val);
     }
+    return this;
   }
 }
 

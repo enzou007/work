@@ -22,7 +22,7 @@ var DataForm = React.createClass({
     };
   },
   componentWillMount: function () {
-    $.when(formAction.bindSession(), formAction.getObjectId() ? formAction.bindDocument() : null)
+    $.when(formAction.bindModule(), formAction.getObjectId() ? formAction.bindDocument() : null)
       .then(() => {
         if (formAction.getObjectId() && this.props.onLoad) {
           this.props.onLoad();

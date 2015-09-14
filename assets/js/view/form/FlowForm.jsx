@@ -38,7 +38,7 @@ const FlowForm = React.createClass({
   componentWillMount: function () {
     let formAction = this.state.action;
 
-    $.when(formAction.bindSession(), formAction.getObjectId() ? formAction.bindDocument() : formAction.bindFlow())
+    $.when(formAction.bindModule(), formAction.getObjectId() ? formAction.bindDocument() : formAction.bindFlow())
       .then(() => {
         if (formAction.getObjectId()) {
           formAction.bindFlowLog().then(() => {
@@ -69,7 +69,7 @@ const FlowForm = React.createClass({
         <Toolbar title={store.get("flow").get("name") || "表单"} action={this.state.action} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}>{this.props.toolbar}</Toolbar>
         <div className="main-container" id="main-container">
           <Form hintType={this.props.hintType} layout={this.props.layout}
-            className={`container ${logs.size === 0 ? "container-center" : ""}`} channel={action} store={store.get("form")} >
+            className={`container ${logs.size === 0 ? "container-center" : ""}`} channel={action} store={store.get("fields")} >
             <Tabs>
               {this.props.children}
               <div className="form-content" tab="流程信息" onShow={this.showFlowMap}>

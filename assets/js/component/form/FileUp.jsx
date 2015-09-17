@@ -6,7 +6,8 @@ import Gritter from 'Component/Gritter.jsx';
 var WebUploader = require("fex-webuploader/src/preset/withoutimage");
 
 import '../../../less/component/fileup.less';
-
+//TODO this.state.files待优化!
+//TODO 实现提交未上传完成校验,
 export default class FileUp extends React.Component {
 
   static propTypes = {
@@ -64,9 +65,11 @@ export default class FileUp extends React.Component {
       fileVal: "file",
       auto: true
     }));
-
+    //this.uploader.isInProgress()
     this.uploader.on("fileQueued", file => {
-      this.addFile(file);
+      if(this.validate(file)){
+        this.addFile(file);
+      }
     });
 
     this.uploader.on("startUpload", file => {
@@ -79,9 +82,6 @@ export default class FileUp extends React.Component {
     this.uploader.on("uploadProgress", (file, progress) => {
       progress = (progress * file.size + this.uploaderSize) / this.totalSize;
       this.setState({ progress });
-      {
-        progress: progress
-      }
     });
 
     this.uploader.on("uploadSuccess", (file, res) => {
@@ -90,9 +90,7 @@ export default class FileUp extends React.Component {
       this.setState({
         files: this.state.files
       });
-
       this.uploaderSize += file.size;
-
       if(this.props.onChange){
         this.props.onChange();
       }
@@ -110,6 +108,10 @@ export default class FileUp extends React.Component {
         }), 1000)
       });
     })
+  }
+
+  validate(file){
+    return true;
   }
 
   getValue(){
@@ -146,11 +148,6 @@ export default class FileUp extends React.Component {
     }
   }
 
-  UploaderStart(){
-
-    this.uploader.upload();
-  }
-
   getFileList() {
     var files = [];
     _.each(this.state.files, (file, index) => {
@@ -175,7 +172,7 @@ export default class FileUp extends React.Component {
           </div>: null),
           <div className="file-operates">
             <div className="operate-item" ref="picker"><i className="fa fa-plus"></i>添加</div>
-            <div className="operate-item" onClick={this.UploaderStart.bind(this)}><i className="fa fa-save"></i>上传</div>
+            <div className="operate-item"><i className="fa fa-save"></i>上传</div>
           </div>]
         }
         <div className="file-list">

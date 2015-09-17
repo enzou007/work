@@ -19,6 +19,16 @@ var LevelData = ["A","B","C","D","E","F"];
 var EmployData = ["社会招聘","人才市场","互联网络","内部招聘","人才推荐","校园招聘","外编转正","离职再入职","其他"];
 var MarriageData = ["未婚","已婚","离异"];
 
+var AttOptions = {
+  accept: [
+    {
+      title: 'Images',
+      extensions: 'gif,jpg,jpeg,bmp',
+      mimeTypes: 'image/*'
+    }
+  ]
+}
+
 var NoteForm = React.createClass({
   getInitialState: function() {
     return {
@@ -78,7 +88,7 @@ var NoteForm = React.createClass({
           </Fieldset>
 
           <Fieldset title="附件">
-            <FormControl label="附件" name="fileTest" type="file" readOnly={this.state.readonly} responsive={{xl: 24}}/>
+            <FormControl label="附件" options={AttOptions} name="fileTest" type="file" readOnly={this.state.readonly} responsive={{xl: 24}}/>
           </Fieldset>
         </div>
         <div className="form-content" tab="正文">

@@ -42,10 +42,10 @@ export default class OrganizationTree extends React.Component {
       });
       this._loadChildren(this.props.region);
     } else {
-      this.props.action.byParent(null).then(roots => {
+      this.props.action.children(null).then(roots => {
         this.setState({ roots });
         if(roots.length === 1){
-          this._loadChildren(roots[0].objectId);
+          this._loadChildren(roots[0].id);
         }
       });
     }
@@ -57,7 +57,7 @@ export default class OrganizationTree extends React.Component {
     });
   }
   _loadChildren(parent) {
-    this.props.action.byParent(parent).then(resp => {
+    this.props.action.children(parent).then(resp => {
       let store = this.state.store;
       store[parent] = resp;
       this.setState({ store });
@@ -73,7 +73,7 @@ export default class OrganizationTree extends React.Component {
       let parent;
       _.some(this.state.store, (resp) => {
         parent = _.findWhere(resp, {
-          objectId: parentId
+          id: parentId
         });
         if (parent) {
           return true;
@@ -89,15 +89,15 @@ export default class OrganizationTree extends React.Component {
   }
   getChecked(checked = {}, value = this.props.value) {
     value.forEach((item) => {
-      checked[item.objectId] = 2;
+      checked[item.id] = 2;
 
       if(this.props.mult){
         if (!checked[item.parent]) {
           this._checkParent(checked, item.parent);
         }
 
-        if (this.state.store[item.objectId]) {
-          this.getChecked(checked, this.state.store[item.objectId]);
+        if (this.state.store[item.id]) {
+          this.getChecked(checked, this.state.store[item.id]);
         }
       }
     });
@@ -123,7 +123,7 @@ export default class OrganizationTree extends React.Component {
       this.setState({
         value: [item],
         checked: {
-          [item.objectId]: 2
+          [item.id]: 2
         }
       }, () => {
         if (this.props.onChange) {
@@ -144,12 +144,12 @@ export default class OrganizationTree extends React.Component {
     if (handle.size() === 1 && handle.data('id')) {
       let id = handle.data('id');
       if (!this.state.store[id]) {
-        this.props.action.byParent(id).then(resp => {
+        this.props.action.children(id).then(resp => {
           this.state.store[id] = resp;
 
           if(this.props.mult && this.state.checked[id] === 2){
             _.forEach(resp, (item) => {
-              this.state.checked[item.objectId] = 2;
+              this.state.checked[item.id] = 2;
             });
           }
 
@@ -163,7 +163,7 @@ export default class OrganizationTree extends React.Component {
     let roots = this.state.roots || [];
     let Items = roots.map((item, i) => {
       return (
-        <Item selectAble={selectAble} mult={this.props.mult} data={item} key={item.objectId}
+        <Item selectAble={selectAble} mult={this.props.mult} data={item} key={item.id}
           onClick={this.props.onClick ? this.onClick : null} onStatusChange={this.handleChange}
           ref={i} store={this.state.store} checked={this.state.checked} open={roots.length === 1}/>
       );
@@ -201,7 +201,7 @@ class Item extends React.Component {
     }
   }
   checkStatus(checked = this.props.checked) {
-    return checked[this.props.data.objectId] || 0;
+    return checked[this.props.data.id] || 0;
   }
   toggle = (event) => {
     this.setState({
@@ -235,9 +235,9 @@ class Item extends React.Component {
     }
 
     if (status) {
-      this.props.checked[this.props.data.objectId] = status;
+      this.props.checked[this.props.data.id] = status;
     } else {
-      delete this.props.checked[this.props.data.objectId]
+      delete this.props.checked[this.props.data.id]
     }
 
     this.setState({ status });
@@ -279,7 +279,7 @@ class Item extends React.Component {
       list.push(this.props.data);
     }
 
-    if(true && this.props.data.size > 0 && this.getStatus() !== 2){
+    if(true && this.props.data.childSize > 0 && this.getStatus() !== 2){
       _.forEach(this.refs, function (ref) {
         ref.getChecked(list, greedy);
       });
@@ -304,11 +304,11 @@ class Item extends React.Component {
       );
     }
 
-    if (data.size > 0) {
-      let childrenData = this.props.store[this.props.data.objectId] || [],
+    if (data.childSize > 0) {
+      let childrenData = this.props.store[this.props.data.id] || [],
         Items = childrenData.map((item, i) => {
           return (
-            <Item selectAble={selectAble} data={item} key={item.objectId} mult={this.props.mult}
+            <Item selectAble={selectAble} data={item} key={item.id} mult={this.props.mult}
               onClick={this.props.onClick} onStatusChange={this.updateStatus} store={this.props.store}
               readOnly={readOnly} ref={i} checked={checked}/>
           )
@@ -316,7 +316,7 @@ class Item extends React.Component {
 
       return (
         <li className="tree-folder">
-          <div className="tree-folder-header" data-id={this.props.data.objectId}>
+          <div className="tree-folder-header" data-id={this.props.data.id}>
             <i className={classnames('ace-icon', 'fa', this.state.open ? 'fa-folder-open' : 'fa-folder', 'fa-fw')}
               onClick={this.toggle}/>
             {SelectHandle}

@@ -38,19 +38,19 @@ class Action {
     });
   }
   validate(bootstrap) {
+    session.once("sync", function () {
+      loginModalBackdrop = true;
+      bootstrap();
+    });
     // 判定用户状态
     if (session.isAnonymous()) {
       // 显示登录对话框，等待匿名用户完成登录
-      session.once("sync", bootstrap);
       Login.show({
         backdrop: loginModalBackdrop
       });
     } else {
       // 校验用户Token，如果成功触发sync事件。如果校验失败，同样等待用户完成登录。
-      session.ping().then(function () {
-        loginModalBackdrop = true;
-        bootstrap();
-      });
+      session.ping();
     }
   }
 };

@@ -106,12 +106,10 @@ class Action {
     return $.ajax({
       url: "1/system/user",
       headers: {
-        'Condition': JSON.stringify([
-          ['@key', 'lk', encodeURIComponent(key)],
-          ['@region', 'in', region]
-        ])
+        'Region': region
       },
       data: {
+        key,
         limit
       }
     }).then((resp) => {

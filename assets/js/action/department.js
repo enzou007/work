@@ -4,80 +4,37 @@ import { Iterable } from 'immutable';
 
 const CACHE_NAME = "DEPARTMENT_CACHE";
 const CACHE_DURING = 1000 * 60 * 60 * 24; //1天
-const WRITE_DURING = 1000 * 60; //1分钟
 
 class Action {
   params = []
   handles = []
-  cache = new Iterable.Keyed(this.getLocalStorage())
-  mixinCache(data) {
-    this.cache = this.cache.concat(_.reduce(data, function (memo, item) {
-      memo[item.objectId] = _.extend({
-        $timeStamp: item.$tiemStamp || _.now()
-      }, item);
-      return memo;
-    }, {}));
-    this.setLocalStorage();
+  static cache = null
+  constructor() {
+    this.setCache(this.getLocalStorage().data || []);
   }
   getLocalStorage() {
     let now = _.now();
-    return _.chain(JSON.parse(localStorage.getItem(CACHE_NAME)) || [])
-      .filter(function (item) {
-        return item.$timeStamp + CACHE_DURING > now;
-      })
-      .reduce(function (memo, item) {
-        memo[item.objectId] = item;
-        return memo;
-      }, {}).value();
+    let cacheItem = JSON.parse(localStorage.getItem(CACHE_NAME));
+    if(cacheItem!=null && cacheItem.timeStamp + CACHE_DURING > now){
+      return cacheItem;
+    }
+    return {};
   }
-  setLocalStorage = _.throttle(() => {
-    let now = _.now();
-    localStorage.setItem(CACHE_NAME, JSON.stringify(_.filter(this.cache.toArray(), function (item) {
-      return item.$timeStamp + CACHE_DURING > now;
-    })));
-  }, WRITE_DURING)
-  _batchRequest = _.debounce(function () {
-
-    let params = this.params.slice(),
-      handles = this.handles.slice(),
-      objectIds = _.reduce(params, function (memo, item) {
-        if (_.isArray(item)) {
-          memo.push(...item);
-        } else {
-          memo.push(item);
-        }
+  setLocalStorage = _.debounce((data) => {
+    localStorage.setItem(CACHE_NAME, JSON.stringify({
+      timeStamp: _.now(),
+      data
+    }));
+  }, 100)
+  setCache(data) {
+    if(this.cache == null || this.cache.size == 0){
+      this.__proto__.cache = new Iterable.Keyed(_.reduce(data, function (memo, item) {
+        memo[item.id] = item;
         return memo;
-      }, []);
-
-    let handle = null;
-    $.ajax({
-      url: '1/system/department',
-      headers: {
-        'Condition': JSON.stringify([['objectId', 'in', objectIds]])
-      }
-    }).done(resp => {
-      this.mixinCache(resp);
-
-      while (handle = handles.shift()) {
-        let objectId = params.shift();
-        handle.resolve(this.cache.get(objectId, {
-          objectId: objectId,
-          id: '未知部门',
-          name: '未知部门'
-        }));
-      }
-
-      return resp;
-    }).fail(resp => {
-      while (handle = handles.shift()) {
-        handle.reject(resp);
-      }
-    });
-
-    this.params = [];
-    this.handles = [];
-
-  }, 50)
+      }, {}));
+    }
+    return this;
+  }
   fetch(objectId) {
     // 对于数组参数，使用Promise.all直接封装
     if (_.isArray(objectId)) {
@@ -90,47 +47,52 @@ class Action {
       return Promise.resolve(this.cache.get(objectId));
     }
 
-    let promise = new Promise((resolve, reject) => {
-      this.params.push(objectId);
-      this.handles.push({
-        resolve, reject
-      });
-    });
-
-    this._batchRequest();
-
-    return promise;
+    return Promise.resolve(this.load().then(() => {
+      return this.cache.get(objectId);
+    }));
   }
   query(key, region, limit = 10) {
     return $.ajax({
       url: '1/system/department',
       headers: {
-        'Condition': JSON.stringify([
-          ['@key', 'lk', encodeURIComponent(key)],
-          ['@region', 'in', region]
-        ])
+        'Region': region
       },
       data: {
+        key,
         limit
       }
-    }).then((resp) => {
-      this.mixinCache(resp);
-      return resp;
     });
   }
-  byParent(parent) {
-    return $.ajax({
-      url: '1/system/department',
-      headers: {
-        'Condition': JSON.stringify([
-          ['parent', '=', parent]
-        ])
+  children(parentId) {
+    const cacheFilter = () => {
+      return this.cache.reduce(function (memo, item) {
+        if(item.parent == parentId){
+          memo.push(item);
+        }
+        return memo;
+      }, []);
+    }
+
+    if(this.cache.size > 0){
+      return Promise.resolve(cacheFilter());
+    }
+
+    return Promise.resolve(this.load().then(() => {
+      return cacheFilter();
+    }));
+  }
+  load = (() => {
+    let reqs = {};
+    return (id = "") => {
+      if(!reqs[id]){
+        reqs[id] = $.get(`1/system/department/tree/${id}`).then(resp => {
+          this.setCache(resp).setLocalStorage(resp);
+          delete reqs[id];
+        });
       }
-    }).then((resp) => {
-      this.mixinCache(resp);
-      return resp;
-    });
-  }
+      return reqs[id];
+    };
+  })()
 };
 
 export default Action;

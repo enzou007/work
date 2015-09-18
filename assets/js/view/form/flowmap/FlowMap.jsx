@@ -40,12 +40,14 @@ const FlowMap = React.createClass({
   },
   render() {
     return (
-      <Scrollbar className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
-        {
-          this.state.flow.get("nodes").map(node => {
-            return <FlowNode key={node.get("nodeId")} {...node.toJS()}/>
-          })
-        }
+      <Scrollbar style={{height:"400px", width:"100%"}}>
+        <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
+          {
+            this.state.flow.get("nodes").map(node => {
+              return <FlowNode key={node.get("nodeId")} {...node.toJS()}/>
+            })
+          }
+        </div>
       </Scrollbar>
     );
   },
@@ -55,14 +57,14 @@ const FlowMap = React.createClass({
     });
   },
   initFlow() {
-/*延迟执行 所以不用写在jsPlumb.ready里面 还可提高执行效率 */
+    /*延迟执行 所以不用写在jsPlumb.ready里面 还可提高执行效率 */
     var flowMap = this.flowMap = window.flowMap = jsPlumb.getInstance(config.instance);
 
     this.buildNodes();
     this.buildLines();
     this.draggable();
 
-// ???
+    // ???
     jsPlumb.fire("jsPlumbDemoLoaded", flowMap);
   },
   buildNodes(nodes) {

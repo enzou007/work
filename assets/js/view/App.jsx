@@ -5,7 +5,8 @@ var React = require("react"),
 
 var Navbar = require("./navbar/Navbar.jsx"),
   UserMenu = require("./navbar/UserMenu.jsx"),
-  Sidebar = require("./sidebar/Sidebar.jsx");
+  Sidebar = require("./sidebar/Sidebar.jsx"),
+  GeminiScrollbar = require('gemini-scrollbar');
 
 var session = require("../store/session");
 
@@ -14,6 +15,14 @@ var moduleStore = require("../store/module");
 require("backbone-react-component");
 
 var App = React.createClass({
+  componentDidMount: function() {
+    this.PageScroll = new GeminiScrollbar({
+      element : document.body
+    }).create();
+  },
+  componentDidUpdate: function() {
+    this.PageScroll.update();
+  },
   mixins: [Backbone.React.Component.mixin],
   render: function() {
     var Container = this.state.model.container,

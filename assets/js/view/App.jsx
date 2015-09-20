@@ -44,9 +44,9 @@ var App = React.createClass({
         </div>
         <div className="footer">
           <div className="container">
-            <p>Copyright © 2013 Gomeholdings.com Inc. ALL Rights Reserved. 国美控股集团有限公司 版权所有</p>
+            <p>Copyright © 2013 ltsoft.biz Inc. ALL Rights Reserved. 北京联特软件技术有限公司 版权所有</p>
 
-            <p>系统维护电话： +86 010 5928 7778</p>
+            <p>系统维护电话： +86 010 8888 8888</p>
           </div>
         </div>
       </div>

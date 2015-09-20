@@ -40,7 +40,7 @@ const FlowMap = React.createClass({
   },
   render() {
     return (
-      <Scrollbar style={{height:"400px", width:"100%"}}>
+      <Scrollbar style={{height:"400px", width:"100%"}} className="ex2" autoshow={true}>
         <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
           {
             this.state.flow.get("nodes").map(node => {

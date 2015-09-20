@@ -3,6 +3,7 @@ import _ from 'underscore';
 import $ from 'jquery';
 import { mixins } from 'iflux';
 import { Map } from 'immutable';
+import GeminiScrollbar from 'gemini-scrollbar';
 
 import 'rctui/lang/zh-cn';
 
@@ -32,6 +33,14 @@ require.ensure([], function (require) {
     }, param));
 
     let BootElement = React.createClass({
+      componentDidMount: function() {
+        this.PageScroll = new GeminiScrollbar({
+          element : document.body
+        }).create();
+      },
+      componentDidUpdate: function() {
+        this.PageScroll.update();
+      },
       mixins: [mixins.StoreMixin(action.getStore())],
       render: function () {
         return React.createElement(ModuleForm, {

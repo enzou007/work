@@ -6,6 +6,6 @@ module.exports = BaseOption.extend({
   Container: require("../../view/container/OrgFrame.jsx"),
   View:{
 
-  }
+  },
   bindViewFrame: function() { }
 });

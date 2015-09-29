@@ -167,6 +167,54 @@
     type: js
     file: response/module/hr/entry/createDocument.js
 
+# 入职申请 URL配置
+- request:
+    url: /1/hr/leave/@session
+  response:
+    file: response/session/me.json
+- request:
+    url: /1/hr/leave
+    method: GET
+  response:
+    type: js
+    file: response/module/hr/leave/allDocument.js
+- request:
+    url: /1/hr/leave
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/leave/createDocument.js
+- request:
+    url: /1/hr/leave/delete
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/leave/deleteDocument.js
+- request:
+    url: /1/hr/leave/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/module/hr/leave/document.js
+- request:
+    url: /1/hr/leave/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/leave/updateDocument.js
+- request:
+    url: /1/hr/leave/nextNode/:flowId/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/leave/updateDocument.js
+- request:
+    url: /1/hr/leave/nextNode/:flowId
+    method: POST
+  response:
+    type: js
+    file: response/module/hr/leave/createDocument.js
+
 # 流程 URL配置
 - request:
     url: /1/flow/:flowId/:objectId

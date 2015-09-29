@@ -179,7 +179,8 @@ _.extend(Document.prototype, {
 
 var FilePath = {
   "xwsd": "mocks/response/module/xwgg/xwsd/docs.json",
-  "entry": "mocks/response/module/hr/entry/docs.json"
+  "entry": "mocks/response/module/hr/entry/docs.json",
+  "leave": "mocks/response/module/hr/leave/docs.json"
 }
 
 module.exports = Document;

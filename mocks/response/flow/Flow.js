@@ -131,7 +131,8 @@ _.extend(Flow.prototype, {
 
 var FlowID = {
   xwsd: "5582272444ae2b5937e53930",
-  entry: "5582272444ae2b5937e53931"
+  entry: "5582272444ae2b5937e53931",
+  leave: "5582272444ae2b5937e53932"
 }
 
 module.exports = Flow;

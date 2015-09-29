@@ -32,4 +32,21 @@
     {"source":"node2","target":"node3","connect":["RightMiddle", "LeftMiddle"]},
     {"source":"node3","target":"EndNode","connect":["RightMiddle", "LeftMiddle"]}
   ]
+},{
+  "id":"5582272444ae2b5937e53932",
+  "name": "请假申请",
+  "nodes": [
+    {"nodeId":"StartNode","type":"start","nodeName":"开始","y":"200px","x":"150px","cur":true},
+    {"nodeId":"node1","type":"node","nodeName":"部门主管","y":"200px","x":"300px"},
+    {"nodeId":"node2","type":"node","nodeName":"部门经理","y":"200px","x":"550px"},
+    {"nodeId":"node3","type":"node","nodeName":"人力资源","y":"200px","x":"800px"},
+    {"nodeId":"EndNode","type":"end","nodeName":"结束","y":"200px","x":"1050px"}
+  ],
+  "lines":[
+    {"source":"StartNode","target":"node1","connect":["RightMiddle", "LeftMiddle"]},
+    {"source":"node1","target":"node2","connect":["RightMiddle", "LeftMiddle"]},
+    {"source":"node1","target":"node3","connect":["TopCenter", "TopCenter"]},
+    {"source":"node2","target":"node3","connect":["RightMiddle", "LeftMiddle"]},
+    {"source":"node3","target":"EndNode","connect":["RightMiddle", "LeftMiddle"]}
+  ]
 }]

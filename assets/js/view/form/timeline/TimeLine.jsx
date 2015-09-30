@@ -108,7 +108,7 @@ const TimeLine = React.createClass({
     let height = $(".timeline-content").height() + STEP;
 
     if (contentHieght < height) {
-      return false;
+      return;
     }
 
     if (flag === "up") {
@@ -144,7 +144,7 @@ const TimeLine = React.createClass({
     let height = $(".timeline-content").height();
 
     if (contentHieght < height) {
-      return false;
+      return;
     }
     $container.stop();
     if (flag === "up") {

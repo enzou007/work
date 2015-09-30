@@ -119,6 +119,9 @@ export default class Department extends React.Component {
     }
   }
   handleRemove(item) {
+    if(this.props.readOnly){
+      return;
+    }
     this.setState({
       data: this.state.data.delete(item)
     })

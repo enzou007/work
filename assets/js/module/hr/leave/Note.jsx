@@ -22,17 +22,15 @@ var NoteForm = React.createClass({
   onCreate: function () {
     this.props.action.setField({
       AppPsnCn: this.props.session.get("name"),
-      CreateDate: Mock.Random.date()
+      CreateDate: Mock.Random.now("yyyy-MM-dd")
     });
   },
-  componentDidUpdate: function(newProps){
-    /*
+  componentWillReceiveProps: function(newProps){
     if(newProps["form"].get("@CurNodeId") && newProps["form"].get("@CurNodeId") !== "StartNode"){
       this.setState({
         readonly: true
       })
     }
-    */
   },
   beforeSubmit: function () {
 

@@ -17,6 +17,12 @@ var Moudles = {
       "name": "请假申请"
     }]
   },
+  "5582272444ae2b5937ssw32d301": {
+    "flows": [{
+      "objectId": "5582272444ae2b5937e53933",
+      "name": "请假申请"
+    }]
+  }
 }
 
 module.exports = function (data) {

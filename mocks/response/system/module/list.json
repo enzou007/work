@@ -20,6 +20,19 @@
   "path": "hr/leave"
 },{
   "ico": "fa fa-list",
+  "objectId": "5582272444ae2b5937ssw32d3",
+  "sort": 0,
+  "name": "行政管理",
+  "path": "administrative"
+},{
+  "ico": "fa fa-list",
+  "parent": "5582272444ae2b5937ssw32d3",
+  "objectId": "5582272444ae2b5937ssw32d301",
+  "sort": 0,
+  "name": "名片申请",
+  "path": "administrative/BusinessCard"
+},{
+  "ico": "fa fa-list",
   "objectId": "5582272444ae2b5937e53910",
   "sort": 0,
   "name": "新闻公告",

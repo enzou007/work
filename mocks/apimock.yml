@@ -167,7 +167,7 @@
     type: js
     file: response/module/hr/entry/createDocument.js
 
-# 入职申请 URL配置
+# 请假申请 URL配置
 - request:
     url: /1/hr/leave/@session
   response:
@@ -214,6 +214,54 @@
   response:
     type: js
     file: response/module/hr/leave/createDocument.js
+
+# 名片申请 URL配置
+- request:
+    url: /1/administrative/BusinessCard/@session
+  response:
+    file: response/session/me.json
+- request:
+    url: /1/administrative/BusinessCard
+    method: GET
+  response:
+    type: js
+    file: response/module/administrative/BusinessCard/allDocument.js
+- request:
+    url: /1/administrative/BusinessCard
+    method: POST
+  response:
+    type: js
+    file: response/module/administrative/BusinessCard/createDocument.js
+- request:
+    url: /1/administrative/BusinessCard/delete
+    method: POST
+  response:
+    type: js
+    file: response/module/administrative/BusinessCard/deleteDocument.js
+- request:
+    url: /1/administrative/BusinessCard/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/module/administrative/BusinessCard/document.js
+- request:
+    url: /1/administrative/BusinessCard/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/administrative/BusinessCard/updateDocument.js
+- request:
+    url: /1/administrative/BusinessCard/nextNode/:flowId/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/administrative/BusinessCard/updateDocument.js
+- request:
+    url: /1/administrative/BusinessCard/nextNode/:flowId
+    method: POST
+  response:
+    type: js
+    file: response/module/administrative/BusinessCard/createDocument.js
 
 # 流程 URL配置
 - request:

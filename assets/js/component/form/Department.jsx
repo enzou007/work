@@ -80,7 +80,9 @@ export default class Department extends React.Component {
     }, 500);
   }
   triggerFocus = () => {
-    React.findDOMNode(this.refs.input).focus();
+    if(!this.props.readOnly){
+      React.findDOMNode(this.refs.input).focus();      
+    }
   }
   handleFocus(flag) {
     this.setState({

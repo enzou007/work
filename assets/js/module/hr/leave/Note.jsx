@@ -9,6 +9,7 @@ var FlowForm = require("View/form/FlowForm.jsx"),
 require("rctui/input");
 require("rctui/select");
 require("rctui/datetime");
+require("Component/form/Department.jsx");
 
 var LeaveType = ["事假","探亲假","病假","年假","其他"];
 
@@ -22,7 +23,8 @@ var NoteForm = React.createClass({
   onCreate: function () {
     this.props.action.setField({
       AppPsnCn: this.props.session.get("name"),
-      CreateDate: Mock.Random.now("yyyy-MM-dd")
+      CreateDate: Mock.Random.now("yyyy-MM-dd"),
+      AgentDept: ["N10010222103"]
     });
   },
   componentWillReceiveProps: function(newProps){
@@ -45,7 +47,7 @@ var NoteForm = React.createClass({
           <Fieldset title="基本信息" readOnly={this.state.readonly}>
             <FormControl label="申请人" name="AppPsnCn" type="text" readOnly={true}/>
             <FormControl label="申请日期" name="CreateDate" type="text" readOnly={true}/>
-            <FormControl label="所属部门" name="AgentDept" type="text" readOnly={true}/>
+            <FormControl label="所属部门" name="AgentDept" type="department" readOnly={true}/>
 
             <FormControl label="假别" name="LeaveType" type="select" data={LeaveType}  required={true}/>
             <FormControl label="开始时间" name="StartDate" type="datetime" required={true}/>

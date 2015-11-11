@@ -67,7 +67,7 @@ export default class Form extends React.Component {
           return null;
         }
 
-        props.value = this.props.store.get(childName);
+        props.value = this.props.store.get(childName) === undefined ? child.props.value : this.props.store.get(childName);
         props.channel = this.props.channel;
         if (child.props.equal) {
           props.onValidate = this.equalValidate(child.props.equal, childName);

@@ -4,8 +4,8 @@ import _ from 'underscore';
 import classnames from 'classnames';
 import { Set } from 'immutable';
 
-import Checkbox from '../Checkbox.jsx';
-import Radio from '../Radio.jsx';
+import { Checkbox } from './Checkbox.jsx';
+import { Radio } from './Radio.jsx';
 
 import Strings from 'rctui/src/js/utils/strings';
 

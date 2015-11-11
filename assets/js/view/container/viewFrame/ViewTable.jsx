@@ -3,7 +3,7 @@ import _ from 'underscore';
 import classNames from 'classnames';
 
 import FixedDataTable from 'fixed-data-table';
-import Checkbox from '../../../component/Checkbox.jsx';
+import { Checkbox } from 'Component/form/Checkbox.jsx';
 
 import 'backbone-react-component';
 import 'fixed-data-table/dist/fixed-data-table.css';

@@ -194,7 +194,7 @@ export default class FormControl extends React.Component {
     this.setState({ hasError: true, errorText: text });
   }
   handleChange = (value) => {
-    if(!value){
+    if(value === undefined){
       _.defer(() => {
         this.handleChange(this.refs.control.getValue(this.props.seq));
       });

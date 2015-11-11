@@ -7,7 +7,7 @@ import { Table, Column } from 'fixed-data-table';
 import { List } from 'immutable';
 import { mixins } from 'iflux';
 import Modal from '../bootstrap/Modal.jsx';
-import Checkbox from '../Checkbox.jsx';
+import { Checkbox } from './Checkbox.jsx';
 import Form from './Form.jsx';
 import FormControl from './FormControl.jsx';
 import Action from '../../action/form';

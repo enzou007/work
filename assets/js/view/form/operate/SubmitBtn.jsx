@@ -2,8 +2,8 @@ import React from 'react';
 import $ from 'jquery';
 import _ from 'underscore';
 import Modal from 'Component/bootstrap/Modal.jsx';
-import Checkbox from 'Component/Checkbox.jsx';
-import Radio from 'Component/Radio.jsx';
+import { Checkbox } from 'Component/form/Checkbox.jsx';
+import { Radio } from 'Component/form/Radio.jsx';
 import Gritter from 'Component/Gritter.jsx';
 
 const SubmitBtn = React.createClass({

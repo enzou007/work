@@ -81,7 +81,7 @@ export default class Department extends React.Component {
   }
   triggerFocus = () => {
     if(!this.props.readOnly){
-      React.findDOMNode(this.refs.input).focus();      
+      React.findDOMNode(this.refs.input).focus();
     }
   }
   handleFocus(flag) {
@@ -148,7 +148,7 @@ export default class Department extends React.Component {
     }
 
     let currentData = this.state.data.reduce(function (memo, item) {
-      memo[item.objectId] = item;
+      memo[item["@objectId"]] = item;
       return memo;
     }, {});
 
@@ -160,7 +160,7 @@ export default class Department extends React.Component {
 
       fetchItems[objectId] = true;
       return {
-        objectId: objectId,
+        "@objectId": objectId,
         id: objectId,
         name: '加载中...'
       };
@@ -170,11 +170,11 @@ export default class Department extends React.Component {
       this.fetchList(_.keys(fetchItems)).then(data => {
         this.setState({
           data: newList.map(function (item) {
-            if(fetchItems[item.objectId]){
-              return _.findWhere(data, {objectId: item.objectId});
+            if(fetchItems[item["@objectId"]]){
+              return _.findWhere(data, {"@objectId": item["@objectId"]});
             }
             return item;
-          })
+          }).toSet()
         });
       });
     }
@@ -183,7 +183,7 @@ export default class Department extends React.Component {
   }
   getValue() {
     return Set.of(...this.state.data.map(function (item) {
-      return item.objectId;
+      return item["@objectId"];
     }));
   }
   renderList() {
@@ -192,7 +192,7 @@ export default class Department extends React.Component {
     return (
       <div className="handle">
         { this.state.data.map((item) => { return (
-          <span className="result" title={item.id} key={item.objectId}
+          <span className="result" title={item.id} key={item["@objectId"]}
             onClick={this.handleRemove.bind(this, item)}>
             {item.name}
           </span>
@@ -223,10 +223,10 @@ export default class Department extends React.Component {
           <ul>
             { this.state.options.map((item, index) => {
               let selected = this.state.data.some(function (dataItem) {
-                return dataItem.objectId === item.objectId
+                return dataItem.objectId === item["@objectId"]
               });
               return (
-                <li className={classnames({show: true, active: selected})} key={item.objectId}
+                <li className={classnames({show: true, active: selected})} key={item["@objectId"]}
                   onClick={this.handleChange.bind(this, index)} >
                   <span>{item.name}</span>
                 </li>

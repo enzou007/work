@@ -5,7 +5,27 @@ import classnames from 'classnames';
 import _ from 'underscore';
 
 class CheckboxGroup extends RCTCheckboxGroup{
+  handleChange (event, checked, value) {
+    if (typeof value !== 'string') {
+      value = value.toString()
+    }
 
+    let values = this.state.value
+    if (checked) {
+      values.push(value)
+    } else {
+      let i = values.indexOf(value)
+      if (i >= 0) {
+        values.splice(i, 1)
+      }
+    }
+
+    if (this.props.onChange) {
+      this.props.onChange(this.props.sep ? values.join(this.props.sep) : values)
+    }
+
+    this.setState({ value: values })
+  }
   render() {
     let values = this.state.value
 
@@ -35,18 +55,25 @@ class Checkbox extends React.Component{
     half: false
   }
 
-  handleClick() {
+  handleClick(event) {
+    var checkbox = this.refs["ref_checkbox"].getDOMNode();
+
+    if(this.props.onClick){
+      this.props.onClick(event, checkbox.checked, checkbox.value, checkbox.text);
+    }
+  }
+  handleChange(event) {
     var checkbox = this.refs["ref_checkbox"].getDOMNode();
 
     if(this.props.onChange){
-      this.props.onChange(checkbox.checked, checkbox.value, checkbox.text);
+      this.props.onChange(event, checkbox.checked, checkbox.value, checkbox.text);
     }
   }
   render() {
     let props = _.omit(this.props, "onClick", "onChange", "className", "children");
     return (
       <label className={this.props.className}>
-        <input ref="ref_checkbox" type='checkbox' onChange={this.handleClick.bind(this)} className={classnames('ace', {
+        <input ref="ref_checkbox" type='checkbox' onChange={this.handleChange.bind(this)} onClick={this.handleClick.bind(this)} className={classnames('ace', {
             'ace-checkbox-2': this.props.half
           }, this.props.checkboxClass)} {...props} />
         <span className='lbl'>{this.props.children}</span>

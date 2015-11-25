@@ -12,7 +12,7 @@ class Action {
   cache = new Iterable.Keyed(this.getLocalStorage())
   mixinCache(data) {
     this.cache = this.cache.concat(_.reduce(data, function (memo, item) {
-      memo[item.objectId] = _.extend({
+      memo[item["@objectId"]] = _.extend({
         $timeStamp: item.$tiemStamp || _.now()
       }, item);
       return memo;
@@ -26,7 +26,7 @@ class Action {
         return item.$timeStamp + CACHE_DURING > now;
       })
       .reduce(function (memo, item) {
-        memo[item.objectId] = item;
+        memo[item["@objectId"]] = item;
         return memo;
       }, {}).value();
   }
@@ -53,7 +53,7 @@ class Action {
     $.ajax({
       url: '1/system/department',
       headers: {
-        'Condition': JSON.stringify([['objectId', 'in', objectIds]])
+        'Condition': JSON.stringify([['@objectId', 'in', objectIds]])
       }
     }).done(resp => {
       this.mixinCache(resp);

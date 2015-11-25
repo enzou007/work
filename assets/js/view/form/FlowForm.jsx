@@ -12,6 +12,10 @@ import Form from "Component/form/Form.jsx";
 import Tabs from "Component/bootstrap/Tabs.jsx";
 import Message from 'rctui/message';
 
+import SubmitBtn from "./operate/SubmitBtn.jsx";
+import SaveBtn from "./operate/SaveBtn.jsx";
+import RejectBtn from "./operate/RejectBtn.jsx";
+
 import { getAction } from '../../action/form';
 
 import '../../../less/flow.less';
@@ -58,6 +62,22 @@ const FlowForm = React.createClass({
       });
     }
   },
+  renderToolbar(store){
+     let toolbar = this.props.toolbar || [];
+
+     let curNode = _.find(store.get("flow").toJS().nodes, node => node.cur);
+     if(curNode){
+       let nodeId = curNode.nodeId;
+       if(nodeId != "EndNode"){
+         toolbar.push(<li><SaveBtn action={action}/></li>);
+         toolbar.push(<li><SubmitBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} action={action} flow={store.get("flow").toJS()}/> </li>);
+       }
+       if(nodeId != "StartNode" && nodeId != "EndNode"){
+         toolbar.push(<li><RejectBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} action={action} flow={store.get("flow").toJS()}/> </li>);
+       }
+     }
+     return toolbar
+  },
   render() {
     let action = this.state.action,
       store = action.getStore().data();
@@ -66,7 +86,9 @@ const FlowForm = React.createClass({
     return (
       <div className="no-skin">
         <Message clickaway={true} top={true}/>
-        <Toolbar title={store.get("flow").get("name") || "表单"} action={this.state.action} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}>{this.props.toolbar}</Toolbar>
+        <Toolbar title={store.get("flow").get("name") || "表单"}>
+          {this.renderToolbar(store)}
+        </Toolbar>
         <div className="main-container" id="main-container">
           <Form hintType={this.props.hintType} layout={this.props.layout}
             className={`container ${logs.size === 0 ? "container-center" : ""}`} channel={action} store={store.get("form")} >

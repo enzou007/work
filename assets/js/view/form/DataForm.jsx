@@ -1,19 +1,23 @@
 import React from "react";
-
+import $ from "jquery";
 import Toolbar from "./Toolbar.jsx";
 import Form from "Component/form/Form.jsx";
-
-import Message from 'rctui/Message';
-
-import {store as formStore, action as formAction} from "../../action/form";
+import SaveBtn from "./operate/SaveBtn.jsx";
+import { getAction } from '../../action/form';
 
 var DataForm = React.createClass({
   propTypes: {
     title: React.PropTypes.string.isRequired,
+    toolbar: React.PropTypes.array,
     onCreate: React.PropTypes.func,
     onLoad: React.PropTypes.func,
-    onBeforeSubmit: React.PropTypes.func,
-    onSubmit: React.PropTypes.func
+    onSubmit: React.PropTypes.func,
+    onBeforeSubmit: React.PropTypes.func
+  },
+  getInitialState() {
+    return {
+      action: getAction('@main')
+    };
   },
   getDefaultProps() {
     return {
@@ -22,6 +26,7 @@ var DataForm = React.createClass({
     };
   },
   componentWillMount: function () {
+    let formAction = this.state.action;
     $.when(formAction.bindSession(), formAction.getObjectId() ? formAction.bindDocument() : null)
       .then(() => {
         if (formAction.getObjectId() && this.props.onLoad) {
@@ -32,22 +37,22 @@ var DataForm = React.createClass({
       });
   },
   render: function() {
-    return (
-      let store = formStore.data();
-
+    let action = this.state.action,
+        store = action.getStore().data();
       return (
         <div className="no-skin">
-          <Message clickaway={true} top={true}/>
-          <Toolbar title={this.props.title}>{this.props.toolbar}</Toolbar>
+          <Toolbar title={this.props.title || "配置单"}>
+            <li><SaveBtn action={action} onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit}/></li>
+            {this.props.toolbar}
+          </Toolbar>
           <div className="main-container" id="main-container">
-            <Form className="container" hintType={this.props.hintType} layout={this.props.layout}
+            <Form className="container" channel={action} hintType={this.props.hintType} layout={this.props.layout}
               onSubmit={this.props.onSubmit} store={store.get("form")}>
               {this.props.children}
             </Form>
           </div>
         </div>
       );
-    );
   }
 });
 

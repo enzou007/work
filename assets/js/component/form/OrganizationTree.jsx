@@ -21,6 +21,8 @@ export default class OrganizationTree extends React.Component {
     region: React.PropTypes.string,
     onChange: React.PropTypes.func,
     onClick: React.PropTypes.func,
+    onDoubleClick: React.PropTypes.func,
+    onRightClick: React.PropTypes.func,
     value: React.PropTypes.instanceOf(Set)
   }
   static defaultProps = {
@@ -45,9 +47,39 @@ export default class OrganizationTree extends React.Component {
       this.props.action.byParent(null).then(roots => {
         this.setState({ roots });
         if(roots.length === 1){
-          this._loadChildren(roots[0].objectId);
+          this._loadChildren(roots[0]["@objectId"]);
         }
       });
+    }
+    if(this.props.onDoubleClick){
+      $(document).on("dblclick.orgTree", ".tree .tree-item", event => {
+        this.extendClick("onDoubleClick", event);
+      })
+      $(document).on("dblclick.orgTree", ".tree .tree-folder-header", event => {
+        this.extendClick("onDoubleClick", event);
+      })
+    }
+
+    if(this.props.onRightClick){
+      $(document).on("contextmenu.orgTree", ".tree-item", event => {
+        this.extendClick("onRightClick", event);
+      })
+      $(document).on("contextmenu.orgTree", ".tree-folder-header", event => {
+        this.extendClick("onRightClick", event);
+      })
+    }
+  }
+  extendClick(eventName, event){
+    event.preventDefault();
+    this.props[eventName](event, $(event.target).attr("data-id"), $(event.target).text());
+  }
+  componentWillUnmount() {
+    if(this.props.onDoubleClick){
+      $(document).off("dblclick.orgTree");
+    }
+
+    if(this.props.onRightClick){
+      $(document).off("contextmenu.orgTree");
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -73,7 +105,7 @@ export default class OrganizationTree extends React.Component {
       let parent;
       _.some(this.state.store, (resp) => {
         parent = _.findWhere(resp, {
-          objectId: parentId
+          "@objectId": parentId
         });
         if (parent) {
           return true;
@@ -89,15 +121,15 @@ export default class OrganizationTree extends React.Component {
   }
   getChecked(checked = {}, value = this.props.value) {
     value.forEach((item) => {
-      checked[item.objectId] = 2;
+      checked[item["@objectId"]] = 2;
 
       if(this.props.mult){
         if (!checked[item.parent]) {
           this._checkParent(checked, item.parent);
         }
 
-        if (this.state.store[item.objectId]) {
-          this.getChecked(checked, this.state.store[item.objectId]);
+        if (this.state.store[item["@objectId"]]) {
+          this.getChecked(checked, this.state.store[item["@objectId"]]);
         }
       }
     });
@@ -123,7 +155,7 @@ export default class OrganizationTree extends React.Component {
       this.setState({
         value: [item],
         checked: {
-          [item.objectId]: 2
+          [item["@objectId"]]: 2
         }
       }, () => {
         if (this.props.onChange) {
@@ -149,7 +181,7 @@ export default class OrganizationTree extends React.Component {
 
           if(this.props.mult && this.state.checked[id] === 2){
             _.forEach(resp, (item) => {
-              this.state.checked[item.objectId] = 2;
+              this.state.checked[item["@objectId"]] = 2;
             });
           }
 
@@ -163,7 +195,7 @@ export default class OrganizationTree extends React.Component {
     let roots = this.state.roots || [];
     let Items = roots.map((item, i) => {
       return (
-        <Item selectAble={selectAble} mult={this.props.mult} data={item} key={item.objectId}
+        <Item selectAble={selectAble} mult={this.props.mult} data={item} key={item["@objectId"]}
           onClick={this.props.onClick ? this.onClick : null} onStatusChange={this.handleChange}
           ref={i} store={this.state.store} checked={this.state.checked} open={roots.length === 1}/>
       );
@@ -201,7 +233,7 @@ class Item extends React.Component {
     }
   }
   checkStatus(checked = this.props.checked) {
-    return checked[this.props.data.objectId] || 0;
+    return checked[this.props.data["@objectId"]] || 0;
   }
   toggle = (event) => {
     this.setState({
@@ -235,9 +267,9 @@ class Item extends React.Component {
     }
 
     if (status) {
-      this.props.checked[this.props.data.objectId] = status;
+      this.props.checked[this.props.data["@objectId"]] = status;
     } else {
-      delete this.props.checked[this.props.data.objectId]
+      delete this.props.checked[this.props.data["@objectId"]]
     }
 
     this.setState({ status });
@@ -305,10 +337,10 @@ class Item extends React.Component {
     }
 
     if (data.size > 0) {
-      let childrenData = this.props.store[this.props.data.objectId] || [],
+      let childrenData = this.props.store[this.props.data["@objectId"]] || [],
         Items = childrenData.map((item, i) => {
           return (
-            <Item selectAble={selectAble} data={item} key={item.objectId} mult={this.props.mult}
+            <Item selectAble={selectAble} data={item} key={item["@objectId"]} mult={this.props.mult}
               onClick={this.props.onClick} onStatusChange={this.updateStatus} store={this.props.store}
               readOnly={readOnly} ref={i} checked={checked}/>
           )
@@ -316,11 +348,11 @@ class Item extends React.Component {
 
       return (
         <li className="tree-folder">
-          <div className="tree-folder-header" data-id={this.props.data.objectId}>
+          <div className="tree-folder-header" data-id={this.props.data["@objectId"]}>
             <i className={classnames('ace-icon', 'fa', this.state.open ? 'fa-folder-open' : 'fa-folder', 'fa-fw')}
               onClick={this.toggle}/>
             {SelectHandle}
-            <span onClick={this.props.onClick ? this.onClick : this.toggle}>{data.name}</span>
+            <span className="tree-item-name" onClick={this.props.onClick ? this.onClick : this.toggle} data-id={this.props.data["@objectId"]}>{data.name}</span>
           </div>
           <ul className={classnames('tree-folder-content', {
               open: this.state.open
@@ -329,10 +361,10 @@ class Item extends React.Component {
       );
     } else {
       return (
-        <li className="tree-item" onClick={this.onClick}>
+        <li className="tree-item" onClick={this.onClick} data-id={this.props.data["@objectId"]}>
           <i className="tree-item-icon fa fa-file-o fa-fw"/>
           {SelectHandle}
-          <span className="tree-item-name">{data.name}</span>
+          <span className="tree-item-name" data-id={this.props.data["@objectId"]}>{data.name}</span>
         </li>
       );
     }

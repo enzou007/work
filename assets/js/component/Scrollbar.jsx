@@ -10,7 +10,7 @@ const Scrollbar = React.createClass({
     return {
       autoshow: false
     }
-  }, 
+  },
   scrollbar: null,
   componentDidMount() {
     this.scrollbar = new GeminiScrollbar({
@@ -18,8 +18,8 @@ const Scrollbar = React.createClass({
       autoshow: this.props.autoshow,
       createElements: false
     }).create();
-    let $content = $(this.refs.scroll_view.getDOMNode());
-    $content.width($content.width() + 1);
+  //  let $content = $(this.refs.scroll_view.getDOMNode());
+  //  $content.width($content.width() + 1);
     this.toggleScroll();
     $(window).on("resize",this.toggleScroll);
   },

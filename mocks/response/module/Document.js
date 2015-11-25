@@ -2,7 +2,7 @@ var File = require("../file.js");
 var Mock = require("mockjs");
 var Flow = require("../flow/Flow.js");
 var _ = require("underscore");
-
+var Paging = require('../Paging');
 var Document = function(option) {
   this.docs = new File(FilePath[option.docType]);
   this.flow = new Flow(option.flowId);
@@ -155,25 +155,7 @@ _.extend(Document.prototype, {
       }.bind(this));
     }
 
-    var result = {};
-
-    page = page - 1;
-
-    var len = docs.length;
-    if (page > 0) {
-      page = page * count;
-      count = page + count;
-    }
-
-    if (count > len) {
-      count = len;
-    }
-
-    result.json = docs.slice(page, count);
-    result.header = {
-      total: len
-    }
-    return result;
+    return Paging(docs, page, count);
   }
 });
 

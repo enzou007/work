@@ -3,7 +3,6 @@ import _ from 'underscore';
 import classnames from 'classnames';
 import { List, Set } from 'immutable';
 
-
 import Dropdown from '../../component/bootstrap/Dropdown.jsx';
 import OrganizationTree from './OrganizationTree.jsx';
 import DataTable from './DataTable.jsx';
@@ -38,7 +37,7 @@ export default class Personnel extends Department {
     return this.props.action.fetch(objectIds);
   }
   handleTreeClick = (item) => {
-    this.props.action.byDepartment(item.objectId).then(resp => {
+    this.props.action.byDepartment(item["@objectId"]).then(resp => {
       this.setState({
         personnels: List.of(...resp)
       });
@@ -58,17 +57,27 @@ export default class Personnel extends Department {
       this.props.onChange();
     }
   }
+  getPersonnelList(){
+    //this.state.data.map返回的结果无序,导致页面人员列表个别人员顺序跳动.
+    //修改结果集获取方式.
+    var list = [];
+    this.state.data.map((item) => {
+      list.push (
+        <div className="result" title={item.id} key={item.id}
+          onClick={this.handleRemove.bind(this, item)}>
+          {item.name}
+        </div>
+      );
+    })
+    return list;
+  }
   renderList() {
     let placeholder = this.state.data.size === 0 ? (this.state.msg || this.props.placeholder) : null;
 
     return (
-      <div className="handle">
-        { this.state.data.map((item) => { return (
-          <span className="result" title={item.id} key={item.objectId}
-            onClick={this.handleRemove.bind(this, item)}>
-            {item.name}
-          </span>
-        ); }) }
+      <div>
+        { this.getPersonnelList() }
+
         { !this.props.readOnly ? (
           <span className="search-field">
             <input ref="input" onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
@@ -104,10 +113,10 @@ export default class Personnel extends Department {
             { this.state.options.map((item, index) => {
               let dept = _.first(item.departments);
               let selected = this.state.data.some(function (dataItem) {
-                return dataItem.objectId === item.objectId
+                return dataItem.objectId === item["@objectId"]
               });
               return (
-                <li className={classnames({show: true, active: selected})} title={item.id} key={item.objectId}
+                <li className={classnames({show: true, active: selected})} title={item.id} key={item["@objectId"]}
                   onClick={this.handleChange.bind(this, index)} >
                   <span>{item.name}</span>
                   <span className="dept">{dept.name}</span>

@@ -1,13 +1,13 @@
 .org-container{
-  border: 1px solid;
+  //border: 1px solid;
   margin-right: 0px;
-  height: 635px;
+
 }
 
 .org-tree{
-  border-right: 1px solid;
+  //border-right: 1px solid;
   height: 100%;
-
+  padding:0;
 }
 
 .org-content{
@@ -15,7 +15,107 @@
 }
 
 .org-header{
-  border-bottom: 1px solid;
+  //border-bottom: 1px solid;
   padding: 0;
   height: 50px;
+}
+
+.paging-info {
+
+  margin-top: 5px;
+
+  .pagination {
+    margin: 0;
+
+    > li {
+      display: inline-block;
+    }
+  }
+
+  .page-jumper {
+    padding: 8px;
+  }
+
+  .paging-toggle {
+    float: right;
+
+    .badge {
+      padding-top: 2px;
+    }
+
+    .caret {
+      margin-top: 0;
+    }
+
+    .dropdown-menu {
+      min-width: 50px;
+    }
+  }
+}
+
+.view-breadcrumb {
+  display: inline-block;
+}
+
+.page-header h1 .ace-icon {
+  margin-right: 5px;
+}
+
+.frame-toolbar {
+  margin: 2px 5px 0 0;
+  float: right;
+}
+
+.panel-body{
+  padding-left: 0;
+  padding-top: 7px;
+}
+
+.orgMng-item {
+	border-left: 1px solid #D9D9D9;
+	margin-bottom: 3px;
+	padding: 10px;
+	margin-left: 15px;
+	background-color: #F3F3F3;
+	cursor: pointer;
+  font-size: 13px;
+}
+
+.orgMng-item.active{
+  background-color: #EDF3F7;
+  border-left: 2px solid #6EAED1;
+}
+
+.orgTree-contextMenu {
+	position: fixed;
+  display: block;
+  min-width: 100px;
+  width: 120px;
+}
+
+.orgTree-contextMenu b{
+  padding: 0 5px;
+  display: block;
+  width: 120px;
+  color: #2679B5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-box{
+  float: left;
+  position: relative;
+}
+.search-box input{
+  padding-right: 23px;
+  height: 27px;
+  width: 27px;
+  float: right;
+}
+.search-box i{
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  cursor: pointer;
 }

@@ -1,6 +1,6 @@
 .enable_infobox() when (@enable-infobox = true) {
 
-//dashboard info and stats mini boxes 
+//dashboard info and stats mini boxes
 .infobox-container {
  text-align: center;
  font-size: 0;
@@ -15,8 +15,8 @@
  background-color: #FFF;
  box-shadow: none;
  border-radius: 0;
- 
- 
+
+
  margin: -1px 0 0 -1px;
 
  padding: 8px 3px 6px 9px;
@@ -27,14 +27,14 @@
  text-align: left;
 
  position: relative;
- 
+
 
    > .infobox-icon {
 	display: inline-block;
 	vertical-align: top;
- 
+
 	width:44px;
-	
+
 	 > .@{icon} {
 		 display: inline-block;
 		 height: 42px;
@@ -44,18 +44,18 @@
 		 background-color: transparent;
 		 border-width: 0;
 
-		 text-align: center; 
-		 
+		 text-align: center;
+
 		 position: relative;
 
-		 .border-radius(100%); 
+		 .border-radius(100%);
 		 .box-shadow(~"1px 1px 0 rgba(0,0,0,0.2)");
-		 
+
 		 &:before {
 			 font-size: @font-size-infobox-icon;
 			 display: block;
 			 padding: 6px 0 7px;
-			 
+
 			 width: 40px;
 			 text-align: center;
 			 border-radius: 100%;
@@ -70,16 +70,16 @@
 		 }
 	 }
   }
-  
-  
+
+
   .infobox-content {
 	 color: #555;
 	 &:first-child {//like in small infoboxes that have no number data etc
 		font-weight: bold;
 	 }
   }
-  
-  
+
+
   > .infobox-data {
 	 display: inline-block;
 
@@ -92,26 +92,26 @@
 
 	 line-height: 21px;
 	 min-width: 130px;
-	 
+
 	 padding-left: 8px;
-	 
+
 	 position: relative;
 	 top: 0;
-	 
+
 	 > .infobox-data-number {
 		display: block;
 		font-size: @font-size-infobox-data-number;
 		margin: 2px 0 4px;
-	 
+
 		position: relative;
 		text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
 	}
-	
+
 	> .infobox-text {
 		display: block;
 		font-size: @font-size-infobox-text;
 		margin: 2px 0 4px;
-		 
+
 		position: relative;
 		text-shadow: none;
 	}
@@ -140,14 +140,14 @@
   @infobox-class:~`"infobox-@{color}"`;
   @infobox-bg:~`"infobox-@{color}"`;
   @infobox-cl:@@infobox-bg;
-  
+
   .@{infobox-class} {
 	color: @infobox-cl;
 	border-color: @infobox-cl;
 	> .infobox-icon > .@{icon}  {
 		background-color: @infobox-cl;
 	}
-	
+
 	.enable_infobox_dark_colors() when (@enable-infobox-dark = true) {
 		&.infobox-dark {
 			background-color: @infobox-cl;
@@ -183,7 +183,7 @@
   margin: 1px 1px 0 0;
   border-color: transparent !important;
   border-width: 0;
-  
+
   color: #FFF;
   padding: 4px;
   > .infobox-icon > .@{icon} {
@@ -198,9 +198,9 @@
 		.opacity(1);
 	}
   }
-  
+
   .infobox-content {
-	color: #FFF;	 
+	color: #FFF;
   }
 
 }
@@ -216,7 +216,7 @@
 	padding-top: 0;
 	display: inline-block;
 	vertical-align: top;
- 
+
 	width: 44px;
   }
 
@@ -226,7 +226,7 @@
 	vertical-align: text-bottom;
 	width: 44px;
 	text-align: center;
-	
+
 	> .sparkline {
 		font-size: @font-size-infobox-sparkline;
 	}
@@ -234,8 +234,8 @@
 		vertical-align: middle !important;
 	}
   }
-  
-  
+
+
   //stat trend indicators and badges
   > .stat {
 		display: inline-block;
@@ -245,21 +245,21 @@
 
 		text-shadow: none;
 		color: #ABBAC3;
-		
+
 		font-size: @font-size-infobox-stat;
 		font-weight: bold;
 
 		padding-right: 18px;
 		padding-top: 3px;
-		
+
 		&:before {
 			display: inline-block;
 			content: "";
-			 
+
 			width: 8px;
 			height: 11px;
 			background-color:#ABBAC3;
-			 
+
 			position: absolute;
 			right: 4px;
 			top: 7px;
@@ -267,16 +267,16 @@
 		&:after {
 			display: inline-block;
 			content: "";
- 
+
 			position: absolute;
 			right: 1px;
 			top: -8px;
- 
+
 			border: 12px solid transparent;
 			border-width: 8px 7px;
 			border-bottom-color: #ABBAC3;
 		}
-		
+
 		&.stat-success {//pointing up
 			color: #77C646;
 			&:before {
@@ -286,7 +286,7 @@
 				border-bottom-color: #77C646;
 			}
 		}
-		
+
 		&.stat-important {/*pointing down*/
 			color: #E4564F;
 			&:before {
@@ -301,7 +301,7 @@
 			}
 		}
   }
-  
+
   .enable_infobox_dark_stats() when (@enable-infobox-dark = true) {
 	  &.infobox-dark > .stat {
 		color: #FFF;
@@ -311,7 +311,7 @@
 		&:after {
 			border-bottom-color: #E1E5E8;
 		}
-		
+
 		&.stat-success {
 			color: #FFF;
 			&:before {
@@ -338,25 +338,25 @@
   }
   .enable_infobox_dark_stats();
 
-  
+
   > .badge {
 		position: absolute;
 		right: 20px;
 		top: 11px;
 		border-radius: 0;
-		 
+
 		text-shadow: none;
 		color: #FFF;
 
 		font-size: @font-size-infobox-badge;
 		font-weight: bold;
-		
+
 		line-height: 15px;
 		height: 16px;
-			
-		padding: 0 1px;	
+
+		padding: 0 1px;
   }
-  
+
   .enable_infobox_dark_badge() when (@enable-infobox-dark = true) {
 	  &.infobox-dark > .badge {
 			color: #FFF;
@@ -388,23 +388,23 @@
 	width: 135px;
 	height: 52px;
 	text-align: left;
- 
+
 	padding-bottom: 5px;
-	
+
 	> .infobox-icon , > .infobox-chart , > .infobox-progress {
 		display: inline-block;
 		width: 40px;
 		max-width: 40px;
 		height: 42px;
 		line-height: 38px;
-		 
-		vertical-align: middle; 
+
+		vertical-align: middle;
 	}
-	
+
 	> .infobox-data {
 		display: inline-block;
 		text-align: left;
-		 
+
 		vertical-align: middle;
 		max-width: 72px;
 		min-width: 0;
@@ -426,7 +426,7 @@
   font-weight: bold;
   display: inline-block;
   vertical-align: top;
-  
+
   .infobox-small & {
 		font-size: @baseFontSize;
 		font-weight: normal;
@@ -434,6 +434,3 @@
 		margin-left: 2px;
    }
 }
-
-
-

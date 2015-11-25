@@ -56,7 +56,14 @@
   "sort": 1,
   "name": "组织管理系统",
   "parent": "5582272444ae2b5937e53957",
-  "path": "org"
+  "path": "org/organization"
+}, {
+  "ico": "fa fa-list",
+  "objectId": "5582272444ae2b5937e53958s",
+  "sort": 1,
+  "name": "角色管理",
+  "parent": "5582272444ae2b5937e53957",
+  "path": "org/role"
 }, {
   "ico": "fa fa-list",
   "objectId": "5582272444ae2b5937e53959",

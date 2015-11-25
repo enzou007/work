@@ -10,7 +10,12 @@ let Create = React.createClass({
     forms: React.PropTypes.array.isRequired
   },
   _href(page, form, path, flowId) {
-    return `/${page}?form=${form}&path=${path}&flowId=${flowId}`;
+    if(flowId){
+      return `/${page}?form=${form}&path=${path}&flowId=${flowId}`;
+    }else {
+      return `/${page}?form=${form}&path=${path}`;
+    }
+
   },
   render() {
     if (this.props.forms.length > 1) {

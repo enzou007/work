@@ -5,6 +5,19 @@ import classnames from 'classnames';
 import _ from 'underscore';
 
 class RadioGroup extends RCTRadioGroup{
+  handleChange (event, value) {
+    if (this.props.readOnly) {
+      return
+    }
+
+    this.setState({ value: value })
+    let change = this.props.onChange
+    if (change) {
+      setTimeout(function () {
+        change(value)
+      }, 0)
+    }
+  }
   render() {
     let list;
     if(this.props.readOnly){
@@ -34,17 +47,26 @@ class RadioGroup extends RCTRadioGroup{
 }
 
 class Radio extends React.Component{
-  handleClick(){
+
+  handleClick(event) {
+    var radio = this.refs["ref_radio"].getDOMNode();
+
     if(this.props.onClick){
-      let radio = this.refs["ref_radio"].getDOMNode();
-      this.props.onClick(radio.value, radio.text);
+      this.props.onClick(event, radio.value, radio.text);
+    }
+  }
+  handleChange(event) {
+    var radio = this.refs["ref_radio"].getDOMNode();
+
+    if(this.props.onChange){
+      this.props.onChange(event, radio.value, radio.text);
     }
   }
   render () {
     return (
       <label className={this.props.className}>
         <input ref="ref_radio" type="radio" className={classnames('ace')}
-           onClick={this.handleClick.bind(this)}
+          onChange={this.handleChange.bind(this)} onClick={this.handleClick.bind(this)}
            {...(_.omit(this.props, 'children', 'className', 'onClick', 'onChange'))}/>
         <span className="lbl">{this.props.children}</span>
       </label>

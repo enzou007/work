@@ -17,6 +17,7 @@ var QueryData = Backbone.Collection.extend({
     Select.Many.applyTo(this, models, {
       enableModelSharing: true
     });
+    this.options.page = 1;
     this.on("sync", function (collection, resp, options) {
       this._total = options.xhr.getResponseHeader("total") || this._total;
     }.bind(this));

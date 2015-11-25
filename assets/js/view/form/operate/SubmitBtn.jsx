@@ -5,6 +5,7 @@ import Modal from 'Component/bootstrap/Modal.jsx';
 import { Checkbox } from 'Component/form/Checkbox.jsx';
 import { Radio } from 'Component/form/Radio.jsx';
 import Gritter from 'Component/Gritter.jsx';
+import classnames from 'classnames';
 
 const SubmitBtn = React.createClass({
   getDefaultProps() {
@@ -102,42 +103,47 @@ const SubmitBtn = React.createClass({
     })
   },
   submit() {
-    this.props.onSubmit();
     $("#flowSubmitBox").css("zIndex", "1000");
     let option = {
       FlowNodeId: $(".flownodes :checked").val(),
       FlowUsers: escape("张三/zhangsan"),
       FlowOpinion: escape($("#opinion").val() || "同意")
     };
-    this.props.action.submit(option, result => {
-      var id = Gritter.add({
-        title: '提示',
-        time: 1000,
-        sticky: result.status == "failure",
-        class_name: "gritter-center " + (result.status == "succeed"
-          ? "gritter-success"
-          : "gritter-error"),
-        after_close() {
-          if (result.isNewNote) {
-            window.location.href = result.url;
-          } else {
-            window.location.reload();
-          }
-          Gritter.remove(id, {
-            fade: false,
-            speed: 'fast'
-          });
-        },
-        text: (
-          <div>
-            <h5>{result.status == "succeed" ? "提交成功!" : "提交失败,请重试或联系管理员!"}</h5>
-            <div style={{textAlign: "right"}}>
-              <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id, {fade: false,speed: 'fast'})}>确定</a>
-            </div>
-          </div>
-        )
-      });
+
+    this.props.action.submit(option).done(resp => {
+      this.props.onSubmit();
+      this.showMessage("succeed", resp["@objectId"]);
+    }).fail(() => {
+      this.showMessage("failure");
     });
+  },
+  showMessage(status, objectId){
+    let cn = classnames({
+      "gritter-light": true,
+      "gritter-success": status === "succeed",
+      "gritter-error": status === "failure"
+    });
+    let id = Gritter.add({
+      title: '提示',
+      time: 1500,
+      class_name: cn,
+      after_close: () => {
+        if (this.props.action.isNewNote()) {
+          window.location.href = `/form.html?form=${this.props.action.getFormPath()}&path=${this.props.action.getPath()}&objectId=${objectId}`;
+        }  else {
+          window.location.reload();
+        }
+        Gritter.remove(id);
+      },
+      text: (
+        <div>
+          <h5>{status == "succeed" ? "提交成功!" : "提交失败,请重试或联系管理员!"}</h5>
+          <div style={{textAlign: "right"}}>
+            <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id)}>确定</a>
+          </div>
+        </div>
+      )
+    })
   },
   closeModalBox() {
     if (this.ModalBox) {

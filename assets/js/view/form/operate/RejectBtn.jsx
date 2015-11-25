@@ -5,6 +5,7 @@ import Modal from 'Component/bootstrap/Modal.jsx';
 import { Checkbox } from 'Component/form/Checkbox.jsx';
 import { Radio } from 'Component/form/Radio.jsx';
 import Gritter from 'Component/Gritter.jsx';
+import classnames from 'classnames';
 
 const RejectBtn = React.createClass({
   getDefaultProps() {
@@ -12,7 +13,8 @@ const RejectBtn = React.createClass({
       text: "驳回",
       className: "btn btn-info",
       icon: "fa fa-arrow-left",
-      befer: () => true
+      onBeforeSubmit: () => true,
+      onSubmit: function () {}
     };
   },
   PropTypes: {
@@ -100,36 +102,40 @@ const RejectBtn = React.createClass({
       FlowUsers: escape("张三/zhangsan"),
       FlowOpinion: escape($("#opinion").val() || "不同意")
     };
-    this.props.action.reject(option, result => {
-      var id = Gritter.add({
-        title: '提示',
-        time: 1000,
-        sticky: result.status == "failure",
-        class_name: "gritter-center " + (result.status == "succeed"
-          ? "gritter-success"
-          : "gritter-error"),
-        after_close() {
-          if (result.isNewNote) {
-            window.location.href = result.url;
-          } else {
-            window.location.reload();
-          }
-          Gritter.remove(id, {
-            fade: false,
-            speed: 'fast'
-          });
-        },
-        text: (
-          <div>
-            <h5>{result.status == "succeed" ? "驳回成功!" : "驳回失败,请重试或联系管理员!"}</h5>
-            <div style={{textAlign: "right"}}>
-              <a className="btn btn-sm btn-primary" onClick={function(){Gritter.remove(id, {fade: false,speed: 'fast'});}}>确定</a>
-            </div>
-          </div>
-        )
-      });
+
+    this.props.action.reject(option).done(() => {
+      this.props.onSubmit();
+      this.showMessage("succeed");
+    }).fail(() => {
+      this.showMessage("failure");
     });
-    this.props.onSubmit();
+  },
+  showMessage(status){
+    let cn = classnames({
+      "gritter-light": true,
+      "gritter-success": status === "succeed",
+      "gritter-error": status === "failure"
+    });
+    let id = Gritter.add({
+      title: '提示',
+      time: 1500,
+      class_name: cn,
+      after_close: () => {
+        window.location.reload();
+        Gritter.remove(id, {
+          fade: false,
+          speed: 'fast'
+        });
+      },
+      text: (
+        <div>
+          <h5>{status == "succeed" ? "驳回成功!" : "驳回失败,请重试或联系管理员!"}</h5>
+          <div style={{textAlign: "right"}}>
+            <a className="btn btn-sm btn-primary" onClick={function(){Gritter.remove(id, {fade: false,speed: 'fast'});}}>确定</a>
+          </div>
+        </div>
+      )
+    })
   },
   closeModalBox() {
     if (this.ModalBox) {

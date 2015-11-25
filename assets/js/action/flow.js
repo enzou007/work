@@ -34,6 +34,9 @@ export default class FlowAction extends Action {
   getObjectId() {
     return this.getParam().objectId || "";
   }
+  isNewNote(){
+    return !this.getObjectId();
+  }
   bindSession() {
     return $.get(`${this.getPath()}/@session`).done(resp => {
       this.getStore().cursor().get("session").merge(resp);
@@ -64,11 +67,7 @@ export default class FlowAction extends Action {
       return resp;
     });
   }
-  save(option, callback) {
-    let result = {
-      url: "",
-      isNewNote: !this.getObjectId()
-    };
+  save(option) {
     return $.ajax({
       url: `${this.getPath()}/${this.getObjectId()}`,
       type: "POST",
@@ -76,48 +75,26 @@ export default class FlowAction extends Action {
         "FlowControlType": "save"
       },
       data: {content:JSON.stringify(this.getStore().data().get("form"))}
-    }).done(resp => {
-      result.status = "succeed";
-      result.url = `/form.html?form=${this.getFormPath()}&path=${this.getPath()}&objectId=${resp["@objectId"]}`;
-      callback(result);
-    }).fail(resp => {
-      result.status = "failure";
-      callback(result);
-    });
+    })
   }
-  submit(option, callback) {
+  submit(option) {
     option.FlowControlType = "submit";
-    return this.processFlow(option, callback);
+    return this.processFlow(option);
   }
-  reject(option, callback) {
+  reject(option) {
     option.FlowControlType = "reject";
-    return this.processFlow(option, callback);
+    return this.processFlow(option);
   }
-  jump(option, callback) {
+  jump(option) {
     option.FlowControlType = "jump";
-    return this.processFlow(option, callback);
+    return this.processFlow(option);
   }
-  processFlow(option, callback) {
-    var result = {
-      url: "",
-      isNewNote: !this.getObjectId()
-    };
+  processFlow(option) {
     return $.ajax({
       url: `${this.getPath()}/nextNode/${this.getFlowId()}/${this.getObjectId()}`,
       type: "POST",
       headers: option,
       data: {content:JSON.stringify(this.getStore().data().get("form"))}
-    }).done(resp => {
-      if (callback) {
-        result.status = "succeed";
-        result.url = `/form.html?form=${this.getFormPath()}&path=${this.getPath()}&objectId=${resp["@objectId"]}`;
-        callback(result)
-      }
-    }).fail(resp => {
-      if (callback) {
-        result.status = "failure";
-        callback(result)
-      }
     })
   }
 }

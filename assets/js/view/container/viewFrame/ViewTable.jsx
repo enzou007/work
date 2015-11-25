@@ -26,7 +26,8 @@ const ViewTable = React.createClass({
   getDefaultProps() {
     return {
       headerHeight: 36,
-      rowHeight: 36
+      rowHeight: 36,
+      objectKey: "@objectId"
     };
   },
   getInitialState() {
@@ -46,7 +47,8 @@ const ViewTable = React.createClass({
       sortHandle = this.toggleSort,
       page = this.props.page,
       form = this.props.form,
-      path = _.result(dataCollection, 'url');
+      path = _.result(dataCollection, 'url'),
+      objectKey = this.props.objectKey;
 
     return (
       <Table {..._.omit(this.props, 'column')} isColumnResizing={this.state.isColumnResizing}
@@ -75,7 +77,7 @@ const ViewTable = React.createClass({
               },
               cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
                 return (
-                  <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData['@objectId']}`} target='_blank'>{cellData}</a>
+                  <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData[objectKey]}`} target='_blank'>{cellData}</a>
                 );
               }) : null,
               fixed: isFirst
@@ -123,9 +125,9 @@ const ViewTable = React.createClass({
     this.forceUpdate();
     event.stopPropagation();
   },
-  selectOne(index, event) {
+  selectOne(index, event, checked) {
     let model = this.getCollection().at(index);
-    if (event.target.checked) {
+    if (checked) {
       model.select();
     } else {
       model.deselect();

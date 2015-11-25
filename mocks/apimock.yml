@@ -263,6 +263,66 @@
     type: js
     file: response/module/administrative/BusinessCard/createDocument.js
 
+# 角色管理 URL配置
+- request:
+    url: /1/org/role/unique
+    method: GET
+  response:
+    type: js
+    file: response/module/org/role/uniqueDocument.js
+- request:
+    url: /1/org/role/@session
+  response:
+    file: response/session/me.json
+- request:
+    url: /1/org/role
+    method: GET
+  response:
+    type: js
+    file: response/module/org/role/allDocument.js
+- request:
+    url: /1/org/role
+    method: POST
+  response:
+    type: js
+    file: response/module/org/role/createDocument.js
+- request:
+    url: /1/org/role/delete
+    method: POST
+  response:
+    type: js
+    file: response/module/org/role/deleteDocument.js
+- request:
+    url: /1/org/role/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/module/org/role/document.js
+- request:
+    url: /1/org/role/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/org/role/updateDocument.js
+
+
+
+# 新闻速递 URL配置
+- request:
+    url: /1/system/user/@session
+  response:
+    file: response/session/me.json
+- request:
+    url: /1/system/user/:objectId
+  response:
+    type: js
+    file: response/system/user/userSearch.js
+- request:
+    url: /1/system/department/:objectId
+  response:
+    type: js
+    file: response/system/department/departmentSearch.js
+
 # 流程 URL配置
 - request:
     url: /1/flow/:flowId/:objectId

@@ -76,10 +76,24 @@ export default class DataTable extends Table {
     });
   }
   renderBody () {
-    let checkAble = this.props.checkAble
+    let checkAble = this.props.checkAble;
+    let checkedValue = this.props.checkedValue;
     let trs = this.props.value.map((d, i) => {
       let tds = [], checked = this.state.checked[i];
       if (checkAble) {
+        if(checkedValue){
+          checked = true;
+          for(var j = 0; j < checkedValue.length; j++) {
+            if(checkedValue[j].value === ""){
+              checked = false;
+              break;
+            }
+            if(checkedValue[j].value.indexOf(d[checkedValue[j].key]) === -1){
+              checked = false;
+              break;
+            }            
+          }
+        }
         tds.push(
           <td style={{width: 13}} key="checkbox">
             <input checked={checked} onChange={this.onCheck.bind(this, i)} type="checkbox" />
@@ -91,7 +105,7 @@ export default class DataTable extends Table {
           return;
         }
         let content = h.props.content,
-            tdStyle = {};
+            tdStyle = h.props.tdStyle || {};
         if (typeof content === 'string') {
           content = substitute(content, d);
         } else if (typeof content === 'function') {

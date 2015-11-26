@@ -23,7 +23,7 @@ export default class Personnel extends Department {
     action: new Action()
   }
   state = {
-    focus: false,
+    //focus: false,
     active: false,
     options: [],
     personnels: List.of(),
@@ -46,8 +46,11 @@ export default class Personnel extends Department {
   handlePersonnelCheck = (change) => {
     let data = this.state.data;
     if (this.props.mult) {
+      let objectIds = _.map(change.remove, item => {
+        return item["@objectId"];
+      })
       data = data.merge(change.add).filter(function (item) {
-        return _.indexOf(change.remove, item) === -1;
+        return _.indexOf(objectIds, item["@objectId"]) === -1;
       });
     } else {
       data = Set.of(change);
@@ -57,26 +60,23 @@ export default class Personnel extends Department {
       this.props.onChange();
     }
   }
-  getPersonnelList(){
-    //this.state.data.map返回的结果无序,导致页面人员列表个别人员顺序跳动.
-    //修改结果集获取方式.
-    var list = [];
+  renderList() {
+    let placeholder = this.state.data.size === 0 ? (this.state.msg || this.props.placeholder) : null;
+    let personnelList = [];
+    let checkedValue = [];
     this.state.data.map((item) => {
-      list.push (
-        <div className="result" title={item.id} key={item.id}
+      checkedValue.push(item.id);
+      personnelList.push(
+        <div className="result" title={item.id} key={item["@objectId"]}
           onClick={this.handleRemove.bind(this, item)}>
           {item.name}
         </div>
       );
-    })
-    return list;
-  }
-  renderList() {
-    let placeholder = this.state.data.size === 0 ? (this.state.msg || this.props.placeholder) : null;
+    });
 
     return (
-      <div>
-        { this.getPersonnelList() }
+      <div className="handle">
+        { personnelList }
 
         { !this.props.readOnly ? (
           <span className="search-field">
@@ -92,7 +92,7 @@ export default class Personnel extends Department {
                 <OrganizationTree value={this.state.data} mult={this.props.mult} onClick={this.handleTreeClick}/>
               </div>
               <div className="personnel-table">
-                <DataTable bordered={true} checkAble={this.props.mult} height={250} value={this.state.personnels}
+                <DataTable bordered={true} checkAble={this.props.mult} height={250} value={this.state.personnels} checkedValue={[{key:"id",value:checkedValue.join(";")}]}
                   onCheck={this.handlePersonnelCheck} onRowClick={!this.props.mult ? this.handlePersonnelCheck : null}>
                   <TableHeader name="name">用户名</TableHeader>
                   <TableHeader name="id">用户ID</TableHeader>

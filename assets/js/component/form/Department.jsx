@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'underscore';
+import $ from 'jquery';
 import classnames from 'classnames';
 import { Set } from 'immutable';
 
@@ -27,7 +28,7 @@ export default class Department extends React.Component {
     action: new Action()
   }
   state = {
-    focus: false,
+    //focus: false,
     active: false,
     options: [],
     data: this.formateData(this.props.value),
@@ -68,7 +69,6 @@ export default class Department extends React.Component {
   }
   close() {
     this.setState({
-      focus: false,
       active: false
     });
     React.findDOMNode(this.refs.input).value = '';
@@ -85,9 +85,10 @@ export default class Department extends React.Component {
     }
   }
   handleFocus(flag) {
-    this.setState({
-      focus: flag
-    });
+    // this.setState({
+    //   focus: flag
+    // });
+    $(this.refs["ref_organization"].getDOMNode())[flag ? "addClass" : "removeClass"]("focus");
   }
   queryOptions(input) {
     return this.props.action.query(input, this.props.region);
@@ -188,15 +189,18 @@ export default class Department extends React.Component {
   }
   renderList() {
     let placeholder = this.state.value == null ? (this.state.msg || this.props.placeholder) : null;
-
+    let departmentList = [];
+    this.state.data.map((item) => {
+      departmentList.push(
+        <span className="result" title={item.id} key={item["@objectId"]}
+          onClick={this.handleRemove.bind(this, item)}>
+          {item.name}
+        </span>
+      );
+    })
     return (
       <div className="handle">
-        { this.state.data.map((item) => { return (
-          <span className="result" title={item.id} key={item["@objectId"]}
-            onClick={this.handleRemove.bind(this, item)}>
-            {item.name}
-          </span>
-        ); }) }
+        { departmentList }
         { !this.props.readOnly ? (
           <span className="search-field">
             <input ref="input" onBlur={this.handleFocus.bind(this, false)} onChange={this.handleInput}
@@ -239,8 +243,8 @@ export default class Department extends React.Component {
   }
   render() {
     return (
-      <div className={classnames("organization", "department", "form-control", {
-          focus: this.state.focus,
+      <div ref="ref_organization" className={classnames("organization", "department", "form-control", {
+          //focus: this.state.focus,
           active: this.state.active,
           readonly: this.props.readOnly,
           mult: this.props.mult,

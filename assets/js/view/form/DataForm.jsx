@@ -46,7 +46,7 @@ var DataForm = React.createClass({
             {this.props.toolbar}
           </Toolbar>
           <div className="main-container" id="main-container">
-            <Form className="container" channel={action} hintType={this.props.hintType} layout={this.props.layout}
+            <Form className="container container-center" channel={action} hintType={this.props.hintType} layout={this.props.layout}
               onSubmit={this.props.onSubmit} store={store.get("form")}>
               {this.props.children}
             </Form>

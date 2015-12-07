@@ -24,11 +24,12 @@ _.extend(Base.prototype, {
   Model: require("./baseModel"),
   viewButton: true,
   CustomButton: [],
+  DefaultButton: ["Create", "Delete", "Refresh", "Exports"],
   getContainer: function () {
     return this.Container;
   },
   getOption: function () {
-    return _.pick(this, "page", "form", "Model", "View", "viewButton", "CustomButton");
+    return _.pick(this, "page", "form", "Model", "View", "viewButton", "CustomButton", "DefaultButton");
   },
   getQueryCollection: function () {
     if(!this._QueryCollection){

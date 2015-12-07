@@ -64,7 +64,7 @@ const FlowForm = React.createClass({
   },
   renderToolbar(store){
      let toolbar = this.props.toolbar || [];
-
+     let action = this.state.action;
      let curNode = _.find(store.get("flow").toJS().nodes, node => node.cur);
      if(curNode){
        let nodeId = curNode.nodeId;

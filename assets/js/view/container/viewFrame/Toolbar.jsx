@@ -11,7 +11,8 @@ const Toolbar = React.createClass({
     page: React.PropTypes.string.isRequired,
     form: React.PropTypes.object.isRequired,
     showViewButton: React.PropTypes.bool.isRequired,
-    customs: React.PropTypes.arrayOf(React.PropTypes.element).isRequired
+    customs: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
+    defaultButton: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
   },
   getInitialState: function () {
     return {
@@ -19,10 +20,14 @@ const Toolbar = React.createClass({
       allowDelete: true
     }
   },
+  getButtons: function(){
+    var button = [];
+
+  },
   render: function () {
     var flows = this.props.model.get("flows"),
       formPath = _.values(this.props.form)[0];
-
+    var defaultButton = this.props.defaultButton;
     if (flows.length === 0) {
       flows = _.map(this.props.form, function (form, name) {
         return {
@@ -38,8 +43,9 @@ const Toolbar = React.createClass({
 
     return (
       <div className="frame-toolbar btn-toolbar">
+
         {
-          this.state.allowWrite ? (
+          defaultButton.indexOf("Create")>-1 && this.state.allowWrite ? (
             <Create page={this.props.page} forms={flows} path={this.props.path}/>
           ) : null
         }
@@ -50,9 +56,9 @@ const Toolbar = React.createClass({
         }
         {
           this.props.showViewButton ? [
-            this.state.allowDelete ? <Delete key="delete"/> : null,
-            <Refresh key="refresh"/>,
-            <Exports key="export"/>
+            defaultButton.indexOf("Delete")>-1 && this.state.allowDelete ? <Delete key="delete"/> : null,
+            defaultButton.indexOf("Refresh")>-1 ? <Refresh key="refresh"/> : null,
+            defaultButton.indexOf("Exports")>-1 ? <Exports key="export"/> : null
           ] : null
         }
       </div>

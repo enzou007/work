@@ -3,14 +3,14 @@ import _ from 'underscore';
 import classnames from 'classnames';
 import { List, Set } from 'immutable';
 
-import Dropdown from '../../component/bootstrap/Dropdown.jsx';
+import Dropdown from 'Component/bootstrap/Dropdown.jsx';
 import OrganizationTree from './OrganizationTree.jsx';
 import DataTable from './DataTable.jsx';
 import TableHeader from 'rctui/src/js/components/tableHeader.jsx';
 
 import FormControl from './FormControl.jsx';
 
-import Action from '../../action/personnel';
+import Action from 'Action/personnel';
 
 import Department from './Department.jsx';
 
@@ -89,7 +89,7 @@ export default class Personnel extends Department {
             <a href="javascript:show-tree"><i className="fa fa-user"/></a>
             <div className="personnel-select">
               <div className="organization-tree">
-                <OrganizationTree value={this.state.data} mult={this.props.mult} onClick={this.handleTreeClick}/>
+                <OrganizationTree value={this.state.data} onClick={this.handleTreeClick}/>
               </div>
               <div className="personnel-table">
                 <DataTable bordered={true} checkAble={this.props.mult} height={250} value={this.state.personnels} checkedValue={[{key:"id",value:checkedValue.join(";")}]}

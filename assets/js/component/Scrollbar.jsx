@@ -42,6 +42,9 @@ const Scrollbar = React.createClass({
       $horizontalScroll.show();
     }
   },
+  updateScrollbar(){
+    setTimeout(()=>{this.componentDidUpdate();}, 0)
+  },
   componentWillUnmount() {
     this.scrollbar.destroy();
     this.scrollbar = null;

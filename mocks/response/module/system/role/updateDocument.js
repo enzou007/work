@@ -3,7 +3,7 @@ var _ = require("underscore");
 
 module.exports = function (data) {
 
-  var docs = new File("mocks/response/module/org/role/docs.json");
+  var docs = new File("mocks/response/module/system/role/docs.json");
   var objectId = data.params.objectId;
 
   var olddoc =  _.find(docs.getData(), function (doc) {

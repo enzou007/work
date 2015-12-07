@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import classNames from 'classnames';
-
+import PagingInfo from "./PagingInfo.jsx";
 import FixedDataTable from 'fixed-data-table';
 import { Checkbox } from 'Component/form/Checkbox.jsx';
 
@@ -51,43 +51,46 @@ const ViewTable = React.createClass({
       objectKey = this.props.objectKey;
 
     return (
-      <Table {..._.omit(this.props, 'column')} isColumnResizing={this.state.isColumnResizing}
-        onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
-        rowsCount={dataCollection.getPerPage()}
-        rowGetter={this.props.rowGetter || this._rowGetter}>
-        <Column key='选择' dataKey='__index' fixed={true} width={35} align='center' headerRenderer={() => {
-          return <Checkbox checked={dataCollection.selectedLength > 0} onChange={this.selectAll}
-            half={dataCollection.getPerPage() > dataCollection.selectedLength}/>;
-        }} cellRenderer={(cellData, cellDataKey, rowData, rowIndex, columnData, width) => {
-          return <Checkbox checked={dataCollection.at(rowIndex) && dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
-        }}/>
-        {
-          _.map(this.state.column, (column, key) => {
-            let isFirst = key === firstColumn.dataKey;
-            let options = _.extend({
-              headerRenderer: (label, dataKey) => {
-                return (
-                  <div className='sort' onClick={sortHandle.bind(this, dataKey)}>
-                    {label}
-                    <span className={classNames('sort-icon', {'sorting': column.sorting > 0})}>
-                      <i className={SORT_ICONS[column.sorting]}/>
-                    </span>
-                  </div>
-                );
-              },
-              cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
-                return (
-                  <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData[objectKey]}`} target='_blank'>{cellData}</a>
-                );
-              }) : null,
-              fixed: isFirst
-            }, column);
-            return (
-              <Column key={column.label} {...options}/>
-            );
-          })
-        }
-      </Table>
+      <div>
+        <Table {..._.omit(this.props, 'column')} isColumnResizing={this.state.isColumnResizing}
+          onColumnResizeEndCallback={this.props.onColumnResizeEndCallback || this._onColumnResize}
+          rowsCount={dataCollection.getPerPage()}
+          rowGetter={this.props.rowGetter || this._rowGetter}>
+          <Column key='选择' dataKey='__index' fixed={true} width={35} align='center' headerRenderer={() => {
+            return <Checkbox checked={dataCollection.selectedLength > 0} onChange={this.selectAll}
+              half={dataCollection.getPerPage() > dataCollection.selectedLength}/>;
+          }} cellRenderer={(cellData, cellDataKey, rowData, rowIndex, columnData, width) => {
+            return <Checkbox checked={dataCollection.at(rowIndex) && dataCollection.at(rowIndex).selected} onChange={this.selectOne.bind(this, rowIndex)}/>;
+          }}/>
+          {
+            _.map(this.state.column, (column, key) => {
+              let isFirst = key === firstColumn.dataKey;
+              let options = _.extend({
+                headerRenderer: (label, dataKey) => {
+                  return (
+                    <div className='sort' onClick={sortHandle.bind(this, dataKey)}>
+                      {label}
+                      <span className={classNames('sort-icon', {'sorting': column.sorting > 0})}>
+                        <i className={SORT_ICONS[column.sorting]}/>
+                      </span>
+                    </div>
+                  );
+                },
+                cellRenderer: isFirst ? (function (cellData, cellDataKey, rowData) {
+                  return (
+                    <a href={`/${page}?form=${form}&path=${path}&objectId=${rowData[objectKey]}`} target='_blank'>{cellData}</a>
+                  );
+                }) : null,
+                fixed: isFirst
+              }, column);
+              return (
+                <Column key={column.label} {...options}/>
+              );
+            })
+          }
+        </Table>
+        <PagingInfo collection={dataCollection}/>
+      </div>
     );
   },
   _parseColumnProp(props) {

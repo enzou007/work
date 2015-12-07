@@ -59,12 +59,19 @@
   response:
     type: js
     file: response/system/module/module.js
-
+- request:
+    url: /1/system/user/@session
+  response:
+    file: response/session/me.json
 - request:
     url: /1/system/user
   response:
     type: js
     file: response/system/user/userSearch.js
+- request:
+    url: /1/system/department/@session
+  response:
+    file: response/session/me.json
 - request:
     url: /1/system/department
   response:
@@ -265,45 +272,87 @@
 
 # 角色管理 URL配置
 - request:
-    url: /1/org/role/unique
+    url: /1/system/role/unique
     method: GET
   response:
     type: js
-    file: response/module/org/role/uniqueDocument.js
+    file: response/module/system/role/uniqueDocument.js
 - request:
-    url: /1/org/role/@session
+    url: /1/system/role/@session
   response:
     file: response/session/me.json
 - request:
-    url: /1/org/role
+    url: /1/system/role
     method: GET
   response:
     type: js
-    file: response/module/org/role/allDocument.js
+    file: response/module/system/role/allDocument.js
 - request:
-    url: /1/org/role
+    url: /1/system/role
     method: POST
   response:
     type: js
-    file: response/module/org/role/createDocument.js
+    file: response/module/system/role/createDocument.js
 - request:
-    url: /1/org/role/delete
+    url: /1/system/role/delete
     method: POST
   response:
     type: js
-    file: response/module/org/role/deleteDocument.js
+    file: response/module/system/role/deleteDocument.js
 - request:
-    url: /1/org/role/:objectId
+    url: /1/system/role/:objectId
     method: GET
   response:
     type: js
-    file: response/module/org/role/document.js
+    file: response/module/system/role/document.js
 - request:
-    url: /1/org/role/:objectId
+    url: /1/system/role/:objectId
     method: POST
   response:
     type: js
-    file: response/module/org/role/updateDocument.js
+    file: response/module/system/role/updateDocument.js
+    
+# 岗位管理 URL配置
+- request:
+    url: /1/system/position/unique
+    method: GET
+  response:
+    type: js
+    file: response/module/system/position/uniqueDocument.js
+- request:
+    url: /1/system/position/@session
+  response:
+    file: response/session/me.json
+- request:
+    url: /1/system/position
+    method: GET
+  response:
+    type: js
+    file: response/module/system/position/allDocument.js
+- request:
+    url: /1/system/position
+    method: POST
+  response:
+    type: js
+    file: response/module/system/position/createDocument.js
+- request:
+    url: /1/system/position/delete
+    method: POST
+  response:
+    type: js
+    file: response/module/system/position/deleteDocument.js
+- request:
+    url: /1/system/position/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/module/system/position/document.js
+- request:
+    url: /1/system/position/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/system/position/updateDocument.js
 
 
 

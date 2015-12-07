@@ -35,11 +35,10 @@ var RoleForm = React.createClass({
       }
       return flag;
     }
-
   },
   render: function () {
     return (
-      <DataForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit.bind(this)}>
+      <DataForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} title="角色管理">
         <div className="form-content" tab="基本信息">
           <Fieldset title="基本信息">
             <FormControl label="角色名称" name="RoleName" type="text" responsive={{xl: 12}}/>

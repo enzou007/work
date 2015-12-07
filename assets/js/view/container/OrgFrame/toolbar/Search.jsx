@@ -1,6 +1,6 @@
 import React from "react";
 import $ from 'jquery';
-import action from "../../../../action/orgFrame";
+import action from "Action/viewFrame";
 
 let Search = React.createClass({
   clickSearch(){
@@ -22,15 +22,15 @@ let Search = React.createClass({
     if(!key){
       return false;
     }
-    if(this._key != key){
-      action.toggleSearchItem(key);
-      this._key = key;
-    }
+    //if(this._key != key){
+      action.triggerSearch([["@key", "=", key]]);
+    //  this._key = key;
+    //}
   },
   render() {
     return (
       <div className="search-box">
-        <input type="text" onKeyDown={this.triggerSearch.bind(this)}/>
+        <input type="text" onKeyDown={this.triggerSearch}/>
         <i className="fa fa-search" onClick={this.clickSearch}></i>
       </div>
     );

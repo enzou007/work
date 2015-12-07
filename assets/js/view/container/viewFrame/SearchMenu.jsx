@@ -3,21 +3,19 @@ import _ from "underscore";
 import $ from "jquery";
 import classnames from "classnames";
 
-import Tabs from "../../../component/bootstrap/Tabs.jsx";
-import Dropdown from "../../../component/bootstrap/Dropdown.jsx";
+import Tabs from "Component/bootstrap/Tabs.jsx";
+import Dropdown from "Component/bootstrap/Dropdown.jsx";
 import CustomSearch from "./searchMenu/CustomSearch.jsx";
-import Link from "../../../component/Link.jsx";
+import Link from "Component/Link.jsx";
 
 import ModuleCollection from "../../../store/module";
-
-import action from "../../../action/viewFrame";
 
 import "backbone-react-component";
 
 const SearchMenu = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   triggerSearch(model) {
-    action.toggleSearchItem(model);
+    this.props.action.toggleSearchItem(model);
     this.setState({
       currentIndex: null,
       editQueryItem: null
@@ -67,7 +65,7 @@ const SearchMenu = React.createClass({
     }, this);
 
     var editItem = this.state.editQueryItem,
-      editColumn = editItem && editItem.has("column") ? editItem.get("column") : action.getDefaultItem().get("column");
+      editColumn = editItem && editItem.has("column") ? editItem.get("column") : this.props.action.getDefaultItem().get("column");
     elements.push(<CustomSearch ico="fa fa-search" key="自定义检索" tab="自定义检索" fields={this.props.fields}
       item={editItem} column={editColumn} items={this.getCollection()}/>);
 
@@ -80,7 +78,7 @@ const SearchMenu = React.createClass({
   },
   render() {
     // 输出预定义查询项
-    var currentItem = action.getActivatedItem(),
+    var currentItem = this.props.action.getActivatedItem(),
       roots = this.getCollection().where({parent: null}),
       currentIndex = this.state.currentIndex || _.findIndex(roots, function (item) {
         return item.get("active");
@@ -88,7 +86,7 @@ const SearchMenu = React.createClass({
     return (
       <Dropdown className="btn-group" clickAndClose={false}>
         <button className="btn btn-link btn-search-menu-toggle">
-          {currentItem.get("name")}
+          <span id="currentItemName">{currentItem.get("name")}</span>
           <span className="ace-icon fa fa-angle-down icon-on-right"></span>
         </button>
         <div className="btn-search-menu" onClick={this.checkClose}>

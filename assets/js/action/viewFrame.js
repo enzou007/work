@@ -4,7 +4,7 @@ var Backbone = require("backbone"),
   _ = require("underscore"),
   $ = require("jquery");
 
-var QueryData = require("../store/viewFrame/queryData");
+var QueryData = require("Store/viewFrame/queryData");
 
 var Action = function () {
   this.module = null;
@@ -13,6 +13,7 @@ var Action = function () {
   this._dataCollection = null;
   this._defaultItem = null;
   this._activated = null;
+  this._option = null;
 };
 
 _.extend(Action.prototype, Backbone.Events, {
@@ -24,6 +25,7 @@ _.extend(Action.prototype, Backbone.Events, {
   },
   bind: function (moduleOption) {
     this.clean();
+    this._option = moduleOption;
     this.module = moduleOption.module;
     this.Model = moduleOption.Model;
     this._queryCollection = moduleOption.getQueryCollection();
@@ -31,7 +33,7 @@ _.extend(Action.prototype, Backbone.Events, {
       isDefault: true
     });
     // 初始化当前项目
-    this.toggleSearchItem(this._defaultItem);
+    this.toggleSearchItem(this._defaultItem, true);
     // 监听模块
     this.listenTo(this.module, "sync", function () {
       var queries = this.module.get("queries");
@@ -52,6 +54,15 @@ _.extend(Action.prototype, Backbone.Events, {
   getActivatedItem: function () {
     return this._activated;
   },
+  getFormPath: function (){
+    return this._activated.get("formPath") || _.values(this._option.form)[0];
+  },
+  getPath: function(){
+    return this.getActivatedItem().get("path") || this.module.get("path")
+  },
+  getOption: function(){
+    return this._option;
+  },
   setActiveItem: function (active) {
     if (this._activated !== active) {
       this._activated = active;
@@ -62,7 +73,7 @@ _.extend(Action.prototype, Backbone.Events, {
   buildDataCollection: function () {
     return new QueryData(null, {
       model: this.Model,
-      url: "1/" + this.module.get("path")
+      url: "1/" + this.getPath()
     });
   },
   addCustomQuery: function (items) {
@@ -96,14 +107,17 @@ _.extend(Action.prototype, Backbone.Events, {
         });
       }.bind(this));
   },
-  toggleSearchItem: function (item) {
+  toggleSearchItem: function (item, rebulid) {
     this.setActiveItem(item);
-    if (this._dataCollection == null) {
+    if (this._dataCollection == null || rebulid) {
       this._dataCollection = this.buildDataCollection();
     }
-    this._dataCollection.setCondition(item.get("condition"));
+    this.triggerSearch(item.get("condition"));
+  },
+  triggerSearch: function(condition){
+    this._dataCollection.setCondition(condition);
     this.refreshDataCollection();
-  }
+  },
 });
 
 

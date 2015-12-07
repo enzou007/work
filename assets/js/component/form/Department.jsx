@@ -7,16 +7,16 @@ import { Set } from 'immutable';
 import { getOuterHeight, overView } from 'rctui/src/js/utils/dom';
 import clickAway from 'rctui/src/js/higherorder/clickaway';
 
-import Dropdown from '../../component/bootstrap/Dropdown.jsx';
+import Dropdown from 'Component/bootstrap/Dropdown.jsx';
 import OrganizationTree from './OrganizationTree.jsx';
 
 import FormControl from './FormControl.jsx';
 
-import Action from '../../action/department';
+import Action from 'Action/department';
 
 import 'rctui/src/less/form.less';
 
-import '../../../less/component/organization.less';
+import 'Less/component/organization.less';
 
 @clickAway
 export default class Department extends React.Component {
@@ -148,10 +148,10 @@ export default class Department extends React.Component {
       return Set.of();
     }
 
-    let currentData = this.state.data.reduce(function (memo, item) {
+    let currentData = this.state && this.state.data ? this.state.data.reduce(function (memo, item) {
       memo[item["@objectId"]] = item;
       return memo;
-    }, {});
+    }, {}) : {};
 
     let fetchItems = {};
     let newList = value.map(function (objectId) {

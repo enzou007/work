@@ -14,8 +14,12 @@ module.exports = {
   },
   resolve: {
     alias: {
+      "Action": __dirname + "/assets/js/action",
       "Component": __dirname + "/assets/js/component",
+      "Store": __dirname + "/assets/js/store",
+      "Util": __dirname + "/assets/js/util",
       "View": __dirname + "/assets/js/view",
+      "Less": __dirname + "/assets/less",
       // 默认引入React的插件
       "react$": "react/lib/ReactWithAddons",
       // jsplumb的bower.main未能生效，强行覆盖
@@ -68,7 +72,8 @@ module.exports = {
     // 在form.js中引入jsx时，过滤掉home相关代码
     new webpack.ContextReplacementPlugin(/\.\/module/, function (result) {
       if (result.regExp.toString().indexOf(".jsx") !== -1) {
-        result.regExp = /^\.\/(?!home).+\/.*\/.+\.jsx$/;
+        //result.regExp = /^\.\/(?!home).+\/.*\/.+\.jsx$/;
+        result.regExp = /^\.\/(?!home).+\/.*\.jsx$/
       }
     }),
     // 替换backbone.select的错误依赖

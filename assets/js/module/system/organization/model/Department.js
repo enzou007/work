@@ -1,6 +1,6 @@
 "use strict";
 
-var BaseModel = require("../../baseModel");
+var BaseModel = require("../../../baseModel");
 
 var Department = BaseModel.extend({
 

@@ -9,9 +9,9 @@ import { Radio } from './Radio.jsx';
 
 import Strings from 'rctui/src/js/utils/strings';
 
-import Action from '../../action/department';
+import Action from 'Action/department';
 
-import '../../../less/component/organization-tree.less';
+import 'Less/component/organization-tree.less';
 
 export default class OrganizationTree extends React.Component {
   static propTypes = {
@@ -39,17 +39,11 @@ export default class OrganizationTree extends React.Component {
   }
   componentWillMount() {
     if(this.props.region){
-      this.props.action.fetch(this.props.region).then(item => {
-        this.setState({roots: [item]});
-      });
-      this._loadChildren(this.props.region);
+      this.regionTree();
+    }else if(this.props.filter){
+      this.filterTree();
     } else {
-      this.props.action.byParent(null).then(roots => {
-        this.setState({ roots });
-        if(roots.length === 1){
-          this._loadChildren(roots[0]["@objectId"]);
-        }
-      });
+      this.initTree();
     }
     if(this.props.onDoubleClick){
       $(document).on("dblclick.orgTree", ".tree .tree-item", event => {
@@ -69,6 +63,25 @@ export default class OrganizationTree extends React.Component {
       })
     }
   }
+  regionTree() {
+    this.props.action.fetch(this.props.region).then(item => {
+      this.setState({roots: [item]});
+    });
+    this._loadChildren(this.props.region);
+  }
+  filterTree(filter) {
+    this.props.action.query(filter || this.props.filter, "", 50).then(item => {
+      this.setState({roots: item});
+    });
+  }
+  initTree() {
+    this.props.action.byParent(null).then(roots => {
+      this.setState({ roots });
+      if(roots.length === 1){
+        this._loadChildren(roots[0]["@objectId"]);
+      }
+    });
+  }
   extendClick(eventName, event){
     event.preventDefault();
     this.props[eventName](event, $(event.target).attr("data-id"), $(event.target).text());
@@ -87,6 +100,14 @@ export default class OrganizationTree extends React.Component {
       value: nextProps.value,
       checked: this.getChecked({}, nextProps.value)
     });
+
+    if(this.props.filter !== nextProps.filter){
+      if(nextProps.filter){
+        this.filterTree(nextProps.filter);
+      }else{
+        this.initTree();
+      }
+    }
   }
   _loadChildren(parent) {
     this.props.action.byParent(parent).then(resp => {

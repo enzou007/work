@@ -21,7 +21,7 @@ var App = React.createClass({
     }).create();
   },
   componentDidUpdate: function() {
-    this.PageScroll.update();
+    _.defer(()=>{this.PageScroll.update();});
   },
   mixins: [Backbone.React.Component.mixin],
   render: function() {

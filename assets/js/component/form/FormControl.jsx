@@ -7,7 +7,7 @@ import { nextUid, format, toArray } from 'rctui/src/js/utils/strings';
 import Regs from 'rctui/src/js/utils/regs';
 import { getLang, setLang } from 'rctui/src/js/lang';
 
-import Action from '../../action/form';
+import Action from 'Action/form';
 
 // 为必填提示添加label占位
 setLang({
@@ -77,6 +77,10 @@ export default class FormControl extends React.Component {
   componentWillMount() {
     this.setHint(this.props);
     this.props.channel.registerControl(this);
+    if(this.props.value){
+      //写入默认值!
+      this.props.channel.setField(this.props.name, this.props.value);
+    }
   }
   componentWillReceiveProps(nextProps) {
     this.setHint(nextProps);
@@ -193,7 +197,7 @@ export default class FormControl extends React.Component {
     let text = getTip(type, value, label);
     this.setState({ hasError: true, errorText: text });
   }
-  handleChange = (value) => {
+  handleChange = (value, data, data1) => {
     if(value === undefined){
       _.defer(() => {
         this.handleChange(this.refs.control.getValue(this.props.seq));
@@ -206,7 +210,7 @@ export default class FormControl extends React.Component {
       this.props.channel.setField(this.props.name, value);
     }
     if (this.props.onChange) {
-      this.props.onChange(value);
+      this.props.onChange(value, data, data1);
     }
   }
   getValue(sep) {
@@ -250,11 +254,10 @@ export default class FormControl extends React.Component {
     return React.Children.map(children, (child, i) => {
       let props = {};
       if (child.type === component) {
-        return React.cloneElement(child, _.defaults({
-          ref: 'control'
-        }, child.props, {
+        child = React.cloneElement(child, _.extend(child.props, {
           onChange: this.handleChange,
-          value: this.state.value
+          value: this.props.value,
+          ref: 'control'
         }));
       } else if (child.props && typeof child.props.children === 'object') {
         props.children = this.getChildren(child.props.children, component);

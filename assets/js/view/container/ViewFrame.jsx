@@ -5,7 +5,6 @@ import $ from "jquery";
 
 import SearchMenu from "./viewFrame/SearchMenu.jsx";
 import Toolbar from "./viewFrame/Toolbar.jsx";
-import PagingInfo from "./viewFrame/PagingInfo.jsx";
 
 import ModuleCollection from "../../store/module";
 import QueryCollection from "../../store/viewFrame/query";
@@ -32,6 +31,13 @@ const ViewFrame = React.createClass({
     };
   },
   componentDidMount() {
+    this.windowResize();
+    $(window).on("resize.viewframe", _.debounce(this.windowResize, 200));
+  },
+  componentWillUnmount: function() {
+    $(window).off("resize.viewframe");
+  },
+  windowResize() {
     let $frame = $(this.getDOMNode()),
       $row = $(this.refs.viewContainer.getDOMNode()),
       screenHeight = document.documentElement.clientHeight || screen.availHeight,
@@ -54,8 +60,7 @@ const ViewFrame = React.createClass({
       columns = activatedItem.get("column") || action.getDefaultItem().get("column"),
       page = this.props.page,
       path = _.result(action.getDataCollection(), "url"),
-      formPath = _.values(this.props.form)[0];
-
+      formPath = action.getFormPath();
     return (
       <div id="view-frame" className={classnames("page-content-area", this.getModel().get("path").replace(/\//g,"-"))}>
         <div className="page-header">
@@ -64,19 +69,18 @@ const ViewFrame = React.createClass({
               {this.getModel().get("name")}
               <small>
                 <i className="ace-icon fa fa-angle-double-right"/>
-                <SearchMenu collection={this.getCollection()} fields={this.props.Model.fields}/>
+                <SearchMenu collection={this.getCollection()} fields={this.props.Model.fields} action={action}/>
               </small>
             </h1>
           </div>
           <Toolbar model={this.props.model} page={page} form={this.props.form} path={path}
-            showViewButton={this.props.viewButton} customs={this.props.CustomButton}/>
+            showViewButton={this.props.viewButton} customs={this.props.CustomButton} defaultButton={this.props.DefaultButton}/>
         </div>
 
         <div className="row">
           <div className="col-xs-12" ref="viewContainer">
             <View collection={action.getDataCollection()} column={columns}
               height={this.state.tableHeight} width={this.state.tableWidth} page={page} form={formPath}/>
-            <PagingInfo collection={action.getDataCollection()}/>
           </div>
         </div>
       </div>

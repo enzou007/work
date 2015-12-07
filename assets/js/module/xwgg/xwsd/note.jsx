@@ -42,15 +42,6 @@ var NoteForm = React.createClass({
     return (
       <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}>
         <div className="form-content" tab="基本信息">
-          <Fieldset title="Form表单">
-            <FormControl label="申请人" name="AppPsnCn" type="text" readOnly={true}/>
-            <FormControl label="申请日期" name="PubDate" type="date"/>
-            <FormControl label="性别" name="StSex" type="select" data={SexData}/>
-            <FormControl label="年龄" name="StAge" type="number"/>
-            <FormControl label="部门领导" name="StLeader" type="personnel" />
-            <FormControl label="所属部门" name="StDept" type="department" />
-            <FormControl label="备注" name="Notes" type="textarea" responsive={{xl: 16}}/>
-          </Fieldset>
           <Fieldset title="Form表格">
             <FormControl label="动态表格" name="StData" type="grid" responsive={{xl: 24}}>
               <Grid height={500} form={this.getGridForm()}>

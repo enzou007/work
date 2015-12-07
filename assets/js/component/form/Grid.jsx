@@ -10,9 +10,9 @@ import Modal from '../bootstrap/Modal.jsx';
 import { Checkbox } from './Checkbox.jsx';
 import Form from './Form.jsx';
 import FormControl from './FormControl.jsx';
-import Action from '../../action/form';
+import Action from 'Action/form';
 
-import '../../../less/component/grid.less';
+import 'Less/component/grid.less';
 
 const Grid = React.createClass({
   propTypes: {
@@ -32,14 +32,16 @@ const Grid = React.createClass({
       readOnly: false,
       selectAble: true,
       action: new Action(),
-      value: new List()
+      value: new List(),
+      show: true
     };
   },
   getInitialState() {
     return {
       width: 600,
       selected: {},
-      value: this.props.value
+      value: this.props.value || new List(),
+      show: this.props.show
     };
   },
   componentWillMount() {
@@ -51,6 +53,16 @@ const Grid = React.createClass({
     })
   },
   componentDidMount() {
+    this.tableResize();
+  },
+  componentWillReceiveProps: function(nextProps) {
+    let state = {show: nextProps.show};
+    if(nextProps.value !== this.props.value){
+      state.value = nextProps.value;
+    }
+    this.setState(state, this.tableResize);
+  },
+  tableResize(){
     let $node = $(React.findDOMNode(this)),
     // 减去边距
       width = this.props.width || ($node.parent().width() - 12);
@@ -59,13 +71,6 @@ const Grid = React.createClass({
       // 减去选择项
       columnWidth: this.getColumWidth(width - (this.props.selectAble ? 35 : 0))
     });
-  },
-  componentWillReceiveProps: function(nextProps) {
-    if(nextProps.value !== this.props.value){
-      this.setState({
-        value: nextProps.value
-      });
-    }
   },
   getColumWidth(total = this.state.width) {
     return _.reduce(this.props.children, function (memo, child) {
@@ -100,40 +105,77 @@ const Grid = React.createClass({
   addRow() {
     let store = this.props.action.getStore();
     store.reset();
-
     this.showModal('新增数据', store, () => {
-      let data = store.data(),
-        list = this.state.value.push(data);
-      this.setState({
-        value: list
-      });
+      let data = store.data();
+      if(this.isUnique(data)){
+        if(this.props.beferAddRow){
+          if(this.props.beferAddRow(data, this.state.value) === false){
+            return false;
+          }
+        }
+        let list = this.state.value.push(data);
+        this.setState({
+          value: list
+        });
 
-      this.props.onChange(list);
+        this.props.onChange(list, data);
+      }
     });
+  },
+  isUnique(data){
+    if(this.props.uniqueKey){
+      let index = this.state.value.findIndex((item, index)=>{
+        for(var i = 0; i < this.props.uniqueKey.length; i++){
+          if(item.get(this.props.uniqueKey[i]) !== data.get(this.props.uniqueKey[i])){
+            return false;
+          }
+        }
+        return true;
+      });
+      return index === -1;
+    }
+    return true;
   },
   editRow(event, index, data) {
     // 忽略选择框
     if($(event.target).parent().hasClass("row-select")){
       return;
     }
+    if(this.props.beferEditRow){
+      if(this.props.beferEditRow(data, this.state.value) === false){
+        return false;
+      }
+    }
+    let rowDataStore = this.props.action.getStore();
+    rowDataStore.reset();
+    rowDataStore.cursor().merge(data)
 
-    let action = this.props.action;
-    action.setField(data);
-
-    this.showModal('修改数据', action.getStore(), (store) => {
-      let data = action.getStore().data(),
-        list = this.state.value.set(index, data);
-      this.setState({
-        value: list
-      });
-
-      this.props.onChange(list);
+    this.showModal('修改数据', rowDataStore, (store) => {
+      let data = rowDataStore.data();
+      if(this.isUnique(data)){
+        let list = this.state.value.set(index, data);
+        this.setState({
+          value: list
+        });
+        this.props.onChange(list, data);
+      }
     });
   },
   removeRow() {
-    let list = this.state.value.filterNot((item, index) => {
-      return this.state.selected[index];
-    });
+    let list;
+    if(this.props.beferRemoveRow){
+      list = this.state.value.filterNot((item, index) => {
+        if(this.props.beferRemoveRow(item, this.state.value) === false){
+          return null;
+        }
+        return this.state.selected[index];
+      });
+    }else{
+      list = this.state.value.filterNot((item, index) => {
+        return this.state.selected[index];
+      });
+    }
+
     this.setState({
       value: list,
       selected: {}
@@ -170,48 +212,52 @@ const Grid = React.createClass({
     });
   },
   render() {
-    let checked = !_.isEmpty(this.state.selected);
-    return (
-      <div className={classnames('grid', {
-          readonly: this.props.readOnly
-        }, this.props.className)}>
-        { !this.props.readOnly && (
-          <div className="grid-toolbar btn-group">
-            <button className="btn btn-white btn-inverse btn-bold" type="button" onClick={this.addRow}>
-              <i className="ace-icon fa fa-file-o"/>
-              新增
-            </button>
-            {
-              checked && (
-                <button className="btn btn-white btn-warning btn-bold" type="button" onClick={this.removeRow}>
-                  <i className="ace-icon fa fa-trash-o"/>
-                  删除
-                </button>
-              )
-            }
-          </div>
-        )}
-        <Table headerHeight={this.props.headerHeight} rowHeight={this.props.rowHeight}
-          width={this.state.width} maxHeight={this.props.height}
-          rowsCount={this.getRowLength()} rowGetter={this.getRowData}
-          onColumnResizeEndCallback={this.setColumnWidth} onRowClick={this.editRow}>
-          <Column className="row-select" dataKey="__index" fixed={true} width={35} align='center' headerRenderer={() => {
-            return <Checkbox checked={checked} onChange={this.selectAll}
-              half={_.size(this.state.selected) < this.getRowLength()}/>;
-          }} cellRenderer={(cellData, cellDataKey, rowData, rowIndex, columnData, width) => {
-            return <Checkbox className="row-select" checked={this.state.selected[rowIndex]} onChange={this.selectOne.bind(this, rowIndex)}/>;
-          }}/>
-          {React.Children.map(this.props.children, (child, index) => {
-            return React.cloneElement(child, {
-              width: this.state.columnWidth[child.props.dataKey],
-              cellDataGetter: function (cellDataKey, rowData) {
-                return rowData.get(cellDataKey);
+    if(this.state.show){
+      let checked = !_.isEmpty(this.state.selected);
+      return (
+        <div className={classnames('grid', {
+            readonly: this.props.readOnly
+          }, this.props.className)}>
+          { !this.props.readOnly && (
+            <div className="grid-toolbar btn-group">
+              <button className="btn btn-white btn-inverse btn-bold" type="button" onClick={this.addRow}>
+                <i className="ace-icon fa fa-file-o"/>
+                新增
+              </button>
+              {
+                checked && (
+                  <button className="btn btn-white btn-warning btn-bold" type="button" onClick={this.removeRow}>
+                    <i className="ace-icon fa fa-trash-o"/>
+                    删除
+                  </button>
+                )
               }
-            });
-          })}
-        </Table>
-      </div>
-    );
+            </div>
+          )}
+          <Table headerHeight={this.props.headerHeight} rowHeight={this.props.rowHeight}
+            width={this.state.width} maxHeight={this.props.height}
+            rowsCount={this.getRowLength()} rowGetter={this.getRowData}
+            onColumnResizeEndCallback={this.setColumnWidth} onRowClick={this.editRow}>
+            <Column className="row-select" dataKey="__index" fixed={true} width={35} align='center' headerRenderer={() => {
+              return <Checkbox className="row-select" checked={checked} onChange={this.selectAll}
+                half={_.size(this.state.selected) < this.getRowLength()}/>;
+            }} cellRenderer={(cellData, cellDataKey, rowData, rowIndex, columnData, width) => {
+              return <Checkbox className="row-select" checked={this.state.selected[rowIndex]} onChange={this.selectOne.bind(this, rowIndex)}/>;
+            }}/>
+            {React.Children.map(this.props.children, (child, index) => {
+              return React.cloneElement(child, {
+                width: this.state.columnWidth[child.props.dataKey],
+                cellDataGetter: function (cellDataKey, rowData) {
+                  return rowData.get(cellDataKey);
+                }
+              });
+            })}
+          </Table>
+        </div>
+      );
+    }else{
+      return null;
+    }
   }
 });
 

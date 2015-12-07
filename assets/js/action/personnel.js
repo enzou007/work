@@ -102,6 +102,19 @@ class Action {
 
     return promise;
   }
+  syncFetch(objectIds, cb){
+    $.ajax({
+      url: "1/system/user",
+      async: false,
+      headers: {
+        "Condition": JSON.stringify([["@objectId", "in", objectIds]])
+      },
+      success: (resp) => {
+        cb(resp);
+        this.mixinCache(resp);
+      }
+    });
+  }
   query(key, region, limit = 10) {
     return $.ajax({
       url: "1/system/user",

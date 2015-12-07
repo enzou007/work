@@ -1,14 +1,15 @@
 import React from "react";
 import _ from "underscore";
-import action from "../../../../action/orgFrame";
-import Dropdown from "../../../../component/bootstrap/Dropdown.jsx";
+import action from "Action/viewFrame";
+import Dropdown from "Component/bootstrap/Dropdown.jsx";
 
 let Create = React.createClass({
   createPersonnel() {
-    action.createPersonnel();
+    //action._activeDeptId 在view/container/OrgFrame/Sidebar.jsx changeOrgTree方法触发时写入值
+    window.open(action.getOption().formURL.personnel + (action._activeDeptId ? "&parent="+action._activeDeptId : ""));
   },
   createDepartment() {
-    action.createDepartment();
+    window.open(action.getOption().formURL.department + (action._activeDeptId ? "&parent="+action._activeDeptId : ""));
   },
   render() {
     return (

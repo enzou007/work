@@ -1,6 +1,10 @@
 function Paging(docs, page, count) {
   var result = {};
-
+  if(page == 0 && count == 0){
+    return {
+      json: docs
+    }
+  }
   page = page - 1;
 
   var len = docs.length;

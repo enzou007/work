@@ -1,3 +1,4 @@
+
 - request:
     url: /1/session/me
   response:
@@ -12,57 +13,83 @@
 - request:
     url: /1/system/module
   response:
-    status: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 200 : 401 %>"
-    file: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 'response/system/module/list.json' : 'response/empty.json' %>"
+    file: "response/system/module/list.json"
+    #status: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 200 : 401 %>"
+    #file: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 'response/system/module/list.json' : 'response/empty.json' %>"
 - request:
     url: /1/message/me
   response:
-    file: response/message/me.json
-- request:
-    url: /1/xwgg/tzgg
-    query:
-      count: 6
-  response:
-    file: response/module/xwgg/tzgg.json
-- request:
-    url: /1/xwgg/rsrm
-    query:
-      count: 6
-  response:
-    file: response/module/xwgg/rsrm.json
-- request:
-    url: /1/xwgg/zktd
-    query:
-      count: 4
-  response:
-    file: response/module/xwgg/zktd.json
-- request:
-    url: /1/cx/ybcx
-    query:
-      count: 5
-  response:
-    file: response/cx/ybcx.json
-- request:
-    url: /1/cx/wbcx
-    query:
-      count: 5
-  response:
-    file: response/cx/wbcx.json
-- request:
-    url: /1/cx/pfcx
-    query:
-      count: 5
-  response:
-    file: response/cx/pfcx.json
+    file: static/message/me.json
 - request:
     url: /1/system/module/:moduleId
   response:
     type: js
     file: response/system/module/module.js
+
+#首页信息读取 URL配置
 - request:
-    url: /1/system/user/@session
+    url: /1/xwgg/tzgg
+    query:
+      count: 6
   response:
-    file: response/session/me.json
+    file: static/home/tzgg.json
+- request:
+    url: /1/xwgg/rsrm
+    query:
+      count: 6
+  response:
+    file: static/home/rsrm.json
+- request:
+    url: /1/xwgg/zktd
+    query:
+      count: 4
+  response:
+    file: static/home/zktd.json
+- request:
+    url: /1/cx/ybcx
+    query:
+      count: 5
+  response:
+    file: static/home/ybcx.json
+- request:
+    url: /1/cx/wbcx
+    query:
+      count: 5
+  response:
+    file: static/home/wbcx.json
+- request:
+    url: /1/cx/pfcx
+    query:
+      count: 5
+  response:
+    file: static/home/pfcx.json
+
+# 获取流程 URL配置
+- request: #获取文档流程
+    url: /1/flow/:flowId/:objectId
+    method: GET
+  response:
+    type: js
+    file: response/module/flow/getDocFlow.js
+- request: #获取初始流程
+    url: /1/flow/:flowId
+    method: GET
+  response:
+    type: js
+    file: response/module/flow/getDefaultFlow.js
+- request: #获取文档流程
+    url: /1/flow/:flowId/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/flow/getNextNodes.js
+- request: #获取初始流程
+    url: /1/flow/:flowId
+    method: POST
+  response:
+    type: js
+    file: response/module/flow/getNextNodes.js
+# 部门和人员 查询
 - request:
     url: /1/system/user
   response:
@@ -78,310 +105,56 @@
     type: js
     file: response/system/department/departmentSearch.js
 
-# 新闻速递 URL配置
-- request:
-    url: /1/xwgg/xwsd/@session
+# 模块统一 URL配置 注:目前只适用于2段路径的模块
+- request:  #流程提交
+    url: /1/:path1/:path2/nextNode/:flowId/:objectId
+    method: POST
+  response:
+    type: js
+    file: response/module/updateDocument.js
+- request:  #新文档流程提交
+    url: /1/:path1/:path2/nextNode/:flowId
+    method: POST
+  response:
+    type: js
+    file: response/module/createDocument.js
+- request:  #文档唯一校验
+    url: /1/:path1/:path2/unique
+    method: GET
+  response:
+    type: js
+    file: response/module/uniqueDocument.js
+- request:  #获取当前用户信息
+    url: /1/:path1/:path2/@session
   response:
     file: response/session/me.json
-- request:
-    url: /1/xwgg/xwsd
+- request:  #删除文档
+    url: /1/:path1/:path2/delete
+    method: POST
+  response:
+    type: js
+    file: response/module/deleteDocument.js
+- request: #获取指定id的文档内容
+    url: /1/:path1/:path2/:objectId
     method: GET
   response:
     type: js
-    file: response/module/xwgg/xwsd/allDocument.js
-- request:
-    url: /1/xwgg/xwsd
+    file: response/module/getDocument.js
+- request: #更新指定id的文档内容
+    url: /1/:path1/:path2/:objectId
     method: POST
   response:
     type: js
-    file: response/module/xwgg/xwsd/createDocument.js
-- request:
-    url: /1/xwgg/xwsd/delete
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/entry/deleteDocument.js
-- request:
-    url: /1/xwgg/xwsd/:objectId
+    file: response/module/updateDocument.js
+- request: #获取文档列表
+    url: /1/:path1/:path2
     method: GET
   response:
     type: js
-    file: response/module/xwgg/xwsd/document.js
-- request:
-    url: /1/xwgg/xwsd/:objectId
+    file: response/module/allDocument.js
+- request: #创建新文档
+    url: /1/:path1/:path2
     method: POST
   response:
     type: js
-    file: response/module/xwgg/xwsd/updateDocument.js
-- request:
-    url: /1/xwgg/xwsd/nextNode/:flowId/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/xwgg/xwsd/updateDocument.js
-- request:
-    url: /1/xwgg/xwsd/nextNode/:flowId
-    method: POST
-  response:
-    type: js
-    file: response/module/xwgg/xwsd/createDocument.js
-
-# 入职申请 URL配置
-- request:
-    url: /1/hr/entry/@session
-  response:
-    file: response/session/me.json
-- request:
-    url: /1/hr/entry
-    method: GET
-  response:
-    type: js
-    file: response/module/hr/entry/allDocument.js
-- request:
-    url: /1/hr/entry
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/entry/createDocument.js
-- request:
-    url: /1/hr/entry/delete
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/entry/deleteDocument.js
-- request:
-    url: /1/hr/entry/:objectId
-    method: GET
-  response:
-    type: js
-    file: response/module/hr/entry/document.js
-- request:
-    url: /1/hr/entry/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/entry/updateDocument.js
-- request:
-    url: /1/hr/entry/nextNode/:flowId/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/entry/updateDocument.js
-- request:
-    url: /1/hr/entry/nextNode/:flowId
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/entry/createDocument.js
-
-# 请假申请 URL配置
-- request:
-    url: /1/hr/leave/@session
-  response:
-    file: response/session/me.json
-- request:
-    url: /1/hr/leave
-    method: GET
-  response:
-    type: js
-    file: response/module/hr/leave/allDocument.js
-- request:
-    url: /1/hr/leave
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/leave/createDocument.js
-- request:
-    url: /1/hr/leave/delete
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/leave/deleteDocument.js
-- request:
-    url: /1/hr/leave/:objectId
-    method: GET
-  response:
-    type: js
-    file: response/module/hr/leave/document.js
-- request:
-    url: /1/hr/leave/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/leave/updateDocument.js
-- request:
-    url: /1/hr/leave/nextNode/:flowId/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/leave/updateDocument.js
-- request:
-    url: /1/hr/leave/nextNode/:flowId
-    method: POST
-  response:
-    type: js
-    file: response/module/hr/leave/createDocument.js
-
-# 名片申请 URL配置
-- request:
-    url: /1/administrative/BusinessCard/@session
-  response:
-    file: response/session/me.json
-- request:
-    url: /1/administrative/BusinessCard
-    method: GET
-  response:
-    type: js
-    file: response/module/administrative/BusinessCard/allDocument.js
-- request:
-    url: /1/administrative/BusinessCard
-    method: POST
-  response:
-    type: js
-    file: response/module/administrative/BusinessCard/createDocument.js
-- request:
-    url: /1/administrative/BusinessCard/delete
-    method: POST
-  response:
-    type: js
-    file: response/module/administrative/BusinessCard/deleteDocument.js
-- request:
-    url: /1/administrative/BusinessCard/:objectId
-    method: GET
-  response:
-    type: js
-    file: response/module/administrative/BusinessCard/document.js
-- request:
-    url: /1/administrative/BusinessCard/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/administrative/BusinessCard/updateDocument.js
-- request:
-    url: /1/administrative/BusinessCard/nextNode/:flowId/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/administrative/BusinessCard/updateDocument.js
-- request:
-    url: /1/administrative/BusinessCard/nextNode/:flowId
-    method: POST
-  response:
-    type: js
-    file: response/module/administrative/BusinessCard/createDocument.js
-
-# 角色管理 URL配置
-- request:
-    url: /1/system/role/unique
-    method: GET
-  response:
-    type: js
-    file: response/module/system/role/uniqueDocument.js
-- request:
-    url: /1/system/role/@session
-  response:
-    file: response/session/me.json
-- request:
-    url: /1/system/role
-    method: GET
-  response:
-    type: js
-    file: response/module/system/role/allDocument.js
-- request:
-    url: /1/system/role
-    method: POST
-  response:
-    type: js
-    file: response/module/system/role/createDocument.js
-- request:
-    url: /1/system/role/delete
-    method: POST
-  response:
-    type: js
-    file: response/module/system/role/deleteDocument.js
-- request:
-    url: /1/system/role/:objectId
-    method: GET
-  response:
-    type: js
-    file: response/module/system/role/document.js
-- request:
-    url: /1/system/role/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/system/role/updateDocument.js
-    
-# 岗位管理 URL配置
-- request:
-    url: /1/system/position/unique
-    method: GET
-  response:
-    type: js
-    file: response/module/system/position/uniqueDocument.js
-- request:
-    url: /1/system/position/@session
-  response:
-    file: response/session/me.json
-- request:
-    url: /1/system/position
-    method: GET
-  response:
-    type: js
-    file: response/module/system/position/allDocument.js
-- request:
-    url: /1/system/position
-    method: POST
-  response:
-    type: js
-    file: response/module/system/position/createDocument.js
-- request:
-    url: /1/system/position/delete
-    method: POST
-  response:
-    type: js
-    file: response/module/system/position/deleteDocument.js
-- request:
-    url: /1/system/position/:objectId
-    method: GET
-  response:
-    type: js
-    file: response/module/system/position/document.js
-- request:
-    url: /1/system/position/:objectId
-    method: POST
-  response:
-    type: js
-    file: response/module/system/position/updateDocument.js
-
-
-
-# 新闻速递 URL配置
-- request:
-    url: /1/system/user/@session
-  response:
-    file: response/session/me.json
-- request:
-    url: /1/system/user/:objectId
-  response:
-    type: js
-    file: response/system/user/userSearch.js
-- request:
-    url: /1/system/department/:objectId
-  response:
-    type: js
-    file: response/system/department/departmentSearch.js
-
-# 流程 URL配置
-- request:
-    url: /1/flow/:flowId/:objectId
-    method: GET
-  response:
-    type: js
-    file: response/flow/FlowData.js
-- request:
-    url: /1/flow/:flowId
-    method: GET
-  response:
-    type: js
-    file: response/flow/FlowData.js
+    file: response/module/createDocument.js

@@ -1,146 +1,105 @@
+@defaultNodeHeight : 40px;
+@defaultNodeWidth : 140px;
+@StartAndEndNodeWidth : 70px;
+
+@nodebgColor: #cacdcf;
+@donebgColor: #8bc34a;
+@curbgColor: #129fea;
+@doneColor: #fff;
+
 .canvas {
   height: auto;
   min-height: 500px;
-  max-height: 768px;
+  //max-height: 768px;
   width: 100%;
-  border: 1px solid #ccc;
-  background-color: white;
   position: relative;
 }
-
 .form-content .canvas {
   border: 0;
 }
-
 .readonly {
   cursor: default !important;
-  * {
-    cursor: default !important;
-  }
 }
-
-._jsPlumb_connector {
-  z-index: 9;
+.readonly * {
+  cursor: default !important;
 }
-
-._jsPlumb_endpoint {
-  z-index: 12;
-  opacity: 0.8;
-  cursor: pointer;
-}
-
-._jsPlumb_overlay {
-  background-color: white;
-  color: #434343;
-  font-weight: 400;
-  padding: 4px;
-  z-index: 10;
-  display: none;
-}
-
-._jsPlumb_overlay._jsPlumb_hover {
-  color: #434343;
-}
-
 path {
   cursor: pointer;
 }
 
-.drop-hover {
-  background-color: #629f72 !important;
-  color: #fff !important;
-}
-
-.node {
-  background-color: #cacdcf;
-  color: #666;
-  border-radius: 14px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  font-size: 12px;
+.task {
   position: absolute;
   z-index: 11;
+  width: @defaultNodeWidth;
+  height: @defaultNodeHeight;
+  background-color: @nodebgColor;
+
+  padding: 0;
+  margin: 0 20px 20px 0;
   overflow: hidden;
-  min-width: 160px;
-  min-height: 50px;
-  width: auto;
-  text-align: center;
-  font-size: 16px;
-  font-family: 微软雅黑;
-  line-height: 45px;
-}
 
-.start, .end {
-  min-width: 80px;
-  min-height: 50px;
-}
-
-.done {
-  background-color: #8bc34a;
-  color: #fff;
-}
-
-.cur {
-  background-color: #129fea;
-  color: #fff;
-}
-
-.node .name, li.jsplumb-draggable {
-  background-color: #234b5e;
-  color: #f7ebca;
-  cursor: move;
-  font-size: 16px;
-  line-height: 24px;
-  padding: 6px;
-  text-align: center;
-}
-
-.node .ep {
-  width: 100%;
-  background-color: orange;
-  height: 10px;
-  cursor: pointer;
-}
-
-li.jsplumb-draggable {
-  min-width: 100px;
   border-radius: 14px;
-}
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 
-.node .name span {
-  cursor: pointer;
-}
+  font-size: 13px;
+  font-family: 微软雅黑;
+  color: #666;
+  text-align: center;
+  display: table;
+  cursor: move;
 
-.delete {
-  padding: 2px;
-  cursor: pointer;
-  float: left;
-  font-size: 10px;
-  line-height: 20px;
+  .task-name{
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+  }
+  .task-operate{
+    right: 5px;
+    top:0;
+    position: absolute;
+    width:16px;
+    height:100%;
+    display: none;
+    cursor: pointer;
+  }
+  &:hover .task-operate{
+    display: block;
+  }
 }
-
-.add, .edit {
-  cursor: pointer;
-  float: right;
-  font-size: 10px;
-  line-height: 20px;
-  margin-right: 2px;
-  padding: 2px;
+.start, .end {
+  width: @StartAndEndNodeWidth;
 }
-
-.edit:hover {
-  color: #ff8000;
+.decision{
+  background-color: transparent;
+  background-image:  url("../images/ling.png");
+  background-size: 100% 100%;
+  box-shadow: 0 0 0;
+  border-radius: 0;
+  // border-radius: 50px;
+  // width: 50px;
+  // height: 50px;
 }
-
-.selected-mode {
-  color: #e4f013;
+.decision.done{
+  background-color: transparent;
+  background-image:  url("../images/ling_done.png");
+  background-size: 100% 100%;
+  box-shadow: 0 0 0;
 }
-
-.connect {
-  width: 10px;
-  height: 10px;
-  background-color: #f76258;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+.done {
+  background-color: @donebgColor;
+  color: @doneColor;
+}
+.text {
+	background-color: transparent;
+	z-index: 12;
+	text-align: left;
+	width: auto;
+	border-radius: 0px;
+	box-shadow: 0px 0px 0px;
+	padding-right: 20px;
+}
+.cur {
+  background-color: @curbgColor;
+  color: @doneColor;
 }

@@ -40,7 +40,7 @@ const TimeLine = React.createClass({
         <tbody>
           { groupLogs.map(item => { return(
           <tr>
-            <td>{item.get("nodeName")}</td>
+            <td>{item.get("name")}</td>
             <td>{TimeLineItem.operates[item.get("operate")]}</td>
             <td>{item.get("time")}</td>
             <td>{item.get("user")}</td>

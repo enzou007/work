@@ -40,7 +40,6 @@ export default class Sidebar extends React.Component {
     }
   }
   render () {
-    console.log("render");
     return (
       <div>
         <div className="orgTree-header">

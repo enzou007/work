@@ -46,6 +46,7 @@ export default class FlowAction extends Action {
   bindFlow() {
     return $.get(`1/flow/${this.getFlowId()}`).done(resp => {
       this.getStore().cursor().get("flow").mergeDeep(resp);
+      this.getStore().cursor().get("form").set("@flowId", this.getFlowId());
       return resp;
     });
   }
@@ -62,10 +63,15 @@ export default class FlowAction extends Action {
       return resp;
     });
   }
-  preview() {
-    return $.post(`1/flow/${this.getFlowId()}/${this.getObjectId()}`, this.getStore().data().get("form").toJS()).done(resp => {
-      return resp;
-    });
+  preview(FlowControlType) {
+    return $.ajax({
+      url: `1/flow/${this.getFlowId()}/${this.getObjectId()}`,
+      type: "POST",
+      headers: {
+        "FlowControlType": FlowControlType
+      },
+      data: {content:JSON.stringify(this.getStore().data().get("form"))}
+    })
   }
   save(option) {
     return $.ajax({

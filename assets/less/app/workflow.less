@@ -1,41 +1,91 @@
 @sidebar_width : 150px;
+@nodeinfo_width : 450px;
+
+@marginTop: 47px;
+
+body{
+  background-image:  url("../../images/Flowbg.png");
+  background-color: #fff;
+}
 
 .workflow{
   background-color: white;
   position: relative;
-
-  .page-header{
-    margin: 0;
-  }
-
-  .wf_sidebar{
+  .wf-sidebar{
     width: @sidebar_width;
     height: 100%;
-    float: left;
-    position: relative;
     display: block;
     margin: 0;
     padding: 0;
     border-top: 0;
     border-bottom: 0;
-    top:0;
-    li a{
-      height: 30px;
-
-      // &:active{
-      //
-      //   background-color: white;
-      // }
+    position: fixed;
+    top:@marginTop;
+    left: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    li{
+      padding: 5px;
+    }
+    .divider{
+      padding: 0;
+    }
+    .wf-sidebar-item{
+      cursor: pointer;
+      &:hover{
+        background-color: #CACDCF;
+      }
     }
   }
 
-  .wf_content{
+  .wf-content{
     margin-left: @sidebar_width;
-    height: 100%;
+    margin-top: @marginTop;
+    height: 1pt;
     padding: 0;
     min-height: 100%;
     border-left: 1px dotted #E2E2E2;
-    background-image:  url("../../images/Flowbg.png");
 
+
+    -moz-transition:margin .3s ease-in;
+    -webkit-transition:margin .3s ease-in;
+    -o-transition:margin .3s ease-in;
+    -ms-transition:margin .3s ease-in;
+    transition:margin .3s ease-in;
+  }
+
+  .wf-info{
+    height: 100%;
+    width: 0;
+    float: right;
+    background-color: white;
+    position: fixed;
+    top: @marginTop;
+    right: 0;
+    z-index: 500;
+    -moz-transition:width .3s ease-in;
+    -webkit-transition:width .3s ease-in;
+    -o-transition:width .3s ease-in;
+    -ms-transition:width .3s ease-in;
+    transition:width .3s ease-in;
+    .wf-info-content{
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+
+  .page-content{
+    padding: 0;
+    margin: 0;
+  }
+
+  .show-node-info{
+    .wf-content{
+      margin-right: @nodeinfo_width;
+    }
+    .wf-info{
+      width: @nodeinfo_width;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
   }
 }

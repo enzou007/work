@@ -22,9 +22,15 @@ export default class Ueditor extends React.Component{
     this.ue = window.UE.getEditor('richtext_container', _.extend(this.props.options, {
       readonly: this.props.readOnly
     }));
+
     this.ue.ready(() => {
       this.ue.setContent(this.props.value, false);
       this.ue.setHeight(this.props.height);
+      if(this.props.readOnly){
+        $(".edui-editor-toolbarbox").hide();
+        $(".edui-editor-bottomContainer").hide();
+        $(".edui-editor").css("border","0");
+      }
     });
 
     if(this.props.onChange){
@@ -32,6 +38,16 @@ export default class Ueditor extends React.Component{
         this.props.onChange();
       })
     }
+  }
+  componentWillReceiveProps(newProps){
+    // if(newProps.readOnly !== this.props.readOnly){
+    //   if(newProps.readOnly){
+    //     this.ue.setDisabled();
+    //     $(".edui-editor-toolbarbox").hide();
+    //     $(".edui-editor-bottomContainer").hide();
+    //     $(".edui-editor").css("border","0");
+    //   }
+    // }
   }
   getValue(){
     return this.ue.getContent();

@@ -3,16 +3,16 @@ import $ from 'jquery';
 
 const TimeLineItem = React.createClass({
   propTypes: {
-    nodeName: React.PropTypes.string,
+    name: React.PropTypes.string,
     user: React.PropTypes.string,
     operate: React.PropTypes.string,
     time: React.PropTypes.string
   },
-  ellipsis(nodeName) {
-    if (nodeName.length > 4) {
-      return nodeName.substr(0, 4) + "...";
+  ellipsis(name) {
+    if (name.length > 4) {
+      return name.substr(0, 4) + "...";
     } else {
-      return nodeName;
+      return name;
     }
   },
   componentDidMount() {
@@ -45,7 +45,7 @@ const TimeLineItem = React.createClass({
   getDetailInfo(style, dropup) {
     let info = [];
     info.push(
-      <h3 className="popover-title">{this.props.nodeName}
+      <h3 className="popover-title">{this.props.name}
         <div className="tooltip-arrow"></div>
       </h3>
     );
@@ -91,7 +91,7 @@ const TimeLineItem = React.createClass({
         <div className="widget-box transparent">
           <div>
             <i className="fa fa-circle"></i>
-            {this.ellipsis(this.props.nodeName)}
+            {this.ellipsis(this.props.name)}
           </div>
           <div>
             <i className="fa fa-user"></i>

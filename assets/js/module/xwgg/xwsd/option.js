@@ -35,20 +35,20 @@ module.exports = BaseOption.extend({
     children: [{
       name: "草稿",
       condition: [
-        ["@CurNodeId", "eq", "Start"]
+        ["@curNodeId", "eq", "Start"]
       ]
     }, {
       name: "审批中",
       isDefault: true,
       column: baseColumns,
       condition: [
-        ["@CurNodeId", "neq", "Start"],
-        ["@CurNodeId", "neq", "End"]
+        ["@curNodeId", "neq", "Start"],
+        ["@curNodeId", "neq", "End"]
       ]
     }, {
       name: "已完结",
       condition: [
-        ["@CurNodeId", "eq", "End"]
+        ["@curNodeId", "eq", "End"]
       ]
     }]
   }, {

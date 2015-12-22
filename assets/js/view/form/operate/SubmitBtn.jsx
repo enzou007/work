@@ -26,11 +26,10 @@ const SubmitBtn = React.createClass({
 
   triggerClick() {
     if(this.props.action.validateAll()){
-      if (this.props.onBeforeSubmit("save") !== false) {
-        this.ModalBox = Modal.create(this.getSubmitBox(), {
-          id: "flowSubmitBox",
-          className: "flow"
-        });
+      if(this.props.onBeforeSubmit("save") !== false) {
+        this.props.action.preview("submit").done(data => {
+          this.showSubmitBox(data);
+        })
       }
     }
   },
@@ -42,8 +41,8 @@ const SubmitBtn = React.createClass({
       </button>
     );
   },
-  getSubmitBox() {
-    return (
+  showSubmitBox(nodes){
+    this.ModalBox = Modal.create((
       <div className="submitBox">
         <div className="title">
           流程流转</div>
@@ -52,7 +51,7 @@ const SubmitBtn = React.createClass({
           <div className="col-md-6 flownodes">
             <font>环节</font>
             <ul onClick={this.toggleItem}>
-              {this.getNextNodes()}
+              {this.renderNodeItem(nodes)}
             </ul>
           </div>
 
@@ -78,25 +77,23 @@ const SubmitBtn = React.createClass({
           </button>
         </div>
       </div>
-    )
+    ), {
+      id: "flowSubmitBox",
+      className: "flow"
+    });
   },
-  getNextNodes() {
-    let curNode = _.find(this.props.flow.nodes, node => node.cur);
-
-    let lines = _.filter(this.props.flow.lines, line => line.source === curNode.nodeId);
-
-    return _.map(lines, (line, index) => {
-      let node = _.find(this.props.flow.nodes, node => node.nodeId === line.target)
+  renderNodeItem(nodes) {
+    return _.map(nodes, (node, index) => {
       if (index !== 0) {
         return (
           <li >
-            <Radio defaultValue={node.nodeId} name="nodes">{node.nodeName}</Radio>
+            <Radio defaultValue={node.id} name="nodes">{node.name}</Radio>
           </li>
         );
       } else {
         return (
           <li className="active">
-            <Radio defaultChecked defaultValue={node.nodeId} name="nodes">{node.nodeName}</Radio>
+            <Radio defaultChecked defaultValue={node.id} name="nodes">{node.name}</Radio>
           </li>
         );
       }
@@ -125,7 +122,7 @@ const SubmitBtn = React.createClass({
     });
     let id = Gritter.add({
       title: '提示',
-      time: 1500,
+      time: 900000000,
       class_name: cn,
       after_close: () => {
         if (this.props.action.isNewNote()) {

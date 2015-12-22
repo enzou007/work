@@ -163,8 +163,8 @@ gulp.task("server:mock", ["webpack:server"], function() {
           extended: false
         }),
         bodyParser.json(),
-        apimock("./mocks/apimock.yml"),
-        FileUpLoader
+        FileUpLoader,
+        apimock("./mocks/apimock.yml")        
       ]
     }
   }, function(err) {

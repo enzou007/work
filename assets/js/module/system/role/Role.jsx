@@ -24,6 +24,7 @@ var RoleForm = React.createClass({
          type: "GET",
          url: url,
          async: false,
+         //data: {unique: [{key:"RoleID", value: value}]},
          data: {key:"RoleID", value: value},
          dataType: "json",
          success: function(result){

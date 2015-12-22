@@ -32,7 +32,7 @@ class RadioGroup extends RCTRadioGroup{
         props.value = item.$value;
         return (
           <Radio className="pull-left" key={i} onClick={this.handleChange.bind(this)} {...props}>
-            {item.$value}
+            {item.$text}
           </Radio>
         )
       });

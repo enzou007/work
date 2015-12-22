@@ -1,20 +1,25 @@
 import React from 'react';
 import FlowNode from './FlowNode.jsx';
-import $ from 'jquery';
-import _ from 'underscore';
-import Scrollbar from 'Component/Scrollbar.jsx'
 
 import 'jsplumb/dist/js/dom.jsPlumb-1.7.6.js';
-import '../../../../less/flowmap.less';
+import 'Less/flowmap.less';
 import 'jsplumb/css/jsPlumbToolkit-defaults.css';
 
 import config from './flowMapConfig.js';
+window.FP = config
 
 const FlowMap = React.createClass({
+  propTypes: {
+    readonly: React.PropTypes.bool
+  },
+  _flowMap: null,
+  _conns: [],
   getDefaultProps() {
     return {
       readonly: true,
-      flow: null
+      flow: null,
+      onDrop: function() {},
+      onDragOver: function() {}
     };
   },
   getInitialState() {
@@ -22,93 +27,152 @@ const FlowMap = React.createClass({
       flow: this.props.flow
     };
   },
-// shouldComponentUpdate: function (nextProps, nextState) {
-//   return nextState.flow.nodes.length != this.state.flow.nodes.length;
-// },
-  propTypes: {
-    readonly: React.PropTypes.bool
+  componentDidMount() {
+    this.initFlow();
+    window.FM = this;
   },
-  addNodeItem(item) {
+  componentWillReceiveProps(nextProps) {
+
+    let nodeCount = this.state.flow.count();
     this.setState({
-      nodes: this.state.flow.get("nodes").push(item)
-    })
-  },
-  draggable() {
-    if (!this.props.readonly) {
-      this.flowMap.draggable(jsPlumb.getSelector(".canvas .node"));
-    }
+      flow: nextProps.flow
+    }, () => {
+      if(nodeCount === 0){
+        this.initFlow()
+      }else if(nodeCount > nextProps.flow.count()){
+
+      }else if(nodeCount !== nextProps.flow.count()){
+        this.draggable();
+        this.buildNodes();
+      }
+    });
   },
   render() {
     return (
-      <Scrollbar style={{height:"400px", width:"100%"}} className="ex2" autoshow={true}>
-        <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas">
-          {
-            this.state.flow.get("nodes").map(node => {
-              return <FlowNode key={node.get("nodeId")} {...node.toJS()}/>
-            })
-          }
-        </div>
-      </Scrollbar>
+      <div className={"canvas" + (this.props.readonly?" readonly":"")} id="canvas"
+        onDrop={this.props.onDrop} onDragOver={this.props.onDragOver} onClick={this.nodeClick.bind(this, "__flow")}>
+        {
+          this.state.flow.map(node => {
+            return <FlowNode key={node.get("unid")} onNodeClick={this.nodeClick} readOnly={this.props.readonly} onRemoveNode={this.removeNode} {...node.toJS()}/>
+          })
+        }
+      </div>
     );
   },
-  componentDidMount() {
-    _.defer(() => {
-      this.initFlow();
+  getValue(nodesMap){
+    return this.state.flow.map(node => {
+      let unid = node.get("unid");
+      let flowNode = document.getElementById(unid);
+      let endpoints = this._flowMap.getEndpoints(unid);
+      let chlidrenNodes = [],
+          parentNodes = [];
+      if(endpoints){
+        for(var i = 0; i < endpoints.length; i++){
+          let conn = endpoints[i].connections[0];
+          if(conn.sourceId === unid){
+            chlidrenNodes.push(nodesMap[conn.targetId]);
+          }else{
+            parentNodes.push(nodesMap[conn.sourceId]);
+          }
+        }
+      }
+      return {
+        unid: unid,
+        parent: parentNodes,
+        x: flowNode.style.left,
+        y: flowNode.style.top
+      }
     });
   },
   initFlow() {
-    /*延迟执行 所以不用写在jsPlumb.ready里面 还可提高执行效率 */
-    var flowMap = this.flowMap = window.flowMap = jsPlumb.getInstance(config.instance);
-
+    if(!this._flowMap){
+      this._flowMap = jsPlumb.getInstance(config.instance);
+    }
+    this.draggable();
     this.buildNodes();
     this.buildLines();
-    this.draggable();
+    this.buildEvents();
+  },
+  nodeClick(unid, nodeId){
+    if(this.props.onNodeClick){
+      this.props.onNodeClick(unid, nodeId)
+    }
+  },
+  removeNode(unid, nodeId){
+    this.setState({
+      flow: this.state.flow.delete(this.state.flow.findIndex(item => {return item.get("unid") === unid}))
+    }, () => {
+      this._flowMap.remove(unid);
+      if(this.props.onRemoveNode){
+        this.props.onRemoveNode(unid, nodeId);
+      }
+    });
+  },
+  draggable() {
+    if (!this.props.readonly) {
+      this._flowMap.draggable(jsPlumb.getSelector(".canvas .task"));
+    }
+  },
+  buildEvents() {
+    if (!this.props.readonly) {
+      this._flowMap.bind("dblclick", (conn, originalEvent) => {
+        this._flowMap.detach(conn);
+      });
 
-    // ???
-    jsPlumb.fire("jsPlumbDemoLoaded", flowMap);
+      this._flowMap.bind("beforeDrop", (conn, originalEvent) => {
+        let endpoints = this._flowMap.getEndpoints(conn.sourceId);
+        let count = 1;
+        if(endpoints){
+          for(var i = 0; i < endpoints.length; i++){
+            if(endpoints[i].connections[0].targetId === conn.targetId){
+              if(count > 1){
+                return false;
+              }
+              count++;
+            }
+          }
+        }
+        return true;
+      });
+      this._flowMap.bind("connection", (conn, originalEvent) => {
+
+
+      });
+    }
   },
   buildNodes(nodes) {
-    var toId = "";
-    var nodeConfig;
-
-    this.state.flow.get("nodes").forEach(node => {
-      toId = node.get("nodeId");
-      node.readonly
-      nodeConfig = config.getEndpointStyle(node.toJS(), {
-        readonly: this.props.readonly
+    if(this.state.flow.count() > 0){
+      this.state.flow.forEach(node => {
+        let flowNode = document.getElementById(node.get("unid"));
+        this._flowMap.makeSource(flowNode, config.source);
       });
-      _.each(config.anchors, anchor => {
-        var sourceUUID = toId + anchor;
-        this.flowMap.addEndpoint(toId, nodeConfig, {
-          anchor: anchor,
-          uuid: sourceUUID
-        });
-      })
-    })
+      this._flowMap.makeTarget(jsPlumb.getSelector(".canvas .task"), config.target);
+    }
   },
   buildLines(lines) {
-    this.state.flow.get("lines").forEach(line => {
-      this.flowMap.connect({
-        source: line.get("source"),
-        target: line.get("target"),
-        anchors: line.get("connect").toArray(),
-        paintStyle: {
-          strokeStyle: (line.get("flowPast") ? "#8BC34A" : "#CACDCF"),
-          lineWidth: 3
-        },
-        endpoints: [
-          "Blank", "Blank"
-        ],
-        connector: [
-          "Flowchart", {
-            stub: [40, 60],
-            gap: 10,
-            cornerRadius: 5,
-            alwaysRespectStubs: true
+    this._flowMap.detachEveryConnection();
+    this.state.flow.forEach(node => {
+      if(node.get("parent")){
+        node.get("parent").forEach(id => {
+          let parentNode = this.state.flow.find(pnode => {
+            return pnode.get("id") === id;
+          });
+          let lineColor = config.defaultLineColor;
+          if(parentNode.get("done") && (node.get("done") || node.get("cur"))){
+            lineColor = config.doneLineColor;
           }
-        ]
-      })
-    })
+          this._flowMap.connect({
+              source: parentNode.get("unid"),
+              target: node.get("unid"),
+              paintStyle: {
+                lineWidth: 3,
+                strokeStyle: lineColor,
+                joinstyle: "round"
+              }
+          });
+        });
+      }
+    });
   }
 });
 

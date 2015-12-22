@@ -24,10 +24,9 @@ const RejectBtn = React.createClass({
   },
   triggerClick() {
     if (this.props.onBeforeSubmit("reject") !== false) {
-      this.ModalBox = Modal.create(this.getSubmitBox(), {
-        id: "flowSubmitBox",
-        className: "flow"
-      });
+      this.props.action.preview("reject").done(data => {
+        this.showSubmitBox(data);
+      })
     }
   },
   render() {
@@ -38,8 +37,8 @@ const RejectBtn = React.createClass({
       </button>
     );
   },
-  getSubmitBox() {
-    return (
+  showSubmitBox(nodes){
+    this.ModalBox = Modal.create((
       <div className="submitBox">
         <div className="title">
           流程流转</div>
@@ -48,7 +47,7 @@ const RejectBtn = React.createClass({
           <div className="col-md-6 flownodes">
             <font>环节</font>
             <ul onClick={this.toggleItem}>
-              {this.getNextNodes()}
+              {this.renderNodeItem(nodes)}
             </ul>
           </div>
 
@@ -74,22 +73,23 @@ const RejectBtn = React.createClass({
           </button>
         </div>
       </div>
-    )
+    ), {
+      id: "flowSubmitBox",
+      className: "flow"
+    });
   },
-  getNextNodes() {
-    var nodes = _.filter(this.props.flow.nodes, node => node.done);
-
+  renderNodeItem(nodes) {
     return _.map(nodes, (node, index) => {
       if (index !== 0) {
         return (
           <li>
-            <Radio defaultValue={node.nodeId} name="nodes">{node.nodeName}</Radio>
+            <Radio defaultValue={node.id} name="nodes">{node.name}</Radio>
           </li>
         );
       } else {
         return (
           <li className="active">
-            <Radio defaultChecked defaultValue={node.nodeId} name="nodes">{node.nodeName}</Radio>
+            <Radio defaultChecked defaultValue={node.id} name="nodes">{node.name}</Radio>
           </li>
         );
       }

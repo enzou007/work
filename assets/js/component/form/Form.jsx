@@ -31,6 +31,7 @@ export default class Form extends React.Component {
   }
   static defaultProps = {
     layout: 'inline',
+    locked: true,
     responsive: {
       lg: 12,
       xl: 8
@@ -86,15 +87,15 @@ export default class Form extends React.Component {
     return this.refs[name];
   }
   handleSubmit = (event) => {
+    event.preventDefault();
     if (this.state.locked) {
       return;
     }
-
-    event.preventDefault();
-
-    this.setState({
-      locked: true
-    });
+    if(this.props.locked){
+      this.setState({
+        locked: true
+      });
+    }
 
     let success = this.props.channel.validateAll();
     if(success && this.props.onBeforeSubmit){
@@ -110,7 +111,7 @@ export default class Form extends React.Component {
     }
 
     if(this.props.onSubmit){
-      this.props.onSubmit();
+      this.props.onSubmit(event);
     }
   }
   render() {

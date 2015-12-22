@@ -38,7 +38,7 @@ function Uploader(req, res, next) {
       res.statusCode = "200";
       result.originPath = filePath.replace("build", "");
       res.end(JSON.stringify(result));
-      next();
+      //next();
     });
   }else if(_url.indexOf("/1/system/richtextserver") > -1){
     //文本编辑器内附件处理
@@ -84,7 +84,7 @@ function Uploader(req, res, next) {
     res.setHeader("Content-Type", "application/json; charset=utf-8");
     res.statusCode = "200";
     res.end(JSON.stringify(result));
-    next()
+    //next()
   }else if(_url.indexOf("atts") > -1){
     //atts目录下文件请求设置为文件下载, atts/ueditor目录除外.
     if(_url.indexOf("atts/ueditor") === -1){
@@ -120,7 +120,7 @@ function saveFile(action, req, res, cb) {
       size: file.size
     };
     res.end(JSON.stringify(result));
-    cb();
+    //cb();
   });
 
 }

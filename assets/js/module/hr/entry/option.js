@@ -12,9 +12,9 @@ module.exports = BaseOption.extend({
     name: "按状态检索",
     ico: "fa fa-reorder",
     children: [
-      {name: "草稿",   column: Config.view.draft, condition: [["@CurNodeId", "eq", "StartNode"]]},
-      {name: "审批中", column: Config.view.doing, isDefault: true, condition: [["@CurNodeId", "neq", "StartNode"],["@CurNodeId", "neq", "EndNode"]]},
-      {name: "已完结", column: Config.view.done, condition: [["@CurNodeId", "eq", "EndNode"]]},
+      {name: "草稿",   column: Config.view.draft, condition: [["@curNodeId", "eq", "Start"]]},
+      {name: "审批中", column: Config.view.doing, isDefault: true, condition: [["@curNodeId", "neq", "Start"],["@curNodeId", "neq", "End"]]},
+      {name: "已完结", column: Config.view.done, condition: [["@curNodeId", "eq", "End"]]},
       {name: "所有申请", column: Config.view.all}
     ]
   }, {

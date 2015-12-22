@@ -23,53 +23,27 @@ const appType = [{
 const whether = [{id: "yes", text: "是"},{id: "no", text: "否"}]
 
 export default class FlowNodeInfo extends React.Component{
-  componentDidMount() {
-    console.log(1111);
+  state = {
+    appList: []
   }
   componentWillMount() {
-    this._appList = [{
-      "ico": "fa fa-list",
-      "parent": "人事管理",
-      "objectId": "5582272444ae2b5937e53909",
-      "sort": 0,
-      "name": "入职申请",
-      "path": "hr/entry"
-    },{
-      "ico": "fa fa-list",
-      "parent": "人事管理",
-      "objectId": "5582272444ae2b5937e5390801",
-      "sort": 0,
-      "name": "请假申请",
-      "path": "hr/leave"
-    },{
-      "ico": "fa fa-list",
-      "parent": "行政管理",
-      "objectId": "5582272444ae2b5937ssw32d301",
-      "sort": 0,
-      "name": "名片申请",
-      "path": "administrative/BusinessCard"
-    },{
-      "ico": "fa fa-list",
-      "objectId": "5582272444ae2b5937e53911",
-      "sort": 1,
-      "name": "新闻速递",
-      "parent": "新闻公告",
-      "path": "xwgg/xwsd"
-    }]
-
-    // $.get("/1/system/module", data => {
-    //   let parentMap = {};
-    //   _.each(data, mdl => {
-    //     if(mdl.path.indexOf("system") === -1){
-    //       if(mdl.parent){
-    //         mdl.parent = parentMap[mdl.parent];
-    //         this._appList.push(mdl);
-    //       }else{
-    //         parentMap[mdl.objectId] = mdl.name;
-    //       }
-    //     }
-    //   })
-    // })
+    $.get("/1/system/module", data => {
+      let parentMap = {};
+      let appList = [];
+      _.each(data, mdl => {
+        if(mdl.path.indexOf("system") === -1){
+          if(mdl.parent){
+            mdl.parent = parentMap[mdl.parent];
+            appList.push(mdl);
+          }else{
+            parentMap[mdl.objectId] = mdl.name;
+          }
+        }
+      });
+      this.setState({
+        appList
+      })
+    })
   }
   render () {
     return (
@@ -97,7 +71,7 @@ export default class FlowNodeInfo extends React.Component{
       <div>
         <FormControl label="流程编号" name="@objectId" type="text" readOnly={true}/>
         <FormControl label="流程名称" name="name" type="text"/>
-        <FormControl label="应用" name="appId" type="select" data={this._appList} groupBy="parent"
+        <FormControl label="应用" name="appId" type="select" data={this.state.appList} groupBy="parent"
           filterAble={true} optionTpl='<i class="{ico}"></i>  {name}-{path}' resultTpl="{name}" valueTpl="{objectId}"/>
         <FormControl label="是否启用" name="enabled" type="radio-group" data={whether} value="yes"/>
         <FormControl label="创建人" name="createPsn" type="text" readOnly={true}/>

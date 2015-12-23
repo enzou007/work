@@ -18,16 +18,16 @@ const appType = [{
 }, {
   id: "sq",
   text: "顺签"
-}]
+}];
 
-const whether = [{id: "yes", text: "是"},{id: "no", text: "否"}]
+const whether = [{id: "yes", text: "是"},{id: "no", text: "否"}];
 
 export default class FlowNodeInfo extends React.Component{
   state = {
     appList: []
   }
   componentWillMount() {
-    $.get("/1/system/module", data => {
+    this.props.channel.getModuleList().done(data => {
       let parentMap = {};
       let appList = [];
       _.each(data, mdl => {
@@ -45,19 +45,24 @@ export default class FlowNodeInfo extends React.Component{
       })
     })
   }
+  handleSubmit(event){
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.onSubmit()
+  }
   render () {
     return (
-      <Form layout="aligned" responsive={{xl:23}} form="" locked={false} channel={this.props.channel} store={this.props.store.data()}>
+      <Form  hintType="pop" layout="aligned" responsive={{xl:23}} form="" locked={false} channel={this.props.channel} store={this.props.store}>
         { this.getForm() }
         <div className="modal-footer">
           <button type="button" className="btn btn-default btn-sm" onClick={this.props.onClose}>取消</button>
-          <button type="button" className="btn btn-primary btn-sm" onClick={this.props.onSubmit}>确定</button>
+          <button type="button" className="btn btn-primary btn-sm" onClick={this.handleSubmit.bind(this)}>确定</button>
         </div>
       </Form>
     );
   }
   getForm(){
-    switch(this.props.store.data().get("@type")){
+    switch(this.props.store.get("@type")){
       case "start": return this.getStartForm();
       case "text": return this.getTextForm();
       case "decision": return this.getDecisionForm();

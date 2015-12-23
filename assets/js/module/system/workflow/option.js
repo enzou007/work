@@ -15,7 +15,7 @@ module.exports = BaseOption.extend({
       name: "流程列表",
       column:[
         {label: "流程名称", dataKey: "name", width: "50%"},
-        {label: "流程编号", dataKey: "id", width: "50%"}
+        {label: "流程编号", dataKey: "@objectId", width: "50%"}
       ]
     }]
 

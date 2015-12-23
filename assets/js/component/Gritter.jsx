@@ -3,7 +3,7 @@
 var React = require("react"),
   _ = require("underscore"),
   $ = require("gritter");
-
+import classnames from 'classnames';
 require("gritter/css/jquery.gritter.css");
 require("../../less/component/gritter.less");
 
@@ -34,5 +34,27 @@ Gritter.remove = function (id, params) {
 Gritter.removeAll = function (params) {
   $.gritter.removeAll(params);
 };
+
+Gritter.show = function(text, status, cb){
+  let cn = classnames({
+    "gritter-light": true,
+    "gritter-success": status === "y",
+    "gritter-error": status === "n"
+  });
+  let id = Gritter.add({
+    title: '提示',
+    time: 1500,
+    class_name: cn,
+    after_close: cb,
+    text: (
+      <div>
+        <h5>{text}</h5>
+        <div style={{textAlign: "right"}}>
+          <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id)}>确定</a>
+        </div>
+      </div>
+    )
+  })
+}
 
 module.exports = Gritter;

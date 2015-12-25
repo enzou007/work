@@ -5,7 +5,7 @@ import Gritter from 'Component/Gritter.jsx';
 
 var WebUploader = require("fex-webuploader/src/preset/withoutimage");
 
-import '../../../less/component/fileup.less';
+import 'Less/component/fileup.less';
 //TODO this.state.files待优化!
 //TODO 实现提交未上传完成校验,
 export default class FileUp extends React.Component {
@@ -56,14 +56,13 @@ export default class FileUp extends React.Component {
   totalSize = 0.0
   uploaderSize = 0.0
   initUploader(){
-    this.uploader = WebUploader.create(_.extend(this.props.options, {
+      this.uploader = WebUploader.create(_.extend(this.props.options, {
       pick: {
         id: this.refs.picker.getDOMNode()
       },
       server: "1/system/fileSystemServer/",
       method: "POST",
-      fileVal: "file",
-      auto: true
+      fileVal: "file"
     }));
     //this.uploader.isInProgress()
     this.uploader.on("fileQueued", file => {
@@ -91,9 +90,7 @@ export default class FileUp extends React.Component {
         files: this.state.files
       });
       this.uploaderSize += file.size;
-      if(this.props.onChange){
-        this.props.onChange();
-      }
+
       this.Alert("[" + file.name + "] 上传成功!");
     });
 
@@ -103,9 +100,14 @@ export default class FileUp extends React.Component {
 
     this.uploader.on("uploadFinished", () => {
       this.setState({ progress: 1 }, () => {
-        setTimeout(() => this.setState({
-          showProgress: false
-        }), 1000)
+          setTimeout(() => {
+            this.setState({
+            showProgress: false
+          })
+          if(this.props.onChange){
+            this.props.onChange();
+          }
+        }, 1000)
       });
     })
   }
@@ -117,11 +119,13 @@ export default class FileUp extends React.Component {
   getValue(){
     let rst = [];
     _.map(this.state.files, (file) => {
-      rst.push({
-        originPath: file.originPath,
-        _guid: file._guid,
-        name: file.name
-      });
+      if(file.originPath){
+        rst.push({
+          originPath: file.originPath,
+          _guid: file._guid,
+          name: file.name
+        });
+      }
     })
     return rst;
   }
@@ -136,16 +140,17 @@ export default class FileUp extends React.Component {
   }
 
   removeFile(file, index){
-    if(!file.originPath){
+    delete this.state.files[file._guid];
+    this.setState({files: this.state.files});
+    if(file.originPath){
+      if(this.props.onChange){
+        this.props.onChange();
+      }
+    }else{
       this.totalSize -= file.size;
       this.uploader.removeFile(file, true);
     }
     // TODO 删除服务器的附件
-    delete this.state.files[file._guid];
-    this.setState({files: this.state.files});
-    if(this.props.onChange){
-      this.props.onChange();
-    }
   }
 
   getFileList() {
@@ -171,8 +176,8 @@ export default class FileUp extends React.Component {
             <div className="progress-bar progress-bar-success" style={{width: (+this.state.progress * 100) + "%"}}></div>
           </div>: null),
           <div className="file-operates">
-            <div className="operate-item" ref="picker"><i className="fa fa-plus"></i>添加</div>
-            <div className="operate-item"><i className="fa fa-save"></i>上传</div>
+            <div className="operate-item add" ref="picker" id="picker"><i className="fa fa-plus"></i>添加</div>
+            <div className="operate-item upload" onClick={this.upload.bind(this)}><i className="fa fa-save"></i>上传</div>
           </div>]
         }
         <div className="file-list">
@@ -181,7 +186,11 @@ export default class FileUp extends React.Component {
       </div>
     );
   }
-
+  upload(){
+    if(this.totalSize > 0){
+      this.uploader.upload()
+    }
+  }
   Alert(text, result = "succeed"){
     let id = Gritter.add({
       title: '提示',

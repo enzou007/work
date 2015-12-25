@@ -13,11 +13,23 @@
 
 	.operate-item{
 		border: 1px solid #dadcda;
-		padding: 3px 5px;
 		margin-right: 5px;
+		width: 50px !important;
+		height: 29px !important;
+		padding: 3px 5px;
 		float: left;
 		cursor: pointer;
 	}
+
+	.operate-item.add{
+		padding: 0;
+		&>div{
+			width: 50px !important;
+			height: 29px !important;
+			padding: 3px 5px;
+		}
+	}
+
 }
 
 .file-list{

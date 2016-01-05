@@ -12,11 +12,11 @@ module.exports = function (data) {
 
   var result = {status: 200, json: {info: "OK"}};
   try {
-    docs.deleteByObject(data.body.objectIds);
+    docs.deleteByObjectId(data.body.objectIds);
     docs.save();
   } catch (e) {
     result.status = 500;
-    result.json.info = e;
+    result.json.info = e.toString();
   }
 
   return result;

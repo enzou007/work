@@ -64,7 +64,7 @@ class Action extends FormAction{
   }
 
   getModuleList(){
-    return $.get("/1/system/module");
+    return $.get("/1/system/module")
   }
   addNode(type, x, y){
     let newNode = this.getDefaultNode(type, x, y);
@@ -86,6 +86,10 @@ class Action extends FormAction{
         id = this.getNewNodeId();
         unid = "NODE_UNID_"+new Date().getTime();
         name = "条件";
+        break;
+      case "text":
+        id = unid = "NODE_UNID_"+new Date().getTime();
+        name = "描述信息";
         break;
       default:
         id = this.getNewNodeId();
@@ -164,8 +168,10 @@ class Action extends FormAction{
   getNewNodeId(){
     let ids = [];
     this.getStore().data().get("flow").get("nodes").forEach(node => {
-      if((/\d/).test(node.get("id"))){
-        ids.push(+node.get("id").replace(/\D/g, ""))
+      if(node["@type"] !== "text"){
+        if((/\d/).test(node.get("id"))){
+          ids.push(+node.get("id").replace(/\D/g, ""))
+        }
       }
     })
     if(ids.length === 0){

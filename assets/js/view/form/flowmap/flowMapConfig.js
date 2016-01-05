@@ -6,7 +6,7 @@ import _ from 'underscore';
 class Config{
   defaultLineColor = "#CACDCF"
   doneLineColor = "#8BC34A"
-  
+
   connectorPaintStyle = {
       lineWidth:3,
       strokeStyle: "#CACDCF",//"#49afcd",
@@ -20,8 +20,8 @@ class Config{
   instance = {
     Container: "canvas",
     DragOptions : { cursor: 'pointer'},
-    EndpointStyle : { fillStyle:'#CACDCF' },
-    Endpoint : [ "Dot", {radius:1} ],
+    EndpointStyle : { fillStyle:'red' },
+    Endpoint : [ "Dot", {radius:10} ],
     ConnectionOverlays : [
         [ "Arrow", { location:1 } ],
         [ "Label", {
@@ -30,14 +30,15 @@ class Config{
                 cssClass:"aLabel"
             }]
     ],
-    Anchor : 'Continuous',
+    Anchor : ["Continuous","TopCenter", "BottomCenter", "LeftMiddle", "RightMiddle"],
     ConnectorZIndex:5,
+    PaintStyle: this.connectorPaintStyle
     //HoverPaintStyle: this.connectorHoverStyle
   };
 
   source = {
       filter: ".flow-anchor",
-      anchor: "Continuous",
+      anchor: ["Continuous","TopCenter", "BottomCenter", "LeftMiddle", "RightMiddle"],
       endpoint:[ "Dot", { radius:1 } ],
       connector:[ "Flowchart", { stub:[5, 5] } ],
       //connectorStyle: this.connectorPaintStyle,
@@ -48,7 +49,7 @@ class Config{
 
   target = {
       dropOptions:{ hoverClass:"hover", activeClass:"active" },
-      anchor:"Continuous",
+      anchor:["Continuous","TopCenter", "BottomCenter", "LeftMiddle", "RightMiddle"],
       maxConnections:-1,
       endpoint:[ "Dot", { radius:1 } ],
       //paintStyle:{ fillStyle:"#CACDCF",radius:1 },

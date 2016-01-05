@@ -80,7 +80,7 @@ const TimeLineItem = React.createClass({
     React.unmountComponentAtNode(document.getElementById("timeline-detail-info"));
     $("#timeline-detail-info").remove();
   },
-  render() {
+  render() {    
     return (
       <div className="timeline-item clearfix">
         <div className={"timeline-info " + this.props.operate}>

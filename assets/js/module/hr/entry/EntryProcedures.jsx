@@ -52,7 +52,7 @@ var NoteForm = React.createClass({
 
   },
   beforeSubmit: function () {
-    
+
   },
   afterSubmit: function () {
 
@@ -91,11 +91,13 @@ var NoteForm = React.createClass({
           <Fieldset title="IT信息" readOnly={this.state.readonly}>
             <FormControl label="公司座机" name="ComTel" type="text" responsive={{xl: 12}}/>
             <FormControl label="公司邮箱" name="ComEmail" type="email" responsive={{xl: 12}}/>
+              <FormControl label="部门负责人" name="DeptLeaderss" type="personnel" mult={true} responsive={{xl: 24}}/>  
           </Fieldset>
 
-          <Fieldset title="附件">
-            <FormControl label="附件" options={AttOptions} name="fileTest" type="file" readOnly={this.state.readonly} responsive={{xl: 24}}/>
-          </Fieldset>
+        </div>
+        <div className="form-content" tab="附件">
+
+          <FormControl label="附件" options={AttOptions} name="fileTest" type="file" readOnly={this.state.readonly} responsive={{xl: 24}}/>
         </div>
         <div className="form-content" tab="正文">
           <FormControl name="RichText_Test" type="ueditor" readOnly={this.state.readonly} responsive={{xl: 24}}/>

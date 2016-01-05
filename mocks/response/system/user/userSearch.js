@@ -66,7 +66,7 @@ module.exports = function (data) {
 
   result.json = _.map(result.json, function (item) {
     item.departments = [_.findWhere(departments, {
-      objectId: item.departmentId
+      "@objectId": item.departmentId
     })];
 
     return item;

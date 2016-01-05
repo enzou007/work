@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 import FlowNode from './FlowNode.jsx';
 
 import 'jsplumb/dist/js/dom.jsPlumb-1.7.6.js';
@@ -7,7 +8,7 @@ import 'jsplumb/css/jsPlumbToolkit-defaults.css';
 
 import config from './flowMapConfig.js';
 window.FP = config
-
+window.$ = $;
 const FlowMap = React.createClass({
   propTypes: {
     readonly: React.PropTypes.bool
@@ -78,7 +79,7 @@ const FlowMap = React.createClass({
       }
       return {
         unid: unid,
-        parent: parentNodes,
+        outputs: chlidrenNodes,
         x: flowNode.style.left,
         y: flowNode.style.top
       }
@@ -97,6 +98,8 @@ const FlowMap = React.createClass({
     if(this.props.onNodeClick){
       this.props.onNodeClick(unid, nodeId)
     }
+    $(".canvas .task").removeClass("active");
+    $("#"+unid).addClass("active");
   },
   removeNode(unid, nodeId){
     this.setState({
@@ -138,7 +141,33 @@ const FlowMap = React.createClass({
 
 
       });
-    }
+    //   $(document).off("keydown.flowMap")
+    //   $(document).on("keydown.flowMap", function(event){
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     var $curNode = window.cn = $(".canvas .task.active");
+    //     if($curNode.length === 0){
+    //       return false;
+    //     }
+    //     var top = $curNode.css("top").replace("px","");
+    //     var left = $curNode.css("left").replace("px","");
+    //     switch (event.keyCode) {
+    //       case 37:
+    //         $curNode.css("left", +left - 1 + "px")
+    //         break;
+    //       case 38:
+    //         $curNode.css("top", +top - 1 + "px")
+    //         break;
+    //       case 39:
+    //         $curNode.css("left", +left + 1 + "px");
+    //         break;
+    //       case 40:
+    //         $curNode.css("top", +top + 1 + "px")
+    //         break;
+    //     }
+    //     $curNode.trigger("dragover")
+    //   })
+     }
   },
   buildNodes(nodes) {
     if(this.state.flow.count() > 0){
@@ -149,30 +178,42 @@ const FlowMap = React.createClass({
       this._flowMap.makeTarget(jsPlumb.getSelector(".canvas .task"), config.target);
     }
   },
-  buildLines(lines) {
+  buildLines() {
     this._flowMap.detachEveryConnection();
+    let lines = [];
     this.state.flow.forEach(node => {
-      if(node.get("parent")){
-        node.get("parent").forEach(id => {
-          let parentNode = this.state.flow.find(pnode => {
-            return pnode.get("id") === id;
+      if(node.get("outputs")){
+        node.get("outputs").forEach(id => {
+          let chlidNode = this.state.flow.find(cnode => {
+            return cnode.get("id") === id;
           });
-          let lineColor = config.defaultLineColor;
-          if(parentNode.get("done") && (node.get("done") || node.get("cur"))){
-            lineColor = config.doneLineColor;
-          }
-          this._flowMap.connect({
-              source: parentNode.get("unid"),
-              target: node.get("unid"),
+          if(node.get("done") && (chlidNode.get("done") || chlidNode.get("cur"))){
+            lines.push({
+              source: node.get("unid"),
+              target: chlidNode.get("unid"),
               paintStyle: {
                 lineWidth: 3,
-                strokeStyle: lineColor,
+                strokeStyle: config.doneLineColor,
                 joinstyle: "round"
               }
-          });
+            });
+          }else{
+            this._flowMap.connect({
+                source: node.get("unid"),
+                target: chlidNode.get("unid"),
+                paintStyle: {
+                  lineWidth: 3,
+                  strokeStyle: config.defaultLineColor,
+                  joinstyle: "round"
+                }
+            });
+          }
         });
       }
     });
+    for(let i = 0; i < lines.length; i++){
+      this._flowMap.connect(lines[i]);
+    }
   }
 });
 

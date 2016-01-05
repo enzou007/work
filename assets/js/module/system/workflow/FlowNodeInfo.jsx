@@ -5,22 +5,21 @@ import Form from 'Component/form/Form.jsx';
 import FormControl from 'Component/form/FormControl.jsx';
 import Tabs from 'Component/bootstrap/Tabs.jsx';
 
-import 'rctui/input';
 import 'Component/form/Radio.jsx';
+import 'Component/form/Personnel.jsx'
+import 'rctui/input';
 import 'rctui/select';
 
 const appType = [{
-  id: "dyqh",
-  text: "单一签核"
+  id: "ANY", text: "单一签核"
 }, {
-  id:"hq",
-  text:"会签"
+  id:"ALL", text:"会签"
 }, {
-  id: "sq",
-  text: "顺签"
+  id: "ORDER", text: "顺签"
 }];
 
-const whether = [{id: "yes", text: "是"},{id: "no", text: "否"}];
+const rejectType = [{id: "ALL", text: "所有环节"}, {id: "PARENT", text: "上一环节"}, {id: "Custom", text: "自定义"}]
+const whether = [{id: "true", text: "是"},{id: "false", text: "否"}];
 
 export default class FlowNodeInfo extends React.Component{
   state = {
@@ -79,6 +78,7 @@ export default class FlowNodeInfo extends React.Component{
         <FormControl label="应用" name="appId" type="select" data={this.state.appList} groupBy="parent"
           filterAble={true} optionTpl='<i class="{ico}"></i>  {name}-{path}' resultTpl="{name}" valueTpl="{objectId}"/>
         <FormControl label="是否启用" name="enabled" type="radio-group" data={whether} value="yes"/>
+        <FormControl label="是否重办" name="restart" type="radio-group" data={whether} value="yes"/>
         <FormControl label="创建人" name="createPsn" type="text" readOnly={true}/>
         <FormControl label="创建时间" name="createDate" type="text" readOnly={true}/>
         <FormControl label="修改时间" name="updateDate" type="text" readOnly={true}/>
@@ -115,17 +115,22 @@ export default class FlowNodeInfo extends React.Component{
           <FormControl label="备注" name="bz" type="textarea"/>
         </div>
         <div tab="操作">
-          <FormControl label="允许转办" name="zb" type="radio-group" data={whether} value="yes"/>
-          <FormControl label="允许加签" name="jq" type="radio-group" data={whether} value="yes"/>
-          <FormControl label="允许代办" name="db" type="radio-group" data={whether} value="yes"/>
-          <FormControl label="允许驳回" name="bh" type="radio-group" data={whether} value="yes"/>
-          <FormControl label="无处理人跳过" name="tg" type="radio-group" data={whether} value="yes"/>
-          <FormControl label="消息通知" name="xx" type="radio-group" data={whether} value="yes"/>
-          <FormControl label="邮件通知" name="yj" type="radio-group" data={whether} value="no"/>
+          <FormControl label="允许转办" name="zb" type="radio-group" data={whether} value="true"/>
+          <FormControl label="允许加签" name="jq" type="radio-group" data={whether} value="true"/>
+          <FormControl label="允许代办" name="db" type="radio-group" data={whether} value="true"/>
+          <FormControl label="允许驳回" name="bh" type="radio-group" data={whether} value="true"/>
+          <FormControl label="驳回类型" name="bh-t" type="select" data={rejectType} value="true"/>
+          <FormControl label="驳回环节" name="bh-t" type="select" mult={true} data={rejectType} value="true"/>
+          <FormControl label="无处理人跳过" name="tg" type="radio-group" data={whether} value="true"/>
+          <FormControl label="同处理人跳过" name="ttg" type="radio-group" data={whether} value="true"/>
+          <FormControl label="可更改处理人" name="allowChangePerson" type="radio-group" data={whether} value="false"/>
+          <FormControl label="消息通知" name="xx" type="radio-group" data={whether} value="true"/>
+          <FormControl label="邮件通知" name="yj" type="radio-group" data={whether} value="false"/>
 
         </div>
         <div tab="处理人">
           <FormControl label="环节名称" name="name" type="text"/>
+          <FormControl label="环节处理人" name="users" type="personnel" mult={true}/>
         </div>
       </Tabs>
     );

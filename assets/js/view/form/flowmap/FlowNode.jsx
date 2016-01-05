@@ -15,7 +15,7 @@ const FlowNode = React.createClass({
   },
   propTypes: {
     unid: React.PropTypes.string.isRequired,
-    "@type": React.PropTypes.oneOf(['task', 'start', 'end', 'decision']),
+    "@type": React.PropTypes.oneOf(['task', 'start', 'end', 'decision', 'text']),
     name: React.PropTypes.string,
     done: React.PropTypes.bool,
     cur: React.PropTypes.bool

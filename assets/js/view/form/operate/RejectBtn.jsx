@@ -2,10 +2,8 @@ import React from 'react';
 import $ from 'jquery';
 import _ from 'underscore';
 import Modal from 'Component/bootstrap/Modal.jsx';
-import { Checkbox } from 'Component/form/Checkbox.jsx';
-import { Radio } from 'Component/form/Radio.jsx';
 import Gritter from 'Component/Gritter.jsx';
-import classnames from 'classnames';
+import SubmitBox from './SubmitBox.jsx';
 
 const RejectBtn = React.createClass({
   getDefaultProps() {
@@ -14,20 +12,13 @@ const RejectBtn = React.createClass({
       className: "btn btn-info",
       icon: "fa fa-arrow-left",
       onBeforeSubmit: () => true,
-      onSubmit: function () {}
+      onSubmit: () => true
     };
   },
   PropTypes: {
     onBeforeSubmit: React.PropTypes.func,
     action: React.PropTypes.object.isRequired,
     onSubmit: React.PropTypes.func
-  },
-  triggerClick() {
-    if (this.props.onBeforeSubmit("reject") !== false) {
-      this.props.action.preview("reject").done(data => {
-        this.showSubmitBox(data);
-      })
-    }
   },
   render() {
     return (
@@ -37,116 +28,29 @@ const RejectBtn = React.createClass({
       </button>
     );
   },
-  showSubmitBox(nodes){
-    this.ModalBox = Modal.create((
-      <div className="submitBox">
-        <div className="title">
-          流程流转</div>
-        <hr></hr>
-        <div className="row content">
-          <div className="col-md-6 flownodes">
-            <font>环节</font>
-            <ul onClick={this.toggleItem}>
-              {this.renderNodeItem(nodes)}
-            </ul>
-          </div>
-
-          <div className="col-md-6 psns">
-            <font>人员</font>
-            <ul>
-              <span>张三</span>
-            </ul>
-          </div>
-        </div>
-        <div className="opinion">
-          <textarea id="opinion" placeholder="不同意"></textarea>
-        </div>
-        <div className="row operate">
-          <button className="btn" onClick={this.closeModalBox}>
-            取消
-            <i className="fa fa-times"></i>
-          </button>
-
-          <button className="btn btn-success" onClick={this.submit}>
-            确定
-            <i className="fa fa-arrow-right "></i>
-          </button>
-        </div>
-      </div>
-    ), {
-      id: "flowSubmitBox",
-      className: "flow"
-    });
+  triggerClick() {
+    if (this.props.onBeforeSubmit("reject") !== false) {
+      this.props.action.preview("reject").done(data => {
+        this.ModalBox = Modal.create((
+          <SubmitBox nodes={data} onCancel={this.closeModalBox} onConfirm={this.submit} defaultOpinion="不同意"/>
+        ), {
+          id: "flowSubmitBox",
+          className: "flow"
+        });
+      })
+    }
   },
-  renderNodeItem(nodes) {
-    return _.map(nodes, (node, index) => {
-      if (index !== 0) {
-        return (
-          <li>
-            <Radio defaultValue={node.id} name="nodes">{node.name}</Radio>
-          </li>
-        );
-      } else {
-        return (
-          <li className="active">
-            <Radio defaultChecked defaultValue={node.id} name="nodes">{node.name}</Radio>
-          </li>
-        );
-      }
-    })
-  },
-  submit() {
-    $("#flowSubmitBox").css("zIndex", "1000");
-    let option = {
-      FlowNodeId: $(".flownodes :checked").val(),
-      FlowUsers: escape("张三/zhangsan"),
-      FlowOpinion: escape($("#opinion").val() || "不同意")
-    };
-
+  submit(option) {
     this.props.action.reject(option).done(() => {
       this.props.onSubmit();
-      this.showMessage("succeed");
+      Gritter.show("驳回成功!", "y", ()=>{ window.location.reload() })
     }).fail(() => {
-      this.showMessage("failure");
+      Gritter.show("驳回失败,请重试或联系管理员!", "n", ()=>{ window.location.reload() })
     });
-  },
-  showMessage(status){
-    let cn = classnames({
-      "gritter-light": true,
-      "gritter-success": status === "succeed",
-      "gritter-error": status === "failure"
-    });
-    let id = Gritter.add({
-      title: '提示',
-      time: 1500,
-      class_name: cn,
-      after_close: () => {
-        window.location.reload();
-        Gritter.remove(id, {
-          fade: false,
-          speed: 'fast'
-        });
-      },
-      text: (
-        <div>
-          <h5>{status == "succeed" ? "驳回成功!" : "驳回失败,请重试或联系管理员!"}</h5>
-          <div style={{textAlign: "right"}}>
-            <a className="btn btn-sm btn-primary" onClick={function(){Gritter.remove(id, {fade: false,speed: 'fast'});}}>确定</a>
-          </div>
-        </div>
-      )
-    })
   },
   closeModalBox() {
     if (this.ModalBox) {
       this.ModalBox.close();
-    }
-  },
-  toggleItem(e) {
-    if (e.target.tagName.toUpperCase() != "UL") {
-      var $item = $(e.target);
-      $item.closest("ul").find("li").removeClass("active");
-      $item.closest("li").addClass("active");
     }
   }
 });

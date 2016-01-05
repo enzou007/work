@@ -134,6 +134,7 @@
   response:
     type: js
     file: response/module/deleteDocument.js
+
 - request: #获取指定id的文档内容
     url: /1/:path1/:path2/:objectId
     method: GET

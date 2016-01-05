@@ -46,7 +46,10 @@ export default class FlowAction extends Action {
   bindFlow() {
     return $.get(`1/flow/${this.getFlowId()}`).done(resp => {
       this.getStore().cursor().get("flow").mergeDeep(resp);
-      this.getStore().cursor().get("form").set("@flowId", this.getFlowId());
+      this.getStore().cursor().get("form").merge({
+        "@flowId": resp["@objectId"],
+        "@flowName": resp["name"]
+      });
       return resp;
     });
   }

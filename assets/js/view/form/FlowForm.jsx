@@ -42,7 +42,7 @@ const FlowForm = React.createClass({
     let formAction = this.state.action;
 
     $.when(formAction.bindSession(), formAction.getObjectId() ? formAction.bindDocument() : formAction.bindFlow())
-      .then(() => {
+      .done(() => {
         if (formAction.getObjectId()) {
           formAction.bindFlowLog().then(() => {
             if (this.props.onLoad) {
@@ -52,6 +52,10 @@ const FlowForm = React.createClass({
         } else if (this.props.onCreate) {
           this.props.onCreate();
         }
+      })
+      .fail((xhr1) => {
+        console.log(this);
+        console.log(xhr1);
       });
   },
   showFlowMap(tabName, tabIndex) {
@@ -69,10 +73,10 @@ const FlowForm = React.createClass({
        let nodeId = curNode.id;
        if(nodeId != "End"){
          toolbar.push(<li><SaveBtn action={action}/></li>);
-         toolbar.push(<li><SubmitBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} action={action} flow={store.get("flow").toJS()}/> </li>);
+         toolbar.push(<li><SubmitBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} action={action}/> </li>);
        }
        if(nodeId != "Start" && nodeId != "End"){
-         toolbar.push(<li><RejectBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} action={action} flow={store.get("flow").toJS()}/> </li>);
+         toolbar.push(<li><RejectBtn onBeforeSubmit={this.props.onBeforeSubmit} onSubmit={this.props.onSubmit} action={action}/> </li>);
        }
      }
      return toolbar

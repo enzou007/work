@@ -85,18 +85,4 @@
   "name": "流程管理",
   "parent": "5582272444ae2b5937e53957",
   "path": "system/workflow"
-}, {
-  "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53969",
-  "sort": 10,
-  "name": "查询配置",
-  "parent": "5582272444ae2b5937e53957",
-  "path": "system/query-config"
-}, {
-  "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53971",
-  "sort": 9999,
-  "name": "组织同步日志",
-  "parent": "5582272444ae2b5937e53957",
-  "path": "system/synch-database"
 }]

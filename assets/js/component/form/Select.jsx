@@ -31,6 +31,17 @@ export class Select extends RCTSelect{
       }, 0)
     }
   }
+  componentWillReceiveProps (nextProps) {
+    let state = {}
+    if(nextProps.value && nextProps.value.toJS){
+      nextProps.value = nextProps.value.toJS();
+    }
+    if (nextProps.value !== this.props.value) {
+      state.value = this.formatValue(nextProps.value);
+    }
+    state.data = this.formatData(nextProps.data, state.value);
+    this.setState(state);
+  }
   render () {
     let active = this.state.active
     let result = []

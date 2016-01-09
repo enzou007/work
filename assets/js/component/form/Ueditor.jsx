@@ -7,7 +7,6 @@ import './ueditor/ueditor.config.js';
 import 'ueditor/ueditor.all.js';
 import 'ueditor/lang/zh-cn/zh-cn.js';
 
-//TODO IE11不显示内容  上传图片失败
 export default class Ueditor extends React.Component{
   static defaultProps = {
     value: "",
@@ -38,16 +37,6 @@ export default class Ueditor extends React.Component{
         this.props.onChange();
       })
     }
-  }
-  componentWillReceiveProps(newProps){
-    // if(newProps.readOnly !== this.props.readOnly){
-    //   if(newProps.readOnly){
-    //     this.ue.setDisabled();
-    //     $(".edui-editor-toolbarbox").hide();
-    //     $(".edui-editor-bottomContainer").hide();
-    //     $(".edui-editor").css("border","0");
-    //   }
-    // }
   }
   getValue(){
     return this.ue.getContent();

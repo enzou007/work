@@ -37,9 +37,9 @@ var WorkflowForm = React.createClass({
   render() {
     let store = action.getStore().data();
     let showNodeInfo = store.get("form").count() > 0;
-
+    document.title = store.get("flow").get("name") + "-配置";
     return (
-      <div className="workflow">
+      <div className="workflow" id="workflow">
         <Navbar ico="fa fa-leaf" title={store.get("flow").get("name")}>
           <li><button className="btn btn-success" onClick={this.saveFlowInfo}>保存</button></li>
         </Navbar>

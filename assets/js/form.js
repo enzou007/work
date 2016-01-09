@@ -25,9 +25,7 @@ if (!param.path) {
   throw Error(`Can't not get 'path' by location.search '${search}'`);
 }
 
-require.ensure(["./module/system/workflow/FlowNodeInfo.jsx"], function (require, test) {
-  console.log(require("./module/system/workflow/FlowNodeInfo.jsx"));
-  console.log(test);
+require.ensure([], function (require) {
   require(`./module/${param.form}.jsx`)(function (ModuleForm) {
     // 记录当前参数，并添加主表单标识
     let action = new Action(_.extend({

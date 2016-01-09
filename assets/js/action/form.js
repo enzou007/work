@@ -15,6 +15,10 @@ export default class Action {
     this._events = [];
 
     actions.push(this);
+    this.init();
+  }
+  init(){
+    
   }
   getDefaultStore() {
     return {};
@@ -99,6 +103,7 @@ export default class Action {
     let field = this._controls.get(key);
     if(field){
       let result = field.props;
+      result._control = field.refs.control;
       result.value = field.getValue() || "";
       return result;
     }else{

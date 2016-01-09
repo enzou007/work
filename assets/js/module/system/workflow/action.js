@@ -5,13 +5,51 @@ import Immutable from 'immutable';
 import { Store, msg } from 'iflux';
 import { urlParamToObject } from 'Util/Strings';
 
+import Config from './defaultConfig'
+
 class Action extends FormAction{
+  _nodeIdMap = {};
+  isShowNodeIfo = true;
+  _postList = null;
+  _roleList = null;
+  _moduleList = null;
+  init(){
+    $.get("/1/system/module").done(data => {
+      let parentMap = {};
+      let appList = [];
+      _.each(data, mdl => {
+        if(mdl.path.indexOf("system") === -1){
+          if(mdl.parent){
+            mdl.parent = parentMap[mdl.parent];
+            appList.push(mdl);
+          }else{
+            parentMap[mdl.objectId] = mdl.name;
+          }
+        }
+      });
+      this._moduleList = appList;
+    });
+
+    $.get("/1/system/role").done(data => {
+      this._roleList = _.map(data, item => {
+        return {
+          id: item["@objectId"],
+          text: item.RoleName
+        }
+      })
+    })
+    $.get("/1/system/position").done(data => {
+      this._postList = _.map(data, item => {
+        return {
+          id: item["@objectId"],
+          text: item.PositionName
+        }
+      })
+    })
+  }
   getDefaultStore(){
     return {
-      flow:{
-        name: "新建流程",
-        nodes: []
-      },
+      flow: Config.getDefaultFlowInfo(),
       form: {}
     }
   }
@@ -25,6 +63,9 @@ class Action extends FormAction{
     }
     return this;
   }
+  getFormData(){
+    return this.getStore().data().get("form");
+  }
   isNewNote(){
     return !this._param.objectId;
   }
@@ -34,8 +75,6 @@ class Action extends FormAction{
   getPath(){
     return this._param.path;
   }
-  _nodeIdMap = {};
-  isShowNodeIfo = true;
 
   bindFlowMap(flowMap){
     this._flowMap = flowMap;
@@ -64,47 +103,18 @@ class Action extends FormAction{
   }
 
   getModuleList(){
-    return $.get("/1/system/module")
+    return this._moduleList;
+  }
+  getPostList(){
+    return this._postList;
+  }
+  getRoleList(){
+    return this._roleList;
   }
   addNode(type, x, y){
-    let newNode = this.getDefaultNode(type, x, y);
+    let newNode = Config.getDefaultNode(type, x, y, this.getNewNodeId());
     this._nodeIdMap[newNode.get("unid")] = newNode.get("id");
     this.getStore().cursor().get("flow").get("nodes").push(newNode);
-  }
-  getDefaultNode(type, x, y){
-    let name, id, unid = "";
-    switch (type) {
-      case "start":
-        name = "开始";
-        unid = id = "Start";
-        break;
-      case "end":
-        name = "结束";
-        unid = id = "End";
-        break;
-      case "decision":
-        id = this.getNewNodeId();
-        unid = "NODE_UNID_"+new Date().getTime();
-        name = "条件";
-        break;
-      case "text":
-        id = unid = "NODE_UNID_"+new Date().getTime();
-        name = "描述信息";
-        break;
-      default:
-        id = this.getNewNodeId();
-        unid = "NODE_UNID_"+new Date().getTime();
-        name = "未命名";
-        break;
-    }
-    return Immutable.fromJS({
-      x: x,
-      y: y,
-      id: id,
-      unid: unid,
-      "@type": type,
-      name: name,
-    })
   }
   activeNode(unid, nodeId){
     let newData = null;
@@ -180,8 +190,27 @@ class Action extends FormAction{
     ids.sort(function(a, b) {return a < b});
     return "node" + (+ids[0] + 1);
   }
+  getParentNodes(curNode){
+    let filterNodeIds = curNode.get("outputs").toJS();
+    let rejectNodes = this.getStore().data().get("flow").get("nodes")
+      .filter(node => {
+        if(filterNodeIds.indexOf(node.get("id")) > -1){
+          filterNodeIds.push(node.get("id"));
+          return false;
+        }
+        if(node.get("unid") !== curNode.get("unid")){
+          return node.get("@type") === "start" || node.get("@type") === "task";
+        }
+        return false;
+      })
+      .map(node => {
+        return {
+          id: node.get("id"),
+          text: node.get("name")
+        }
+      }).toJS();
+    return rejectNodes;
+  }
 }
-
-
 
 export default new Action(urlParamToObject(location.search.substring(1)))

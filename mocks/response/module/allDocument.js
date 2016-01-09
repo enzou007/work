@@ -10,5 +10,11 @@ module.exports = function (data) {
   console.log("allDocument: " + paths.join("/"));
   var docs = new File("mocks/static/"+ paths.join("_") + ".json");
 
-  return docs.getDataByPage(parseInt(data.query.page), parseInt(data.query.count), JSON.parse(decodeURIComponent(data.header.condition)));
+  var condition = data.header.condition ? JSON.parse(decodeURIComponent(data.header.condition)) : [];
+
+  var page = data.query.page ? parseInt(data.query.page) : 0;
+
+  var count = data.query.count ? parseInt(data.query.count) : 0;
+
+  return docs.getDataByPage(page, count, condition);
 }

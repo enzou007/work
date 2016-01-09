@@ -187,6 +187,9 @@ export default class Department extends React.Component {
       return item["@objectId"];
     }));
   }
+  getFullValue(){
+    return this.state.data;
+  }
   renderList() {
     let placeholder = this.state.value == null ? (this.state.msg || this.props.placeholder) : null;
     let departmentList = [];

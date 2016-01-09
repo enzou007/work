@@ -63,7 +63,8 @@ export default class FormControl extends React.Component {
   }
   static defaultProps = {
     layout: 'inline',
-    type: 'text'
+    type: 'text',
+    show: true
   }
   state = {
     focused: false,
@@ -113,6 +114,17 @@ export default class FormControl extends React.Component {
     return this.refs.control;
   }
   validate(value) {
+
+    let { required, min, max, readOnly, type, show } = this.props;
+
+    if(!show){
+      return true;
+    }
+
+    if (readOnly) {
+      return true;
+    }
+
     value = value || this.getValue();
 
     let hasValue = false;
@@ -126,12 +138,6 @@ export default class FormControl extends React.Component {
     }
 
     this.setState({ hasValue });
-
-    let { required, min, max, readOnly, type } = this.props;
-
-    if (readOnly) {
-      return true;
-    }
 
     // validate require
     if (required && (value === undefined || value === null || value.length === 0)) {
@@ -332,7 +338,8 @@ export default class FormControl extends React.Component {
     let className = classnames(this.props.className,  `hint-${hintType}`, 'pure-u-1', reps.join(" "), {
       'pure-control-group': this.props.label && this.props.label !== "",
       'has-error': this.state.hasError,
-      'focused': this.state.focused
+      'focused': this.state.focused,
+      'hidden': !this.props.show
     });
 
     if (this.props.layout === 'inline') {

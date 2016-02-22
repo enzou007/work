@@ -172,10 +172,10 @@ export default class FileUp extends React.Component {
     return (
       <div className="file-container">
         {this.props.readOnly ? null :
-          [(this.state.showProgress? <div className="progress progress-striped active myprogress">
+          [(this.state.showProgress? <div key="progress" className="progress progress-striped active myprogress">
             <div className="progress-bar progress-bar-success" style={{width: (+this.state.progress * 100) + "%"}}></div>
           </div>: null),
-          <div className="file-operates">
+          <div key="operates" className="file-operates">
             <div className="operate-item add" ref="picker" id="picker"><i className="fa fa-plus"></i>添加</div>
             <div className="operate-item upload" onClick={this.upload.bind(this)}><i className="fa fa-save"></i>上传</div>
           </div>]

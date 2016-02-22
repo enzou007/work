@@ -37,7 +37,7 @@ export class Select extends RCTSelect{
       nextProps.value = nextProps.value.toJS();
     }
     if (nextProps.value !== this.props.value) {
-      state.value = this.formatValue(nextProps.value);
+      state.value = nextProps.value;
     }
     state.data = this.formatData(nextProps.data, state.value);
     this.setState(state);

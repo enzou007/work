@@ -5,7 +5,7 @@ import { Iterable } from 'immutable';
 const CACHE_NAME = "PERSONNEL_CACHE";
 const CACHE_DURING = 1000 * 60 * 60 * 24; //1天
 const WRITE_DURING = 1000 * 60; //1分钟
-
+//TODO 优化缓存, byDepartment, auery
 class Action {
   params = []
   handles = []
@@ -115,7 +115,11 @@ class Action {
       }
     });
   }
-  query(key, region, limit = 10) {
+  query(key, region, limit = 10){
+    // if (this.cache.has(key)) {
+    //   return Promise.resolve(this.cache.get(key));
+    // }
+
     return $.ajax({
       url: "1/system/user",
       headers: {
@@ -146,4 +150,4 @@ class Action {
 }
 
 
-export default Action;
+export default new Action();

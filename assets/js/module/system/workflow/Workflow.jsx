@@ -8,7 +8,7 @@ import action from './action';
 import Navbar from "View/navbar/Navbar.jsx";
 import { Checkbox } from 'Component/form/Checkbox.jsx';
 import Gritter from 'Component/Gritter.jsx';
-
+import Scrollbar from 'Component/Scrollbar.jsx';
 let FlowNodeInfo;
 require("./FlowNodeInfo.jsx")(function (ModuleForm) {FlowNodeInfo = ModuleForm})
 
@@ -21,12 +21,15 @@ var WorkflowForm = React.createClass({
   },
   componentDidMount() {
     action.bindFlowMap(this.refs.ref_flowMap);
-
-    window.wf = this;
-    window.a = action;
+    action.on("save:error", info => {
+      Gritter.show(info, "n");
+    })
+    action.on("save:succee", info => {
+      Gritter.show(info, "y");
+    })
   },
   saveFlowInfo(){
-    action.saveFlow().then(data => {
+    action.saveFlow().done(data => {
       Gritter.show("保存成功", "y", () => {
         if(action.isNewNote()){
           window.location.href = `${window.location.href}&objectId=${data["@objectId"]}`;
@@ -66,7 +69,7 @@ var WorkflowForm = React.createClass({
             </div>
           </div>
           <div className="wf-content">
-            <FlowMap ref="ref_flowMap" flow={store.get("flow").get("nodes")} readonly={false}
+            <FlowMap ref="ref_flowMap" className="workflow-map" flow={store.get("flow").get("nodes")} readonly={false}
               onNodeClick={action.activeNode.bind(action)} onRemoveNode={action.removeNode.bind(action)}
               onDragOver={this.dragOver} onDrop={this.addNode}/>
           </div>
@@ -87,7 +90,7 @@ var WorkflowForm = React.createClass({
     event.preventDefault();
     let type = event.dataTransfer.getData("Text");
     let x = event.clientX - $(".wf-sidebar").outerWidth() + "px";
-    let y = event.clientY - 47 + $(".gm-scroll-view").scrollTop() + "px";
+    let y = event.clientY + $(".gm-scroll-view").scrollTop() + "px";
     action.addNode(type, x, y);
   }
 })

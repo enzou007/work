@@ -9,7 +9,7 @@ import { Radio } from './Radio.jsx';
 
 import Strings from 'rctui/src/js/utils/strings';
 
-import Action from 'Action/department';
+import deptAction from 'Action/department';
 
 import 'Less/component/organization-tree.less';
 
@@ -28,8 +28,7 @@ export default class OrganizationTree extends React.Component {
   static defaultProps = {
     selectAble: false,
     mult: false,
-    region: null,
-    action: new Action()
+    region: null
   }
   state = {
     roots: null,
@@ -64,18 +63,18 @@ export default class OrganizationTree extends React.Component {
     }
   }
   regionTree() {
-    this.props.action.fetch(this.props.region).then(item => {
+    deptAction.fetch(this.props.region).then(item => {
       this.setState({roots: [item]});
     });
     this._loadChildren(this.props.region);
   }
   filterTree(filter) {
-    this.props.action.query(filter || this.props.filter, "", 50).then(item => {
+    deptAction.query(filter || this.props.filter, "", 50).then(item => {
       this.setState({roots: item});
     });
   }
   initTree() {
-    this.props.action.byParent(null).then(roots => {
+    deptAction.byParent(null).then(roots => {
       this.setState({ roots });
       if(roots.length === 1){
         this._loadChildren(roots[0]["@objectId"]);
@@ -110,7 +109,7 @@ export default class OrganizationTree extends React.Component {
     }
   }
   _loadChildren(parent) {
-    this.props.action.byParent(parent).then(resp => {
+    deptAction.byParent(parent).then(resp => {
       let store = this.state.store;
       store[parent] = resp;
       this.setState({ store });
@@ -197,7 +196,7 @@ export default class OrganizationTree extends React.Component {
     if (handle.size() === 1 && handle.data('id')) {
       let id = handle.data('id');
       if (!this.state.store[id]) {
-        this.props.action.byParent(id).then(resp => {
+        deptAction.byParent(id).then(resp => {
           this.state.store[id] = resp;
 
           if(this.props.mult && this.state.checked[id] === 2){

@@ -1,5 +1,5 @@
 module.exports = [{
-  "objectId": "home",
+  "@objectId": "home",
   "ico": "fa fa-home",
   "sort": 0,
   "name": "首页",

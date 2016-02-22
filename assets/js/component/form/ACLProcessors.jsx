@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'underscore';
 import { List, Set } from 'immutable';
 
 import Action from 'Action/form';
@@ -12,7 +11,9 @@ import 'Component/form/Department.jsx';
 import 'Component/form/Personnel.jsx';
 import 'rctui/input';
 
-export default class FlowProcessors extends React.Component{
+import 'Less/component/acl-processors.less'
+
+export default class ACLProcessors extends React.Component{
   static defaultProps = {
     action: new Action()
   }
@@ -34,7 +35,7 @@ export default class FlowProcessors extends React.Component{
   }
   render() {
     return (
-      <div className="flow-processors">
+      <div className="acl-processors">
         <div className="processor-toolbar">
           <i className="fa fa-plus processor-add" onClick={this.addProcessor.bind(this)}>添加</i>
         </div>
@@ -48,7 +49,6 @@ export default class FlowProcessors extends React.Component{
               )
           })}
         </div>
-
       </div>
     );
   }
@@ -136,6 +136,9 @@ const ProcessorsForm = React.createClass({
         this.props.store.cursor().set("Base", "DEPT");
         this.props.store.cursor().set("relatedDepartment", Set.of(data.get("relatedDepartment")));
       }
+      this._postName = data.get("label").replace(/\[Post\]\:.*\|/ , "");
+    }else if(data.get("@c") === ".RoleProcessor"){
+      this._roleName = data.get("label").replace("[Role]: ", "");
     }
   },
   componentDidMount() {
@@ -180,7 +183,6 @@ const ProcessorsForm = React.createClass({
     this.props.channel.emit('close');
   },
   handleSubmit(){
-    let store = this.props.store.cursor();
     let data = this.props.store.data();
     let result = {}
     switch (data.get("@c")) {
@@ -207,7 +209,7 @@ const ProcessorsForm = React.createClass({
         result.label = "[Field]: " + data.get("fieldName");
         break;
     }
-    store.merge(result);
+    this.props.store.cursor().merge(result);
     this.props.onSubmit();
   },
   processorChange(value){
@@ -228,5 +230,5 @@ const ProcessorsForm = React.createClass({
 });
 
 FormControl.register('processors', function (props) {
-  return <FlowProcessors {...props}/>
-}, FlowProcessors, 'List');
+  return <ACLProcessors {...props}/>
+}, ACLProcessors, 'List');

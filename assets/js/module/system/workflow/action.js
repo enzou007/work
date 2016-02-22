@@ -23,7 +23,7 @@ class Action extends FormAction{
             mdl.parent = parentMap[mdl.parent];
             appList.push(mdl);
           }else{
-            parentMap[mdl.objectId] = mdl.name;
+            parentMap[mdl["@objectId"]] = mdl.name;
           }
         }
       });
@@ -85,7 +85,7 @@ class Action extends FormAction{
         this.getStore().cursor().get("flow").mergeDeep(data);
         _.each(data.nodes, node => {
            this._nodeIdMap[node.unid] = node.id;
-         })
+        })
       })
     }
   }
@@ -112,9 +112,22 @@ class Action extends FormAction{
     return this._roleList;
   }
   addNode(type, x, y){
+    if(type==="start" && this.getNodeIndexById("Start") > -1){
+      this.emit("save:error", "开始环节已存在!");
+      return false;
+    }
+    if(type==="end" && this.getNodeIndexById("End") > -1){
+      this.emit("save:error", "结束环节已存在!");
+      return false;
+    }
     let newNode = Config.getDefaultNode(type, x, y, this.getNewNodeId());
     this._nodeIdMap[newNode.get("unid")] = newNode.get("id");
-    this.getStore().cursor().get("flow").get("nodes").push(newNode);
+    if(newNode.get("id") === "Start"){
+      this.getStore().cursor().get("flow").get("nodes").unshift(newNode);
+    }else{
+      this.getStore().cursor().get("flow").get("nodes").push(newNode);
+    }
+
   }
   activeNode(unid, nodeId){
     let newData = null;
@@ -147,32 +160,30 @@ class Action extends FormAction{
     var newNodeData = this.getStore().data().get("form");
     if(newNodeData.get("@type")){
       if(this.validateNode(newNodeData)){
-        this.getStore().cursor().get("flow").get("nodes").set(this.getNodeIndexByUnid(newNodeData.get("unid")), newNodeData);
+        this.getStore().cursor().get("flow").get("nodes").set(this.getNodeIndexById(newNodeData.get("unid")), newNodeData);
         this._nodeIdMap[newNodeData.get("unid")] = newNodeData.get("id");
         this.activeNodeId = newNodeData.get("id");
+        this.emit("save:succee", "保存成功");
       }
     }else{
       this.getStore().cursor().get("flow").merge(newNodeData);
+      this.emit("save:succee", "保存成功");
     }
   }
   validateNode(newNode){
     if(this.activeNodeId !== newNode.get("id") && this.getNodeIndexById(newNode.get("id")) > -1){
+      this.emit("save:error", "环节:[" + newNode.get("name") + "] 保存失败, 环节ID重复!");
       return false;
     }
     return true;
   }
   removeNode(unid){
-    this.getStore().cursor().get("flow").get("nodes").delete(this.getNodeIndexByUnid(unid));
+    this.getStore().cursor().get("flow").get("nodes").delete(this.getNodeIndexById(unid));
     delete this._nodeIdMap[unid];
-  }
-  getNodeIndexByUnid(unid){
-    return this.getStore().data().get("flow").get("nodes").findIndex(node => {
-      return node.get("unid") === unid;
-    });
   }
   getNodeIndexById(id){
     return this.getStore().data().get("flow").get("nodes").findIndex(node => {
-      return node.get("id") === id;
+      return node.get("id") === id || node.get("unid") === id;
     });
   }
   getNewNodeId(){
@@ -190,6 +201,42 @@ class Action extends FormAction{
     ids.sort(function(a, b) {return a < b});
     return "node" + (+ids[0] + 1);
   }
+  // getParentNodes(curNode){
+  //   let nodes = this.getStore().data().get("flow").get("nodes");
+  //
+  //   let getNodes = function(_curNode){
+  //     let result = [];
+  //     nodes.filter(node => {
+  //       return node.get("outputs").indexOf(curNode.get("id")) > -1;
+  //     }).forEach(node => {
+  //       if(node.get("id") === "Start"){
+  //         result.push(node);
+  //       }else{
+  //         if(node.get("@type") !== "decision"){
+  //           result.push(node);
+  //         }
+  //         result = result.concat(getNodes(node));
+  //       }
+  //     });
+  //     return result;
+  //   }.bind(this);
+  //
+  //   let parentNodes = getNodes(curNode);
+  //   let unique = [];
+  //   let result = [];
+  //
+  //   for(let i = 0; i < parentNodes.length; i++){
+  //     if(unique.indexOf(parentNodes[i].get("unid")) === -1){
+  //       unique.push(parentNodes[i].get("unid"));
+  //       result.push({
+  //         id: parentNodes[i].get("id"),
+  //         text: parentNodes[i].get("name")
+  //       })
+  //     }
+  //   }
+  //   return result;
+  // }
+
   getParentNodes(curNode){
     let filterNodeIds = curNode.get("outputs").toJS();
     let rejectNodes = this.getStore().data().get("flow").get("nodes")

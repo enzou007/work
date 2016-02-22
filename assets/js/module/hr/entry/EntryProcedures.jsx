@@ -52,7 +52,7 @@ var NoteForm = React.createClass({
 
   },
   beforeSubmit: function () {
-
+    return true;
   },
   afterSubmit: function () {
 
@@ -66,11 +66,11 @@ var NoteForm = React.createClass({
             <FormControl label="申请日期" name="CreateDate" type="date" readOnly={true}/>
             <FormControl label="所属部门" name="AgentDept" type="text" readOnly={true}/>
 
-            <FormControl label="姓名" name="AppPsnCn" type="text" required={false}/>
-            <FormControl label="性别" name="Sex" type="select" data={SexData} required={false} tip="请选择性别"/>
-            <FormControl label="年龄" name="Age" type="number" required={false}/>
-            <FormControl label="出生日期" name="Birthday" type="date" required={false}/>
-            <FormControl label="身份证号" name="CardNumber" type="text" required={false} tip="请填写姓名"/>
+            <FormControl label="姓名" name="AppPsnCn" type="text" required={true}/>
+            <FormControl label="性别" name="Sex" type="select" data={SexData} required={true}/>
+            <FormControl label="年龄" name="Age" type="number" required={true}/>
+            <FormControl label="出生日期" name="Birthday" type="date" required={true}/>
+            <FormControl label="身份证号" name="CardNumber" type="text" required={false}/>
             <FormControl label="婚姻状况" name="Marriage" type="select" data={MarriageData}/>
             <FormControl label="学历" name="Degrees" type="text"/>
             <FormControl label="户籍" name="Hukou" type="text"/>
@@ -91,7 +91,7 @@ var NoteForm = React.createClass({
           <Fieldset title="IT信息" readOnly={this.state.readonly}>
             <FormControl label="公司座机" name="ComTel" type="text" responsive={{xl: 12}}/>
             <FormControl label="公司邮箱" name="ComEmail" type="email" responsive={{xl: 12}}/>
-              <FormControl label="部门负责人" name="DeptLeaderss" type="personnel" mult={true} responsive={{xl: 24}}/>  
+              <FormControl label="部门负责人" name="DeptLeaderss" type="personnel" mult={true} responsive={{xl: 24}}/>
           </Fieldset>
 
         </div>

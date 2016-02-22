@@ -2,7 +2,9 @@ import React from 'react';
 import _ from 'underscore';
 import $ from 'jquery';
 import TimeLineItem from './TimeLineItem.jsx';
-
+import { fromJS } from 'immutable';
+import Mock from 'mockjs';
+import 'Less/component/timeline.less';
 const STEP = 4;
 const TIME_STEP = 10;
 
@@ -11,7 +13,7 @@ const TimeLine = React.createClass({
     return {
       type: "timeline",
       now: new Date(),
-      logs: []
+      log: []
     };
   },
   componentWillReceiveProps: function () {
@@ -27,7 +29,7 @@ const TimeLine = React.createClass({
     }
   },
   renderTable() {
-    let groupLogs = this.props.logs.sortBy(item => item.time);
+    let groupLogs = this.props.log.sortBy(item => item.time);
     return (
       <table className="table table-striped table-bordered table-hover">
         <thead>
@@ -38,8 +40,8 @@ const TimeLine = React.createClass({
           <th width="40%">意见</th>
         </thead>
         <tbody>
-          { groupLogs.map(item => { return(
-          <tr>
+          { groupLogs.map((item, index) => { return(
+          <tr key={index}>
             <td>{item.get("name")}</td>
             <td>{TimeLineItem.operates[item.get("operate")]}</td>
             <td>{item.get("time")}</td>
@@ -52,12 +54,22 @@ const TimeLine = React.createClass({
     )
   },
   renderTimeLine() {
-    if (this.props.logs.size === 0) {
+    if (this.props.log.size === 0) {
       return false;
     }
-
+    let log = this.props.log;
+    let curNode = this.props.curNode;
+    if(curNode){
+      log = log.push(fromJS({
+        name: curNode.get("name"),
+        opinion: "",
+        user: "",
+        operate: "curNode",
+        time: Mock.Random.now()
+      }));
+    }
     var year = this.props.now.getFullYear();
-    let groupLogs = this.props.logs.sortBy(item => item.time).groupBy(item => {
+    let groupLogs = log.sortBy(item => item.time).groupBy(item => {
       let date = item.get("time").substr(0, 10);
       if (date.substr(0, 4) == year) {
         date = date.substr(5, 10);

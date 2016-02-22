@@ -17,7 +17,7 @@ module.exports = function (data) {
   var objectId = Mock.Random.guid();
 
   doc["@objectId"] = objectId;
-  doc["@createDate"] = Mock.Random.now();
+  doc["@createdAt"] = Mock.Random.now();
 
   if(doc["@flowId"]){
     var option = _.pick(data.header, "flowcontroltype", "flowusers", "flownodeid", "flowopinion");

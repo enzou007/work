@@ -100,12 +100,22 @@ _.extend(Action.prototype, Backbone.Events, {
       return model.get("@objectId");
     }).join(";");
 
-    return $.post(this._dataCollection.url+"/delete", {objectIds:objectIds})
-      .done(function(){
-        this._dataCollection.fetch({
-          reset: true
-        });
-      }.bind(this));
+    return $.ajax({
+      url: this._dataCollection.url,
+      type: "DELETE",
+      data: {objectIds:objectIds}
+    }).done(function(){
+      this._dataCollection.fetch({
+        reset: true
+      });
+    }.bind(this));
+
+    // return $.post(this._dataCollection.url+"/delete", {objectIds:objectIds})
+    //   .done(function(){
+    //     this._dataCollection.fetch({
+    //       reset: true
+    //     });
+    //   }.bind(this));
   },
   toggleSearchItem: function (item, rebulid) {
     this.setActiveItem(item);

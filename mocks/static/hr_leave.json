@@ -1,1 +1,1 @@
-[]
+[{"@curNodeId":"End","@flowId":"05592386-FF81-7F66-36ED-0371A6650539","AppPsnCn":"病假","AppPsnEn":"其他,病假","@flowName":"请假申请","Degrees":"111","Hukou":"111","@objectId":"F7F11173-18BF-B179-3DEC-B2922555F3F1","@createdAt":"2016-02-22 13:54:21","@curNodeName":"结束","@updatedAt":"2016-02-22 14:01:14"},{"@curNodeId":"node1","@flowId":"05592386-FF81-7F66-36ED-0371A6650539","AppPsnCn":"病假","AppPsnEn":"其他,病假","@flowName":"请假申请","Degrees":"d","Hukou":"d","@objectId":"B8F9DB08-4540-83F3-89C7-60A3815F0FDE","@createdAt":"2016-02-22 14:19:37","@curNodeName":"部门主任"}]

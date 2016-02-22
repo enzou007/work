@@ -8,14 +8,16 @@ import Gritter from 'Component/Gritter.jsx';
 
 import 'Component/form/Radio.jsx';
 import 'Component/form/Select.jsx';
-import 'Component/form/FlowProcessors.jsx';
+import 'Component/form/ACLProcessors.jsx';
 import 'rctui/input';
 
 const whether = [{id: "true", text: "是"},{id: "false", text: "否"}];
 const rejectType = [{
   id: "NONE", text: "禁止驳回"
 }, {
-    id: "BEFORE", text: "上一环节"
+  id: "START", text: "驳回到开始"
+}, {
+  id: "BEFORE", text: "上一环节"
 }, {
   id: "HISTORY", text: "所有环节"
 }, {
@@ -50,8 +52,7 @@ class BaseInfoForm extends React.Component{
   handleSubmit(event){
     event.preventDefault();
     event.stopPropagation();
-    this.props.onSubmit()
-    Gritter.show("保存成功", "y");
+    this.props.onSubmit();
   }
   renderForm() {  }
   render () {
@@ -68,21 +69,25 @@ class BaseInfoForm extends React.Component{
 }
 
 class FlowForm extends BaseInfoForm{
-  state = {
-    appList: this.props.channel.getModuleList()
-  }
   renderForm () {
     return (
       <div>
         <FormControl label="流程编号" name="@objectId" type="text" readOnly={true}/>
         <FormControl label="流程名称" name="name" type="text"/>
-        <FormControl label="应用" name="appId" type="select" data={this.state.appList} groupBy="parent"
-          filterAble={true} optionTpl='<i class="{ico}"></i>  {name}-{path}' resultTpl="{name}" valueTpl="{objectId}"/>
-        <FormControl label="是否启用" name="enabled" type="radio-group" data={whether}/>
-        <FormControl label="允许重办" name="allowRestart" type="radio-group" data={whether}/>
-        <FormControl label="创建人" name="createPsn" type="text" readOnly={true}/>
-        <FormControl label="创建时间" name="@createDate" type="text" readOnly={true}/>
-        <FormControl label="修改时间" name="@modifyDate" type="text" readOnly={true}/>
+        <FormControl label="流程关键字" name="keys" type="text"/>
+        <FormControl label="应用" name="moduleId" type="select" data={this.props.channel.getModuleList()} groupBy="parent"
+          filterAble={true} optionTpl='<i class="{ico}"></i>  {name}-{path}' resultTpl="{name}" valueTpl="{@objectId}"/>
+        <FormControl label="是否启用" name="state" type="radio-group" data={whether}/>
+        <FormControl label="允许重办" name="allowReSubmit" type="radio-group" data={whether}/>
+        <FormControl label="允许抽单" name="allowWithdraw" type="radio-group" data={whether}/>
+        <FormControl label="允许通知" name="allowNotify" type="radio-group" data={whether}/>
+        <FormControl label="允许催办" name="allowPress" type="radio-group" data={whether}/>
+        <FormControl label="使用者" name="allowTo" type="text"/>
+        <FormControl label="作者" name="defaultAuthor" type="text" readOnly={true}/>
+        <FormControl label="读者" name="defaultReader" type="text" readOnly={true} show={false}/>
+        <FormControl label="创建时间" name="createdAt" type="text" readOnly={true}/>
+        <FormControl label="修改时间" name="updatedAt" type="text" readOnly={true}/>
+        <FormControl label="版本号" name="version" type="text" readOnly={true}/>
       </div>
     );
   }
@@ -116,14 +121,14 @@ class TaskForm extends BaseInfoForm{
           <FormControl label="环节名称" name="name" type="text"/>
           <FormControl label="环节ID" name="id" type="text"/>
           <FormControl label="环节类型" name="@type" type="text" readOnly={true}/>
-          <FormControl label="审批类型" name="SignatureType" type="select" data={SignatureType} optionTpl='{text}' resultTpl="{text}" valueTpl="{id}"/>
+          <FormControl label="审批类型" name="signatureType" type="select" data={SignatureType} optionTpl='{text}' resultTpl="{text}" valueTpl="{id}"/>
           <FormControl label="备注" name="description" type="textarea"/>
         </div>
         <div tab="操作">
           <FormControl label="环节名称" name="name" type="text"/>
           <FormControl label="允许转办" name="allowTurn" type="radio-group" data={whether}/>
           <FormControl label="允许加签" name="allowApostille" type="radio-group" data={whether}/>
-          <FormControl label="允许代办" name="db" type="radio-group" data={whether}/>
+          <FormControl show={false} label="允许代办" name="db" type="radio-group" data={whether}/>
           <FormControl label="驳回类型" name="rejectType" type="select" data={rejectType} onChange={this.rejectTypeChange.bind(this)}/>
           <FormControl label="驳回环节" name="rejectRange" type="select" data={this.state.rejectNodes} mult={true} sep="" show={this.state.showRejectRange}/>
           <FormControl label="无处理人跳过" name="allowEmptySkip" type="radio-group" data={whether}/>

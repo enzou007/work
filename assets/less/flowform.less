@@ -1,3 +1,32 @@
+#form{
+  //默认为不显示时间轴
+  .timeline{
+    display: none;
+  }
+
+  //1024 以上分辨率表单靠左显示,并显示时间轴.
+  @media screen and (min-width: 1025px){
+    .container{
+      width:80%;
+      margin-left:0;
+    }
+    .timeline{
+      display: block;
+    }
+  }
+  //1280 以上分辨率表单居中显示,并显示时间轴.
+  @media screen and (min-width:1281px){
+    .container{
+      width:70%;
+      margin-left:auto;
+    }
+    .timeline{
+      display: block;
+    }
+  }
+}
+
+//固定提交弹出框居中显示
 .flow .modal-dialog {
   position: fixed;
   top: 50%;
@@ -5,6 +34,8 @@
   margin-top: -200px;
   margin-left: -300px;
 }
+
+//提交弹出框样式
 .submitBox {
   height: 100%;
   padding: 15px;
@@ -78,109 +109,5 @@
       background-color: #6fb3e0;
       color: white;
     }
-  }
-}
-
-.timeline {
-  position: fixed;
-  height: 100%;
-  padding-top: 80px;
-  top: 0;
-  right: 15px;
-
-  //上下滚动按钮 样式
-  .scroll-up, .scroll-down{
-    width: 80%;
-    margin-left: 7.5%;
-    text-align: center;
-    cursor: pointer;
-    color: #c2c2c2;
-    &:hover{
-      background-color: #efefef;
-    }
-  }
-
-  //timeline滚动容器
-  .timeline-content{
-    overflow: hidden;
-    height: 80%;
-  }
-
-  //timeline容器
-  .timeline-container{
-    position: relative;
-    top: 0px;
-  }
-
-  //时间节点样式
-  .timeline-label{
-    width:77px;
-  }
-
-  //环节节点样式
-  .timeline-item {
-    &:first-child::before {
-      display:block;
-    }
-    //右边信息框样式
-    .transparent {
-      padding: 0 5px 5px 5px;
-    }
-    //将图标设置为统一宽度 以保持对齐
-    .transparent i{
-      width:12px;
-      margin-right: 5px;
-    }
-    //左侧信息框样式
-    .timeline-info {
-      text-align: right;
-      .item-title{
-        padding-right: 25px;
-      }
-    }
-  }
-}
-//环节详细信息悬浮框样式
-.timeline-detail-info{
-  width: 200px;
-  max-width: 200px;
-  .popover-title{
-    position: relative;
-  }
-  .tooltip-arrow{
-    border-width: 11px 0 11px 11px;
-    top:4px;
-    right:-10px;
-  }
-  .popover-content i{
-    margin-right: 5px;
-  }
-}
-// timeline环节为[提交]时的配色
-.submit{
-  .popover-title {
-    background-color:#8BC34A;
-  }
-  .tooltip-arrow{
-    border-left-color: #8BC34A;
-    -moz-border-left-colors: #8BC34A;
-  }
-  .timeline-indicator{
-    background-color:#87B87F !important;
-    border-color:#87B87F;
-  }
-}
-// timeline环节为[驳回]时的配色
-.reject{
-  .popover-title {
-    background-color:#FFB752 ;
-  }
-  .tooltip-arrow {
-    border-left-color: #FFB752;
-    -moz-border-left-colors: #FFB752;
-  }
-  .timeline-indicator{
-    background-color:#FFB752 !important;
-    border-color:#FFB752;
   }
 }

@@ -1,86 +1,86 @@
 [{
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53908",
+  "@objectId": "5582272444ae2b5937e53908",
   "sort": 0,
   "name": "人事管理",
   "path": "hr"
 },{
   "ico": "fa fa-list",
   "parent": "5582272444ae2b5937e53908",
-  "objectId": "5582272444ae2b5937e53909",
+  "@objectId": "5582272444ae2b5937e53909",
   "sort": 0,
   "name": "入职申请",
   "path": "hr/entry"
 },{
   "ico": "fa fa-list",
   "parent": "5582272444ae2b5937e53908",
-  "objectId": "5582272444ae2b5937e5390801",
+  "@objectId": "5582272444ae2b5937e5390801",
   "sort": 0,
   "name": "请假申请",
   "path": "hr/leave"
 },{
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937ssw32d3",
+  "@objectId": "5582272444ae2b5937ssw32d3",
   "sort": 0,
   "name": "行政管理",
   "path": "administrative"
 },{
   "ico": "fa fa-list",
   "parent": "5582272444ae2b5937ssw32d3",
-  "objectId": "5582272444ae2b5937ssw32d301",
+  "@objectId": "5582272444ae2b5937ssw32d301",
   "sort": 0,
   "name": "名片申请",
   "path": "administrative/BusinessCard"
 },{
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53910",
+  "@objectId": "5582272444ae2b5937e53910",
   "sort": 0,
   "name": "新闻公告",
   "path": "xwgg"
 }, {
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53911",
+  "@objectId": "5582272444ae2b5937e53911",
   "sort": 1,
   "name": "新闻速递",
   "parent": "5582272444ae2b5937e53910",
   "path": "xwgg/xwsd"
 }, {
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53957",
+  "@objectId": "5582272444ae2b5937e53957",
   "sort": 10,
   "name": "系统管理",
   "path": "system"
 }, {
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53958",
+  "@objectId": "5582272444ae2b5937e53958",
   "sort": 1,
   "name": "组织管理系统",
   "parent": "5582272444ae2b5937e53957",
   "path": "system/organization"
 }, {
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53958s",
+  "@objectId": "5582272444ae2b5937e53958s",
   "sort": 1,
   "name": "角色管理",
   "parent": "5582272444ae2b5937e53957",
   "path": "system/role"
 }, {
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53958qwa",
+  "@objectId": "5582272444ae2b5937e53958qwa",
   "sort": 1,
   "name": "岗位管理",
   "parent": "5582272444ae2b5937e53957",
   "path": "system/position"
 }, {
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53959",
+  "@objectId": "5582272444ae2b5937e53959",
   "sort": 2,
   "name": "菜单管理",
   "parent": "5582272444ae2b5937e53957",
   "path": "system/module"
 }, {
   "ico": "fa fa-list",
-  "objectId": "5582272444ae2b5937e53967",
+  "@objectId": "5582272444ae2b5937e53967",
   "sort": 6,
   "name": "流程管理",
   "parent": "5582272444ae2b5937e53957",

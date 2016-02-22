@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import Personnel from 'Component/form/Personnel.jsx';
 import { Checkbox } from 'Component/form/Checkbox.jsx';
 import { Radio } from 'Component/form/Radio.jsx';
+import Gritter from 'Component/Gritter.jsx';
 
 var SubmitBox = React.createClass({
   getDefaultProps() {
@@ -22,8 +23,21 @@ var SubmitBox = React.createClass({
     };
   },
   render() {
-    var activeNode = this.state.activeNode;
-    console.log(activeNode);
+    let activeNode = this.state.activeNode;
+    let psnReadOnly = false;
+    let psnRegion = "";
+    let psnValue = "";
+    if(this.props.showNodes){
+      if(activeNode.id === "Start" || activeNode.id === "End"){
+        psnReadOnly = true;
+        psnRegion = "";
+        psnValue = "";
+      }else{
+        psnReadOnly = activeNode.allowChangePerson === "false";
+        psnRegion = activeNode.deptRegion || "";
+        psnValue = activeNode.users && Immutable.fromJS(activeNode.users);
+      }
+    }
     return (
       <div className="submitBox">
         <div className="title">{this.props.title}</div>
@@ -37,12 +51,12 @@ var SubmitBox = React.createClass({
                     _.map(this.props.nodes, (node, index) => {
                       if(node.id === activeNode.id){
                         return (
-                          <li key={node.id} onClick={this.toggleItem.bind(this, node)} className="active">
+                          <li key={node.id} onClick={this.toggleNodeItem.bind(this, node)} className="active">
                             <Radio defaultChecked defaultValue={node.id} name="nodes">{node.name}</Radio>
                           </li>
                         );
                       }else{
-                        return (<li key={node.id} onClick={this.toggleItem.bind(this, node)}><Radio defaultValue={node.id} name="nodes">{node.name}</Radio></li>);
+                        return (<li key={node.id} onClick={this.toggleNodeItem.bind(this, node)}><Radio defaultValue={node.id} name="nodes">{node.name}</Radio></li>);
                       }
                     })
                   }
@@ -52,13 +66,12 @@ var SubmitBox = React.createClass({
           <div className={"psns" + (this.props.showNodes ? " col-md-6" : " col-md-12")}>
             <font>人员</font>
             <div>
-              <Personnel ref="ref_flow_user" name="flowUser" readOnly={activeNode.allowChangePerson === "false"}
-                mult={true} region={activeNode.deptRegion} value={activeNode.users && Immutable.fromJS(activeNode.users)}/>
+              <Personnel ref="ref_flow_user" name="flowUser" mult={true} readOnly={psnReadOnly} region={psnRegion} value={psnValue}/>
             </div>
           </div>
         </div>
         {
-          !this.props.showOpinion ? null
+          !this.props.showOpinion ? <div className="hr hr-20"></div>
             :(<div className="opinion">
               <textarea id="opinion" ref="ref_opinion" placeholder={this.props.defaultOpinion}></textarea>
             </div>)
@@ -74,9 +87,7 @@ var SubmitBox = React.createClass({
       </div>
     );
   },
-  toggleItem(node,event) {
-    // event.preventDefault();
-    // event.stopPropagation();
+  toggleNodeItem(node) {
     this.setState({
       activeNode: node
     })
@@ -95,7 +106,21 @@ var SubmitBox = React.createClass({
     };
 
     if(this.props.showNodes){
+      let nodeId = this.state.activeNode.id;
+      if(nodeId !== "Start" && nodeId !== "End"){
+        if(data.FlowUsers.length === 0){
+          Gritter.show("处理人不能为空!", "n");
+          $("#flowSubmitBox").css("zIndex", "1050");
+          return false;
+        }
+      }
       data.FlowNodeId = this.state.activeNode.id;
+    }else{
+      if(data.FlowUsers.length === 0){
+        Gritter.show("处理人不能为空!", "n");
+        $("#flowSubmitBox").css("zIndex", "1050");
+        return false;
+      }
     }
 
     if(this.props.showOpinion){

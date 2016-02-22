@@ -77,18 +77,18 @@
   response:
     type: js
     file: response/module/flow/getDefaultFlow.js
-- request: #获取文档流程
+- request: #获取文档流程预览环节
     url: /1/flow/:flowId/:objectId
     method: POST
   response:
     type: js
-    file: response/module/flow/getNextNodes.js
-- request: #获取初始流程
+    file: response/module/flow/getPreviewNodes.js
+- request: #获取初始流程预览环节
     url: /1/flow/:flowId
     method: POST
   response:
     type: js
-    file: response/module/flow/getNextNodes.js
+    file: response/module/flow/getPreviewNodes.js
 # 部门和人员 查询
 - request:
     url: /1/system/user
@@ -129,12 +129,11 @@
   response:
     file: response/session/me.json
 - request:  #删除文档
-    url: /1/:path1/:path2/delete
-    method: POST
+    url: /1/:path1/:path2
+    method: DELETE
   response:
     type: js
     file: response/module/deleteDocument.js
-
 - request: #获取指定id的文档内容
     url: /1/:path1/:path2/:objectId
     method: GET

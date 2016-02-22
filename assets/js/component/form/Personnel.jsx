@@ -10,7 +10,7 @@ import TableHeader from 'rctui/src/js/components/tableHeader.jsx';
 
 import FormControl from './FormControl.jsx';
 
-import Action from 'Action/personnel';
+import psnAction from 'Action/personnel';
 
 import Department from './Department.jsx';
 
@@ -20,7 +20,7 @@ export default class Personnel extends Department {
     region: React.PropTypes.string
   }
   static defaultProps = {
-    action: new Action()
+    action: psnAction
   }
   state = {
     //focus: false,
@@ -100,7 +100,7 @@ export default class Personnel extends Department {
               </div>
             </div>
           </Dropdown>
-        ) : null}
+        ) : <span className="tree-handle"><a href="javascript:void(0)"><i className="fa fa-user"/></a></span>}
       </div>
     );
   }

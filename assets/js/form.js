@@ -7,10 +7,10 @@ import GeminiScrollbar from 'gemini-scrollbar';
 
 import 'rctui/lang/zh-cn';
 
-import '../less/form.less';
+import 'Less/form.less';
 
-import Action from './action/flow';
-import { urlParamToObject } from './util/Strings';
+import Action from 'Action/flow';
+import { urlParamToObject } from 'Util/Strings';
 window.$ = $;
 let search = location.search.substring(1),
   param = urlParamToObject(search);

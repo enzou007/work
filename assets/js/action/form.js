@@ -18,7 +18,7 @@ export default class Action {
     this.init();
   }
   init(){
-    
+
   }
   getDefaultStore() {
     return {};
@@ -26,8 +26,12 @@ export default class Action {
   getParam() {
     return this._param;
   }
-  getStore() {
-    return this._store;
+  getStore(key) {
+    if(key){
+      return this._store.data().get(key);
+    }else{
+      return this._store;
+    }
   }
   on(name, callback) {
     let eventName = `${this.uniqueId}:${name}`;

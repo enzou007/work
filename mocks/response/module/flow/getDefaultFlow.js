@@ -5,5 +5,5 @@ module.exports = function (data) {
 
   var flowMng = new Flow(data.params.flowId);
 
-  return {json: flowMng.getFlowInfo().flow};
+  return {json: flowMng.getDefaultFlow()};
 }

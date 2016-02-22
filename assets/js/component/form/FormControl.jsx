@@ -64,6 +64,7 @@ export default class FormControl extends React.Component {
   static defaultProps = {
     layout: 'inline',
     type: 'text',
+    readOnly: false,
     show: true
   }
   state = {

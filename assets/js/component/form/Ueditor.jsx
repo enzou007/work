@@ -12,7 +12,7 @@ export default class Ueditor extends React.Component{
     value: "",
     options: { },
     readOnly: false,
-    height: ($(window).height() - 230) < 500 ? 500 : $(window).height() - 230
+    height: ($(window).height() - 230) < 450 ? 450 : $(window).height() - 230
   }
   static propTypes = {
     readOnly: React.PropTypes.bool
@@ -21,27 +21,27 @@ export default class Ueditor extends React.Component{
     this.ue = window.UE.getEditor('richtext_container', _.extend(this.props.options, {
       readonly: this.props.readOnly
     }));
-
     this.ue.ready(() => {
       this.ue.setContent(this.props.value, false);
       this.ue.setHeight(this.props.height);
       if(this.props.readOnly){
+        this.ue.setDisabled();
         $(".edui-editor-toolbarbox").hide();
         $(".edui-editor-bottomContainer").hide();
         $(".edui-editor").css("border","0");
+      }else{
+        if(this.props.onChange){
+          let change = this.props.onChange;
+          this.ue.addListener( 'contentChange', editor => {
+            change();
+          })
+        }
       }
     });
-
-    if(this.props.onChange){
-      this.ue.addListener( 'contentChange', editor => {
-        this.props.onChange();
-      })
-    }
   }
   getValue(){
     return this.ue.getContent();
   }
-
   render() {
     return (
       <script id="richtext_container" name="content" type="text/plain"></script>

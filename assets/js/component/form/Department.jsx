@@ -12,7 +12,7 @@ import OrganizationTree from './OrganizationTree.jsx';
 
 import FormControl from './FormControl.jsx';
 
-import Action from 'Action/department';
+import deptAction from 'Action/department';
 
 import 'rctui/src/less/form.less';
 
@@ -25,7 +25,7 @@ export default class Department extends React.Component {
     region: React.PropTypes.string
   }
   static defaultProps = {
-    action: new Action()
+    action: deptAction
   }
   state = {
     //focus: false,
@@ -218,7 +218,7 @@ export default class Department extends React.Component {
                 region={this.props.region} onChange={this.handleTreeChange}/>
             </div>
           </Dropdown>
-        ) : null}
+        ) : <span className="tree-handle"><a href="javascript:void(0)"><i className="fa fa-sitemap"/></a></span>}
       </div>
     );
   }

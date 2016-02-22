@@ -62,8 +62,8 @@ var DepartmentForm = React.createClass({
           </div>
           <div className="form-content" tab="岗位信息" onShow={this.showTable}>
             <Fieldset title="岗位明细">
-              <FormControl name="StPsotData" type="grid" responsive={{xl: 24}}>
-                <Grid height={500} form={this.getGridForm()} show={this.state.showTable} uniqueKey={["StPostID"]}>
+              <FormControl name="StPsotData" type="grid" responsive={{xl: 24}} show={this.state.showTable}>
+                <Grid height={500} form={this.getGridForm()} uniqueKey={["StPostID"]}>
                   <Column label="岗位名称" width={0.2} dataKey="StPostName"/>
                   <Column label="岗位编号" width={0.2} dataKey="StPostID"/>
                   <Column label="人员" width={0.5} dataKey="StPostPsn" cellRenderer={this.renderPsnCell}/>

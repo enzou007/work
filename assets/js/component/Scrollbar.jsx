@@ -1,14 +1,17 @@
 import React from 'react';
 import $ from 'jquery';
+import _ from "underscore";
 import GeminiScrollbar from 'gemini-scrollbar';
-
+import 'Less/component/scrollbar.less'
 const Scrollbar = React.createClass({
   propTypes: {
     autoshow: React.PropTypes.bool
   },
   getDefaultProps() {
     return {
-      autoshow: false
+      autoshow: false,
+      vertical: "right",
+      horizontal: "bottom"
     }
   },
   scrollbar: null,
@@ -21,7 +24,7 @@ const Scrollbar = React.createClass({
   //  let $content = $(this.refs.scroll_view.getDOMNode());
   //  $content.width($content.width() + 1);
     this.toggleScroll();
-    $(window).on("resize",this.toggleScroll);
+    $(window).on("resize.scroll", _.debounce(this.toggleScroll, 200));
   },
   componentDidUpdate() {
     this.scrollbar.update();
@@ -56,15 +59,24 @@ const Scrollbar = React.createClass({
     if (className) {
       classes += ' ' + className;
     }
+
+    var verticalStyle = {};
+    var horizontalStyle = {};
+    if(this.props.vertical === "left"){
+      verticalStyle.left = "4px";
+    }
+    if(this.props.horizontal === "top"){
+      verticalStyle.top = "4px";
+    }
     return (
       <div className={classes} {...other}>
-        <div className='gm-scrollbar -vertical' ref="VerticalScroll">
+        <div className='gm-scrollbar -vertical' style={verticalStyle} ref="VerticalScroll">
           <div className='thumb'></div>
         </div>
-        <div className='gm-scrollbar -horizontal' ref="HorizontalScroll">
+        <div className='gm-scrollbar -horizontal' style={horizontalStyle} ref="HorizontalScroll">
           <div className='thumb'></div>
         </div>
-        <div className='gm-scroll-view' ref='scroll_view'>
+        <div className='gm-scroll-view' {...other} ref='scroll_view'>
           {children}
         </div>
       </div>

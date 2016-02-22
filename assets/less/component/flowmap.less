@@ -1,32 +1,34 @@
-@defaultNodeHeight : 40px;
-@defaultNodeWidth : 140px;
-@StartAndEndNodeWidth : 70px;
+@defaultNodeHeight : 40px;     //环节默认高度
+@defaultNodeWidth : 140px;     //环节默认宽度
+@StartAndEndNodeWidth : 70px;  //开始和结束环节 默认宽度
 
-@nodebgColor: #cacdcf;
-@donebgColor: #8bc34a;
-@curbgColor: #129fea;
-@doneColor: #fff;
-
+@nodebgColor: #cacdcf; //环节默认背景色
+@donebgColor: #8bc34a; //已完成环节背景色
+@curbgColor: #129fea;  //当前环节背景色
+@doneFontColor: #fff;  //已完成环节字体颜色
+//流程画布样式
 .canvas {
   height: auto;
   min-height: 500px;
-  //max-height: 768px;
   width: 100%;
   position: relative;
 }
+//在表单中显示时不显示画布边框
 .form-content .canvas {
   border: 0;
 }
+//只读时hover时鼠标指针图标为默认图标
 .readonly {
   cursor: default !important;
 }
 .readonly * {
   cursor: default !important;
 }
+//连线的样式
 path {
   cursor: pointer;
 }
-
+//环节默认样式
 .task {
   position: absolute;
   z-index: 11;
@@ -67,29 +69,31 @@ path {
     display: block;
   }
 }
+//开始和结束环节样式
 .start, .end {
   width: @StartAndEndNodeWidth;
 }
+//条件环节样式
 .decision{
   background-color: transparent;
-  background-image:  url("../images/ling.png");
+  background-image:  url("../../images/ling.png");
   background-size: 100% 100%;
   box-shadow: 0 0 0;
   border-radius: 0;
-  // border-radius: 50px;
-  // width: 50px;
-  // height: 50px;
 }
+//条件环节已完成的样式
 .decision.done{
   background-color: transparent;
-  background-image:  url("../images/ling_done.png");
+  background-image:  url("../../images/ling_done.png");
   background-size: 100% 100%;
   box-shadow: 0 0 0;
 }
+//非条件环节已完成后的样式
 .done {
   background-color: @donebgColor;
-  color: @doneColor;
+  color: @doneFontColor;
 }
+//文本环节样式
 .text {
 	background-color: transparent;
 	z-index: 12;
@@ -99,7 +103,8 @@ path {
 	box-shadow: 0px 0px 0px;
 	padding-right: 20px;
 }
+//当前环节样式
 .cur {
   background-color: @curbgColor;
-  color: @doneColor;
+  color: @doneFontColor;
 }

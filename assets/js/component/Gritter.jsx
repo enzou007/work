@@ -50,7 +50,7 @@ Gritter.show = function(text, status, cb){
       <div>
         <h5>{text}</h5>
         <div style={{textAlign: "right"}}>
-          <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id)}>确定</a>
+          <a className="btn btn-sm btn-primary" onClick={() => Gritter.remove(id, {fade: false})}>确定</a>
         </div>
       </div>
     )

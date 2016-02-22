@@ -12,9 +12,9 @@ var Module = Backbone.Model.extend({
   _loaded: false,
   _children: null,
   _parents: null,
-  idAttribute: "objectId",
+  idAttribute: "@objectId",
   defaults: {
-    objectId: "",
+    "@objectId": "",
     name: "",
     ico: "",
     sort: 10,

@@ -5,7 +5,7 @@ import { Iterable } from 'immutable';
 const CACHE_NAME = "DEPARTMENT_CACHE";
 const CACHE_DURING = 1000 * 60 * 60 * 24; //1天
 const WRITE_DURING = 1000 * 60; //1分钟
-
+//TODO 优化缓存, byParent, auery
 class Action {
   params = []
   handles = []
@@ -133,4 +133,4 @@ class Action {
   }
 };
 
-export default Action;
+export default new Action();

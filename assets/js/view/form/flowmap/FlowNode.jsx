@@ -7,7 +7,7 @@ const FlowNode = React.createClass({
     return {
       unid: "",
       id:"",
-      "@type": "node",
+      "@type": "task",
       name: "未定义",
       done: false,
       cur: false

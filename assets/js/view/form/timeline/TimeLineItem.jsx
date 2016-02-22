@@ -15,12 +15,6 @@ const TimeLineItem = React.createClass({
       return name;
     }
   },
-  componentDidMount() {
-    $(this.refs.timeNode.getDOMNode()).mouseover(this.showInfo).mouseout(this.closeInfo);
-  },
-  componentWillUnmount(){
-    $(this.refs.timeNode.getDOMNode()).off("mouseover mouseout");
-  },
   showInfo() {
     const windowHeight = $(window).height();
     const windowScrollTop = $(window).scrollTop();
@@ -71,7 +65,7 @@ const TimeLineItem = React.createClass({
     }
 
     return (
-      <div className={"timeline-detail-info popover fade left in " + this.props.operate} style={style}>
+      <div className={"timeline-detail-info popover fade left in timeline-" + this.props.operate} style={style}>
         {info}
       </div>
     )
@@ -80,11 +74,11 @@ const TimeLineItem = React.createClass({
     React.unmountComponentAtNode(document.getElementById("timeline-detail-info"));
     $("#timeline-detail-info").remove();
   },
-  render() {    
+  render() {
     return (
-      <div className="timeline-item clearfix">
-        <div className={"timeline-info " + this.props.operate}>
-          <i className="timeline-indicator btn" ref="timeNode"></i>
+      <div className={"timeline-item clearfix timeline-" + this.props.operate}>
+        <div className="timeline-info">
+          <i className="timeline-indicator btn" ref="timeNode" onMouseOver={this.showInfo} onMouseOut={this.closeInfo}></i>
           <div className="item-title">{this.props.time.substring(11,16)}</div>
         </div>
 
@@ -109,7 +103,13 @@ const TimeLineItem = React.createClass({
 
 const operates = TimeLineItem.operates = {
   "submit": "提交",
-  "reject": "驳回"
+  "reject": "驳回",
+  "turn": "转办",
+  "apostille": "加签",
+  "withdraw": "抽单",
+  "stop": "终止",
+  "jump": "强制跳转",
+  "curNode": "当前环节"
 }
 
 export default TimeLineItem;

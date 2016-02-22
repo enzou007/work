@@ -5,6 +5,13 @@ import styles from 'rctui/src/less/form-control.less'
 import classnames from 'classnames';
 
 export class Select extends RCTSelect{
+
+  static defaultProps = {
+    dropup: false,
+    sep: ',',
+    optionTpl: '{text}',
+    valueTpl: '{id}'
+  }
   handleChange (i, d) {
     if (this.props.readOnly) {
       return;

@@ -85,4 +85,143 @@
   "name": "流程管理",
   "parent": "5582272444ae2b5937e53957",
   "path": "system/workflow"
+},{
+  "ico": "fa fa-list",
+  "@objectId": "5582272444a78971",
+  "sort": 0,
+  "name": "恒智项目",
+  "path": ""
+},{
+  "ico": "fa fa-list",
+  "@objectId": "5582272444ae34521",
+  "sort": 9999,
+  "name": "零售客户管理",
+  "parent": "5582272444a78971",
+  "path": "Customer/retail"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "5582272444ae2123231",
+  "sort": 9999,
+  "name": "企业客户管理",
+  "parent": "5582272444a78971",
+  "path": "Customer/mechanism"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "345623446547353245654",
+  "sort": 9999,
+  "name": "供应商管理",
+  "parent": "5582272444a78971",
+  "path": "supplier/supplier"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "55822356789423231",
+  "sort": 9999,
+  "name": "产品管理",
+  "parent": "5582272444a78971",
+  "path": "product/met"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "558223563423456646",
+  "sort": 9999,
+  "name": "金融产品",
+  "parent": "55822356789423231",
+  "path": "product/productFinance"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "558223562342333346",
+  "sort": 9999,
+  "name": "贷款类产品",
+  "parent": "55822356789423231",
+  "path": "product/productLoan"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "564563562376546",
+  "sort": 9999,
+  "name": "移民服务类产品",
+  "parent": "55822356789423231",
+  "path": "product/productImmS"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "564567654365546",
+  "sort": 9999,
+  "name": "其他类型产品",
+  "parent": "55822356789423231",
+  "path": "product/productOther"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "2315324523546",
+  "sort": 9999,
+  "name": "销售目标管理",
+  "parent": "5582272444a78971",
+  "path": "salestarget/target"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "231532452543546",
+  "sort": 9999,
+  "name": "跟进计划及活动",
+  "parent": "5582272444a78971",
+  "path": "Followplan/Follow"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "2315398765456234256",
+  "sort": 9999,
+  "name": "销售机会",
+  "parent": "5582272444a78971",
+  "path": "salesoppo/opportunity"
+}, {
+  "ico": "fa fa-list",
+  "@objectId": "235679708978675756",
+  "sort": 9999,
+  "name": "活动结果",
+  "parent": "5582272444a78971",
+  "path": "activityprogram/program"
+},{
+  "ico": "fa fa-list",
+  "@objectId": "558455567342467521",
+  "sort": 9999,
+  "name": "订单管理",
+  "parent": "5582272444a78971",
+  "path": "orderment"
+  },{
+    "ico": "fa fa-list",
+    "@objectId": "D845532432222521",
+    "sort": 9999,
+    "name": "订单信息管理",
+    "parent": "558455567342467521",
+    "path": "orderment/order"
+    },{
+      "ico": "fa fa-list",
+      "@objectId": "558455356666665521",
+      "sort": 9999,
+      "name": "行项目信息管理",
+      "parent": "558455567342467521",
+      "path": "orderment/LineItem"
+      },{
+        "ico": "fa fa-list",
+        "@objectId": "523124325646665521",
+        "sort": 9999,
+        "name": "支出信息管理",
+        "parent": "558455567342467521",
+        "path": "orderment/ExpItems"
+  },{
+    "ico": "fa fa-list",
+    "@objectId": "57778886655778975",
+    "sort": 9999,
+    "name": "到款核销",
+    "parent": "5582272444a78971",
+    "path": "dkhx"
+},{
+  "ico": "fa fa-list",
+  "@objectId": "558467526543364577",
+  "sort": 9999,
+  "name": "欠款清单",
+  "parent": "57778886655778975",
+  "path": "cancel/arrears"
+},{
+  "ico": "fa fa-list",
+  "@objectId": "5584231234529879098",
+  "sort": 9999,
+  "name": "到款清单",
+  "parent": "57778886655778975",
+  "path": "cancel/receive"
 }]

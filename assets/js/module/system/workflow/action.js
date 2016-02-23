@@ -64,7 +64,7 @@ class Action extends FormAction{
     return this;
   }
   getFormData(){
-    return this.getStore().data().get("form");
+    return this.getStore("form");
   }
   isNewNote(){
     return !this._param.objectId;
@@ -91,7 +91,7 @@ class Action extends FormAction{
   }
   saveFlow(){
     let flowMapInfo = this._flowMap.getValue(this._nodeIdMap).toJS();
-    let flowInfo = this.getStore().data().get("flow").toJS();
+    let flowInfo = this.getStore("flow").toJS();
 
     _.each(flowInfo.nodes, (node, index) => {
       _.extend(node, _.find(flowMapInfo,(item) => {
@@ -131,7 +131,7 @@ class Action extends FormAction{
   }
   activeNode(unid, nodeId){
     let newData = null;
-    let flowStore = this.getStore().data().get("flow");
+    let flowStore = this.getStore("flow");
 
     if(unid === "__flow"){
       newData = flowStore.delete("nodes");
@@ -141,7 +141,7 @@ class Action extends FormAction{
       });
       this.activeNodeId = nodeId;
     }
-    if(!newData.equals(this.getStore().data().get("form"))){
+    if(!newData.equals(this.getStore("form"))){
       if(this.isShowNodeIfo){
         this.getStore().cursor().set("form",newData);
       }
@@ -157,7 +157,7 @@ class Action extends FormAction{
     }
   }
   saveNodeInfo(){
-    var newNodeData = this.getStore().data().get("form");
+    var newNodeData = this.getStore("form");
     if(newNodeData.get("@type")){
       if(this.validateNode(newNodeData)){
         this.getStore().cursor().get("flow").get("nodes").set(this.getNodeIndexById(newNodeData.get("unid")), newNodeData);
@@ -182,13 +182,13 @@ class Action extends FormAction{
     delete this._nodeIdMap[unid];
   }
   getNodeIndexById(id){
-    return this.getStore().data().get("flow").get("nodes").findIndex(node => {
+    return this.getStore("flow").get("nodes").findIndex(node => {
       return node.get("id") === id || node.get("unid") === id;
     });
   }
   getNewNodeId(){
     let ids = [];
-    this.getStore().data().get("flow").get("nodes").forEach(node => {
+    this.getStore("flow").get("nodes").forEach(node => {
       if(node["@type"] !== "text"){
         if((/\d/).test(node.get("id"))){
           ids.push(+node.get("id").replace(/\D/g, ""))
@@ -198,11 +198,11 @@ class Action extends FormAction{
     if(ids.length === 0){
       return "node1";
     }
-    ids.sort(function(a, b) {return a < b});
+    ids = _.sortBy(ids, function(num){return -num});
     return "node" + (+ids[0] + 1);
   }
   // getParentNodes(curNode){
-  //   let nodes = this.getStore().data().get("flow").get("nodes");
+  //   let nodes = this.getStore("flow").get("nodes");
   //
   //   let getNodes = function(_curNode){
   //     let result = [];
@@ -239,7 +239,7 @@ class Action extends FormAction{
 
   getParentNodes(curNode){
     let filterNodeIds = curNode.get("outputs").toJS();
-    let rejectNodes = this.getStore().data().get("flow").get("nodes")
+    let rejectNodes = this.getStore("flow").get("nodes")
       .filter(node => {
         if(filterNodeIds.indexOf(node.get("id")) > -1){
           filterNodeIds.push(node.get("id"));

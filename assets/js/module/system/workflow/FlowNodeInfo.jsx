@@ -8,6 +8,7 @@ import Gritter from 'Component/Gritter.jsx';
 
 import 'Component/form/Radio.jsx';
 import 'Component/form/Select.jsx';
+import 'Component/form/FlowProcessors.jsx';
 import 'Component/form/ACLProcessors.jsx';
 import 'rctui/input';
 
@@ -71,24 +72,28 @@ class BaseInfoForm extends React.Component{
 class FlowForm extends BaseInfoForm{
   renderForm () {
     return (
-      <div>
-        <FormControl label="流程编号" name="@objectId" type="text" readOnly={true}/>
-        <FormControl label="流程名称" name="name" type="text"/>
-        <FormControl label="流程关键字" name="keys" type="text"/>
-        <FormControl label="应用" name="moduleId" type="select" data={this.props.channel.getModuleList()} groupBy="parent"
-          filterAble={true} optionTpl='<i class="{ico}"></i>  {name}-{path}' resultTpl="{name}" valueTpl="{@objectId}"/>
-        <FormControl label="是否启用" name="state" type="radio-group" data={whether}/>
-        <FormControl label="允许重办" name="allowReSubmit" type="radio-group" data={whether}/>
-        <FormControl label="允许抽单" name="allowWithdraw" type="radio-group" data={whether}/>
-        <FormControl label="允许通知" name="allowNotify" type="radio-group" data={whether}/>
-        <FormControl label="允许催办" name="allowPress" type="radio-group" data={whether}/>
-        <FormControl label="使用者" name="allowTo" type="text"/>
-        <FormControl label="作者" name="defaultAuthor" type="text" readOnly={true}/>
-        <FormControl label="读者" name="defaultReader" type="text" readOnly={true} show={false}/>
-        <FormControl label="创建时间" name="createdAt" type="text" readOnly={true}/>
-        <FormControl label="修改时间" name="updatedAt" type="text" readOnly={true}/>
-        <FormControl label="版本号" name="version" type="text" readOnly={true}/>
-      </div>
+      <Tabs>
+        <div tab="基本信息">
+          <FormControl label="流程编号" name="@objectId" type="text" readOnly={true}/>
+          <FormControl label="流程名称" name="name" type="text"/>
+          <FormControl label="流程关键字" name="keys" type="text"/>
+          <FormControl label="应用" name="moduleId" type="select" data={this.props.channel.getModuleList()} groupBy="parent"
+            filterAble={true} optionTpl='<i class="{ico}"></i>  {name}-{path}' resultTpl="{name}" valueTpl="{@objectId}"/>
+          <FormControl label="是否启用" name="state" type="radio-group" data={whether}/>
+          <FormControl label="允许重办" name="allowReSubmit" type="radio-group" data={whether}/>
+          <FormControl label="允许抽单" name="allowWithdraw" type="radio-group" data={whether}/>
+          <FormControl label="允许通知" name="allowNotify" type="radio-group" data={whether}/>
+          <FormControl label="允许催办" name="allowPress" type="radio-group" data={whether}/>
+          <FormControl label="创建时间" name="createdAt" type="text" readOnly={true}/>
+          <FormControl label="修改时间" name="updatedAt" type="text" readOnly={true}/>
+          <FormControl label="版本号" name="version" type="text" readOnly={true}/>
+        </div>
+        <div tab="权限">
+          <FormControl label="使用者" name="allowTo" type="acl"/>
+          <FormControl label="作者" name="defaultAuthor" type="acl"/>
+          <FormControl label="读者" name="defaultReader" type="acl"/>
+        </div>
+      </Tabs>
     );
   }
 }

@@ -13,7 +13,7 @@ import 'rctui/input';
 
 import 'Less/component/acl-processors.less'
 
-export default class ACLProcessors extends React.Component{
+export default class FlowProcessors extends React.Component{
   static defaultProps = {
     action: new Action()
   }
@@ -78,7 +78,7 @@ export default class ACLProcessors extends React.Component{
   openModalBox(){
     this._modal = Modal.create(
       <ProcessorsForm channel={this.props.action} store={this.props.action.getStore()} form="" onSubmit={this.saveProcessor.bind(this)}
-        roleList={this.props.channel.getRoleList()}/>
+        roleList={this.props.channel.getRoleList()} postList={this.props.channel.getPostList()}/>
     , {backdrop: true}, document.getElementById("form"))
   }
   saveProcessor(){
@@ -106,19 +106,37 @@ const ProcessorsType = [{
 }, {
   id: ".RoleProcessor", text: "角色"
 }, {
-  id: ".DepartmentProcessor", text: "部门"
+  id: ".PositionProcessor", text: "岗位"
+}, {
+  id: ".VariableProcessor", text: "表单字段"
+}]
+
+const Base = [{
+  id: "DEPT", text: "指定部门"
+}, {
+  id: "CURRENT", text: "当前用户所属部门"
+}, {
+  id: "CREATOR", text: "申请人所属部门"
 }]
 
 const ProcessorsForm = React.createClass({
   __index : null,
   _roleName: "",
+  _postName: "",
   componentWillMount() {
     this.setRelatedDepartment();
   },
   setRelatedDepartment(){
     let data = this.props.store.data();
-    if(data.get("@c") === ".DepartmentProcessor"){
-      this.props.store.cursor().set("relatedDepartment", Set.of(data.get("relatedDepartment")));
+    if(data.get("@c") === ".PositionProcessor"){
+      if(data.get("relatedDepartment") === "CURRENT" || data.get("relatedDepartment") === "CREATOR"){
+        this.props.store.cursor().set("Base", data.get("relatedDepartment"));
+        this.props.store.cursor().delete("relatedDepartment")
+      }else{
+        this.props.store.cursor().set("Base", "DEPT");
+        this.props.store.cursor().set("relatedDepartment", Set.of(data.get("relatedDepartment")));
+      }
+      this._postName = data.get("label").replace(/\[Post\]\:.*\|/ , "");
     }else if(data.get("@c") === ".RoleProcessor"){
       this._roleName = data.get("label").replace("[Role]: ", "");
     }
@@ -147,8 +165,11 @@ const ProcessorsForm = React.createClass({
         <div className="modal-body">
           <FormControl label="类型" name="@c" type="select" data={ProcessorsType} onChange={this.processorChange}/>
           <FormControl label="姓名" name="userIds" type="personnel" mult={true} show={type === ".UserProcessor"} />
-          <FormControl label="部门" name="relatedDepartment" type="department" show={type === ".DepartmentProcessor"}/>
+          <FormControl label="基准对象" name="Base" type="select" data={Base} show={type === ".PositionProcessor"} />
+          <FormControl label="部门" name="relatedDepartment" type="department" show={type === ".PositionProcessor" && this.props.store.data().get("Base") === "DEPT"}/>
+          <FormControl label="岗位" name="positionId" type="select" data={this.props.postList} show={type === ".PositionProcessor"} onChange={this.postChange}/>
           <FormControl label="角色" name="roleId" type="select" data={this.props.roleList} show={type === ".RoleProcessor"} onChange={this.roleChange}/>
+          <FormControl label="表单字段" name="fieldName" type="text" show={type === ".VariableProcessor"} />
         </div>
 
         <div className="modal-footer">
@@ -165,9 +186,16 @@ const ProcessorsForm = React.createClass({
     let data = this.props.store.data();
     let result = {}
     switch (data.get("@c")) {
-      case ".DepartmentProcessor":
-          result.label = "[Dept]: " + this.props.channel.getField("relatedDepartment")._control.getFullValue().toJS()[0].name;
+      case ".PositionProcessor":
+        result.label = "[Post]: ";
+        if(data.get("Base") === "CURRENT" || data.get("Base") === "CREATOR"){
+          result.label += (data.get("Base") === "CURRENT" ? "当前人" : "申请人");
+          result.relatedDepartment = data.get("Base");
+        }else{
+          result.label += this.props.channel.getField("relatedDepartment")._control.getFullValue().toJS()[0].name;
           result.relatedDepartment = data.get("relatedDepartment").toList().get(0);
+        }
+        result.label += "|" + this._postName;
         break;
       case ".RoleProcessor":
         result.label = "[Role]: " + this._roleName;
@@ -177,12 +205,16 @@ const ProcessorsForm = React.createClass({
           return user.name;
         }).join(",");
         break;
+      case ".VariableProcessor":
+        result.label = "[Field]: " + data.get("fieldName");
+        break;
     }
     this.props.store.cursor().merge(result);
     this.props.onSubmit();
   },
   processorChange(value){
     this._roleName = "";
+    this._postName = "";
     this.props.store.reset();
     this.props.store.cursor().set("@c", value);
     if(this.__index !== null){
@@ -197,6 +229,6 @@ const ProcessorsForm = React.createClass({
   }
 });
 
-FormControl.register('acl', function (props) {
-  return <ACLProcessors {...props}/>
-}, ACLProcessors, 'List');
+FormControl.register('processors', function (props) {
+  return <FlowProcessors {...props}/>
+}, FlowProcessors, 'List');

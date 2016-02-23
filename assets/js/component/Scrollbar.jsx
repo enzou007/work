@@ -2,7 +2,6 @@ import React from 'react';
 import $ from 'jquery';
 import _ from "underscore";
 import GeminiScrollbar from 'gemini-scrollbar';
-import 'Less/component/scrollbar.less'
 const Scrollbar = React.createClass({
   propTypes: {
     autoshow: React.PropTypes.bool

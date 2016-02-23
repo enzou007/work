@@ -9,11 +9,9 @@ var Navbar = require("./navbar/Navbar.jsx"),
   GeminiScrollbar = require('gemini-scrollbar');
 
 var session = require("../store/session");
-
 var moduleStore = require("../store/module");
 
 require("backbone-react-component");
-
 var App = React.createClass({
   componentDidMount: function() {
     this.PageScroll = new GeminiScrollbar({

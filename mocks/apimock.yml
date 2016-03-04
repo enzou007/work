@@ -10,21 +10,21 @@
   response:
     type: js
     file: "response/session/login.js"
-- request:
-    url: /1/system/module
-  response:
-    file: "response/system/module/list.json"
+# - request:
+#     url: /1/system/module
+#   response:
+#     file: "static/system_module.json"
     #status: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 200 : 401 %>"
     #file: "<%= header.authorization=='Bearer YWRtaW46Nnnwwa4WTLN2aobiFaTjwQ' ? 'response/system/module/list.json' : 'response/empty.json' %>"
-- request:
-    url: /1/message/me
-  response:
-    file: static/message/me.json
 - request:
     url: /1/system/module/:moduleId
   response:
     type: js
     file: response/system/module/module.js
+- request:
+    url: /1/message/me
+  response:
+    file: static/message/me.json
 
 #首页信息读取 URL配置
 - request:

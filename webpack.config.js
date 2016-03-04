@@ -61,8 +61,12 @@ module.exports = {
       test: /module[\/\\].+[\/\\]option\.js$/,
       loader: 'bundle?lazy!babel?stage=0&optional=runtime'
     }, {
+        test: /\.js$/,
+        include: /bower_components[\/\\](bootstrap|jsplumb)/,
+        loader: "exports?jQuery!imports?jQuery=jquery&this=>window&define=>false"
+    }, {
       test: /\.js$/,
-      include: /(bootstrap|gritter|jsplumb)/,
+      include: /node_modules[\/\\]gritter/,
       loader: "exports?jQuery!imports?jQuery=jquery&this=>window&define=>false"
     }]
   },

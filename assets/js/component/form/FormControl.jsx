@@ -207,7 +207,7 @@ export default class FormControl extends React.Component {
   handleChange = (value, data, data1) => {
     if(value === undefined){
       _.defer(() => {
-        this.handleChange(this.refs.control.getValue(this.props.seq));
+        this.handleChange(this.refs.control.getValue(this.props.seq), data, data1);
       });
       return;
     }

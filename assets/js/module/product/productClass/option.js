@@ -3,35 +3,31 @@
 var BaseOption = require("../../baseOption");
 
 var baseColumns = [{
-  label: "标题",
-  dataKey: "Subject",
-  width: "25%"
+  label: "类别编号",
+  dataKey: "CLASS_ID",
+  width: "20%"
 }, {
-  label: "发布单位",
-  dataKey: "SourceCompName",
-  width: "17.5%"
+  label: "类别名称",
+  dataKey: "CLASS_NAME",
+  width: "20%"
 }, {
-  label: "发布部门",
-  dataKey: "NewSource",
-  width: "17.5%"
+  label: "上级类别编号",
+  dataKey: "P_CLASS_ID",
+  width: "20%"
 }, {
-  label: "拟稿人",
+  label: "创建人",
   dataKey: "AgentPsn",
-  width: "15%"
+  width: "20%"
 }, {
-  label: "申请日期",
+  label: "创建时间",
   dataKey: "CreateDate",
-  width: "15%"
-}, {
-  label: "发布时间",
-  dataKey: "PubDate",
-  width: "10%"
+  width: "20%"
 }];
 
 module.exports = BaseOption.extend({
   Model: require("./model"),
   form: {
-    "新增其他产品": "product/productOther/note"
+    "新增产品类别": "product/productClass/note"
   },
   menu: [{
     name: "按状态检索",

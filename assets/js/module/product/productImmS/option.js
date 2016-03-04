@@ -31,7 +31,7 @@ var baseColumns = [{
 module.exports = BaseOption.extend({
   Model: require("./model"),
   form: {
-    "新增金融产品": "product/productImmS/note"
+    "新增移民类产品": "product/productImmS/note"
   },
   menu: [{
     name: "按状态检索",

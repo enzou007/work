@@ -119,6 +119,13 @@
   "name": "产品管理",
   "parent": "5582272444a78971",
   "path": "product/met"
+  }, {
+    "ico": "fa fa-list",
+    "@objectId": "55234334553456",
+    "sort": 9999,
+    "name": "产品类别管理",
+    "parent": "55822356789423231",
+    "path": "product/productClass"
 }, {
   "ico": "fa fa-list",
   "@objectId": "558223563423456646",

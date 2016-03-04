@@ -1,11 +1,16 @@
 var File = require("../../file");
 
 module.exports = function (data) {
-  var docs = new File("mocks/static/system_workflow.json");
+  var flows = new File("mocks/static/system_workflow.json");
+  var modules = new File("mocks/static/system_module.json");
 
-  var flows = docs.filter(function(doc){
-    return doc.moduleId === data.params.moduleId;
-  })
+  var moduleId = data.params.moduleId;
 
-  return {json:{flows: flows}};
+  var Module = modules.findByObjectId(moduleId);
+
+  Module.flows = flows.filter(function(flow){
+    return flow.moduleId === data.params.moduleId;
+  });
+
+  return {json: Module};
 }

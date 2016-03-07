@@ -10,6 +10,7 @@ var zfdata = ["利息","渠道费","评估费","返点","资料","律师费","�
 var nulldata =[];
 var bzdata =["RMB","USD"];
 var zftypedata =["未支付","已支付"];
+var zfxztypedata =["支付项目","成本调节项目"];
 //var AttOptions = {
 //  accept: [
 //    {
@@ -55,6 +56,7 @@ var qy = React.createClass({
           <FormControl label="支出行项目编号" name="P_ITEM_NO" type="text"  responsive={{xl: 12}}/>
           <FormControl label="支付供应商代码" name="VENDOR_NO" type="select" data={nulldata}   responsive={{xl: 12}}/>
           <FormControl label="支付供应商名称" name="VENDOR" type="text" responsive={{xl: 12}}/>
+          <FormControl label="支付行项目性质" name="VENDOR_NO" type="select" data={zfxztypedata}   responsive={{xl: 12}}/>
           <FormControl label="支付项目类别" name="P_TYPE" type="select" data={zfdata}  responsive={{xl: 12}}/>
           <FormControl label="实际采购业务期限" name="R_TERM" type="number"   responsive={{xl: 12}}/>
           <FormControl label="支付金额" name="P_AMT" type="number"   responsive={{xl: 12}}/>

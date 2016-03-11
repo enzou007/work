@@ -48,16 +48,16 @@ var product = React.createClass({
           <div className="form-content" tab="基本信息">
             <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="产品编号" name="PRT_ID" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="产品类别" name="CLASS_ID" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
-            <FormControl label="产品名称" name="PRT_NAME" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="币种" name="CUR_NAME" type="select" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
-            <FormControl label="币种代码" name="CURRENCY" type="text" responsive={{xl: 12}}/>
-            <FormControl label="服务机构" name="SERVICE_I" type="text" responsive={{xl: 12}}/>
-            <FormControl label="移民国家" name="IM_COUNTRY" type="select" data ={COUNTRY_DATA} responsive={{xl: 12}}/>
-            <FormControl label="移民项目" name="IMMIGRATION_P" type="text" responsive={{xl: 12}}/>
-            <FormControl label="移民条件" name="IMMIGRATION_C" type="text" responsive={{xl: 12}}/>
-            <FormControl label="服务费" name="SERVICE_F" type="text" responsive={{xl: 12}}/>
+            <FormControl label="产品编号" name="prt_id" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
+            <FormControl label="产品名称" name="prt_name" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="币种" name="cur_name" type="select" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
+            <FormControl label="币种代码" name="currency" type="text" responsive={{xl: 12}}/>
+            <FormControl label="服务机构" name="service_i" type="text" responsive={{xl: 12}}/>
+            <FormControl label="移民国家" name="im_country" type="select" data ={COUNTRY_DATA} responsive={{xl: 12}}/>
+            <FormControl label="移民项目" name="immigration_p" type="text" responsive={{xl: 12}}/>
+            <FormControl label="移民条件" name="immigration_c" type="text" responsive={{xl: 12}}/>
+            <FormControl label="服务费" name="service_f" type="text" responsive={{xl: 12}}/>
 
           </div>
       </FlowForm>

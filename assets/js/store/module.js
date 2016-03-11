@@ -50,7 +50,7 @@ var Module = Backbone.Model.extend({
     if (!children) {
       children = this.collection.where({
         parent: this.id
-      });
+      }).sort(item => item.get("sort"));
       if (children.length > 0 || this.get("lazy") !== true) {
         this._children = children;
       }

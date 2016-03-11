@@ -33,7 +33,7 @@ var Sidebar = React.createClass({
 
     var Items = this.getCollection() ? (this.getCollection().where({
       parent: null
-    }).map(function(model) {
+    }).sort(item => item.get("sort")).map(function(model) {
       return <Item isMin={this.state.isMin} key={model.id} model={model}/>;
     }.bind(this))) : null;
 

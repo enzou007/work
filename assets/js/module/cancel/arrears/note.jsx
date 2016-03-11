@@ -55,14 +55,14 @@ var qy = React.createClass({
       <FlowForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <div className="form-content" tab="基本信息">
           <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-          <FormControl label="客户名称" name="KHName" type="text" responsive={{xl: 12}}/>
-          <FormControl label="客户编号" name="KHNum" type="text" responsive={{xl: 12}}/>
-          <FormControl label="订单号" name="dingdnum" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="订单日期" name="DDDate" type="date"  responsive={{xl: 12}}/>
-          <FormControl label="产品名称" name="cpName" type="text" responsive={{xl: 12}}/>
-          <FormControl label="产品金额" name="cpsum" type="number"  responsive={{xl: 12}}/>
-          <FormControl label="订单金额" name="cpsum" type="number"  responsive={{xl: 12}}/>
-          <FormControl label="欠款金额" name="cpsum" type="number"  responsive={{xl: 12}}/>
+          <FormControl label="客户名称" name="cust_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="客户编号" name="cust_id" type="text" responsive={{xl: 12}}/>
+          <FormControl label="订单号" name="order_id" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="订单日期" name="efct_date" type="date"  responsive={{xl: 12}}/>
+          <FormControl label="产品名称" name="trade_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="产品金额" name="ord_amt" type="number"  responsive={{xl: 12}}/>
+          <FormControl label="订单金额" name="trade_amt" type="number"  responsive={{xl: 12}}/>
+          <FormControl label="欠款金额" name="q_amt" type="number"  responsive={{xl: 12}}/>
           </div>
           {/*<div className="form-content" tab="企业信息">*/}
 

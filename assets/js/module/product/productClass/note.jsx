@@ -35,10 +35,10 @@ var Product = React.createClass({
           <div className="form-content" tab="基本信息">
             <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="personnel" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="类别代码" name="CLASS_ID" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="类别名称" name="CLASS_NAME" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="类别层级" name="CLASS_LEVEL" type="number"  responsive={{xl: 12}}/>
-            <FormControl label="上级类别代码" name="P_CLASS_ID" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="类别代码" name="class_id" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="类别名称" name="class_name" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="类别层级" name="class_level" type="number"  responsive={{xl: 12}}/>
+            <FormControl label="上级类别代码" name="p_class_id" type="text"  responsive={{xl: 12}}/>
           </div>
 
 

@@ -74,43 +74,43 @@ var FlowForm = require("View/form/FlowForm.jsx"),
           <div className="form-content" tab="基本信息">
             <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="业务员" name="RP_ID" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="最后修改时间" name="UP_DATE" type="date" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="客户编号" name="CUST_ID" type="text" responsive={{xl: 12}}/>
-            <FormControl label="获客方式" name="GET_TYPE" type="select" data={HKData}   responsive={{xl: 12}}/>
-            <FormControl label="客户来源" name="KH_SOURCE" type="select" data={KHLYData}   responsive={{xl: 12}}/>
-            <FormControl label="客户类别" name="CUST_TYPE" type="select" data={KHTypedata}   responsive={{xl: 12}}/>
-            <FormControl label="客户状态" name="CUST_STATUS" type="select" data={KHLXData}   responsive={{xl: 12}}/>
+            <FormControl label="业务员" name="rp_id" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="最后修改时间" name="up_date" type="date" readOnly={true} responsive={{xl: 12}}/>
+            <FormControl label="客户编号" name="cust_id" type="text" responsive={{xl: 12}}/>
+            <FormControl label="获客方式" name="get_type" type="select" data={HKData}   responsive={{xl: 12}}/>
+            <FormControl label="客户来源" name="kh_source" type="select" data={KHLYData}   responsive={{xl: 12}}/>
+            <FormControl label="客户类别" name="cust_type" type="select" data={KHTypedata}   responsive={{xl: 12}}/>
+            <FormControl label="客户状态" name="cust_status" type="select" data={KHLXData}   responsive={{xl: 12}}/>
         </div>
         <div className="form-content" tab="客户信息" show={this.state.showKH}>
-          <FormControl label="客户名称" name="CUST_NAME" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="年龄" name="AGE" type="number"  responsive={{xl: 12}}/>
-          <FormControl label="性别" name="GENDER" type="radio-group" data={sexdata}  responsive={{xl: 12}}/>
-          <FormControl label="户口所在地" name="ADDFM" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="客户生日" name="BIRTHDAY" type="date"  responsive={{xl: 12}}/>
-          <FormControl label="手机" name="MOBILE" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="微信号" name="WX" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="QQ" name="QQ" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="固定电话号码" name="PHONE" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="电子邮箱" name="EMAIL" type="email"   responsive={{xl: 12}}/>
-          <FormControl label="家庭地址" name="H_ADDRESS" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="工作单位" name="COMPANY" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="工作性质" name="CTYPE" type="select" data={GZData}   responsive={{xl: 12}}/>
-          <FormControl label="从事行业" name="INDUSTRY" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="职务" name="TITLE" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="客户名称" name="cust_name" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="年龄" name="age" type="number"  responsive={{xl: 12}}/>
+          <FormControl label="性别" name="gender" type="radio-group" data={sexdata}  responsive={{xl: 12}}/>
+          <FormControl label="户口所在地" name="addfm" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="客户生日" name="birthday" type="date"  responsive={{xl: 12}}/>
+          <FormControl label="手机" name="mobile" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="微信号" name="wx" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="QQ" name="qq" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="固定电话号码" name="phone" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="电子邮箱" name="email" type="email"   responsive={{xl: 12}}/>
+          <FormControl label="家庭地址" name="h_address" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="工作单位" name="company" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="工作性质" name="ctype" type="select" data={GZData}   responsive={{xl: 12}}/>
+          <FormControl label="从事行业" name="industry" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="职务" name="title" type="text"   responsive={{xl: 12}}/>
         </div>
 
         <div className="form-content" tab="客户标准">
-          <FormControl label="婚姻状态" name="MARITAL"  type="select" data={HYData}  responsive={{xl: 12}}/>
-          <FormControl label="父母信息" name="P_INFO" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="子女信息" name="D_INFO"  type="select" data={CData}  responsive={{xl: 12}}/>
-          <FormControl label="兴趣爱好" name="INTEREST" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="风险偏好" name="RISK"  type="select" data={FXData}  responsive={{xl: 12}}/>
-          <FormControl label="资产规模" name="S_ASSET" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="月收入水平" name="INCOME"  type="select" data={SRData}  responsive={{xl: 12}}/>
-          <FormControl label="资产构成1" name="C_ASSET1" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="资产构成2" name="C_ASSET2" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="资产构成3" name="C_ASSET3" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="婚姻状态" name="marital"  type="select" data={HYData}  responsive={{xl: 12}}/>
+          <FormControl label="父母信息" name="p_info" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="子女信息" name="d_info"  type="select" data={CData}  responsive={{xl: 12}}/>
+          <FormControl label="兴趣爱好" name="interest" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="风险偏好" name="risk"  type="select" data={FXData}  responsive={{xl: 12}}/>
+          <FormControl label="资产规模" name="s_asset" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="月收入水平" name="income"  type="select" data={SRData}  responsive={{xl: 12}}/>
+          <FormControl label="资产构成1" name="c_asset1" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="资产构成2" name="c_asset2" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="资产构成3" name="c_asset3" type="text"   responsive={{xl: 12}}/>
         </div>
       </FlowForm>
     );

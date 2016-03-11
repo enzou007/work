@@ -57,26 +57,26 @@ var qy = React.createClass({
         <div className="form-content" tab="基本信息">
           <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
           <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="最后修改时间" name="UP_DATE" type="date" readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="供应商编号" name="CUST_ID" type="text" responsive={{xl: 12}}/>
-          <FormControl label="公司/企业名称" name="CUST_NAME" type="text" onClick={this.textclick}  responsive={{xl: 12}}/>
-          <FormControl label="公司地址" name="S_ADDS" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="联系人" name="C_CONTACTS" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="手机" name="MOBILE" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="微信" name="WX" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="QQ" name="QQ" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="电话号码" name="PHONE" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="电子邮箱" name="EMAIL" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="通讯地址" name="C_ADDS" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="邮编" name="ZIP" type="text"   responsive={{xl: 12}}/>
-          <FormControl label="供应商类别" name="CUST_CLASS" type="select" data={KHFLdata}   responsive={{xl: 12}}/>
-          <FormControl label="客户状态" name="CUST_STATUS" type="select" data={KHLXData}   responsive={{xl: 12}}/>
-          <FormControl label="公司营业执照" name="WORK_ID" type="text"   responsive={{xl: 24}}/>
-          <FormControl label="公司营业执照附件"  name="WORK_ID_P" type="file"   responsive={{xl: 24}}/>
-          <FormControl label="税务登记号(国税)" name="TAX1_ID" type="text"   responsive={{xl: 24}}/>
-          <FormControl label="税务登记号(国税)"  name="TAX1_ID_P" type="file"   responsive={{xl: 24}}/>
-          <FormControl label="税务登记号(地税)" name="TAX2_ID" type="text"   responsive={{xl: 24}}/>
-          <FormControl label="税务登记号(地税)"  name="TAX2_ID_P" type="file"   responsive={{xl: 24}}/>
+          <FormControl label="最后修改时间" name="up_date" type="date" readOnly={true} responsive={{xl: 12}}/>
+          <FormControl label="供应商编号" name="cust_id" type="text" responsive={{xl: 12}}/>
+          <FormControl label="公司/企业名称" name="cust_name" type="text" onClick={this.textclick}  responsive={{xl: 12}}/>
+          <FormControl label="公司地址" name="s_adds" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="联系人" name="c_contacts" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="手机" name="mobile" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="微信" name="wx" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="QQ" name="qq" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="电话号码" name="phone" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="电子邮箱" name="email" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="通讯地址" name="c_adds" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="邮编" name="zip" type="text"   responsive={{xl: 12}}/>
+          <FormControl label="供应商类别" name="cust_class" type="select" data={KHFLdata}   responsive={{xl: 12}}/>
+          <FormControl label="客户状态" name="cust_status" type="select" data={KHLXData}   responsive={{xl: 12}}/>
+          <FormControl label="公司营业执照" name="work_id" type="text"   responsive={{xl: 24}}/>
+          <FormControl label="公司营业执照附件"  name="work_id_p" type="file"   responsive={{xl: 24}}/>
+          <FormControl label="税务登记号(国税)" name="tax1_id" type="text"   responsive={{xl: 24}}/>
+          <FormControl label="税务登记号(国税)"  name="tax1_id_p" type="file"   responsive={{xl: 24}}/>
+          <FormControl label="税务登记号(地税)" name="tax2_id" type="text"   responsive={{xl: 24}}/>
+          <FormControl label="税务登记号(地税)"  name="tax2_id_p" type="file"   responsive={{xl: 24}}/>
         </div>
           {/*<div className="form-content" tab="企业信息">*/}
 

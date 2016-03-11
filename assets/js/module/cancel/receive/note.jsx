@@ -49,16 +49,16 @@ var qy = React.createClass({
       <FlowForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <div className="form-content" tab="基本信息">
           <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-          <FormControl label="付款方名称" name="P_NAME" type="text" responsive={{xl: 12}}/>
-          <FormControl label="付款方银行账户" name="P_BANK_ACT" type="text" responsive={{xl: 12}}/>
-          <FormControl label="客户编号" name="CUST_ID" type="text" responsive={{xl: 12}}/>
-          <FormControl label="我方收款银行账户" name="R_BANK_ACCT" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="到款日期" name="R_DATE" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="到款时间" name="R_TIME" type="date"  responsive={{xl: 12}}/>
-          <FormControl label="币种" name="CURRENCY" type="select" data={bzdata} responsive={{xl: 12}}/>
-          <FormControl label="到款金额" name="R_AMOUNT" type="number"  responsive={{xl: 12}}/>
-          <FormControl label="可核销金额" name="A_AMOUNT" type="number"  responsive={{xl: 12}}/>
-          <FormControl label="备注" name="REMARKS" type="textarea" responsive={{xl: 24}}/>
+          <FormControl label="付款方名称" name="p_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="付款方银行账户" name="p_bank_act" type="text" responsive={{xl: 12}}/>
+          <FormControl label="客户编号" name="cust_id" type="text" responsive={{xl: 12}}/>
+          <FormControl label="我方收款银行账户" name="r_bank_acct" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="到款日期" name="r_date" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="到款时间" name="r_time" type="date"  responsive={{xl: 12}}/>
+          <FormControl label="币种" name="currency" type="select" data={bzdata} responsive={{xl: 12}}/>
+          <FormControl label="到款金额" name="r_amount" type="number"  responsive={{xl: 12}}/>
+          <FormControl label="可核销金额" name="a_amount" type="number"  responsive={{xl: 12}}/>
+          <FormControl label="备注" name="remarks" type="textarea" responsive={{xl: 24}}/>
         </div>
           {/*<div className="form-content" tab="企业信息">*/}
 

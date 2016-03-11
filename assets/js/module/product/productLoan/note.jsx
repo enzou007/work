@@ -52,25 +52,25 @@ var FlowForm = require("View/form/FlowForm.jsx"),
           <div className="form-content" tab="基本信息">
             <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="产品编号" name="PRT_ID" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="产品类别" name="CLASS_ID" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
-            <FormControl label="产品名称" name="PRT_NAME" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="币种" name="CUR_NAME" type="select" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
-            <FormControl label="币种代码" name="CURRENCY" type="text" responsive={{xl: 12}}/>
-            <FormControl label="放款机构" name="LENDERS" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="借款期限" name="LOAN_TERM" type="number" responsive={{xl: 12}}/>
-            <FormControl label="借款期限计量单位" name="LOAN_COMPANY" type="select" data={LOAN_TERM_DATA} responsive={{xl: 12}}/>
-            <FormControl label="指导利率" name="RATE" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="指导利率单位" name="RATE_COMPANY" type="select" data={LOAN_TERM_DATA} responsive={{xl: 12}}/>
-            <FormControl label="借款人职业状况" name="BRO_STATUS" type="text" responsive={{xl: 12}}/>
-            <FormControl label="借款人年龄限制" name="BRO_AGE" type="number" responsive={{xl: 12}}/>
-            <FormControl label="借款额度起（万）" name="BRO_QUOTA_B" type="select" data={E_DATA} responsive={{xl: 12}}/>
-            <FormControl label="借款额度止（万）" name="BRO_QUOTA_E" type="select" data={E_DATA} responsive={{xl: 12}}/>
-            <FormControl label="抵押物类型" name="DY_TYPE" type="select" data={DY_DATA} responsive={{xl: 12}}/>
-            <FormControl label="质押物类型" name="ZY_TYPE" type="select" data={ZY_DATA} responsive={{xl: 12}}/>
-            <FormControl label="还款方式" name="TEPAY_TYPE" type="select" data={TEPAY_DATA} responsive={{xl: 12}}/>
-            <FormControl label="服务费" name="SERVICE_F" type="number" responsive={{xl: 12}}/>
-            <FormControl label="备注" name="REMARKS" type="text"  responsive={{xl: 24}}/>
+            <FormControl label="产品编号" name="prt_id" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
+            <FormControl label="产品名称" name="prt_name" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="币种" name="cur_name" type="select" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
+            <FormControl label="币种代码" name="currency" type="text" responsive={{xl: 12}}/>
+            <FormControl label="放款机构" name="lenders" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="借款期限" name="loan_term" type="number" responsive={{xl: 12}}/>
+            <FormControl label="借款期限计量单位" name="loan_company" type="select" data={LOAN_TERM_DATA} responsive={{xl: 12}}/>
+            <FormControl label="指导利率" name="rate" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="指导利率单位" name="rate_company" type="select" data={LOAN_TERM_DATA} responsive={{xl: 12}}/>
+            <FormControl label="借款人职业状况" name="bro_status" type="text" responsive={{xl: 12}}/>
+            <FormControl label="借款人年龄限制" name="bro_age" type="number" responsive={{xl: 12}}/>
+            <FormControl label="借款额度起（万）" name="bro_quota_b" type="select" data={E_DATA} responsive={{xl: 12}}/>
+            <FormControl label="借款额度止（万）" name="bro_quota_e" type="select" data={E_DATA} responsive={{xl: 12}}/>
+            <FormControl label="抵押物类型" name="dy_type" type="select" data={DY_DATA} responsive={{xl: 12}}/>
+            <FormControl label="质押物类型" name="zy_type" type="select" data={ZY_DATA} responsive={{xl: 12}}/>
+            <FormControl label="还款方式" name="tepay_type" type="select" data={TEPAY_DATA} responsive={{xl: 12}}/>
+            <FormControl label="服务费" name="service_f" type="number" responsive={{xl: 12}}/>
+            <FormControl label="备注" name="remarks" type="text"  responsive={{xl: 24}}/>
           </div>
       </FlowForm>
     );

@@ -229,8 +229,17 @@ export default class FormControl extends React.Component {
     }
     this.validate(value);
   }
-  handleFocus(focused) {
+  handleFocus(focused, e) {
     this.setState({ focused });
+    if(focused){
+      if(this.props.onFocus){
+        this.props.onFocus(e, this.refs.control.getValue(this.props.seq));
+      }
+    }else{
+      if(this.props.onBlur){
+        this.props.onBlur(e, this.refs.control.getValue(this.props.seq));
+      }
+    }
   }
   copyProps() {
 

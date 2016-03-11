@@ -68,39 +68,39 @@ var qy = React.createClass({
         <div className="form-content" tab="基本信息">
           <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
           <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="订单号" name="ORDER_NO" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="订单号行项目编号" name="ITEM_NO" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="第一负责人编号" name="RP1_ID" type="text" responsive={{xl: 12}}/>
-          <FormControl label="第一负责人名称" name="RP1_NAME" type="text" responsive={{xl: 12}}/>
-          <FormControl label="第二负责人编号" name="RP2_ID" type="text" responsive={{xl: 12}}/>
-          <FormControl label="第二负责人名称" name="RP2_NAME" type="text" responsive={{xl: 12}}/>
-          <FormControl label="第一负责人比例" name="RP1_RATE" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="第二负责人比例" name="RP2_RATE" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="销售助理名称" name="AT_NAME" type="text" responsive={{xl: 12}}/>
-          <FormControl label="销售助理编号" name="AT_ID" type="text" responsive={{xl: 12}}/>
-          <FormControl label="销售助理计提" name="AT_RATE" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="交易产品代码" name="PRT_TRADE_ID" type="select" data={nulldata} responsive={{xl: 12}}/>
-          <FormControl label="交易产品名称" name="PRT_TRADE_NAME" type="text" responsive={{xl: 12}}/>
-          <FormControl label="终端客户编号" name="T_CUST_ID" type="select" data={nulldata}  responsive={{xl: 12}}/>
-          <FormControl label="终端客户名称" name="T_CUST_NAME" type="text" responsive={{xl: 12}}/>
-          <FormControl label="终端产品代码" name="PRT_TERMINAL_ID" type="select" data={nulldata}  responsive={{xl: 12}}/>
-          <FormControl label="终端产品名称" name="PRT_TERMINAL_NAME" type="text" responsive={{xl: 12}}/>
-          <FormControl label="产品类别" name="KH_SOURCE1" type="select" data={nulldata}   responsive={{xl: 12}}/>
-          <FormControl label="放款机构" name="L_institution" type="text" responsive={{xl: 12}}/>
-          <FormControl label="产品业务期限（借款期限/封闭期）" name="C_TERM" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="期限单位" name="TERM_C" type="text" responsive={{xl: 12}}/>
-          <FormControl label="是否需要保函" name="B_FLAG" type="select" data={bhdata}   responsive={{xl: 12}}/>
-          <FormControl label="是否代持" name="H_FLAG" type="select" data={dcdata}   responsive={{xl: 12}}/>
-          <FormControl label="实际借款利率" name="A_RATE" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="实际业务期限（天）" name="PRT_TERM" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="每月还款金额" name="R_AMOUNT" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="返点/利息比例（中收）" name="R_PRO" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="返点/利息金额（中收）" name="TRADE_AMT" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="币种" name="CURRENCY" type="select" data={bzdata} responsive={{xl: 12}}/>
-          <FormControl label="交易规模金额" name="T_SIZE" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="终端产品金额" name="TERMINAL_AMT" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="未清欠款金额" name="Q_AMOUNT" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="未清欠款还款时间（月）" name="Q_AMOON" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="订单号" name="order_id" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="订单号行项目编号" name="item_id" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="第一负责人编号" name="rp1_id" type="text" responsive={{xl: 12}}/>
+          <FormControl label="第一负责人名称" name="rp1_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="第二负责人编号" name="rp2_id" type="text" responsive={{xl: 12}}/>
+          <FormControl label="第二负责人名称" name="rp2_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="第一负责人比例" name="rp1_rate" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="第二负责人比例" name="rp2_rate" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="销售助理名称" name="at_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="销售助理编号" name="at_id" type="text" responsive={{xl: 12}}/>
+          <FormControl label="销售助理计提" name="at_rate" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="交易产品代码" name="prt_trade_id" type="select" data={nulldata} responsive={{xl: 12}}/>
+          <FormControl label="交易产品名称" name="prt_trade_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="终端客户编号" name="t_cust_id" type="select" data={nulldata}  responsive={{xl: 12}}/>
+          <FormControl label="终端客户名称" name="t_cust_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="终端产品代码" name="prt_terminal_id" type="select" data={nulldata}  responsive={{xl: 12}}/>
+          <FormControl label="终端产品名称" name="prt_terminal_name" type="text" responsive={{xl: 12}}/>
+          <FormControl label="产品类别" name="kh_source1" type="select" data={nulldata}   responsive={{xl: 12}}/>
+          <FormControl label="放款机构" name="l_institution" type="text" responsive={{xl: 12}}/>
+          <FormControl label="产品业务期限（借款期限/封闭期）" name="c_term" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="期限单位" name="term_c" type="text" responsive={{xl: 12}}/>
+          <FormControl label="是否需要保函" name="b_flag" type="select" data={bhdata}   responsive={{xl: 12}}/>
+          <FormControl label="是否代持" name="h_flag" type="select" data={dcdata}   responsive={{xl: 12}}/>
+          <FormControl label="实际借款利率" name="a_rate" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="实际业务期限（天）" name="prt_term" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="每月还款金额" name="r_amount" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="返点/利息比例（中收）" name="r_pro" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="返点/利息金额（中收）" name="trade_amt" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="币种" name="currency" type="select" data={bzdata} responsive={{xl: 12}}/>
+          <FormControl label="交易规模金额" name="t_size" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="终端产品金额" name="terminal_amt" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="未清欠款金额" name="q_amount" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="未清欠款还款时间（月）" name="q_amoon" type="number"   responsive={{xl: 12}}/>
 
           <FormControl label="支出行项目" name="zcyqsy" type="grid" responsive={{xl: 24}}>
             <Grid height={500} form={this.getZCGridForm()}>

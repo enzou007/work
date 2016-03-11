@@ -15,7 +15,7 @@ var FlowForm = require("View/form/FlowForm.jsx"),
       };
     },
     onLoad: function(){
-      //if(his.props.action.getField("KHNum").value !== ""){
+      //if(his.props.action.getField("khnum").value !== ""){
       //  this.setState({
       //    showKH : true
       //  })
@@ -59,13 +59,13 @@ var FlowForm = require("View/form/FlowForm.jsx"),
           <div className="form-content" tab="基本信息">
             <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="客户编号" name="Customernum" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="客户名称" name="Customername" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="客户编号" name="customernum" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="客户名称" name="customername" type="text"  responsive={{xl: 12}}/>
             <FormControl label="跟进人" name="followpsn" type="text"    responsive={{xl: 12}}/>
             <FormControl label="跟进活动" name="fplan" type="text" responsive={{xl: 12}}/>
             <FormControl label="计划跟进时间" name="plantime" type="date"    responsive={{xl: 12}}/>
             <FormControl label="实际跟进时间" name="actualtime" type="date"    responsive={{xl: 12}}/>
-            <FormControl label="外出申请审批状态" name="Appstatus" type="text"    responsive={{xl: 12}}/>
+            <FormControl label="外出申请审批状态" name="appstatus" type="text"    responsive={{xl: 12}}/>
             <FormControl label="活动记录" name="planlog" type="textarea"  responsive={{xl: 24}}/>
           </div>
       </FlowForm>

@@ -13,7 +13,7 @@ var FlowForm = require("View/form/FlowForm.jsx"),
 var Input = require("rctui/input");
 var Select = require("rctui/select");
 var DateTime = require("rctui/datetime");
-
+require('Component/form/Inputz.jsx');
 var SexData = ["男","女"];
 var LevelData = ["A","B","C","D","E","F"];
 var EmployData = ["社会招聘","人才市场","互联网络","内部招聘","人才推荐","校园招聘","外编转正","离职再入职","其他"];
@@ -57,16 +57,40 @@ var NoteForm = React.createClass({
   afterSubmit: function () {
 
   },
+  onFocus:function (e) {
+    console.log("html-onFocus");
+    console.log(e.type);
+  },
+  onClick:function (e) {
+    console.log("html-onClick");
+    console.log(e.type);
+  },
+  onDoubleClick:function (e) {
+    console.log("html-onDoubleClick");
+    console.log(e.type);
+  },
+  onChange:function (value) {
+    console.log("html-onChange");
+    console.log(value);
+  },
+  cecs:function (e) {
+    console.log(e.type);
+  },
   render: function () {
     return (
       <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}>
         <div className="form-content" tab="基本信息">
           <Fieldset title="基本信息" readOnly={this.state.readonly}>
+            <FormControl label="自定义标签Inputz" name="inputzname" type="inputz" />
+            <FormControl label="自定义标签Inputz" name="inputzname1" type="inputz" datainput="inputz2" />
+            <FormControl label="自定义标签Inputz" name="inputzname2" type="inputz" onFocus={this.onFocus}
+              onScroll={this.cecs} onChange={this.onChange} onClick={this.onClick}
+              onDoubleClick={this.onDoubleClick} dataclassName="divz1" datainput="inputz1"/>
+
             <FormControl label="代办人" name="AgentPsn" type="text" readOnly={true}/>
             <FormControl label="申请日期" name="CreateDate" type="date" readOnly={true}/>
             <FormControl label="所属部门" name="AgentDept" type="text" readOnly={true}/>
-
-            <FormControl label="姓名" name="AppPsnCn" type="text" required={true}/>
+            <FormControl label="姓名" name="AppPsnCn" type="text" onClick={this.cecs} required={true}/>
             <FormControl label="性别" name="Sex" type="select" data={SexData} required={true}/>
             <FormControl label="年龄" name="Age" type="number" required={true}/>
             <FormControl label="出生日期" name="Birthday" type="date" required={true}/>

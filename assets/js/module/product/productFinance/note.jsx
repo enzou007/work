@@ -47,10 +47,10 @@ var product = React.createClass({
   afterSubmit: function () {
 
   },
-  getreturn : function (e,d){
+  getreturn : function (e){
     this.props.action.setField({
     //  returncondition: floatprodatavalue[floatprodata.findIndex(x => x == e)]
-    CURRENCY:d.text
+    currency:e
     });
   },
   render: function() {
@@ -109,7 +109,7 @@ var product = React.createClass({
             <FormControl label="前端咨询服务费(年)%" name="servie_fee" type="number"  responsive={{xl: 12}}/>
             <FormControl label="后端超额收益档位起点" name="a_value" type="number"  responsive={{xl: 12}}/>
             <FormControl label="后端超额收益费(年)%" name="servie_a" type="number"  responsive={{xl: 12}}/>
-            <FormControl label="备注" name="REMARKS" type="text"  responsive={{xl: 24}}/>
+            <FormControl label="备注" name="REMARKS" type="textarea"  responsive={{xl: 24}}/>
           </div>
           <div className="form-content" tab="附件">
             <FormControl label="附件" name="fileTest" type="file" readOnly={this.state.readonly} responsive={{xl: 24}}/>

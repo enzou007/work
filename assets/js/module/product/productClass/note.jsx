@@ -35,7 +35,7 @@ var Product = React.createClass({
   render: function() {
     return (
       <DataForm  title="产品类别" onCreate={this.onCreate} >
-          <Fieldset title="基本信息">
+        <Fieldset title="基本信息">
           <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
           <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
           <FormControl label="类别代码" name="class_id" type="text"  responsive={{xl: 12}}/>

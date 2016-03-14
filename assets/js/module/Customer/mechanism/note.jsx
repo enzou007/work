@@ -33,10 +33,10 @@ var NoteForm = React.createClass({
     };
   },
   onCreate: function () {
-    // this.props.action.setField({
-    //   AgentPsn: this.props.session.get("name"),
-    //     CreateDate: Mock.Random.now("yyyy-MM-dd")
-    // });
+    this.props.action.setField({
+      AgentPsn: this.props.session.get("name"),
+        CreateDate: Mock.Random.now("yyyy-MM-dd")
+    });
   },
     beforeSubmit: function () {
       // this.props.action.setField({
@@ -69,7 +69,7 @@ var NoteForm = React.createClass({
           <FormControl label="业务员" name="rp_id" type="personnel"  responsive={{xl: 12}}/>
           <FormControl label="最后修改时间" name="up_date" type="text" readOnly={true} responsive={{xl: 12}}/>
           <FormControl label="客户编号" name="cust_id" type="text"  readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="金融产品代理客户" name="isdl" type="radio-group" data={dldata} responsive={{xl: 12}}/>
+          <FormControl label="金融产品代理客户" name="isdl" type="radio-group" data={dldata} value="否" responsive={{xl: 12}}/>
           <FormControl label="客户类别" name="cust_type" type="radio-group" data={KHTypedata}  value="潜客" responsive={{xl: 12}}/>
           <FormControl label="公司/企业名称" name="cust_name" type="text" onClick={this.textclick}  responsive={{xl: 12}}/>
           <FormControl label="公司地址" name="s_adds" type="text"   responsive={{xl: 12}}/>

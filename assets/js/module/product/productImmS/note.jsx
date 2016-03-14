@@ -39,10 +39,10 @@ var product = React.createClass({
   afterSubmit: function () {
 
   },
-  getreturn : function (e,d){
+  getreturn : function (e){
     this.props.action.setField({
     //  returncondition: floatprodatavalue[floatprodata.findIndex(x => x == e)]
-    CURRENCY:d.text
+    currency:e
     });
   },
   render: function() {

@@ -16,7 +16,7 @@ var DataForm = require("View/form/DataForm.jsx"),
   var E_DATA = [];
   var DY_DATA = ["住宅","公寓","写字楼","底商","别墅","厂房","土地"];
   var ZY_DATA = ["动产","股权","债券","存单"];
-  var TEPAY_DATA =["等额本金","等额本息","利随本清","按月付息","到期还本","按季付息","到期还本","先息后本"];
+  var TEPAY_DATA =["等额本金","等额本息","利随本清","按月付息","按季付息","到期还本","先息后本"];
   var pdtypedata =[];
   var product = React.createClass({
   getInitialState: function() {
@@ -43,10 +43,10 @@ var DataForm = require("View/form/DataForm.jsx"),
   afterSubmit: function () {
 
   },
-  getreturn : function (e,d){
+  getreturn : function (e){
     this.props.action.setField({
     //  returncondition: floatprodatavalue[floatprodata.findIndex(x => x == e)]
-    CURRENCY:d.text
+    currency:e
     });
   },
   render: function() {
@@ -73,7 +73,7 @@ var DataForm = require("View/form/DataForm.jsx"),
             <FormControl label="质押物类型" name="zy_type" type="select" data={ZY_DATA} responsive={{xl: 12}}/>
             <FormControl label="还款方式" name="tepay_type" type="select" data={TEPAY_DATA} responsive={{xl: 12}}/>
             <FormControl label="服务费" name="service_f" type="number" responsive={{xl: 12}}/>
-            <FormControl label="备注" name="remarks" type="text"  responsive={{xl: 24}}/>
+            <FormControl label="备注" name="remarks" type="textarea"  responsive={{xl: 24}}/>
           </Fieldset>
       </DataForm>
     );

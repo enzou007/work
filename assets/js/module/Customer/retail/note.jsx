@@ -27,16 +27,15 @@ var SRData =["000-10000","10000-30000","30000及以上"];
 var NoteForm = React.createClass({
     getInitialState: function() {
       return {
-        readonly: false,
-        showKH : false
+        readonly: false
       };
     },
     onLoad: function(){
-      if(his.props.action.getField("KHNum").value !== ""){
-        this.setState({
-          showKH : true
-        })
-      }
+      //if(his.props.action.getField("KHNum").value !== ""){
+      //  this.setState({
+      //  showKH : true
+      //  })
+      //}
     },
     componentDidMount: function() {
 
@@ -50,11 +49,7 @@ var NoteForm = React.createClass({
       }
       */
     },
-    getDefaultProps: function() {
-      return {
 
-      };
-    },
     onCreate: function () {
       this.props.action.setField({
         AgentPsn: this.props.session.get("name"),
@@ -62,9 +57,9 @@ var NoteForm = React.createClass({
       });
     },
     beforeSubmit: function () {
-      this.props.action.setField({
-        LastDate: Mock.Random.now()
-      });
+      // this.props.action.setField({
+      // //  LastDate: Mock.Random.now()
+      // });
       // if(this.props.action.getField("Birthday").value === ""){
       //   return false;
       // }else{
@@ -76,7 +71,7 @@ var NoteForm = React.createClass({
     },
   render: function() {
     return (
-        <DataForm  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+        <DataForm title="零售客户" onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <Tabs>
             <div className="form-content" tab="基本信息">
               <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
@@ -86,8 +81,8 @@ var NoteForm = React.createClass({
               <FormControl label="客户编号" name="cust_id" type="text" responsive={{xl: 12}}/>
               <FormControl label="获客方式" name="get_type" type="select" data={HKData}   responsive={{xl: 12}}/>
               <FormControl label="客户来源" name="kh_source" type="select" data={KHLYData}   responsive={{xl: 12}}/>
-              <FormControl label="客户类别" name="cust_type" type="radio-group" data={KHTypedata}   responsive={{xl: 12}}/>
-              <FormControl label="客户状态" name="cust_status" type="radio-group" data={KHLXData}   responsive={{xl: 12}}/>
+              <FormControl label="客户类别" name="cust_type" type="radio-group" data={KHTypedata} value="潜客"  responsive={{xl: 12}}/>
+              <FormControl label="客户状态" name="cust_status" type="radio-group" data={KHLXData} value="生效"  responsive={{xl: 12}}/>
           </div>
 
           <div className="form-content" tab="客户信息">

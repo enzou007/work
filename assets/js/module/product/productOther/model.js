@@ -6,7 +6,7 @@ var Model = BaseModel.extend({
 
 }, {
   fields: [{
-    label: "标题",
+    label: "标题1",
     dataKey: "Subject",
     type: "text"
   }, {

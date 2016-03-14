@@ -2,6 +2,7 @@ var React = require('react'),
 _ = require("underscore");
 var PropTypes = React.PropTypes;
 var DataForm = require("View/form/DataForm.jsx"),
+  Fieldset = require("Component/form/Fieldset.jsx"),
   FormControl = require("Component/form/FormControl.jsx");
 
 require("rctui/input");
@@ -33,15 +34,15 @@ var Product = React.createClass({
   },
   render: function() {
     return (
-      <DataForm   onCreate={this.onCreate} >
-        <div className="form-content" tab="基本信息">
+      <DataForm  title="产品类别" onCreate={this.onCreate} >
+          <Fieldset title="基本信息">
           <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
           <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
           <FormControl label="类别代码" name="class_id" type="text"  responsive={{xl: 12}}/>
           <FormControl label="类别名称" name="class_name" type="text"  responsive={{xl: 12}}/>
           <FormControl label="编号" name="class_level" type="number"    responsive={{xl: 12}}/>
           <FormControl label="归属层级" name="p_class_id"  type="select" data={pdata} responsive={{xl: 12}}/>
-        </div>
+        </Fieldset>
       </DataForm>
     );
   }

@@ -2,6 +2,7 @@ var React = require('react'),
 _ = require("underscore");;
 var PropTypes = React.PropTypes;
 var DataForm = require("View/form/DataForm.jsx"),
+  Fieldset = require("Component/form/Fieldset.jsx"),
   FormControl = require("Component/form/FormControl.jsx");
 
   require("rctui/input");
@@ -50,9 +51,8 @@ var DataForm = require("View/form/DataForm.jsx"),
   },
   render: function() {
     return (
-      <DataForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
-        <Tabs>
-          <div className="form-content" tab="基本信息">
+      <DataForm title="贷款类产品"  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+        <Fieldset title="基本信息">
             <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
             <FormControl label="产品编号" name="prt_id" type="text"  readOnly={true} responsive={{xl: 12}}/>
@@ -74,8 +74,7 @@ var DataForm = require("View/form/DataForm.jsx"),
             <FormControl label="还款方式" name="tepay_type" type="select" data={TEPAY_DATA} responsive={{xl: 12}}/>
             <FormControl label="服务费" name="service_f" type="number" responsive={{xl: 12}}/>
             <FormControl label="备注" name="remarks" type="text"  responsive={{xl: 24}}/>
-          </div>
-        </Tabs>
+          </Fieldset>
       </DataForm>
     );
   }

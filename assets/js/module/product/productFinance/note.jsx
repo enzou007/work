@@ -55,7 +55,7 @@ var product = React.createClass({
   },
   render: function() {
     return (
-      <DataForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+      <DataForm title="金融产品"  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <Tabs>
           <div className="form-content" tab="基本信息">
             <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
@@ -64,7 +64,7 @@ var product = React.createClass({
             <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
             <FormControl label="产品名称" name="prt_name" type="text"  responsive={{xl: 12}}/>
             <FormControl label="产品简称" name="prt_sname" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="币种" name="cur_name" type="radio-group" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
+            <FormControl label="币种" name="cur_name" type="radio-group" data={CURRENCY} onChange={this.getreturn}  responsive={{xl: 12}}/>
             <FormControl label="币种代码" name="currency" type="text" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="融资方" name="financiers" type="text" responsive={{xl: 12}}/>
             <FormControl label="管理人" name="m_company" type="personnel"  responsive={{xl: 12}}/>

@@ -33,15 +33,15 @@ var NoteForm = React.createClass({
     };
   },
   onCreate: function () {
-    this.props.action.setField({
-      AgentPsn: this.props.session.get("name"),
-        CreateDate: Mock.Random.now("yyyy-MM-dd")
-    });
+    // this.props.action.setField({
+    //   AgentPsn: this.props.session.get("name"),
+    //     CreateDate: Mock.Random.now("yyyy-MM-dd")
+    // });
   },
     beforeSubmit: function () {
-      this.props.action.setField({
-        LastDate: Mock.Random.now()
-      });
+      // this.props.action.setField({
+      //   LastDate: Mock.Random.now()
+      // });
       // if(this.props.action.getField("Birthday").value === ""){
       //   return false;
       // }else{
@@ -60,7 +60,7 @@ var NoteForm = React.createClass({
     },
   render: function() {
     return (
-    <DataForm  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+    <DataForm title="企业客户"  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
 
       <Tabs>
         <div className="form-content" tab="基本信息">
@@ -70,7 +70,7 @@ var NoteForm = React.createClass({
           <FormControl label="最后修改时间" name="up_date" type="text" readOnly={true} responsive={{xl: 12}}/>
           <FormControl label="客户编号" name="cust_id" type="text"  readOnly={true} responsive={{xl: 12}}/>
           <FormControl label="金融产品代理客户" name="isdl" type="radio-group" data={dldata} responsive={{xl: 12}}/>
-          <FormControl label="客户类别" name="cust_type" type="radio-group" data={KHTypedata}   responsive={{xl: 12}}/>
+          <FormControl label="客户类别" name="cust_type" type="radio-group" data={KHTypedata}  value="潜客" responsive={{xl: 12}}/>
           <FormControl label="公司/企业名称" name="cust_name" type="text" onClick={this.textclick}  responsive={{xl: 12}}/>
           <FormControl label="公司地址" name="s_adds" type="text"   responsive={{xl: 12}}/>
           <FormControl label="单位性质" name="ctype" type="select" data={GZData}   responsive={{xl: 12}}/>
@@ -89,7 +89,7 @@ var NoteForm = React.createClass({
           <FormControl label="经营范围" name="w_scope" type="text"   responsive={{xl: 12}}/>
           <FormControl label="经营年限" name="o_life" type="text"   responsive={{xl: 12}}/>
           <FormControl label="有无法院起诉" name="is_prosecution" type="radio-group" data={QSData}   responsive={{xl: 12}}/>
-          <FormControl label="客户状态" name="cust_status" type="radio-group" data={KHLXData}   responsive={{xl: 12}}/>
+          <FormControl label="客户状态" name="cust_status" type="radio-group" data={KHLXData} value="生效"  responsive={{xl: 12}}/>
           <FormControl label="公司营业执证" name="work_id" type="text"   responsive={{xl: 24}}/>
           <FormControl label="公司营业执证附件"  name="work_id_p" type="file"   responsive={{xl: 24}}/>
           <FormControl label="税务登记号(国税)" name="tax1_id" type="text"   responsive={{xl: 24}}/>

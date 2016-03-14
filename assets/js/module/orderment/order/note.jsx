@@ -58,7 +58,7 @@ var qy = React.createClass({
   },
   onCreate: function () {
       this.props.action.setField({
-      //  AgentPsn: this.props.session.get("name"),
+        AgentPsn: this.props.session.get("name"),
         CreateDate: Mock.Random.now()
       });
     },

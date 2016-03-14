@@ -3,17 +3,21 @@
 var BaseOption = require("../../baseOption");
 
 var baseColumns = [{
-  label: "标题",
-  dataKey: "Subject",
-  width: "25%"
+  label: "产品名称",
+  dataKey: "prt_name",
+  width: "30%"
 }, {
-  label: "发布单位",
-  dataKey: "SourceCompName",
-  width: "17.5%"
+  label: "产品编号",
+  dataKey: "prt_id",
+  width: "20%"
 }, {
-  label: "发布部门",
-  dataKey: "NewSource",
-  width: "17.5%"
+  label: "产品类别",
+  dataKey: "class_id",
+  width: "10%"
+}, {
+  label: "币种",
+  dataKey: "currency",
+  width: "10%"
 }, {
   label: "拟稿人",
   dataKey: "AgentPsn",
@@ -22,10 +26,6 @@ var baseColumns = [{
   label: "申请日期",
   dataKey: "CreateDate",
   width: "15%"
-}, {
-  label: "发布时间",
-  dataKey: "PubDate",
-  width: "10%"
 }];
 
 module.exports = BaseOption.extend({

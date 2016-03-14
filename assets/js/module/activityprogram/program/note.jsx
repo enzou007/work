@@ -34,7 +34,7 @@ var FlowForm = require("View/form/FlowForm.jsx"),
     onCreate: function () {
       this.props.action.setField({
         AgentPsn: this.props.session.get("name"),
-        CreateDate: "2015-12-24"
+        CreateDate: Mock.Random.now("yyyy-MM-dd")
       });
     },
     beforeSubmit: function () {

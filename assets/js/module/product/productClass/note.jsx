@@ -4,9 +4,11 @@ var PropTypes = React.PropTypes;
 var DataForm = require("View/form/DataForm.jsx"),
   FormControl = require("Component/form/FormControl.jsx");
 
-  require("rctui/input");
-   require("rctui/datetime");
- require("Component/form/Personnel.jsx");
+require("rctui/input");
+require("rctui/datetime");
+require("Component/form/Select.jsx");
+var Mock = require("mockjs");
+var pdata = [];
 var Product = React.createClass({
   getInitialState: function() {
     return {
@@ -14,11 +16,11 @@ var Product = React.createClass({
     };
   },
   onCreate: function () {
-      this.props.action.setField({
-        AgentPsn: this.props.session.get("name"),
-        CreateDate: "2015-07-21",
-      });
-    },
+    this.props.action.setField({
+      AgentPsn: this.props.session.get("name"),
+      CreateDate: Mock.Random.now("yyyy-MM-dd")
+    });
+  },
   beforeSubmit: function () {
     //this.props.action.setField({
     //  pdnum: Mock.Random.now()
@@ -31,17 +33,15 @@ var Product = React.createClass({
   },
   render: function() {
     return (
-      <DataForm  >
-          <div className="form-content" tab="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-            <FormControl label="创建人" name="AgentPsn" type="personnel" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="类别代码" name="class_id" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="类别名称" name="class_name" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="类别层级" name="class_level" type="number"  responsive={{xl: 12}}/>
-            <FormControl label="上级类别代码" name="p_class_id" type="text"  responsive={{xl: 12}}/>
-          </div>
-
-
+      <DataForm   onCreate={this.onCreate} >
+        <div className="form-content" tab="基本信息">
+          <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
+          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
+          <FormControl label="类别代码" name="class_id" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="类别名称" name="class_name" type="text"  responsive={{xl: 12}}/>
+          <FormControl label="编号" name="class_level" type="number"    responsive={{xl: 12}}/>
+          <FormControl label="归属层级" name="p_class_id"  type="select" data={pdata} responsive={{xl: 12}}/>
+        </div>
       </DataForm>
     );
   }

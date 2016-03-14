@@ -3,28 +3,32 @@
 var BaseOption = require("../../baseOption");
 
 var baseColumns = [{
-  label: "标题",
-  dataKey: "Subject",
-  width: "25%"
-}, {
-  label: "发布单位",
-  dataKey: "SourceCompName",
-  width: "17.5%"
-}, {
-  label: "发布部门",
-  dataKey: "NewSource",
-  width: "17.5%"
-}, {
-  label: "拟稿人",
-  dataKey: "AgentPsn",
+  label: "客户编号",
+  dataKey: "cust_id",
   width: "15%"
 }, {
-  label: "申请日期",
+  label: "客户名称",
+  dataKey: "cust_name",
+  width: "15%"
+}, {
+  label: "从事行业",
+  dataKey: "industry",
+  width: "15%"
+}, {
+  label: "客户类别",
+  dataKey: "cust_type",
+  width: "15%"
+}, {
+  label: "客户状态",
+  dataKey: "cust_status",
+  width: "15%"
+}, {
+  label: "创建日期",
   dataKey: "CreateDate",
   width: "15%"
 }, {
-  label: "发布时间",
-  dataKey: "PubDate",
+  label: "创建人",
+  dataKey: "AgentPsn",
   width: "10%"
 }];
 

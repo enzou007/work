@@ -1,13 +1,16 @@
 var React = require('react'),
 _ = require("underscore");;
 var PropTypes = React.PropTypes;
-var FlowForm = require("View/form/FlowForm.jsx"),
+var DataForm = require("View/form/DataForm.jsx"),
   FormControl = require("Component/form/FormControl.jsx"),
+  Personnel = require("Component/form/Personnel.jsx"),
   FileUp = require("Component/form/FileUp.jsx");
 
   require("rctui/input");
   require("Component/form/Select.jsx");
   require("rctui/datetime");
+  require('Component/form/Radio.jsx');
+  var Tabs = require("Component/bootstrap/Tabs.jsx");
   var Mock = require("mockjs");
   var CURRENCY = [{id:"01",text:"RMB"},{id:"14",text:"美元"}];
   var REDEMPTION_DATA =["可赎回","不可赎回"];
@@ -26,11 +29,11 @@ var product = React.createClass({
     };
   },
   onCreate: function () {
-      this.props.action.setField({
-        AgentPsn: this.props.session.get("name"),
-        CreateDate: "2015-07-21",
-      });
-    },
+    this.props.action.setField({
+      AgentPsn: this.props.session.get("name"),
+      CreateDate: Mock.Random.now("yyyy-MM-dd")
+    });
+  },
   beforeSubmit: function () {
     //this.props.action.setField({
     //  pdnum: Mock.Random.now()
@@ -52,24 +55,25 @@ var product = React.createClass({
   },
   render: function() {
     return (
-      <FlowForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+      <DataForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+        <Tabs>
           <div className="form-content" tab="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
+            <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="产品编号" name="prt_id" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="产品编号" name="prt_id" type="text" readOnly={true}   responsive={{xl: 12}}/>
             <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
             <FormControl label="产品名称" name="prt_name" type="text"  responsive={{xl: 12}}/>
             <FormControl label="产品简称" name="prt_sname" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="币种" name="cur_name" type="select" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
-            <FormControl label="币种代码" name="currency" type="text" responsive={{xl: 12}}/>
+            <FormControl label="币种" name="cur_name" type="radio-group" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
+            <FormControl label="币种代码" name="currency" type="text" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="融资方" name="financiers" type="text" responsive={{xl: 12}}/>
-            <FormControl label="管理人" name="m_company" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="托管人" name="custodian" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="管理人" name="m_company" type="personnel"  responsive={{xl: 12}}/>
+            <FormControl label="托管人" name="custodian" type="personnel"  responsive={{xl: 12}}/>
             <FormControl label="产品规模" name="product_s" type="number"  responsive={{xl: 12}}/>
             <FormControl label="产品期限（月）" name="product_m" type="number"  responsive={{xl: 12}}/>
-            <FormControl label="赎回方式" name="redemption_w" type="select" data={REDEMPTION_DATA} responsive={{xl: 12}}/>
+            <FormControl label="赎回方式" name="redemption_w" type="radio-group" data={REDEMPTION_DATA} responsive={{xl: 12}}/>
             <FormControl label="赎回日" name="redemption_d" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="续存方式" name="adaptation_c" type="select" data={ADAPTATION_DATA} responsive={{xl: 12}}/>
+            <FormControl label="续存方式" name="adaptation_c" type="radio-group" data={ADAPTATION_DATA} responsive={{xl: 12}}/>
             <FormControl label="付息方式" name="p_interest" type="text"  responsive={{xl: 12}}/>
             <FormControl label="投资领域(固)" name="investment_f" type="select" data={INVESTMENT_D_DATA} responsive={{xl: 12}}/>
             <FormControl label="预期收益率" name="in_rate" type="number"  responsive={{xl: 12}}/>
@@ -78,8 +82,8 @@ var product = React.createClass({
             <FormControl label="封闭期（月）" name="closed_m" type="number"  responsive={{xl: 12}}/>
             <FormControl label="预警线" name="line_of" type="number"  responsive={{xl: 12}}/>
             <FormControl label="止损线" name="stop_l" type="number"  responsive={{xl: 12}}/>
-            <FormControl label="分红方式" name="bonus_s" type="select" data={BONUS_DATA}  responsive={{xl: 12}}/>
-            <FormControl label="结构形式" name="structure_f" type="select" data={STRUCTURE_DATA}  responsive={{xl: 12}}/>
+            <FormControl label="分红方式" name="bonus_s" type="radio-group" data={BONUS_DATA}  responsive={{xl: 12}}/>
+            <FormControl label="结构形式" name="structure_f" type="radio-group" data={STRUCTURE_DATA}  responsive={{xl: 12}}/>
             <FormControl label="结构形式说明" name="structure_i" type="text"  responsive={{xl: 12}}/>
             <FormControl label="投资领域(浮)" name="investment_f" type="select" data={INVESTMENT_F_DATA} responsive={{xl: 12}}/>
             <FormControl label="人数限制" name="number_l" type="number"  responsive={{xl: 12}}/>
@@ -110,7 +114,8 @@ var product = React.createClass({
           <div className="form-content" tab="附件">
             <FormControl label="附件" name="fileTest" type="file" readOnly={this.state.readonly} responsive={{xl: 24}}/>
           </div>
-        </FlowForm>
+        </Tabs>
+        </DataForm>
     );
   }
 

@@ -26,11 +26,12 @@ var qy = React.createClass({
     };
   },
   onCreate: function () {
-      //this.props.action.setField({
-      //  AgentPsn: this.props.session.get("name"),
-      //  CreateDate: "2015-07-21"
-      //});
-    },
+    alert(23);
+    this.props.action.setField({
+      AppPsnCn: this.props.session.get("name"),
+      CreateDate: Mock.Random.now("yyyy-MM-dd")
+    });
+  },
     beforeSubmit: function () {
       this.props.action.setField({
         LastDate: Mock.Random.now()

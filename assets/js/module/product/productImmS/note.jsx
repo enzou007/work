@@ -1,16 +1,18 @@
 var React = require('react'),
 _ = require("underscore");;
 var PropTypes = React.PropTypes;
-var FlowForm = require("View/form/FlowForm.jsx"),
+var DataForm = require("View/form/DataForm.jsx"),
   FormControl = require("Component/form/FormControl.jsx");
-  require("rctui/input");
-  require("Component/form/Select.jsx");
-   require("rctui/datetime");
-  var Mock = require("mockjs");
+require("rctui/input");
+require("Component/form/Select.jsx");
+require("rctui/datetime");
+var Mock = require("mockjs");
+require('Component/form/Radio.jsx');
   //var pdtypedata =["投资","贷款","移民","注册","其他"]
-  var COUNTRY_DATA =[];
-  var pdtypedata =[];
-  var CURRENCY = [{id:"01",text:"RMB"},{id:"14",text:"美元"}];
+var COUNTRY_DATA =[];
+var pdtypedata =[];
+var CURRENCY = [{id:"01",text:"RMB"},{id:"14",text:"美元"}];
+var Tabs = require("Component/bootstrap/Tabs.jsx");
 var product = React.createClass({
   getInitialState: function() {
     return {
@@ -18,11 +20,11 @@ var product = React.createClass({
     };
   },
   onCreate: function () {
-      this.props.action.setField({
-        AgentPsn: this.props.session.get("name"),
-        CreateDate: "2015-07-21",
-      });
-    },
+    this.props.action.setField({
+      AgentPsn: this.props.session.get("name"),
+      CreateDate: Mock.Random.now("yyyy-MM-dd")
+    });
+  },
   beforeSubmit: function () {
   //  this.props.action.setField({
   //    LastDate: Mock.Random.now()
@@ -44,15 +46,16 @@ var product = React.createClass({
   },
   render: function() {
     return (
-      <FlowForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+      <DataForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+        <Tabs>
           <div className="form-content" tab="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
+            <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
             <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="产品编号" name="prt_id" type="text"  responsive={{xl: 12}}/>
+            <FormControl label="产品编号" name="prt_id" type="text"  readOnly={true} responsive={{xl: 12}}/>
             <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
             <FormControl label="产品名称" name="prt_name" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="币种" name="cur_name" type="select" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
-            <FormControl label="币种代码" name="currency" type="text" responsive={{xl: 12}}/>
+            <FormControl label="币种" name="cur_name" type="radio-group" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
+            <FormControl label="币种代码" name="currency" type="text"  readOnly={true} responsive={{xl: 12}}/>
             <FormControl label="服务机构" name="service_i" type="text" responsive={{xl: 12}}/>
             <FormControl label="移民国家" name="im_country" type="select" data ={COUNTRY_DATA} responsive={{xl: 12}}/>
             <FormControl label="移民项目" name="immigration_p" type="text" responsive={{xl: 12}}/>
@@ -60,7 +63,8 @@ var product = React.createClass({
             <FormControl label="服务费" name="service_f" type="text" responsive={{xl: 12}}/>
 
           </div>
-      </FlowForm>
+        </Tabs>
+      </DataForm>
     );
   }
 

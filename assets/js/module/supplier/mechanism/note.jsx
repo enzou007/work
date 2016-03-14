@@ -74,8 +74,8 @@ var qy = React.createClass({
             <FormControl label="邮编" name="zip" type="text"   responsive={{xl: 12}}/>
             <FormControl label="供应商类别" name="cust_class" type="radio-group" data={KHFLdata}   responsive={{xl: 12}}/>
             <FormControl label="客户状态" name="cust_status" type="radio-group" data={KHLXData}   responsive={{xl: 12}}/>
-            <FormControl label="公司营业执照" name="work_id" type="text"   responsive={{xl: 24}}/>
-            <FormControl label="公司营业执照附件"  name="work_id_p" type="file"   responsive={{xl: 24}}/>
+            <FormControl label="公司营业执证" name="work_id" type="text"   responsive={{xl: 24}}/>
+            <FormControl label="公司营业执证附件"  name="work_id_p" type="file"   responsive={{xl: 24}}/>
             <FormControl label="税务登记号(国税)" name="tax1_id" type="text"   responsive={{xl: 24}}/>
             <FormControl label="税务登记号(国税)"  name="tax1_id_p" type="file"   responsive={{xl: 24}}/>
             <FormControl label="税务登记号(地税)" name="tax2_id" type="text"   responsive={{xl: 24}}/>

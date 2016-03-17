@@ -48,20 +48,24 @@ var product = React.createClass({
   render: function() {
     return (
       <DataForm title="移民服务类产品"  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
-        <Fieldset title="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
-            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="产品编号" name="prt_id" type="text"  readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
-            <FormControl label="产品名称" name="prt_name" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="币种" name="cur_name" type="radio-group" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
-            <FormControl label="币种代码" name="currency" type="text"  readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="服务机构" name="service_i" type="text" responsive={{xl: 12}}/>
-            <FormControl label="移民国家" name="im_country" type="select" data ={COUNTRY_DATA} responsive={{xl: 12}}/>
-            <FormControl label="移民项目" name="immigration_p" type="text" responsive={{xl: 12}}/>
-            <FormControl label="移民条件" name="immigration_c" type="text" responsive={{xl: 12}}/>
-            <FormControl label="服务费" name="service_f" type="text" responsive={{xl: 12}}/>
-          </Fieldset>
+        <Tabs>
+          <div className="form-content" tab="基本信息">
+            <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true} />
+            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+            <FormControl label="产品类别" name="class_id"  required={true} type="select" data={pdtypedata} />
+            <FormControl label="币种" name="cur_name" required={true}  type="radio-group" data={CURRENCY} onChange={this.getreturn}/>
+            <FormControl label="币种代码" name="currency" type="text"  readOnly={true}/>
+          </div>
+          <div className="form-content" tab="产品信息">
+            <FormControl label="产品编号" name="prt_id" type="text"  readOnly={true}/>
+            <FormControl label="产品名称" name="prt_name"  required={true} type="text" />
+            <FormControl label="服务机构" name="service_i" required={true}  type="text"/>
+            <FormControl label="移民国家" name="im_country"  required={true} type="select" data ={COUNTRY_DATA}/>
+            <FormControl label="移民项目" name="immigration_p" type="text"/>
+            <FormControl label="移民条件" name="immigration_c" type="text"/>
+            <FormControl label="服务费" name="service_f" type="text"/>
+        </div>
+      </Tabs>
       </DataForm>
     );
   }

@@ -13,7 +13,8 @@ var FlowForm = require("View/form/FlowForm.jsx"),
 var Input = require("rctui/input");
 var Select = require("rctui/select");
 var DateTime = require("rctui/datetime");
-require('Component/form/Inputz.jsx');
+require('Component/form/InputDate.jsx');
+require('Component/form/InputTwo.jsx');
 var SexData = ["男","女"];
 var LevelData = ["A","B","C","D","E","F"];
 var EmployData = ["社会招聘","人才市场","互联网络","内部招聘","人才推荐","校园招聘","外编转正","离职再入职","其他"];
@@ -81,9 +82,9 @@ var NoteForm = React.createClass({
       <FlowForm onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}>
         <div className="form-content" tab="基本信息">
           <Fieldset title="基本信息" readOnly={this.state.readonly}>
-            <FormControl label="自定义标签Inputz" name="inputzname" type="inputz" />
-            <FormControl label="自定义标签Inputz" name="inputzname1" type="inputz" datainput="inputz2" />
-            <FormControl label="自定义标签Inputz" name="inputzname2" type="inputz" onFocus={this.onFocus}
+            <FormControl label="自定义标签Inputz" name="inputzname" type="inputtwo" />
+            <FormControl label="自定义标签Inputz" name="inputzname1" type="inputdate" datainput="inputz2" />
+            <FormControl label="自定义标签Inputz" name="inputzname2" type="inputdate" onFocus={this.onFocus}
               onScroll={this.cecs} onChange={this.onChange} onClick={this.onClick}
               onDoubleClick={this.onDoubleClick} dataclassName="divz1" datainput="inputz1"/>
 

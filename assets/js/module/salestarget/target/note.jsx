@@ -49,21 +49,21 @@ var FlowForm = require("View/form/FlowForm.jsx"),
     return (
       <FlowForm  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <div className="form-content" tab="基本信息">
-          <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="版本号" name="v_number" type="text" responsive={{xl: 12}}/>
-          <FormControl label="时间维度" name="tdimension" type="select" data={timedata}  responsive={{xl: 12}}/>
-          <FormControl label="公司整体" name="company" type="text" responsive={{xl: 12}}/>
-          <FormControl label="分公司/总部" name="fcompany" type="text" responsive={{xl: 12}}/>
-          <FormControl label="部门" name="dept" type="text" responsive={{xl: 12}}/>
-          <FormControl label="团队" name="team" type="text" responsive={{xl: 12}}/>
-          <FormControl label="业务员" name="salesman" type="text"    responsive={{xl: 12}}/>
-          <FormControl label="目标创利" name="profit" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="考核创利" name="assess" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="新增有效潜客" name="pcustomer" type="number"    responsive={{xl: 12}}/>
-          <FormControl label="新增成交笔数" name="ccustomer" type="number"    responsive={{xl: 12}}/>
-          <FormControl label="成交规模" name="deal" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="潜客转化比" name="cratio" type="number"   responsive={{xl: 12}}/>
+          <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true} />
+          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+          <FormControl label="版本号" name="v_number" type="text"/>
+          <FormControl label="时间维度" name="tdimension" type="select" data={timedata} />
+          <FormControl label="公司整体" name="company" type="text"/>
+          <FormControl label="分公司/总部" name="fcompany" type="text"/>
+          <FormControl label="部门" name="dept" type="text"/>
+          <FormControl label="团队" name="team" type="text"/>
+          <FormControl label="业务员" name="salesman" type="text"   />
+          <FormControl label="目标创利" name="profit" type="number"  />
+          <FormControl label="考核创利" name="assess" type="number"  />
+          <FormControl label="新增有效潜客" name="pcustomer" type="number"   />
+          <FormControl label="新增成交笔数" name="ccustomer" type="number"   />
+          <FormControl label="成交规模" name="deal" type="number"  />
+          <FormControl label="潜客转化比" name="cratio" type="number"  />
         </div>
       </FlowForm>
     );

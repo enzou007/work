@@ -3,15 +3,16 @@ var Mock = require("mockjs");
 var PropTypes = React.PropTypes;
 var DataForm = require("View/form/DataForm.jsx"),
   FormControl = require("Component/form/FormControl.jsx"),
+  Fieldset = require("Component/form/Fieldset.jsx"),
   Personnel = require("Component/form/Personnel.jsx");
 
 var Tabs = require("Component/bootstrap/Tabs.jsx");
 require("rctui/input");
 require("rctui/datetime");
-require("rctui/select");
+require('Component/form/Select.jsx');
 require('Component/form/Radio.jsx');
-
-var KHLYData = ["网络","传单","电话"];
+require('Component/form/Checkbox.jsx');
+var KHLYData = ["直营","渠道"];
 var KHTypedata = ["潜客","有效潜客","成交客户"];
 var KHLXData = ["生效","冻结"];
 //var khtypedata =["潜客","有效潜客","成交客户"];
@@ -20,14 +21,18 @@ var HKData =["电话","网络","会议","社区活动","家庭拜访","公共场
 var khages = ["网络","传单","电话"];
 var GZData = ["国营","民营","外资","合资","政府机关"];
 var sexdata = ["男","女"];
+var agedata = ["20~30","30~40","40~50","50~60","60以上"];
 var HYData = ["已婚","未婚","离异","丧偶"];
 var CData = ["有","无"];
+var nulldata=[];
 var FXData =["激进","稳健","保守"];
+var compData = ["股票","公募基金","私募基金","国债","房产","保险","黄金","银行理财","其他"];
 var SRData =["000-10000","10000-30000","30000及以上"];
 var NoteForm = React.createClass({
     getInitialState: function() {
       return {
-        readonly: false
+        readonly: false,
+        show : false
       };
     },
     onLoad: function(){
@@ -69,51 +74,72 @@ var NoteForm = React.createClass({
     afterSubmit: function () {
 
     },
+    compOnChange:function (data) {
+      this.setState({show : data.indexOf("其他") >= 0})
+    },
   render: function() {
     return (
-        <DataForm title="零售客户" onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
+        <DataForm title="个人客户" onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <Tabs>
-            <div className="form-content" tab="基本信息">
-              <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
-              <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-              <FormControl label="业务员" name="rp_id" type="personnel"  responsive={{xl: 12}}/>
-              <FormControl label="最后修改时间" name="up_date" type="text" readOnly={true} responsive={{xl: 12}}/>
-              <FormControl label="客户编号" name="cust_id" type="text" responsive={{xl: 12}}/>
-              <FormControl label="获客方式" name="get_type" type="select" data={HKData}   responsive={{xl: 12}}/>
-              <FormControl label="客户来源" name="kh_source" type="select" data={KHLYData}   responsive={{xl: 12}}/>
-              <FormControl label="客户类别" name="cust_type" type="radio-group" data={KHTypedata} value="潜客"  responsive={{xl: 12}}/>
-              <FormControl label="客户状态" name="cust_status" type="radio-group" data={KHLXData} value="生效"  responsive={{xl: 12}}/>
+            <div className="form-content" tab="Situation">
+              <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  />
+              <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} />
+              <FormControl label="业务员" name="salesmanId" type="personnel"  />
+              <FormControl label="最后修改时间" name="lastModified" type="text" readOnly={true} />
+              <FormControl label="获客方式" name="wayOff" type="select" data={HKData}   />
+              <FormControl label="客户来源(S)" name="customerSource" type="select" data={KHLYData}   />
+              <FormControl label="客户类型" name="customerType" type="select" data={KHTypedata} value="潜客"  />
+              <FormControl label="客户状态" name="customerStatus" type="radio-group" data={KHLXData} value="生效"  />
           </div>
 
-          <div className="form-content" tab="客户信息">
-            <FormControl label="客户名称" name="cust_name" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="年龄" name="age" type="number"  responsive={{xl: 12}}/>
-            <FormControl label="性别" name="gender" type="radio-group" data={sexdata}  responsive={{xl: 12}}/>
-            <FormControl label="户口所在地" name="addfm" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="客户生日" name="birthday" type="date"  responsive={{xl: 12}}/>
-            <FormControl label="手机" name="mobile" type="number"   responsive={{xl: 12}}/>
-            <FormControl label="微信号" name="wx" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="QQ" name="qq" type="number"   responsive={{xl: 12}}/>
-            <FormControl label="固定电话号码" name="phone" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="电子邮箱" name="email" type="email"   responsive={{xl: 12}}/>
-            <FormControl label="家庭地址" name="h_address" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="工作单位" name="company" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="工作性质" name="ctype" type="select" data={GZData}   responsive={{xl: 12}}/>
-            <FormControl label="从事行业" name="industry" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="职务" name="title" type="text"   responsive={{xl: 12}}/>
-          </div>
+          <div className="form-content" tab="Personal">
+            <Fieldset title="基本信息">
+              <FormControl label="客户编号" name="customerId" type="text" />
+              <FormControl label="客户名称" name="customerName" type="text" required={true} />
+              <FormControl label="性别" name="gender" type="radio-group" required={true} data={sexdata}  />
+              <FormControl label="年龄" name="age" type="select" data={agedata}  />
+              <FormControl label="客户生日" name="birthday" type="date"  />
+              <Fieldset title="联系方式">
+                {//<Fieldset  style={{border: "1px solid #C5D0DC", marginBottom: "10px", paddingTop: "10px", paddingRight: "12px"}}>
+              }
+                <FormControl label="手机" name="mobile" type="number" required={true} />
+                <FormControl label="微信号" name="wx" type="text"   />
+                <FormControl label="QQ" name="qq" type="number"   />
+                <FormControl label="固定电话号码" name="phone" type="text"   />
+                <FormControl label="电子邮箱" name="email" type="email"   />
+                <FormControl label="家庭地址" name="homeAddress" type="text"   />
+              </Fieldset>
 
-          <div className="form-content" tab="客户标准">
-            <FormControl label="婚姻状态" name="marital"  type="radio-group" data={HYData}  responsive={{xl: 12}}/>
-            <FormControl label="父母信息" name="p_info" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="子女信息" name="d_info"  type="radio-group" data={CData}  responsive={{xl: 12}}/>
-            <FormControl label="兴趣爱好" name="interest" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="风险偏好" name="risk"  type="radio-group" data={FXData}  responsive={{xl: 12}}/>
-            <FormControl label="资产规模" name="s_asset" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="月收入水平" name="income"  type="select" data={SRData}  responsive={{xl: 12}}/>
-            <FormControl label="资产构成1" name="c_asset1" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="资产构成2" name="c_asset2" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="资产构成3" name="c_asset3" type="text"   responsive={{xl: 12}}/>
+          </Fieldset>
+          <Fieldset title="其他">
+            <FormControl label="工作单位" name="workUnit" type="text"   />
+            <FormControl label="从事行业" name="industry" type="select" data={nulldata}  />
+            <FormControl label="职务" name="post" type="text"   />
+            <FormControl label="单位性质" name="natureOfJob" type="select" data={GZData}   />
+            <FormControl label="户口所在地" name="registeredResidence" type="text"  />
+            <FormControl label="银行账户" name="bankAccount" type="number"   />
+            <FormControl label="账户名称" name="titleOfAccount" type="text"   />
+            <FormControl label="开户行" name="bankOfDeposit" type="text"   />
+        </Fieldset>
+        </div>
+          <div className="form-content" tab="F3">
+            <Fieldset title="F1">
+              <FormControl label="婚姻状态" name="maritalStatus"  type="radio-group" data={HYData}  />
+              <FormControl label="父母信息" name="ParentsInformation" type="text"   />
+              <FormControl label="子女信息" name="childrenOfInformation"  type="radio-group" data={CData}  />
+
+            </Fieldset>
+            <Fieldset title="F2">
+              <FormControl label="兴趣爱好" name="hobbiesAndInterests" type="text"   />
+              <FormControl label="风险偏好" name="RiskAppetite"  type="radio-group" data={FXData}  />
+
+            </Fieldset>
+            <Fieldset title="F3">
+              <FormControl label="资产规模" name="assetSize" type="text"   />
+              <FormControl label="月收入水平" name="levelOfMonthlyIncome"  type="select" data={SRData}  />
+              <FormControl label="资产构成" name="compositionOfAssets" type="checkbox-group" data={compData} onChange={this.compOnChange} responsive={{xl: 24}}/>
+              <FormControl label="资产构成说明" name="assetsThat" type="textarea" show={this.state.show} responsive={{xl: 24}} />
+            </Fieldset>
           </div>
         </Tabs>
       </DataForm>

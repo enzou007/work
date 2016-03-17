@@ -57,15 +57,15 @@ var FlowForm = require("View/form/FlowForm.jsx"),
     return (
       <FlowForm  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
           <div className="form-content" tab="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="客户编号" name="customernum" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="客户名称" name="customername" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="跟进人" name="followpsn" type="text"    responsive={{xl: 12}}/>
-            <FormControl label="跟进活动" name="fplan" type="text" responsive={{xl: 12}}/>
-            <FormControl label="计划跟进时间" name="plantime" type="date"    responsive={{xl: 12}}/>
-            <FormControl label="实际跟进时间" name="actualtime" type="date"    responsive={{xl: 12}}/>
-            <FormControl label="外出申请审批状态" name="appstatus" type="text"    responsive={{xl: 12}}/>
+            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true} />
+            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+            <FormControl label="客户编号" name="customernum" type="text" />
+            <FormControl label="客户名称" name="customername" type="text" />
+            <FormControl label="跟进人" name="followpsn" type="text"   />
+            <FormControl label="跟进活动" name="fplan" type="text"/>
+            <FormControl label="计划跟进时间" name="plantime" type="date"   />
+            <FormControl label="实际跟进时间" name="actualtime" type="date"   />
+            <FormControl label="外出申请审批状态" name="appstatus" type="text"   />
             <FormControl label="活动记录" name="planlog" type="textarea"  responsive={{xl: 24}}/>
           </div>
       </FlowForm>

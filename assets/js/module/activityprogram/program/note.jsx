@@ -51,14 +51,14 @@ var FlowForm = require("View/form/FlowForm.jsx"),
     return (
       <FlowForm  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
           <div className="form-content" tab="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="机会编号" name="JHNum" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="机会名称" name="JHName" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="客户编号" name="KHNum" type="text" responsive={{xl: 12}}/>
-            <FormControl label="客户名称" name="KHname" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="跟进人" name="propsn" type="text"    responsive={{xl: 12}}/>
-            <FormControl label="跟进时间" name="protime" type="date"  responsive={{xl: 12}}/>
+            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true} />
+            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+            <FormControl label="机会编号" name="JHNum" type="text" />
+            <FormControl label="机会名称" name="JHName" type="text" />
+            <FormControl label="客户编号" name="KHNum" type="text"/>
+            <FormControl label="客户名称" name="KHname" type="text"  />
+            <FormControl label="跟进人" name="propsn" type="text"   />
+            <FormControl label="跟进时间" name="protime" type="date" />
             <FormControl label="跟进活动记录" name="programlog" type="textarea"   responsive={{xl: 24}}/>
             <FormControl label="附件"  name="programlogfile" type="file"   responsive={{xl: 24}}/>
       </div>

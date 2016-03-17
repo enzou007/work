@@ -49,19 +49,19 @@ var qy = React.createClass({
     return (
       <FlowForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <div className="form-content" tab="基本信息">
-          <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="订单号" name="order_id" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="订单号行项目编号" name="item_id" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="支出行项目编号" name="p_item_id" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="支付供应商代码" name="vendor_id" type="select" data={nulldata}   responsive={{xl: 12}}/>
-          <FormControl label="支付供应商名称" name="vendor" type="text" responsive={{xl: 12}}/>
-          <FormControl label="支付行项目性质" name="vendor_id" type="select" data={zfxztypedata}   responsive={{xl: 12}}/>
-          <FormControl label="支付项目类别" name="p_type" type="select" data={zfdata}  responsive={{xl: 12}}/>
-          <FormControl label="实际采购业务期限" name="r_term" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="支付金额" name="p_amt" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="币种" name="currency" type="select" data={bzdata} responsive={{xl: 12}}/>
-          <FormControl label="支付状态" name="p_st" type="select" data={zftypedata}   responsive={{xl: 12}}/>
+          <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true} />
+          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+          <FormControl label="订单号" name="order_id" type="text" />
+          <FormControl label="订单号行项目编号" name="item_id" type="text" />
+          <FormControl label="支出行项目编号" name="p_item_id" type="text" />
+          <FormControl label="支付供应商代码" name="vendor_id" type="select" data={nulldata}  />
+          <FormControl label="支付供应商名称" name="vendor" type="text"/>
+          <FormControl label="支付行项目性质" name="vendor_id" type="select" data={zfxztypedata}  />
+          <FormControl label="支付项目类别" name="p_type" type="select" data={zfdata} />
+          <FormControl label="实际采购业务期限" name="r_term" type="number"  />
+          <FormControl label="支付金额" name="p_amt" type="number"  />
+          <FormControl label="币种" name="currency" type="select" data={bzdata}/>
+          <FormControl label="支付状态" name="p_st" type="select" data={zftypedata}  />
           <FormControl label="备注" name="remarks" type="textarea" responsive={{xl: 24}}/>
         </div>
           {/*<div className="form-content" tab="企业信息">*/}

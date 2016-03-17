@@ -56,19 +56,19 @@ var NoteForm = React.createClass({
             <FormControl label="数量(盒)" name="Number" type="number"/>
           </Fieldset>
           <Fieldset title="名片信息" readOnly={this.state.readonly}>
-            <FormControl label="部门名称" name="DeptName" type="department" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="职务" name="Post" type="text" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="电话1" name="Tel1" type="text" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="电话2" name="Tel2" type="text" responsive={{xl: 12}}/>
-            <FormControl label="传真1" name="Fax1" type="text" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="传真2" name="Fax2" type="text" responsive={{xl: 12}}/>
-            <FormControl label="手机1" name="Phone1" type="text" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="手机2" name="Phone2" type="text" responsive={{xl: 12}}/>
-            <FormControl label="Email1" name="Email1" type="text" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="Email2" name="Email2" type="text" responsive={{xl: 12}}/>
-            <FormControl label="邮编" name="ZipCode" type="text" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="地址" name="Address" type="text" required={true}  responsive={{xl: 12}}/>
-            <FormControl label="网址" name="Weburl" type="text" required={true}  responsive={{xl: 12}}/>
+            <FormControl label="部门名称" name="DeptName" type="department" required={true} />
+            <FormControl label="职务" name="Post" type="text" required={true} />
+            <FormControl label="电话1" name="Tel1" type="text" required={true} />
+            <FormControl label="电话2" name="Tel2" type="text"/>
+            <FormControl label="传真1" name="Fax1" type="text" required={true} />
+            <FormControl label="传真2" name="Fax2" type="text"/>
+            <FormControl label="手机1" name="Phone1" type="text" required={true} />
+            <FormControl label="手机2" name="Phone2" type="text"/>
+            <FormControl label="Email1" name="Email1" type="text" required={true} />
+            <FormControl label="Email2" name="Email2" type="text"/>
+            <FormControl label="邮编" name="ZipCode" type="text" required={true} />
+            <FormControl label="地址" name="Address" type="text" required={true} />
+            <FormControl label="网址" name="Weburl" type="text" required={true} />
             <FormControl label="备注" name="Reason" type="textarea" responsive={{xl: 24}}/>
           </Fieldset>
         </div>

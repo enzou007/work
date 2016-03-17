@@ -36,12 +36,12 @@ var Product = React.createClass({
     return (
       <DataForm  title="产品类别" onCreate={this.onCreate} >
         <Fieldset title="基本信息">
-          <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
-          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="类别代码" name="class_id" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="类别名称" name="class_name" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="编号" name="class_level" type="number"    responsive={{xl: 12}}/>
-          <FormControl label="归属层级" name="p_class_id"  type="select" data={pdata} responsive={{xl: 12}}/>
+          <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true} />
+          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+          <FormControl label="类别代码" name="class_id" type="text" />
+          <FormControl label="类别名称" name="class_name" type="text" />
+          <FormControl label="编号" name="class_level" type="number"   />
+          <FormControl label="归属层级" name="p_class_id"  type="select" data={pdata}/>
         </Fieldset>
       </DataForm>
     );

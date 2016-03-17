@@ -49,20 +49,20 @@ var FlowForm = require("View/form/FlowForm.jsx"),
     return (
       <FlowForm  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
           <div className="form-content" tab="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="机会编号" name="opp_id" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="机会名称" name="opp_name" type="text" responsive={{xl: 12}}/>
-            <FormControl label="客户编号" name="cust_id" type="text" responsive={{xl: 12}}/>
-            <FormControl label="客户名称" name="cust_name" type="text"   responsive={{xl: 12}}/>
-            <FormControl label="目标产品" name="prt_name" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="预计金额" name="opp_amt" type="number"   responsive={{xl: 12}}/>
-            <FormControl label="估计签约年度" name="es_year" type="number"   responsive={{xl: 12}}/>
-            <FormControl label="估计签约季度" name="es_quarter" type="select" data={cqdata} responsive={{xl: 12}}/>
-            <FormControl label="估计签约月份" name="es_month" type="select" data ={cmdata} responsive={{xl: 12}}/>
-            <FormControl label="客户资质" name="cust_qualify" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="合同日期" name="contract_date" type="date"   responsive={{xl: 12}}/>
-            <FormControl label="状态" name="opp_st" type="select" data={jhtype}  responsive={{xl: 12}}/>
+            <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true} />
+            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+            <FormControl label="机会编号" name="opp_id" type="text" />
+            <FormControl label="机会名称" name="opp_name" type="text"/>
+            <FormControl label="客户编号" name="cust_id" type="text"/>
+            <FormControl label="客户名称" name="cust_name" type="text"  />
+            <FormControl label="目标产品" name="prt_name" type="text" />
+            <FormControl label="预计金额" name="opp_amt" type="number"  />
+            <FormControl label="估计签约年度" name="es_year" type="number"  />
+            <FormControl label="估计签约季度" name="es_quarter" type="select" data={cqdata}/>
+            <FormControl label="估计签约月份" name="es_month" type="select" data ={cmdata}/>
+            <FormControl label="客户资质" name="cust_qualify" type="text" />
+            <FormControl label="合同日期" name="contract_date" type="date"  />
+            <FormControl label="状态" name="opp_st" type="select" data={jhtype} />
             <FormControl label="丢单/中止原因" name="l_reason" type="text"   responsive={{xl: 24}}/>
             <FormControl label="竞品信息" name="c_products" type="text"   responsive={{xl: 24}}/>
             <FormControl label="客户已提交的材料" name="material" type="text" responsive={{xl: 24}}/>

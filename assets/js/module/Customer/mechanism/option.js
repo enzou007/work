@@ -35,7 +35,7 @@ var baseColumns = [{
 module.exports = BaseOption.extend({
   Model: require("./model"),
   form: {
-    "新增企业信息": "Customer/mechanism/note"
+    "新增机构信息": "Customer/mechanism/note"
   },
   menu: [{
     name: "按状态检索",
@@ -46,13 +46,9 @@ module.exports = BaseOption.extend({
         ["@CurNodeId", "eq", "Start"]
       ]
     }, {
-      name: "审批中",
+      name: "已保存",
       isDefault: true,
-      column: baseColumns,
-      condition: [
-        ["@CurNodeId", "neq", "Start"],
-        ["@CurNodeId", "neq", "End"]
-      ]
+      column: baseColumns
     }, {
       name: "已完结",
       condition: [

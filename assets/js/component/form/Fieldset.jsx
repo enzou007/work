@@ -8,7 +8,7 @@ export default class Fieldset extends React.Component {
   }
   render() {
     return (
-      <fieldset className={this.props.className}>
+      <fieldset className={this.props.className} style={this.props.style}>
         {this.props.title ? (
           <legend>{this.props.title}</legend>
         ) : null }

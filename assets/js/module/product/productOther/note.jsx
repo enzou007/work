@@ -49,14 +49,14 @@ var DataForm = require("View/form/DataForm.jsx"),
     return (
       <DataForm title="其他类型"  onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <Fieldset title="基本信息">
-            <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true}  responsive={{xl: 12}}/>
-            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="产品编号" name="prt_id" type="text"  readOnly={true}  responsive={{xl: 12}}/>
-            <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata}  responsive={{xl: 12}}/>
-            <FormControl label="产品名称" name="prt_name" type="text"  responsive={{xl: 12}}/>
-            <FormControl label="币种" name="cur_name" type="radio-group" data={CURRENCY} onChange={this.getreturn} responsive={{xl: 12}}/>
-            <FormControl label="币种代码" name="currency" type="text"  readOnly={true} responsive={{xl: 12}}/>
-            <FormControl label="服务费" name="service_f" type="text" responsive={{xl: 12}}/>
+            <FormControl label="创建时间" name="CreateDate" type="text" readOnly={true} />
+            <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+            <FormControl label="产品编号" name="prt_id" type="text"  readOnly={true} />
+            <FormControl label="产品类别" name="class_id" type="select" data={pdtypedata} />
+            <FormControl label="产品名称" name="prt_name" type="text" />
+            <FormControl label="币种" name="cur_name" type="radio-group" data={CURRENCY} onChange={this.getreturn}/>
+            <FormControl label="币种代码" name="currency" type="text"  readOnly={true}/>
+            <FormControl label="服务费" name="service_f" type="text"/>
         </Fieldset>
 
       </DataForm>

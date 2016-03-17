@@ -79,26 +79,26 @@ var qy = React.createClass({
     return (
       <FlowForm   onCreate={this.onCreate} onBeforeSubmit={this.beforeSubmit} onSubmit={this.afterSubmit}  readOnly={this.state.readonly}>
         <div className="form-content" tab="基本信息">
-          <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true}  responsive={{xl: 12}}/>
-          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true} responsive={{xl: 12}}/>
-          <FormControl label="订单号" name="order_id" type="text"  responsive={{xl: 12}}/>
-          <FormControl label="订单日期" name="dc_date" type="date"  responsive={{xl: 12}}/>
-          <FormControl label="订单生效日期" name="efct_date" type="date"  responsive={{xl: 12}}/>
-          <formcontrol label="订单类型" name="order_type" type="select" data={nulldata} responsive={{xl: 12}}/>
-          <FormControl label="交易客户名称" name="b_cust_name"  type="select" data={nulldata}  responsive={{xl: 12}}/>
-          <FormControl label="交易客户编号" name="b_cust_id" type="text" responsive={{xl: 12}}/>
-          <FormControl label="来源" name="chanell" type="select" data={qddata}   responsive={{xl: 12}}/>
-          <FormControl label="公司名称" name="com_name"  type="select" data={nulldata}  responsive={{xl: 12}}/>
-          <FormControl label="公司代码" name="com_id" type="text" responsive={{xl: 12}}/>
-          <FormControl label="部门名称" name="dept_name"  type="select" data={nulldata}  responsive={{xl: 12}}/>
-          <FormControl label="部门代码" name="dept_id" type="text" responsive={{xl: 12}}/>
-          <FormControl label="订单中收总金额" name="ord_amt" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="订单未清欠款" name="q_amt" type="number"   responsive={{xl: 12}}/>
-          <FormControl label="币种" name="currency" type="select" data={bzdata} responsive={{xl: 12}}/>
-          <FormControl label="机会号" name="opp_id" type="select" data={nulldata} responsive={{xl: 12}}/>
-          <FormControl label="业务关联订单号" name="br_ord_no" type="select" data={nulldata} responsive={{xl: 12}}/>
-          <FormControl label="续作关联订单号" name="cr_ord_no" type="select" data={nulldata} responsive={{xl: 12}}/>
-          <FormControl label="订单状态" name="ord_st" type="select" data={ddzt} responsive={{xl: 12}}/>
+          <FormControl label="创建时间" name="CreateDate" type="date" readOnly={true} />
+          <FormControl label="创建人" name="AgentPsn" type="text" readOnly={true}/>
+          <FormControl label="订单号" name="order_id" type="text" />
+          <FormControl label="订单日期" name="dc_date" type="date" />
+          <FormControl label="订单生效日期" name="efct_date" type="date" />
+          <formcontrol label="订单类型" name="order_type" type="select" data={nulldata}/>
+          <FormControl label="交易客户名称" name="b_cust_name"  type="select" data={nulldata} />
+          <FormControl label="交易客户编号" name="b_cust_id" type="text"/>
+          <FormControl label="来源" name="chanell" type="select" data={qddata}  />
+          <FormControl label="公司名称" name="com_name"  type="select" data={nulldata} />
+          <FormControl label="公司代码" name="com_id" type="text"/>
+          <FormControl label="部门名称" name="dept_name"  type="select" data={nulldata} />
+          <FormControl label="部门代码" name="dept_id" type="text"/>
+          <FormControl label="订单中收总金额" name="ord_amt" type="number"  />
+          <FormControl label="订单未清欠款" name="q_amt" type="number"  />
+          <FormControl label="币种" name="currency" type="select" data={bzdata}/>
+          <FormControl label="机会号" name="opp_id" type="select" data={nulldata}/>
+          <FormControl label="业务关联订单号" name="br_ord_no" type="select" data={nulldata}/>
+          <FormControl label="续作关联订单号" name="cr_ord_no" type="select" data={nulldata}/>
+          <FormControl label="订单状态" name="ord_st" type="select" data={ddzt}/>
           <FormControl label="订单行项目" name="yqsy" type="grid" responsive={{xl: 24}}>
               <Grid height={500} form={this.getGridForm()}>
                 <Column label="订单号" width={0.1} dataKey="StSomenum1"/>

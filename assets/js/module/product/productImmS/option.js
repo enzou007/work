@@ -43,13 +43,9 @@ module.exports = BaseOption.extend({
         ["@CurNodeId", "eq", "Start"]
       ]
     }, {
-      name: "审批中",
+      name: "已保存",
       isDefault: true,
-      column: baseColumns,
-      condition: [
-        ["@CurNodeId", "neq", "Start"],
-        ["@CurNodeId", "neq", "End"]
-      ]
+      column: baseColumns
     }, {
       name: "已完结",
       condition: [
